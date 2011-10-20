@@ -56,10 +56,11 @@
   <middle>
     <section title="Introduction">
       <t>This specification proposes a method for achieving scoped access with
-      User-Managed Access (UMA). This method assumes that, as currently
-      specified in the UMA core protocol, a host must outsource the validation
-      of requester access tokens to the authorization manager (AM) when access
-      is attempted on a protected resource.</t>
+      User-Managed Access <xref target="draft-uma-core">UMA</xref>. This
+      method assumes that, as currently specified in the UMA core protocol, a
+      host must outsource the validation of requester access tokens to the
+      authorization manager (AM) when access is attempted on a protected
+      resource.</t>
 
       <t>After a host registers resource set identifiers and the identifiers
       of permissible actions on those resource sets, the authorization manager
@@ -77,31 +78,47 @@
       permissions, called a scope description, and defines how to use a unique
       scope identifier that refers to this description.</t>
 
-      <t>Following is the flow of scope communications:<list style="numbers">
+      <t>Following is the flow of scope communications.</t>
+
+      <t>Prerequisites before the following steps take place:<list
+          style="symbols">
+          <t>The host has obtained a host access token from the AM as
+          explained in <xref target="draft-uma-core">UMA</xref> step 1. It
+          MUST use this token to use the registration API of the AM.</t>
+
+          <t>The host has obtained the URI of the registration API endpoint as
+          part of the AM's metadata as described in <xref
+          target="draft-uma-core"></xref> step 1.</t>
+
+          <t>The host has already registered resource set and action
+          descriptions for this user.</t>
+        </list></t>
+
+      <t><list style="numbers">
           <t>Step 1:<list style="letters">
               <t>Host registers resource set descriptions and action
-              descriptions with AM (described in
-              [[draft-uma-resource-reg]]).</t>
+              descriptions with AM (described in <xref
+              target="draft-uma-resource-reg"></xref>).</t>
 
               <t>AM maps authorization constraints to permissions according to
-              the user's instructions (out of band).</t>
+              the user's instructions (independently of the UMA protocol).</t>
             </list></t>
 
           <t>Step 2:<list style="letters">
               <t>Requester attempts to access protected resource at host,
-              allowing host to infer the requester's desired resource set and
-              action.</t>
+              allowing host to infer the requester's desired resource set.</t>
 
               <t>Host tells requester the identifier of a resource set that
               would suffice for access to the resource, and redirects
               requester to AM (defined in this specification for now). It is
               assumed that the requester has out-of-band knowledge of possible
-              actions on the resource to which it had attempted access,
-              through host API documentation.</t>
+              actions on the resource to which it had attempted access through
+              host API documentation.</t>
 
               <t>Requester asks AM for an access token, specifying the
               identifiers of the desired resource set and action(s) (defined
-              in this specification for now).</t>
+              in this specification for now). [ISSUE: How does the AM know
+              unambiguously which host and user is meant?]</t>
 
               <t>AM looks up the authorization constraints associated with
               these identifiers and asks for claims as required to satisfy the
@@ -111,9 +128,11 @@
               token and optional refresh token to requester.</t>
 
               <t>AM registers, in the user-specific portion of the host
-              registration area, a scope description that lists the
-              permissions corresponding to the issued access token (defined in
-              this specification for now).</t>
+              registration area [ISSUE: Necessary to be in the user-specific
+              portion, or can it be global to the host-specific portion?], a
+              scope description that lists the permissions corresponding to
+              the issued access token (defined in this specification for
+              now).</t>
             </list></t>
 
           <t>Step 3:<list style="letters">
@@ -321,9 +340,9 @@ ETag: (entity tag of the scope artifact)
 
     <section title="TODOs">
       <t><list style="symbols">
-          <t>ISSUE: How is the {userid} established at the point when an AM
-          needs to register a scope description? (See item 2f in the flow list
-          in the introduction, above.)</t>
+          <t>How is the host and user established at the point when the
+          requester approaches the AM and when the AM needs to register a
+          scope description?</t>
 
           <t>Should the AM respond to a token validation request by returning
           the applicable scope structure rather than by pointing to it through
@@ -345,33 +364,50 @@ ETag: (entity tag of the scope artifact)
     </section>
 
     <section title="Document History">
-      <t>[[ to be removed by RFC editor before publication as an RFC ]]</t>
+      <t>[[ to be removed by RFC editor before publication as an RFC ]</t>
     </section>
   </middle>
 
   <back>
     <references title="Normative References">
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2617.xml' ?>
+      <reference anchor="RFC2119">
+        <front>
+          <title>Key words for use in RFCs to Indicate Requirement
+          Levels</title>
 
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
+          <author fullname="S. Bradner" surname="Bradner"></author>
 
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml' ?>
+          <date month="March" year="1997" />
+        </front>
 
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-hammer-hostmeta-13.xml'?>
+        <format target="http://www.ietf.org/rfc/rfc2119.txt" type="TXT" />
+      </reference>
 
-      <!--
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.5785.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2104.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2818.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.3023.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.3447.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml' ?>
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml' ?>
--->
+      <reference anchor="draft-uma-core">
+        <front>
+          <title>UMA 1.0 Core Protocol</title>
+
+          <author fullname="Christian Scholz" initials="C" surname="Scholz"></author>
+
+          <date month="December" year="2010" />
+        </front>
+
+        <format target="http://mrtopf.clprojects.net/uma/draft-uma-core.html"
+                type="HTML" />
+      </reference>
+
+      <reference anchor="draft-uma-resource-reg">
+        <front>
+          <title>UMA Resource Registration</title>
+
+          <author fullname="Christian Scholz" initials="C" surname="Scholz"></author>
+
+          <date month="December" year="2010" />
+        </front>
+
+        <format target="http://mrtopf.clprojects.net/uma/draft-uma-resource-reg.html"
+                type="HTML" />
+      </reference>
     </references>
   </back>
 </rfc>
