@@ -57,9 +57,9 @@
       access decisions based on user policy.</t>
 
       <t>There are numerous use cases for UMA, where a resource owner
-      nominates a third party to control access to these resources potentially
+      elects to have a third party to control access to these resources potentially
       without the real-time presence of the resource owner. A typical example
-      is the following. A web user (authorizing user) can authorize a web app
+      is the following: a web user (authorizing user) can authorize a web app
       (requester) to gain one-time or ongoing access to a resource containing
       his home address stored at a "personal data store" service (host), by
       telling the host to act on access decisions made by his authorization
@@ -317,7 +317,7 @@
             endpoint, one of a set of API endpoints, a URI corresponding to an
             HTML document, or any other URI. The requester needs to present a
             requester access token associated with sufficient permissions in
-            order to gain access. </t>
+            order to gain access.</t>
           </list></t>
 
         <t>Similarly to OAuth authorization servers, an UMA AM has the
@@ -437,7 +437,7 @@
 
             <t
             hangText="http://docs.kantarainitiative.org/uma/1.0/host_user_uri"><vspace />REQUIRED.
-            The host user authorization endpoint. AAvailable HTTP methods are
+            The host user authorization endpoint. Available HTTP methods are
             as defined by <xref target="OAuth2"></xref> for an end-user
             authorization endpoint. Supplies the endpoint the host uses to
             gather the consent of the authorizing user for a host-AM
@@ -616,10 +616,7 @@
 
           <t>A scope description is a <xref format="default"
           target="RFC4627">JSON</xref> object with the name "scope" and with
-          the following parameters:<list style="hanging">
-              <t hangText="_id">REQUIRED. A string that uniquely identifies
-              the scope across all scopes available at this host.</t>
-
+          the following properties:<list style="hanging">
               <t hangText="name">REQUIRED. A human-readable string describing
               the scope of access. The AM SHOULD use the name in its user
               interface to assist the user in setting policies for protected
@@ -637,19 +634,17 @@
             involves reading or viewing resources (vs. creating them or
             editing them in some fashion):</preamble>
 
-            <artwork><![CDATA[{
-        "scope":
-            {
-            "_id": "view"
-            "name": "Read-only",
-            "icon_uri": "http://www.example.com/icons/reading-glasses"
-        }
-}]]></artwork>
+            <artwork><![CDATA[
+{
+  "name": "View",
+  "icon_uri": "http://www.example.com/icons/reading-glasses"
+}
+]]></artwork>
           </figure>
 
           <t>Scope descriptions MAY contain extension parameters that are not
           defined in this specification. The names of extension parameters
-          MUST begin with "x-" or "X-".</t>
+          MUST contain a fully qualified URL, or begin with "x-" or "X-".</t>
         </section>
 
         <section anchor="resource-set-desc" title="Resource Set Descriptions">
@@ -662,23 +657,6 @@
           <t>The resource set description is a <xref format="default"
           target="RFC4627">JSON</xref> object with the name "resource_set" and
           with the following parameters:<list style="hanging">
-              <t hangText="_id">REQUIRED. A string that uniquely identifies
-              the resource set. The resource set identifier has meaning only
-              to the host. The AM merely maps this resource set description to
-              a particular user by reference to the host access token that was
-              used to access the resource set registration API. The host MAY
-              use any identifier scheme to represent resource sets, for
-              example, making its identifiers unique across all users of this
-              host or allowing for the sharing of resource set identifiers
-              among users. However, for privacy reasons, it is RECOMMENDED
-              that the host assign an identifier that is obscured with respect
-              to any human-readable resource set label used at this host.
-              Further, this identifier MUST match the resource set identifier
-              path component of the URI used to manage this description in the
-              resource set registration API; see <xref
-              target="reg-api"></xref> for more information. (Typically this
-              matching is achieved through automatically populating the
-              parameter value on initial registration of the description.)</t>
 
               <t hangText="name">REQUIRED. A human-readable string describing
               a set of one or more resources. The AM SHOULD use the name in
@@ -702,22 +680,21 @@
             to scopes descriptions as defined in <xref
             target="action-desc"></xref>:</preamble>
 
-            <artwork><![CDATA[{
-        "resource_set":
-            {
-            "_id":  "112210f47de98100",
-            "name": "Photo album",
-            "icon_uri": "http://www.example.com/icons/flower.png",
-            "scopes":
-                        ["http://photoz.example.com/dev/scopes/view",
-                        "http://photoz.example.com/dev/scopes/all"]
-        }
-}]]></artwork>
+            <artwork><![CDATA[
+{
+  "name": "Photo Album",
+  "icon_uri": "http://www.example.com/icons/flower.png",
+  "scopes": [
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
+  ]
+}
+]]></artwork>
           </figure>
 
           <t>Resource set descriptions MAY contain extension parameters that
           are not defined in this specification. The names of extension
-          parameters MUST begin with "x-" or "X-".</t>
+          parameters MUST contain a fully qualified URL or begin with "x-" or "X-".</t>
 
           <t>When a host creates or updates a resource set description (see
           <xref target="reg-api"></xref>), the AM MUST attempt to retrieve the
@@ -792,25 +769,20 @@
           target="uma-error-response"></xref>) by including one of the
           following error codes with the response: <list style="hanging">
               <t hangText="unsupported_method_type">The host request used an
-              unsupported HTTP method. The AM MUST respond with the HTTP 403
-              (Forbidden) status code and MUST fail to act on the request.</t>
+              unsupported HTTP method. The AM MUST respond with the HTTP 405
+              (Method Not Allowed) status code and MUST fail to act on the request.</t>
 
               <t hangText="hostid_access_token_mismatch">The hostid does not
               match the presented host access token. The AM MUST respond with
               the HTTP 403 (Forbidden) status code.</t>
 
-              <t hangText="ambiguous_resource_set_id">The resourcesetid
-              provided in the resource set description does not match the one
-              provided in the URI. The AM MUST respond with the HTTP 400 (Bad
-              Request) status code and MUST fail to act on the request.</t>
-
-              <t hangText="resource_set_not_found">The resource set requested
+              <t hangText="not_found">The resource set requested
               from the AM cannot be found. The AM MUST respond with HTTP 404
               (Not Found) status code.</t>
 
-              <t hangText="resource_set_mismatch">The resource set that was
+              <t hangText="precondition_failed">The resource set that was
               requested to be deleted or updated at the AM did not match the
-              ETag value present in the request. The AM MUST respond with HTTP
+              If-Match value present in the request. The AM MUST respond with HTTP
               412 (Precondition Failed) status code and MUST fail to act on
               the request.</t>
             </list></t>
@@ -820,12 +792,15 @@
 
             <artwork><![CDATA[
 HTTP/1.1 403 Forbidden
-Content-Type: application/json
+Content-Type: application/uma-status+json
 Cache-Control: no-store
+...
+
 {
-   "error":"unsupported_method_type"
+  "status": "error",
+  "error": "hostid_access_token_mismatch"
 }
-         ]]></artwork>
+]]></artwork>
           </figure>
 
           <section anchor="create-resource-set"
@@ -844,67 +819,69 @@ Cache-Control: no-store
             <figure>
               <preamble>HTTP request:</preamble>
 
-              <artwork><![CDATA[PUT /host/{hostid}/resource_set/{rsid} HTTP/1.1
-Content-Type: application/json
+              <artwork><![CDATA[
+PUT /host/{hostid}/resource_set/{rsid} HTTP/1.1
+Content-Type: application/uma-resource-set+json
 ...
 
-(Body contains JSON representation of resource set description to be created)]]></artwork>
+(body contains JSON representation of resource set description to be created)
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP request that creates a resource set
               description at the AM:</preamble>
 
-              <artwork><![CDATA[PUT /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
-Content-Type: application/json
+              <artwork><![CDATA[
+PUT /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
+Content-Type: application/uma-resource-set+json
 Host: am.example.com
+...
 
 {
-        "resource_set":
-            {
-            "_id":  "112210f47de98100",
-            "name": "Photo album",
-            "icon_uri": "http://www.example.com/icons/flower.png",
-            "scopes":
-                        ["http://photoz.example.com/dev/scopes/view",
-                        "http://photoz.example.com/dev/scopes/all"]
-        }
-}]]></artwork>
+  "name": "Photo album",
+  "icon_uri": "http://www.example.com/icons/flower.png",
+  "scopes": [
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
+  ]
+}
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (success):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 201 Created
-Content-Type: application/json
-Location: (URL of created resource, same as in the PUT request)
-ETag: (entity tag of resource artifact)
+              <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/uma-status+json
+ETag: (matches "_rev" property in returned object)
 ...
 
-(Body contains JSON representation of created resource set description)]]></artwork>
+{
+  "status": "created",
+  "_id": (id of created resource set),
+  "_rev": (ETag of created resource set)
+}
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP response confirming the created
               resource set description:</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 201 Created
-Content-Type: application/json
-Location: https://am.example.com/rsreg_uri/host/photoz.example.com/resource_set/112210f47de98100
-ETag: "1234sdbdDX"
+              <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/uma-status+json
+ETag: "1"
 ...
 
 {
-        "resource_set":
-            {
-            "_id":  "112210f47de98100",
-            "name": "Photo album",
-            "icon_uri": "http://www.example.com/icons/flower.png",
-            "scopes":
-                        ["http://photoz.example.com/dev/scopes/view",
-                        "http://photoz.example.com/dev/scopes/all"]
-        }
-}]]></artwork>
+  "status": "created",
+  "_id":  "112210f47de98100",
+  "_rev": "1"
+}
+]]></artwork>
             </figure>
           </section>
 
@@ -916,61 +893,71 @@ ETag: "1234sdbdDX"
             <figure>
               <preamble>HTTP request:</preamble>
 
-              <artwork><![CDATA[GET /host/{hostid}/resource_set/{rsid} HTTP/1.1
-...]]></artwork>
+              <artwork><![CDATA[
+GET /host/{hostid}/resource_set/{rsid} HTTP/1.1
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP request that reads a resource set
               description from the AM:</preamble>
 
-              <artwork><![CDATA[GET /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
+              <artwork><![CDATA[
+GET /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
 Host: am.example.com
-...]]></artwork>
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (success):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 200 OK
-Content-Type: application/json
-ETag: (entity tag of resource artifact)
+              <artwork><![CDATA[
+HTTP/1.1 200 OK
+Content-Type: application/uma-resource-set+json
 ...
 
-(Body contains JSON representation of resource set description)]]></artwork>
+(body contains JSON representation of resource set description)
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP response message containing a
               resource set description from the AM:</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 200 OK
-Content-Type: application/json
-ETag: "1234sdbdDX"
+              <artwork><![CDATA[
+HTTP/1.1 200 OK
+Content-Type: application/uma-resource-set+json
+ETag: "1"
 ...
 
-              {
-        "resource_set":
-            {
-            "_id":  "112210f47de98100",
-            "name": "Photo album",
-            "icon_uri": "http://www.example.com/icons/flower.png",
-            "scopes":
-                        ["http://photoz.example.com/dev/scopes/view",
-                        "http://photoz.example.com/dev/scopes/all"]
-        }]]></artwork>
+{
+  "_id":  "112210f47de98100",
+  "_rev": "1",
+  "name": "Photo album",
+  "icon_uri": "http://www.example.com/icons/flower.png",
+  "scopes": [
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
+  ]
+}
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (not found):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 404 Not Found
-Content-Type: application/json
+              <artwork><![CDATA[
+HTTP/1.1 404 Not Found
+Content-Type: application/uma-status+json
 ...
 
 {
-   "error":"resource_set_not_found"
-}]]></artwork>
+  "status": "error",
+  "error": "not_found"
+}
+]]></artwork>
             </figure>
           </section>
 
@@ -989,54 +976,61 @@ Content-Type: application/json
             <figure>
               <preamble>HTTP request:</preamble>
 
-              <artwork><![CDATA[PUT /host/{hostid}/resource_set/{rsid} HTTP/1.1
-Content-Type: application/json
+              <artwork><![CDATA[
+PUT /host/{hostid}/resource_set/{rsid} HTTP/1.1
+Content-Type: application/resource-set+json
 If-Match: (entity tag of resource if operation is to be idempotent)
 ...
 
-(Body contains JSON representation of resource set description to be updated)]]></artwork>
+(body contains JSON representation of resource set description to be updated)
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP request that updates a resource set
               description at AM:</preamble>
 
-              <artwork><![CDATA[PUT /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
-Content-Type: application/json
+              <artwork><![CDATA[
+PUT /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
+Content-Type: application/uma-resource-set+json
 Host: am.example.com
-If-Match: "1234sdbdDX"
+If-Match: "1"
+...
 
 {
-        "resource_set":
-            {
-            "_id":  "112210f47de98100",
-            "name": "Updated Photo album",
-            "icon_uri": "http://www.example.com/icons/sun.png",
-            "scopes":
-                        ["http://photoz.example.com/dev/scopes/view",
-                        "http://photoz.example.com/dev/scopes/all"]
-        }
-}   ]]></artwork>
+  "name": "Updated Photo album",
+  "icon_uri": "http://www.example.com/icons/sun.png",
+  "scopes": [
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
+  ]
+}
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (success):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 204 No Content
-              ETag: "54223dfda"
-...]]></artwork>
+              <artwork><![CDATA[
+HTTP/1.1 204 No Content
+ETag: "2"
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (entity tag does not match):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 412 Precondition failed
-Content-Type: application/json
+              <artwork><![CDATA[
+HTTP/1.1 412 Precondition failed
+Content-Type: application/uma-status+json
 ...
 
 {
-   "error":"resource_set_mismatch"
-}]]></artwork>
+  "status": "error",
+  "error": "precondition_failed"
+}
+]]></artwork>
             </figure>
           </section>
 
@@ -1049,50 +1043,61 @@ Content-Type: application/json
             <figure>
               <preamble>HTTP request:</preamble>
 
-              <artwork><![CDATA[DELETE /host/{hostid}/resource_set/{rsid}
+              <artwork><![CDATA[
+DELETE /host/{hostid}/resource_set/{rsid}
 If-Match: (entity tag of resource if operation is to be idempotent)
-...]]></artwork>
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP request that deletes a resource set
               description from the AM:</preamble>
 
-              <artwork><![CDATA[DELETE /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
+              <artwork><![CDATA[
+DELETE /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
 Host: am.example.com
-If-Match: "1234sdbdDX"
-            ]]></artwork>
+If-Match: "1"
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (success):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 204 No content
-...]]></artwork>
+              <artwork><![CDATA[
+HTTP/1.1 204 No content
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (not found):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 404 Not Found
-Content-Type: application/json
+              <artwork><![CDATA[
+HTTP/1.1 404 Not Found
+Content-Type: application/uma-status+json
 ...
 
 {
-   "error":"resource_set_not_found"
+  "status": "error",
+  "error": "not_found"
 }]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response (entity tag does not match):</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 412 Precondition failed
-Content-Type: application/json
+              <artwork><![CDATA[
+HTTP/1.1 412 Precondition failed
+Content-Type: application/uma-status+json
 ...
 
 {
-   "error":"resource_set_mismatch"
-}]]></artwork>
+  "status": "error",
+  "error": "precondition_failed"
+}
+]]></artwork>
             </figure>
           </section>
 
@@ -1105,40 +1110,46 @@ Content-Type: application/json
             <figure>
               <preamble>HTTP request:</preamble>
 
-              <artwork><![CDATA[GET /host/{hostid}/resource_set HTTP/1.1
-...]]></artwork>
+              <artwork><![CDATA[
+GET /host/{hostid}/resource_set HTTP/1.1
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP request that lists registered
               resource set descriptions at the AM:</preamble>
 
-              <artwork><![CDATA[GET /host/photoz.example.com/resource_set HTTP/1.1
+              <artwork><![CDATA[
+GET /host/photoz.example.com/resource_set HTTP/1.1
 Host: am.example.com
-...]]></artwork>
+...
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>HTTP response:</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 200 OK
+              <artwork><![CDATA[
+HTTP/1.1 200 OK
 Content-Type: application/json
 ...
 
-(Body contains JSON array of {rsid} values)]]></artwork>
+(body contains JSON array of {rsid} values)
+]]></artwork>
             </figure>
 
             <figure>
               <preamble>Example of an HTTP response with the list of
               registered resource set identifiers:</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 200 OK
+              <artwork><![CDATA[
+HTTP/1.1 200 OK
 Content-Type: application/json
 ...
 
-{
-  "resource_set_id_list": [ "112210f47de98100", "34234df47eL95300" ]
-}]]></artwork>
+[ "112210f47de98100", "34234df47eL95300" ]
+]]></artwork>
             </figure>
           </section>
         </section>
@@ -1259,13 +1270,17 @@ Content-Type: application/json
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 403 Forbidden
-Content-Type: application/json
+            <artwork><![CDATA[
+HTTP/1.1 403 Forbidden
+Content-Type: application/uma-status+json
 Cache-Control: no-store
+...
 
 {
-   "error":"ambiguous-user"
-}]]></artwork>
+  "status": error",
+  "error": "ambiguous-user"
+}
+]]></artwork>
           </figure>
         </section>
 
@@ -1285,10 +1300,13 @@ Cache-Control: no-store
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 400 Bad Request
-WWW-Authenticate: UMA realm="example"
-                     host_id="photoz.example.com",
-                     am_uri="http://am.example.com"]]></artwork>
+            <artwork><![CDATA[
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: UMA realm="example",
+ host_id="photoz.example.com",
+ am_uri="http://am.example.com"
+...
+]]></artwork>
           </figure>
         </section>
 
@@ -1304,10 +1322,13 @@ WWW-Authenticate: UMA realm="example"
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 401 Unauthorized
-WWW-Authenticate: UMA realm="example"
-                     host_id="photoz.example.com",
-                     am_uri="http://am.example.com"]]></artwork>
+            <artwork><![CDATA[
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: UMA realm="example",
+  host_id="photoz.example.com",
+  am_uri="http://am.example.com"
+...
+]]></artwork>
           </figure>
         </section>
 
@@ -1330,11 +1351,13 @@ WWW-Authenticate: UMA realm="example"
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 403 Forbidden
-WWW-Authenticate: UMA realm="example"
-                     host_id="photoz.example.com"
-                     am_uri="http://am.example.com",
-                     ticket="5454345rdsaa4543"]]></artwork>
+            <artwork><![CDATA[
+HTTP/1.1 403 Forbidden
+WWW-Authenticate: UMA realm="example",
+  host_id="photoz.example.com",
+  am_uri="http://am.example.com",
+  ticket="5454345rdsaa4543"
+]]></artwork>
           </figure>
         </section>
 
@@ -1352,14 +1375,16 @@ WWW-Authenticate: UMA realm="example"
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 200 OK
+            <artwork><![CDATA[
+HTTP/1.1 200 OK
 Content-Type: image/jpeg
 ...
 
 /9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja
 3kAAQAEAAAAPAAA/+4ADkFkb2JlAGTAAAAAAf
 /bAIQABgQEBAUEBgUFBgkGBQYJCwgGBggLDAo
-KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb]]></artwork>
+KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
+]]></artwork>
           </figure>
 
           <t>This response constitutes the conclusion of Phase 3 of UMA.</t>
@@ -1399,8 +1424,8 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb]]></artwork>
         <t>If the requester does not yet have a client identifier and optional
         client secret, it MAY request these using <xref
         target="OCDynClientReg"></xref>, if the AM supports it (see <xref
-        target="am-endpoints"></xref> for how the AM MAY indicate support).
-        </t>
+        target="am-endpoints"></xref> for how the AM MAY indicate
+        support).</t>
       </section>
 
       <section anchor="h-am-token-validation"
@@ -1429,17 +1454,20 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb]]></artwork>
           <preamble>Example of a request to the token validation endpoint that
           provides the host access token in the header:</preamble>
 
-          <artwork><![CDATA[POST /token_status HTTP/1.1
+          <artwork><![CDATA[
+POST /token_status HTTP/1.1
 Host: am.example.com
 Authorization: Bearer vF9dft4qmT
 Content-Type: application/json
+...
 
 {
-   "token":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv"
-   "resource_set_id":"112210f47de98100"
-   "host_id":"photoz.example.com"
-   "ipaddr":"192.168.1.1"
-}]]></artwork>
+  "token": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+  "resource_set_id": "112210f47de98100",
+  "host_id": "photoz.example.com",
+  "ipaddr": "192.168.1.1"
+}
+]]></artwork>
         </figure>
 
         <section anchor="token-valid"
@@ -1455,8 +1483,7 @@ Content-Type: application/json
           over some period of time when it later sees the same requester
           access token.</t>
 
-          <t>The token status description is a JSON object with the name
-          "token_status" containing an array of zero or more permission
+          <t>The token status description is a JSON array of zero or more permission
           objects, each with the following parameters:<list style="hanging">
               <t hangText="resource_set_id">REQUIRED. A string that uniquely
               identifies the resource set, access to which has been granted to
@@ -1481,22 +1508,23 @@ Content-Type: application/json
           <figure>
             <preamble>Example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 200 OK
-Content-Type: application/json
+            <artwork><![CDATA[
+HTTP/1.1 200 OK
+Content-Type: application/uma-token-status+json
 Cache-Control: no-store
+...
 
-{
-        "token_status":
-           [
-              {
-                      "resource_set_id": "112210f47de98100",
-                      "scopes":
-                      ["http://photoz.example.com/dev/actions/view",
-                        "http://photoz.example.com/dev/actions/all"],
-                      "exp": 1300819380
-              }
-           ]
-}]]></artwork>
+[
+  {
+    "resource_set_id": "112210f47de98100",
+    "scopes": [
+      "http://photoz.example.com/dev/actions/view",
+      "http://photoz.example.com/dev/actions/all"
+    ],
+    "exp": 1300819380
+  }
+]
+]]></artwork>
           </figure>
 
           <t></t>
@@ -1520,12 +1548,17 @@ Cache-Control: no-store
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 400 Bad Request
-Content-Type: application/json
+            <artwork><![CDATA[
+HTTP/1.1 400 Bad Request
+Content-Type: application/uma-status+json
 Cache-Control: no-store
+...
+
 {
-   "error":"invalid_requester_token"
-}]]></artwork>
+  "status": "error",
+  "error": "invalid_requester_token"
+}
+]]></artwork>
           </figure>
         </section>
       </section>
@@ -1572,18 +1605,19 @@ Cache-Control: no-store
           <preamble>Example of an HTTP request that registers a permission at
           the AM's permission registration endpoint:</preamble>
 
-          <artwork><![CDATA[POST /host/scope_reg_uri/photoz.example.com HTTP/1.1
-Content-Type: application/json
+          <artwork><![CDATA[
+POST /host/scope_reg_uri/photoz.example.com HTTP/1.1
+Content-Type: application/uma-requested-permission+json
 Host: am.example.com
 
 {
-        "requested_permission":
-            {
-            "resource_set_id":  "112210f47de98100",
-            "scopes": ["http://photoz.example.com/dev/actions/view",
-                        "http://photoz.example.com/dev/actions/all"]
-        }
-}]]></artwork>
+  "resource_set_id": "112210f47de98100",
+  "scopes": [
+      "http://photoz.example.com/dev/actions/view",
+      "http://photoz.example.com/dev/actions/all"
+  ]
+}
+]]></artwork>
         </figure>
 
         <t>On receiving the scope registration request from the Host, the AM
@@ -1607,13 +1641,16 @@ Host: am.example.com
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 201 Created
-Content-Type: application/json
+            <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/uma-permission-ticket+json
 Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa4543
+...
 
-   {
-      "ticket":"5454345rdsaa4543"
-   } ]]></artwork>
+{
+"ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
+}
+]]></artwork>
           </figure>
         </section>
 
@@ -1639,14 +1676,17 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 400 Bad Request
-Content-Type: application/json
+            <artwork><![CDATA[
+HTTP/1.1 400 Bad Request
+Content-Type: application/uma-status+json
 Cache-Control: no-store
 ...
 
 {
-   "error":"invalid_resource_set_id"
-}]]></artwork>
+  "status": "error",
+  "error": "invalid_resource_set_id"
+}
+]]></artwork>
           </figure>
         </section>
       </section>
@@ -1703,12 +1743,14 @@ Cache-Control: no-store
           <figure>
             <preamble>For example:</preamble>
 
-            <artwork><![CDATA[HTTP/1.1 201 Created
-Content-Type: application/json
+            <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/uma-access-token+json
 
-   {
-      "token":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv"
-   } ]]></artwork>
+{
+  "token": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv"
+}
+]]></artwork>
           </figure>
         </section>
 
@@ -1732,11 +1774,12 @@ Content-Type: application/json
             <figure>
               <preamble>For example:</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 401 Unauthorized
-   WWW-Authenticate: Bearer realm="example",
-                     error="invalid_token",
-                     error_description="The access token expired"
-                      ]]></artwork>
+              <artwork><![CDATA[
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer realm="example",
+  error="invalid_token",
+  error_description="The access token expired"
+]]></artwork>
             </figure>
           </section>
 
@@ -1763,14 +1806,17 @@ Content-Type: application/json
             <figure>
               <preamble>For example:</preamble>
 
-              <artwork><![CDATA[HTTP/1.1 400 Bad Request
-Content-Type: application/json
+              <artwork><![CDATA[
+HTTP/1.1 400 Bad Request
+Content-Type: application/uma-status+json
 Cache-Control: no-store
 ...
 
 {
-   "error":"expired_requester_ticket"
-}]]></artwork>
+  "status": "error",
+  "error": "expired_requester_ticket"
+}
+]]></artwork>
             </figure>
           </section>
         </section>
@@ -1914,16 +1960,19 @@ Cache-Control: no-store
         <figure>
           <preamble>For example:</preamble>
 
-          <artwork><![CDATA[HTTP/1.1 400 Bad Request
-Content-Type: application/json
+          <artwork><![CDATA[
+HTTP/1.1 400 Bad Request
+Content-Type: application/uma-status+json
 Cache-Control: no-store
 ...
 
 {
-   "error":"invalid_request",
-   "error_description":"There is already a resource with this identifier.",
-   "error_uri":"http://am.example.com/errors/resource_exists"
-}]]></artwork>
+  "status": "error",
+  "error": "invalid_request",
+  "error_description": "There is already a resource with this identifier.",
+  "error_uri": "http://am.example.com/errors/resource_exists"
+}
+]]></artwork>
         </figure>
       </section>
     </section>
@@ -2113,28 +2162,24 @@ Cache-Control: no-store
       resource at http://photoz.example.com/dev/scopes/view:</t>
 
       <figure>
-        <artwork><![CDATA[{
-        "scope":
-            {
-            "_id": "view"
-            "name": "View Photo and Related Info",
-            "icon_uri": "http://www.example.com/icons/reading-glasses.png"
-        }
-}]]></artwork>
+        <artwork><![CDATA[
+{
+  "name": "View Photo and Related Info",
+  "icon_uri": "http://www.example.com/icons/reading-glasses.png"
+}
+]]></artwork>
       </figure>
 
       <t>Example of the "all" scope, which description is a Web-accessible
       resource at http://photoz.example.com/dev/scopes/all:</t>
 
       <figure>
-        <artwork><![CDATA[{
-        "scope":
-            {
-            "_id": "all"
-            "name": "All Actions",
-            "icon_uri": "http://www.example.com/icons/galaxy.png"
-        }
-}]]></artwork>
+        <artwork><![CDATA[
+{
+  "name": "All Actions",
+  "icon_uri": "http://www.example.com/icons/galaxy.png"
+}
+]]></artwork>
       </figure>
 
       <t>While visiting Photoz, Alice selects a link or button that instructs
@@ -2154,17 +2199,16 @@ Cache-Control: no-store
       defined just above.</t>
 
       <figure>
-        <artwork><![CDATA[{
-        "resource_set":
-            {
-            "_id": "112210f47de98100"
-            "name": "Steve the puppy!",
-            "icon_uri": "http://www.example.com/icons/flower",
-            "scopes":
-                        ["http://photoz.example.com/dev/scopes/view",
-                        "http://photoz.example.com/dev/scopes/all"]
-        }
-}]]></artwork>
+        <artwork><![CDATA[
+{
+  "name": "Steve the puppy!",
+  "icon_uri": "http://www.example.com/icons/flower",
+  "scopes": [
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
+  ]
+}
+]]></artwork>
       </figure>
 
       <t>Photoz uses the "create resource set description" method of
@@ -2175,21 +2219,21 @@ Cache-Control: no-store
       description.</t>
 
       <figure>
-        <artwork><![CDATA[PUT /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
-Content-Type: application/json
+        <artwork><![CDATA[
+PUT /host/photoz.example.com/resource_set/112210f47de98100 HTTP/1.1
+Content-Type: application/uma-resource-set+json
 ...
 
 {
-        "resource_set":
-           {
-           "_id": "112210f47de98100"
-           "name": "Steve the puppy!",
-           "icon_uri": "http://www.example.com/icons/flower.png",
-           "scopes":
-                        ["http://photoz.example.com/dev/scopes/view",
-                        "http://photoz.example.com/dev/scopes/all"]
-         }
-}]]></artwork>
+  "_id": "112210f47de98100"
+  "name": "Steve the puppy!",
+  "icon_uri": "http://www.example.com/icons/flower.png",
+  "scopes": [
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
+  ]
+}
+]]></artwork>
       </figure>
 
       <t>Once this description has been successfully registered, Photoz is
@@ -2214,7 +2258,7 @@ Content-Type: application/json
       <t>The current editor of this specification is Thomas Hardjono of MIT.
       The following people have additionally served as co-authors:<list
           style="symbols">
-          <t>Paul Bryan, ForgeRock (former editor)</t>
+          <t>Paul C. Bryan, ForgeRock US, Inc. (former editor)</t>
 
           <t>Domenico Catalano, Oracle Corp.</t>
 
@@ -2398,3 +2442,4 @@ Content-Type: application/json
     </section>
   </back>
 </rfc>
+
