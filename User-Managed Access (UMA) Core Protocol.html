@@ -143,7 +143,7 @@ lang="en"><HEAD><TITLE>User-Managed Access (UMA) Core Protocol</TITLE>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <TABLE border="0" cellSpacing="0" summary="layout" cellPadding="0" 
   width="66%"><TBODY>
   <TR>
@@ -163,7 +163,7 @@ lang="en"><HEAD><TITLE>User-Managed Access (UMA) Core Protocol</TITLE>
           <TD class="header">Expires: June 2, 2012</TD>
           <TD class="header">&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
 <H1><BR>User-Managed Access (UMA) Core 
-Protocol<BR>draft-hardjono-oauth-umacore-02</H1>
+Protocol<BR>draft-hardjono-oauth-umacore-03</H1>
 <H3>Abstract</H3>
 <P>This specification defines the User-Managed Access (UMA) core protocol. This 
 protocol provides a method for users to control access to their protected 
@@ -195,68 +195,68 @@ name="toc"></A><BR>
 <HR>
 
 <H3>Table of Contents</H3>
-<P class="toc"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#introduction">1.</A>&nbsp;
- Introduction<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#anchor1">1.1.</A>&nbsp;
- Notational Conventions<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#terminology">1.2.</A>&nbsp;
- Basic Terminology<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#endpoint-discussion">1.3.</A>&nbsp;
- Endpoints, Endpoint Protection, and Tokens<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#scope-discussion">1.4.</A>&nbsp;
+<P class="toc"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#introduction">1.</A>&nbsp;
+ Introduction<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#anchor1">1.1.</A>&nbsp;
+ Notational Conventions<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#terminology">1.2.</A>&nbsp;
+ Basic Terminology<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#endpoint-discussion">1.3.</A>&nbsp;
+ Endpoints, Endpoint Protection, and Tokens<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#scope-discussion">1.4.</A>&nbsp;
  Scopes, Resource Sets, Permissions, and Authorization<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">1.5.</A>&nbsp;
- AM Metadata<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#protecting-a-resource">2.</A>&nbsp;
- Protecting a Resource<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#anchor2">2.1.</A>&nbsp;
- Host Looks Up AM Metadata<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#anchor3">2.2.</A>&nbsp;
- Host Registers with AM<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#host-access-token">2.3.</A>&nbsp;
- Host Obtains Host Access Token<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#anchor4">2.4.</A>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">1.5.</A>&nbsp;
+ AM Metadata<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#protecting-a-resource">2.</A>&nbsp;
+ Protecting a Resource<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#anchor2">2.1.</A>&nbsp;
+ Host Looks Up AM Metadata<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#anchor3">2.2.</A>&nbsp;
+ Host Registers with AM<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#host-access-token">2.3.</A>&nbsp;
+ Host Obtains Host Access Token<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#anchor4">2.4.</A>&nbsp;
  Host Registers Sets of Resources to Be Protected<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#action-desc">2.4.1.</A>&nbsp;
- Scope Descriptions<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#resource-set-desc">2.4.2.</A>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#action-desc">2.4.1.</A>&nbsp;
+ Scope Descriptions<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#resource-set-desc">2.4.2.</A>&nbsp;
  Resource Set Descriptions<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#reg-api">2.4.3.</A>&nbsp;
- Resource Set Registration API<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#getting-authz-accessing-resource">3.</A>&nbsp;
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#reg-api">2.4.3.</A>&nbsp;
+ Resource Set Registration API<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#getting-authz-accessing-resource">3.</A>&nbsp;
  Getting Authorization and Accessing a Resource<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-h-attempt-access">3.1.</A>&nbsp;
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-h-attempt-access">3.1.</A>&nbsp;
  Requester-Host: Attempt Access at Protected Resource<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#no-token">3.1.1.</A>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#no-token">3.1.1.</A>&nbsp;
  Requester Presents No Access Token<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#invalid-token">3.1.2.</A>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#invalid-token">3.1.2.</A>&nbsp;
  Requester Presents an Invalid Access Token<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#valid-token">3.1.3.</A>&nbsp;
- Requester Presents a Valid Access Token<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-am-obtain-token">3.2.</A>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#valid-token">3.1.3.</A>&nbsp;
+ Requester Presents a Valid Access Token<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-am-obtain-token">3.2.</A>&nbsp;
  Requester-AM: Requester Obtains Access Token<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-token-validation">3.3.</A>&nbsp;
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-token-validation">3.3.</A>&nbsp;
  Host-AM: Ask for Requester Access Token Status<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-register-scope">3.4.</A>&nbsp;
- Host-AM: Register a Permission<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-am-authz-scope">3.5.</A>&nbsp;
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-register-scope">3.4.</A>&nbsp;
+ Host-AM: Register a Permission<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-am-authz-scope">3.5.</A>&nbsp;
  Requester-AM: Request Authorization to Add Permission<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#authz-flows">3.6.</A>&nbsp;
- Authorization Flows<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#trusted-claims-human-driven">3.6.1.</A>&nbsp;
- Authorization Flow for Requester Apps Operated by End-Users<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#errors">4.</A>&nbsp;
- Error Messages<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#oauth-error-response">4.1.</A>&nbsp;
- OAuth Error Responses<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#uma-error-response">4.2.</A>&nbsp;
- UMA Error Responses<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#anchor5">5.</A>&nbsp;
- Security Considerations<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#anchor6">6.</A>&nbsp;
- Privacy Considerations<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#conformance">7.</A>&nbsp;
- Conformance<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#IANA">8.</A>&nbsp;
- IANA Considerations<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-metadata-example">9.</A>&nbsp;
- AM Metadata Example<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#resource-reg-example">10.</A>&nbsp;
- Example of Registering Resource Sets<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#Acknowledgments">11.</A>&nbsp;
- Acknowledgments<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#anchor7">12.</A>&nbsp;
- Issues<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#rfc.references1">13.</A>&nbsp;
- References<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#rfc.references1">13.1.</A>&nbsp;
- Normative References<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#rfc.references2">13.2.</A>&nbsp;
- Informative References<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#History">Appendix&nbsp;A.</A>&nbsp;
- Document History<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#rfc.authors">§</A>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#authz-flows">3.6.</A>&nbsp;
+ Authorization Flows<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#trusted-claims-human-driven">3.6.1.</A>&nbsp;
+ Authorization Flow for Requester Apps Operated by End-Users<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#errors">4.</A>&nbsp;
+ Error Messages<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#oauth-error-response">4.1.</A>&nbsp;
+ OAuth Error Responses<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#uma-error-response">4.2.</A>&nbsp;
+ UMA Error Responses<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#anchor5">5.</A>&nbsp;
+ Security Considerations<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#anchor6">6.</A>&nbsp;
+ Privacy Considerations<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#conformance">7.</A>&nbsp;
+ Conformance<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#IANA">8.</A>&nbsp;
+ IANA Considerations<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-metadata-example">9.</A>&nbsp;
+ AM Metadata Example<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#resource-reg-example">10.</A>&nbsp;
+ Example of Registering Resource Sets<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#Acknowledgments">11.</A>&nbsp;
+ Acknowledgments<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#anchor7">12.</A>&nbsp;
+ Issues<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#rfc.references1">13.</A>&nbsp;
+ References<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#rfc.references1">13.1.</A>&nbsp;
+ Normative References<BR>&nbsp;&nbsp;&nbsp;&nbsp;<A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#rfc.references2">13.2.</A>&nbsp;
+ Informative References<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#History">Appendix&nbsp;A.</A>&nbsp;
+ Document History<BR><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#rfc.authors">§</A>&nbsp;
  Author's Address<BR></P><BR clear="all"><A name="introduction"></A><BR>
 <HR>
 
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.1"></A>
 <H3>1.&nbsp; Introduction</H3>
 <P>The User-Managed Access (UMA) core protocol provides a method based on <A 
-class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
 September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> (currently draft 16) for users to 
 control access to their protected resources, residing on any number of host 
@@ -274,9 +274,9 @@ is acting on behalf of the user himself to assist him/her in arranging for
 shipping a purchased item, or it might be his friend who is using an online 
 address book service to collect addresses, or it might be a survey company that 
 uses an online service to compile population demographics. Other scenarios and 
-use cases for UMA usage can be found in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMA-usecases">[UMA‑usecases]<SPAN> 
+use cases for UMA usage can be found in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMA-usecases">[UMA‑usecases]<SPAN> 
 (</SPAN><SPAN class="info">Maler, E., “UMA Scenarios and Use Cases,” 
-October&nbsp;2010.</SPAN><SPAN>)</SPAN></A> and <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMA-userstories">[UMA‑userstories]<SPAN> 
+October&nbsp;2010.</SPAN><SPAN>)</SPAN></A> and <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMA-userstories">[UMA‑userstories]<SPAN> 
 (</SPAN><SPAN class="info">Maler, E., “UMA User Stories,” 
 November&nbsp;2010.</SPAN><SPAN>)</SPAN></A>.</P>
 <P>In enterprise settings, application access management often involves letting 
@@ -288,14 +288,14 @@ makes use of a separation similar to this, letting the authorizing user serve as
 a policy administrator crafting authorization strategies on his or her own 
 behalf.</P>
 <P>The UMA protocol can be considered an advanced application of <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
 September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> in that it profiles, extends, and 
 embeds OAuth in various ways. An AM can be thought of as an enhanced OAuth 
 authorization server; a host as an enhanced resource server; and a requester as 
 an enhanced client, acquiring an access token and the requisite authorization to 
 access a protected resource at the host.</P>
-<P>The UMA protocol has three broad phases, as shown in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMA-phases">Figure&nbsp;1</A>.
+<P>The UMA protocol has three broad phases, as shown in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMA-phases">Figure&nbsp;1</A>.
 </P><BR>
 <HR class="insert">
 <A name="UMA-phases"></A>
@@ -334,13 +334,13 @@ access a protected resource at the host.</P>
 
 <P>In broad strokes, the phases are as follows:</P>
 <OL class="text">
-  <LI>Protect a resource (described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#protecting-a-resource">Section&nbsp;2<SPAN> 
+  <LI>Protect a resource (described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#protecting-a-resource">Section&nbsp;2<SPAN> 
   (</SPAN><SPAN class="info">Protecting a Resource</SPAN><SPAN>)</SPAN></A>).
   </LI>
-  <LI>Get authorization (described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#getting-authz-accessing-resource">Section&nbsp;3<SPAN> 
+  <LI>Get authorization (described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#getting-authz-accessing-resource">Section&nbsp;3<SPAN> 
   (</SPAN><SPAN class="info">Getting Authorization and Accessing a 
   Resource</SPAN><SPAN>)</SPAN></A>).</LI>
-  <LI>Access a resource (described along with Phase 2 in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#getting-authz-accessing-resource">Section&nbsp;3<SPAN> 
+  <LI>Access a resource (described along with Phase 2 in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#getting-authz-accessing-resource">Section&nbsp;3<SPAN> 
   (</SPAN><SPAN class="info">Getting Authorization and Accessing a 
   Resource</SPAN><SPAN>)</SPAN></A>).</LI></OL>
 <P>In more detail, the phases work as follows: </P>
@@ -370,12 +370,12 @@ name="anchor1"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.1.1"></A>
 <H3>1.1.&nbsp; Notational Conventions</H3>
 <P>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT', 'SHOULD', 
 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this document are to be 
-interpreted as described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#RFC2119">[RFC2119]<SPAN> 
+interpreted as described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#RFC2119">[RFC2119]<SPAN> 
 (</SPAN><SPAN class="info">Bradner, S., “Key words for use in RFCs to Indicate 
 Requirement Levels,” March&nbsp;1997.</SPAN><SPAN>)</SPAN></A>.</P>
 <P>Unless otherwise noted, all the protocol properties and values are case 
@@ -388,7 +388,7 @@ is taken up as a work item.</P><A name="terminology"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.1.2"></A>
 <H3>1.2.&nbsp; Basic Terminology</H3>
 <P>UMA introduces the following terms, utilizing OAuth and other identity and 
@@ -445,7 +445,7 @@ name="endpoint-discussion"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.1.3"></A>
 <H3>1.3.&nbsp; Endpoints, Endpoint Protection, and Tokens</H3>
 <P>Various UMA entities present APIs for other UMA entities to use. These APIs 
@@ -453,20 +453,20 @@ are as follows:</P>
 <UL class="text">
   <LI>The AM presents a <EM>protection API</EM> to the host, as standardized by 
   this specification. This API is OAuth-protected, requiring a host access token 
-  (issued by the AM) for successful access (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#host-access-token">Section&nbsp;2.3<SPAN> 
+  (issued by the AM) for successful access (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#host-access-token">Section&nbsp;2.3<SPAN> 
   (</SPAN><SPAN class="info">Host Obtains Host Access 
   Token</SPAN><SPAN>)</SPAN></A> for this issuance process).</LI>
   <LI>The AM presents an <EM>authorization API</EM> to the requester, as 
   standardized by this specification. This API is OAuth-protected, requiring a 
   requester access token (issued by the AM) for successful access (see <A class="info" 
-  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-am-obtain-token">Section&nbsp;3.2<SPAN> 
+  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-am-obtain-token">Section&nbsp;3.2<SPAN> 
   (</SPAN><SPAN class="info">Requester-AM: Requester Obtains Access 
   Token</SPAN><SPAN>)</SPAN></A> for this issuance process).</LI>
   <LI>The host presents a <EM>protected resource</EM> to the requester, which 
   can be considered -- and may in fact be -- an application-specific or 
   proprietary API. This API is UMA-protected, requiring a requester access token 
   (issued by the AM) and sufficient permissions (also issued by the AM) for 
-  successful access (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-am-authz-scope">Section&nbsp;3.5<SPAN> 
+  successful access (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-am-authz-scope">Section&nbsp;3.5<SPAN> 
   (</SPAN><SPAN class="info">Requester-AM: Request Authorization to Add 
   Permission</SPAN><SPAN>)</SPAN></A> for this latter issuance process).</LI></UL>
 <P>The AM presents the following endpoints to the host as part of its protection 
@@ -521,9 +521,9 @@ tokens, and even the client credentials that it issues. Different lifetime
 strategies may be suitable for different resources and scopes of access, and the 
 AM has the opportunity to give the authorizing user control through policy.</P>
 <P>Access tokens are currently assumed to be merely opaque strings (as discussed 
-in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A> and <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#conformance">Section&nbsp;7<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#conformance">Section&nbsp;7<SPAN> 
 (</SPAN><SPAN class="info">Conformance</SPAN><SPAN>)</SPAN></A>). Thus, when an 
 AM associates a permission with a requester access token, a host cannot 
 subsequently inspect such a token locally to assess whether a needed permission 
@@ -534,7 +534,7 @@ has been granted. It must instead ask the AM to provide the token's status.</P>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.1.4"></A>
 <H3>1.4.&nbsp; Scopes, Resource Sets, Permissions, and Authorization</H3>
 <P>UMA extends the OAuth concept of a "scope" by defining scopes as applying to 
@@ -559,7 +559,7 @@ requesters that have attempted access. Requesters subsequently ask AMs for
 permissions to be associated with their tokens. AMs grant (or deny) permissions 
 to requesters.</P>
 <P>In order to represent meaningful, auditable, and potentially legally 
-enforceable authorization (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
+enforceable authorization (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
 (</SPAN><SPAN class="info">Maler, E., “UMA Trust Model,” 
 February&nbsp;2011.</SPAN><SPAN>)</SPAN></A>), a permission is bound to a 
 particular set of UMA entities and parties. This includes the requesting party, 
@@ -567,7 +567,7 @@ the requester (so that the same requesting party would have to go through the
 authorization process for each client application they use), the host, the 
 resource set on which access is being attempted, and therefore also the AM 
 protecting it and the authorizing user who is controlling access.</P>
-<P>Unlike scopes (but similarly to tokens themselves; see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#endpoint-discussion">Section&nbsp;1.3<SPAN> 
+<P>Unlike scopes (but similarly to tokens themselves; see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#endpoint-discussion">Section&nbsp;1.3<SPAN> 
 (</SPAN><SPAN class="info">Endpoints, Endpoint Protection, and 
 Tokens</SPAN><SPAN>)</SPAN></A>), permissions have a validity period.</P><A 
 name="am-endpoints"></A><BR>
@@ -576,23 +576,23 @@ name="am-endpoints"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.1.5"></A>
 <H3>1.5.&nbsp; AM Metadata</H3>
 <P>The AM MUST provide an XRD 1.0-formatted document at the hostmeta location 
-(see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#hostmeta">hostmeta<SPAN> 
+(see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#hostmeta">hostmeta<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “Web Host Metadata,” 
 May&nbsp;2011.</SPAN><SPAN>)</SPAN></A> [hostmeta]), documenting the following: 
 </P>
 <UL class="text">
   <LI>Major conformance options supported by the AM (described further in <A 
-  class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#conformance">Section&nbsp;7<SPAN> 
+  class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#conformance">Section&nbsp;7<SPAN> 
   (</SPAN><SPAN class="info">Conformance</SPAN><SPAN>)</SPAN></A>)</LI>
   <LI>Protection and authorization API endpoints (as described in <A class="info" 
-  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#endpoint-discussion">Section&nbsp;1.3<SPAN> 
+  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#endpoint-discussion">Section&nbsp;1.3<SPAN> 
   (</SPAN><SPAN class="info">Endpoints, Endpoint Protection, and 
   Tokens</SPAN><SPAN>)</SPAN></A>)</LI></UL>
-<P>See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-metadata-example">Section&nbsp;9<SPAN> 
+<P>See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-metadata-example">Section&nbsp;9<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata Example</SPAN><SPAN>)</SPAN></A> for a 
 full example of AM metadata.</P>
 <P>XRD property type values for conformance options:</P>
@@ -600,7 +600,7 @@ full example of AM metadata.</P>
   <DL>
     <DT>http://docs.kantarainitiative.org/uma/1.0/client_reg</DT>
     <DD>OPTIONAL (zero or one). Whether dynamic client registration, such as 
-    through <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
+    through <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
     (</SPAN><SPAN class="info">Sakimura, N., “OpenID Connect Dynamic Client 
     Registration 1.0,” September&nbsp;2011.</SPAN><SPAN>)</SPAN></A>, is 
     supported for both hosts and requesters. The only values for this property 
@@ -614,7 +614,7 @@ full example of AM metadata.</P>
     Currently the only value for this property defined by this specification is 
     "artifact", meaning an opaque token string whose associations the host MUST 
     determine through a token status interaction with the AM (see <A class="info" 
-    href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
+    href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
     (</SPAN><SPAN class="info">Host-AM: Ask for Requester Access Token 
     Status</SPAN><SPAN>)</SPAN></A>). The AM is REQUIRED to support the artifact 
     token type, and to supply this value explicitly in the metadata. The AM MAY 
@@ -622,7 +622,7 @@ full example of AM metadata.</P>
     a unique absolute URI as the value of this property.</DD>
     <DT>http://docs.kantarainitiative.org/uma/1.0/host_authz_grant_types</DT>
     <DD>REQUIRED (one or more). An OAuth grant type supported by this AM. The 
-    value MUST be one of the grant_type values defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+    value MUST be one of the grant_type values defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
     (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
     September&nbsp;2011.</SPAN><SPAN>)</SPAN></A>, or alternatively an extension 
     grant type indicated by a unique absolute URI. The AM is REQUIRED to support 
@@ -634,7 +634,7 @@ full example of AM metadata.</P>
     <DD>OPTIONAL (zero or more). A claim format and associated sub-protocol for 
     gathering claims from requesting parties, as supported by this AM. Currently 
     the only value for this property defined by this specification is "openid", 
-    for which details are supplied in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#trusted-claims">Section&nbsp;3.6.1.1<SPAN> 
+    for which details are supplied in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#trusted-claims">Section&nbsp;3.6.1.1<SPAN> 
     (</SPAN><SPAN class="info">Gathering Claims from Requesting End-Users with 
     OpenID Connect</SPAN><SPAN>)</SPAN></A>. The AM MAY declare its support for 
     claim types other than "openid" by assigning each one a unique absolute URI 
@@ -644,13 +644,13 @@ full example of AM metadata.</P>
   <DL>
     <DT>http://docs.kantarainitiative.org/uma/1.0/host_token_uri</DT>
     <DD>REQUIRED. The host access token endpoint. Available HTTP methods are as 
-    defined by <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+    defined by <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
     (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
     September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> for a token endpoint. Supplies 
     the endpoint the host uses to ask for a host access token.</DD>
     <DT>http://docs.kantarainitiative.org/uma/1.0/host_user_uri</DT>
     <DD>REQUIRED. The host user authorization endpoint. Available HTTP methods 
-    are as defined by <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+    are as defined by <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
     (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
     September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> for an end-user authorization 
     endpoint. Supplies the endpoint the host uses to gather the consent of the 
@@ -661,7 +661,7 @@ full example of AM metadata.</P>
     <DD>REQUIRED. The resource set registration endpoint. Requests to this 
     endpoint require a host access token to be present. Supplies the endpoint 
     the host uses for registering resource sets with the AM to be protected (see 
-    <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#reg-api">Section&nbsp;2.4.3<SPAN> 
+    <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#reg-api">Section&nbsp;2.4.3<SPAN> 
     (</SPAN><SPAN class="info">Resource Set Registration 
     API</SPAN><SPAN>)</SPAN></A>). This endpoint SHOULD require the use of a 
     transport-layer security mechanism such as TLS.</DD>
@@ -675,7 +675,7 @@ full example of AM metadata.</P>
     <DD>REQUIRED. The permission registration endpoint. Requests to this 
     endpoint require a host access token to be present. Supplies the endpoint 
     the host uses for registering permissions with the AM for which a requester 
-    will be seeking authorization (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-register-scope">Section&nbsp;3.4<SPAN> 
+    will be seeking authorization (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-register-scope">Section&nbsp;3.4<SPAN> 
     (</SPAN><SPAN class="info">Host-AM: Register a 
     Permission</SPAN><SPAN>)</SPAN></A>). This endpoint SHOULD require the use 
     of a transport-layer security mechanism such as TLS.</DD></DL></BLOCKQUOTE>
@@ -684,7 +684,7 @@ full example of AM metadata.</P>
   <DL>
     <DT>http://docs.kantarainitiative.org/uma/1.0/req_token_uri</DT>
     <DD>REQUIRED. The requester access token endpoint. Available HTTP methods 
-    are as defined by <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+    are as defined by <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
     (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
     September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> for a token issuance endpoint. 
     Supplies the endpoint the requester uses to ask for an access token. This 
@@ -701,7 +701,7 @@ full example of AM metadata.</P>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2"></A>
 <H3>2.&nbsp; Protecting a Resource</H3>
 <P>Phase 1 of UMA is protecting a resource. The user, host, and AM perform the 
@@ -712,7 +712,7 @@ following steps in order to successfully complete Phase 1: </P>
   and supported formats.</LI>
   <LI>If the host has not yet obtained a unique OAuth client identifier and 
   optional secret from the AM, it registers with the AM as required. It MAY do 
-  this using <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
+  this using <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
   (</SPAN><SPAN class="info">Sakimura, N., “OpenID Connect Dynamic Client 
   Registration 1.0,” September&nbsp;2011.</SPAN><SPAN>)</SPAN></A>, if the AM 
   supports it.</LI>
@@ -735,7 +735,7 @@ follows:</P>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.1"></A>
 <H3>2.1.&nbsp; Host Looks Up AM Metadata</H3>
 <P>The host needs to learn the AM's protection API endpoints before they can 
@@ -746,29 +746,29 @@ configured to work with a single AM without requiring any user input. The exact
 process is beyond the scope of this specification, and it is up to the host to 
 choose a method to learn the AM's general location.</P>
 <P>From the data provided, discovered, or configured, the host MUST use the 
-process described in Section 2 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#hostmeta">hostmeta<SPAN> 
+process described in Section 2 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#hostmeta">hostmeta<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “Web Host Metadata,” 
 May&nbsp;2011.</SPAN><SPAN>)</SPAN></A> [hostmeta] to retrieve the AM hostmeta 
 document. For example, if the user supplied "am.example.com" as the 
 Authorization Manager's domain, the host creates the URL 
 "https://am.example.com/.well-known/host-meta" and performs a GET request on it. 
 The AM MUST return content that includes UMA protection API endpoints as defined 
-in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A>.</P><A name="anchor3"></A><BR>
 <HR>
 
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.2"></A>
 <H3>2.2.&nbsp; Host Registers with AM</H3>
 <P>If the host has not already obtained an OAuth client identifier and optional 
 secret from this AM, in this step it MUST do so in order to engage in 
-OAuth-based interactions with the AM. It MAY do this using <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
+OAuth-based interactions with the AM. It MAY do this using <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
 (</SPAN><SPAN class="info">Sakimura, N., “OpenID Connect Dynamic Client 
 Registration 1.0,” September&nbsp;2011.</SPAN><SPAN>)</SPAN></A>, if the AM 
-supports it (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+supports it (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A> for how the AM 
 MAY indicate support).</P><A name="host-access-token"></A><BR>
 <HR>
@@ -776,13 +776,13 @@ MAY indicate support).</P><A name="host-access-token"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.3"></A>
 <H3>2.3.&nbsp; Host Obtains Host Access Token</H3>
 <P>In this step, the host acquires a host access token from the AM. The token 
 represents the approval of the authorizing user for this host to trust this AM 
 for protecting resources belonging to this user.</P>
-<P>The host MUST use <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">OAuth2<SPAN> 
+<P>The host MUST use <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">OAuth2<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
 September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> [OAuth2] to obtain the host access 
 token. Here the host acts in the role of an OAuth client; the authorizing user 
@@ -792,13 +792,13 @@ token, it presents it to the AM at various protection API endpoints; in
 presenting these endpoints the AM acts in the role of a resource server.</P>
 <P>The AM MAY support the use of any grant type, but MUST support the 
 authorization_code grant type, and SHOULD support the SAML bearer token grant 
-type <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth-SAML">[OAuth‑SAML]<SPAN> 
+type <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth-SAML">[OAuth‑SAML]<SPAN> 
 (</SPAN><SPAN class="info">Campbell, B., “SAML 2.0 Bearer Assertion Grant Type 
 Profile for OAuth 2.0,” August&nbsp;2011.</SPAN><SPAN>)</SPAN></A> 
 (urn:ietf:params:oauth:grant-type:saml2-bearer) if it anticipates working with 
 hosts that are operating in environments where the use of SAML is prevalent. The 
 AM MUST indicate all grant types it supports in its metadata, as defined in <A 
-class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A>.</P>
 <P>The host has completed this step successfully when it possesses a host access 
 token it can use at the AM's protection API.</P><A name="anchor4"></A><BR>
@@ -807,7 +807,7 @@ token it can use at the AM's protection API.</P><A name="anchor4"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4"></A>
 <H3>2.4.&nbsp; Host Registers Sets of Resources to Be Protected</H3>
 <P>Once the host has received a host access token, for any of the user's sets of 
@@ -818,7 +818,7 @@ user's resources using different AMs or other means entirely, or to protect some
 resources and not others. Additionally, the choice of protection regimes can be 
 made explicitly by the user or implicitly by the host. Any such partitioning by 
 the host or user is outside the scope of this specification.</P>
-<P>See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#resource-reg-example">Section&nbsp;10<SPAN> 
+<P>See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#resource-reg-example">Section&nbsp;10<SPAN> 
 (</SPAN><SPAN class="info">Example of Registering Resource 
 Sets</SPAN><SPAN>)</SPAN></A> for an extended example of registering resource 
 sets.</P><A name="action-desc"></A><BR>
@@ -827,11 +827,11 @@ sets.</P><A name="action-desc"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.1"></A>
 <H3>2.4.1.&nbsp; Scope Descriptions</H3>
 <P>A scope is a bounded extent of access that is possible to perform on a 
-resource set. A scope description is a <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#RFC4627">JSON<SPAN> 
+resource set. A scope description is a <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#RFC4627">JSON<SPAN> 
 (</SPAN><SPAN class="info">Crockford, D., “The application/json Media Type for 
 JavaScript Object Notation (JSON),” July&nbsp;2006.</SPAN><SPAN>)</SPAN></A> 
 [RFC4627] document with the following properties and a Content-Type of 
@@ -859,7 +859,7 @@ viewing resources (vs. creating them or editing them in some fashion):</P>
 this specification. The names of extension properties MUST consist of a fully 
 qualified URL, or begin with "x-" or "X-".</P>
 <P>A host MUST list a resource set's available scopes using URI references (as 
-defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#resource-set-desc">Section&nbsp;2.4.2<SPAN> 
+defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#resource-set-desc">Section&nbsp;2.4.2<SPAN> 
 (</SPAN><SPAN class="info">Resource Set Descriptions</SPAN><SPAN>)</SPAN></A>). 
 The scopes available for use at any one host MUST have unique URI references so 
 that the host's scope descriptions are uniquely distinguishable. A scope URI 
@@ -868,10 +868,10 @@ anywhere. The host is not required to self-host scope descriptions and may wish
 to point to standardized scope descriptions residing elsewhere. Scope 
 description documents MUST be accessible to AMs through GET calls made to these 
 URI references</P>
-<P>See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#scope-discussion">Section&nbsp;1.4<SPAN> 
+<P>See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#scope-discussion">Section&nbsp;1.4<SPAN> 
 (</SPAN><SPAN class="info">Scopes, Resource Sets, Permissions, and 
 Authorization</SPAN><SPAN>)</SPAN></A> for further discussion of scope-related 
-concepts, and <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#resource-reg-example">Section&nbsp;10<SPAN> 
+concepts, and <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#resource-reg-example">Section&nbsp;10<SPAN> 
 (</SPAN><SPAN class="info">Example of Registering Resource 
 Sets</SPAN><SPAN>)</SPAN></A> for a long-form example of scopes used in resource 
 set registration.</P><A name="resource-set-desc"></A><BR>
@@ -880,16 +880,16 @@ set registration.</P><A name="resource-set-desc"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.2"></A>
 <H3>2.4.2.&nbsp; Resource Set Descriptions</H3>
 <P>The host defines a resource set that needs protection by registering a 
 resource set description at the AM. The host registers the description and 
 manages its lifecycle at the AM's host resource set registration endpoint by 
-using the resource set registration API, as defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#reg-api">Section&nbsp;2.4.3<SPAN> 
+using the resource set registration API, as defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#reg-api">Section&nbsp;2.4.3<SPAN> 
 (</SPAN><SPAN class="info">Resource Set Registration 
 API</SPAN><SPAN>)</SPAN></A>.</P>
-<P>A resource set description is a <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#RFC4627">JSON<SPAN> 
+<P>A resource set description is a <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#RFC4627">JSON<SPAN> 
 (</SPAN><SPAN class="info">Crockford, D., “The application/json Media Type for 
 JavaScript Object Notation (JSON),” July&nbsp;2006.</SPAN><SPAN>)</SPAN></A> 
 [RFC4627] document with the following properties and a Content-Type of 
@@ -913,7 +913,7 @@ application/uma-resource-set+json.:</P>
 <P>For example, this description characterizes a resource set (a photo album) 
 that can potentially be only viewed, or alternatively to which full access can 
 be granted; the URIs point to scope descriptions as defined in <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#action-desc">Section&nbsp;2.4.1<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#action-desc">Section&nbsp;2.4.1<SPAN> 
 (</SPAN><SPAN class="info">Scope Descriptions</SPAN><SPAN>)</SPAN></A>:</P>
 <DIV style="width: 0px; margin-right: auto; margin-left: 3em; display: table;"><PRE>{
   "name": "Photo Album",
@@ -928,7 +928,7 @@ href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-35934623
 defined in this specification. The names of extension properties MUST consist of 
 a fully qualified URL or begin with "x-" or "X-".</P>
 <P>When a host creates or updates a resource set description (see <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#reg-api">Section&nbsp;2.4.3<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#reg-api">Section&nbsp;2.4.3<SPAN> 
 (</SPAN><SPAN class="info">Resource Set Registration 
 API</SPAN><SPAN>)</SPAN></A>), the AM MUST attempt to retrieve the referenced 
 scope descriptions. It MAY cache such descriptions as long as indicated in the 
@@ -942,7 +942,7 @@ have expired.</P><A name="reg-api"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.3"></A>
 <H3>2.4.3.&nbsp; Resource Set Registration API</H3>
 <P>The host uses the RESTful API at the AM's resource set registration endpoint 
@@ -961,7 +961,7 @@ resource set identifiers assigned by different hosts.</P>
   <DL>
     <DT>{rsreguri}</DT>
     <DD>The AM's resource set registration endpoint as advertised in its 
-    metadata (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+    metadata (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
     (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A>).</DD>
     <DT>{rsid}</DT>
     <DD>An identifier for a resource set description.</DD></DL></BLOCKQUOTE>
@@ -979,7 +979,7 @@ the AM is targeted.</P>
   <LI>Delete resource set description: DELETE /resource_set/{rsid}</LI>
   <LI>List resource set descriptions: GET /resource_set/ with If-Match</LI></UL>
 <P>If the request to the resource set registration endpoint is incorrect, then 
-the AM responds with an error message (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#uma-error-response">Section&nbsp;4.2<SPAN> 
+the AM responds with an error message (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#uma-error-response">Section&nbsp;4.2<SPAN> 
 (</SPAN><SPAN class="info">UMA Error Responses</SPAN><SPAN>)</SPAN></A>) by 
 including one of the following error codes with the response: </P>
 <BLOCKQUOTE class="text">
@@ -1001,7 +1001,7 @@ including one of the following error codes with the response: </P>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.3.1"></A>
 <H3>2.4.3.1.&nbsp; Create Resource Set Description</H3>
 <P>Adds a new resource set description using the PUT method, thereby putting it 
@@ -1057,7 +1057,7 @@ ETag: (matches "_rev" property in returned object)
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.3.2"></A>
 <H3>2.4.3.2.&nbsp; Read Resource Set Description</H3>
 <P>Reads a previously registered resource set description using the GET method. 
@@ -1077,7 +1077,7 @@ Content-Type: application/uma-resource-set+json
 </PRE></DIV>
 <P>If the referenced resource does not exist, the AM MUST produce an error 
 response with an error property value of "not_found", as defined in <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#reg-api">Section&nbsp;2.4.3<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#reg-api">Section&nbsp;2.4.3<SPAN> 
 (</SPAN><SPAN class="info">Resource Set Registration 
 API</SPAN><SPAN>)</SPAN></A>.</P><A name="update-resource-set"></A><BR>
 <HR>
@@ -1085,7 +1085,7 @@ API</SPAN><SPAN>)</SPAN></A>.</P><A name="update-resource-set"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.3.3"></A>
 <H3>2.4.3.3.&nbsp; Update Resource Set Description</H3>
 <P>Updates a previously registered resource set description using the PUT 
@@ -1108,7 +1108,7 @@ ETag: "2"
 </PRE></DIV>
 <P>If the entity tag does not match, the AM MUST produce an error response with 
 an error property value of "precondition_failed", as defined in <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#reg-api">Section&nbsp;2.4.3<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#reg-api">Section&nbsp;2.4.3<SPAN> 
 (</SPAN><SPAN class="info">Resource Set Registration 
 API</SPAN><SPAN>)</SPAN></A>.</P><A name="delete-resource-set"></A><BR>
 <HR>
@@ -1116,7 +1116,7 @@ API</SPAN><SPAN>)</SPAN></A>.</P><A name="delete-resource-set"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.3.4"></A>
 <H3>2.4.3.4.&nbsp; Delete Resource Set Description</H3>
 <P>Deletes a previously registered resource set description using the DELETE 
@@ -1130,7 +1130,7 @@ If-Match: (entity tag of resource)
 <DIV style="width: 0px; margin-right: auto; margin-left: 3em; display: table;"><PRE>HTTP/1.1 204 No content
 ...
 </PRE></DIV>
-<P>As defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#reg-api">Section&nbsp;2.4.3<SPAN> 
+<P>As defined in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#reg-api">Section&nbsp;2.4.3<SPAN> 
 (</SPAN><SPAN class="info">Resource Set Registration 
 API</SPAN><SPAN>)</SPAN></A>, if the referenced resource does not exist the AM 
 MUST produce an error response with an error property value of "not_found", and 
@@ -1142,7 +1142,7 @@ name="list-resource-sets"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.2.4.3.5"></A>
 <H3>2.4.3.5.&nbsp; List Resource Set Descriptions</H3>
 <P>Lists all previously registered resource set identifiers for this user using 
@@ -1168,7 +1168,7 @@ Content-Type: application/json
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3"></A>
 <H3>3.&nbsp; Getting Authorization and Accessing a Resource</H3>
 <P>Phase 2 of UMA is getting authorization, and Phase 3 is accessing a resource. 
@@ -1176,7 +1176,7 @@ In these phases, an AM orchestrates and controls requesting parties' access to a
 user's protected resources at a host, under conditions dictated by that user.
 </P>
 <P>Phase 3 is merely the successful completion of a requester's access attempt 
-(see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#sufficient-scope">Section&nbsp;3.1.3.2<SPAN> 
+(see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#sufficient-scope">Section&nbsp;3.1.3.2<SPAN> 
 (</SPAN><SPAN class="info">Requester's Token Has Sufficient 
 Permission</SPAN><SPAN>)</SPAN></A>) that initially involved several embedded 
 interactions among the requester, AM, and host in Phase 2. Phase 2 always begins 
@@ -1196,60 +1196,60 @@ to continue pursuing the access attempt, or the host chooses not to continue
 facilitating it.</P>
 <UL class="text">
   <LI>The requester attempts access at a particular protected resource at a host 
-  (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-h-attempt-access">Section&nbsp;3.1<SPAN> 
+  (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-h-attempt-access">Section&nbsp;3.1<SPAN> 
   (</SPAN><SPAN class="info">Requester-Host: Attempt Access at Protected 
   Resource</SPAN><SPAN>)</SPAN></A>).
   <UL class="text">
     <LI>If the access attempt is unaccompanied by a requester access token, the 
     host responds immediately with an HTTP 401 (Unauthorized) response and 
-    instructions on where to go to obtain one (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#no-token">Section&nbsp;3.1.1<SPAN> 
+    instructions on where to go to obtain one (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#no-token">Section&nbsp;3.1.1<SPAN> 
     (</SPAN><SPAN class="info">Requester Presents No Access 
     Token</SPAN><SPAN>)</SPAN></A>).</LI></UL></LI>
   <LI>If the access attempt was accompanied by a requester access token, the 
-  host checks the token's status at the AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
+  host checks the token's status at the AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
   (</SPAN><SPAN class="info">Host-AM: Ask for Requester Access Token 
   Status</SPAN><SPAN>)</SPAN></A>).
   <UL class="text">
     <LI>If the AM reports that the requester access token is invalid (see <A 
-    class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#invalid-token">Section&nbsp;3.1.2<SPAN> 
+    class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#invalid-token">Section&nbsp;3.1.2<SPAN> 
     (</SPAN><SPAN class="info">Requester Presents an Invalid Access 
     Token</SPAN><SPAN>)</SPAN></A>), the host responds to the requester with an 
     HTTP 401 (Unauthorized) response and instructions on where to go to obtain a 
-    token (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#no-token">Section&nbsp;3.1.1<SPAN> 
+    token (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#no-token">Section&nbsp;3.1.1<SPAN> 
     (</SPAN><SPAN class="info">Requester Presents No Access 
     Token</SPAN><SPAN>)</SPAN></A>).</LI></UL></LI>
   <LI>If the AM supplies a token status description for a valid requester access 
-  token (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#valid-token">Section&nbsp;3.1.3<SPAN> 
+  token (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#valid-token">Section&nbsp;3.1.3<SPAN> 
   (</SPAN><SPAN class="info">Requester Presents a Valid Access 
   Token</SPAN><SPAN>)</SPAN></A>) but none of the permissions associated with 
   the token match the scope of attempted access, the host registers a suitable 
-  permission on the requester's behalf at the AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-register-scope">Section&nbsp;3.4<SPAN> 
+  permission on the requester's behalf at the AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-register-scope">Section&nbsp;3.4<SPAN> 
   (</SPAN><SPAN class="info">Host-AM: Register a 
   Permission</SPAN><SPAN>)</SPAN></A>) and then responds to the requester with 
   an HTTP 403 (Forbidden) response and instructions on where to go to request 
   authorization to associate that permission with its token (see <A class="info" 
-  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#insufficient-scope">Section&nbsp;3.1.3.1<SPAN> 
+  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#insufficient-scope">Section&nbsp;3.1.3.1<SPAN> 
   (</SPAN><SPAN class="info">Requester's Token Has Insufficient 
   Permission</SPAN><SPAN>)</SPAN></A>).</LI>
   <LI>If the requester received instructions on where to get a token, it 
-  requests a token from the appropriate AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-am-obtain-token">Section&nbsp;3.2<SPAN> 
+  requests a token from the appropriate AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-am-obtain-token">Section&nbsp;3.2<SPAN> 
   (</SPAN><SPAN class="info">Requester-AM: Requester Obtains Access 
   Token</SPAN><SPAN>)</SPAN></A>).</LI>
   <LI>If the requester received instructions on where to get authorization for 
   adding a permission, it requests the permission from the appropriate AM (see 
-  <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-am-authz-scope">Section&nbsp;3.5<SPAN> 
+  <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-am-authz-scope">Section&nbsp;3.5<SPAN> 
   (</SPAN><SPAN class="info">Requester-AM: Request Authorization to Add 
   Permission</SPAN><SPAN>)</SPAN></A>).
   <UL class="text">
     <LI>If the requester asked the AM to add a permission, the AM engages in an 
     authorization flow that MAY require requesting claims from the requesting 
-    party (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#authz-flows">Section&nbsp;3.6<SPAN> 
+    party (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#authz-flows">Section&nbsp;3.6<SPAN> 
     (</SPAN><SPAN class="info">Authorization Flows</SPAN><SPAN>)</SPAN></A>).
     </LI></UL></LI>
   <LI>If the AM gave status back on a valid requester access token, and at least 
   one of the permissions associated with the token match the scope of attempted 
   access, the host responds to the requester's access attempt with an HTTP 200 
-  (OK) response and a representation of the resource (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#sufficient-scope">Section&nbsp;3.1.3.2<SPAN> 
+  (OK) response and a representation of the resource (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#sufficient-scope">Section&nbsp;3.1.3.2<SPAN> 
   (</SPAN><SPAN class="info">Requester's Token Has Sufficient 
   Permission</SPAN><SPAN>)</SPAN></A>).</LI></UL>
 <P>The interactions are described in detail in the following sections.</P><A 
@@ -1259,7 +1259,7 @@ name="r-h-attempt-access"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.1"></A>
 <H3>3.1.&nbsp; Requester-Host: Attempt Access at Protected Resource</H3>
 <P>This interaction assumes that the host has previously registered with an AM 
@@ -1282,7 +1282,7 @@ name="no-token"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.1.1"></A>
 <H3>3.1.1.&nbsp; Requester Presents No Access Token</H3>
 <P>If the requester does not present any access token with the request, the host 
@@ -1301,11 +1301,11 @@ WWW-Authenticate: UMA realm="example",
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.1.2"></A>
 <H3>3.1.2.&nbsp; Requester Presents an Invalid Access Token</H3>
 <P>If the requester presents an access token with its request, the host asks the 
-AM to give it the requester access token's status (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
+AM to give it the requester access token's status (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
 (</SPAN><SPAN class="info">Host-AM: Ask for Requester Access Token 
 Status</SPAN><SPAN>)</SPAN></A>). If the AM reports that the token is invalid, 
 the host MUST return an HTTP 401 (Unauthorized) status code, along with 
@@ -1323,31 +1323,35 @@ WWW-Authenticate: UMA realm="example",
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.1.3"></A>
 <H3>3.1.3.&nbsp; Requester Presents a Valid Access Token</H3>
 <P>If the requester presents an access token with its request, the host SHOULD 
 ask the AM to give it the requester access token's status (see <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-token-validation">Section&nbsp;3.3<SPAN> 
 (</SPAN><SPAN class="info">Host-AM: Ask for Requester Access Token 
 Status</SPAN><SPAN>)</SPAN></A>). If the AM supplies a token status description 
 for a valid requester access token, the host examines the token status 
-description.</P><A name="insufficient-scope"></A><BR>
+description.</P>
+<P>When a requester presents a valid access token, the host SHOULD provide the 
+requester with access to the desired resource. Note that that access to 
+resources at a host remains at the discretion of the host, even in cases where 
+the requester has presented a valid access token.</P><A name="insufficient-scope"></A><BR>
 <HR>
 
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.1.3.1"></A>
 <H3>3.1.3.1.&nbsp; Requester's Token Has Insufficient Permission</H3>
 <P>If the token status is not associated with any currently valid permission 
 that applies to the scope of access attempted by the requester, the Host SHOULD 
-register the desired permission with the AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#h-am-register-scope">Section&nbsp;3.4<SPAN> 
+register the desired permission with the AM (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#h-am-register-scope">Section&nbsp;3.4<SPAN> 
 (</SPAN><SPAN class="info">Host-AM: Register a 
 Permission</SPAN><SPAN>)</SPAN></A>) and then respond to the requester with the 
 HTTP 403 (Forbidden) status code indicating that the token has 
-"insufficient_scope" (see Section 2.4.1 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth-bearer">[OAuth‑bearer]<SPAN> 
+"insufficient_scope" (see Section 2.4.1 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth-bearer">[OAuth‑bearer]<SPAN> 
 (</SPAN><SPAN class="info">Jones, M., “The OAuth 2.0 Protocol: Bearer Tokens,” 
 June&nbsp;2011.</SPAN><SPAN>)</SPAN></A>), along with providing the AM's URI to 
 facilitate AM metadata discovery by the requester, and the permission ticket it 
@@ -1368,7 +1372,7 @@ WWW-Authenticate: UMA realm="example",
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.1.3.2"></A>
 <H3>3.1.3.2.&nbsp; Requester's Token Has Sufficient Permission</H3>
 <P>If the token status is associated with at least one currently valid 
@@ -1393,17 +1397,17 @@ name="r-am-obtain-token"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.2"></A>
 <H3>3.2.&nbsp; Requester-AM: Requester Obtains Access Token</H3>
 <P>When a requester does not possess a valid access token for accessing 
 resources of a particular user at a particular host, it requests one from the 
 AM's requester token endpoint.</P>
 <P>The requester learns about this endpoint by retrieving the AM's hostmeta 
-document (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+document (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A>) based on the 
 "am_uri" information that was provided by the host in its previous response, as 
-described in Section 2 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#hostmeta">hostmeta<SPAN> 
+described in Section 2 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#hostmeta">hostmeta<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “Web Host Metadata,” 
 May&nbsp;2011.</SPAN><SPAN>)</SPAN></A> [hostmeta]. For example, if the "am_uri" 
 is "am.example.com", the requester creates the URI 
@@ -1414,15 +1418,15 @@ to access potentially many different resource sets (all controlled by a single
 authorizing user), with a variety of scopes, at that same host, on behalf of the 
 same requesting party.</P>
 <P>The requester SHOULD use the OAuth 2.0 client_credentials authorization grant 
-type (see Section 4.4 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+type (see Section 4.4 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
 September&nbsp;2011.</SPAN><SPAN>)</SPAN></A>).</P>
 <P>If the requester does not yet have a client identifier and optional client 
 secret prior to requesting an access token, it MAY request these using <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
 (</SPAN><SPAN class="info">Sakimura, N., “OpenID Connect Dynamic Client 
 Registration 1.0,” September&nbsp;2011.</SPAN><SPAN>)</SPAN></A>, if the AM 
-supports it (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+supports it (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A> for how the AM 
 MAY indicate support).</P>
 <P>(Note that in UMA, unlike in plain OAuth, obtaining an access token does not 
@@ -1434,7 +1438,7 @@ in order for the requester to succeed in accessing the resource.)</P><A name="h-
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.3"></A>
 <H3>3.3.&nbsp; Host-AM: Ask for Requester Access Token Status</H3>
 <P>On receiving a requester access token in an access attempt, the host asks the 
@@ -1442,7 +1446,7 @@ AM for that token's status. If it has a cached token status description
 available that has not expired yet, it MAY use it instead.</P>
 <P>The host makes the request to the AM with a POST request to the AM's token 
 status endpoint. The body of the HTTP request message contains a JSON <A class="info" 
-href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#RFC4627">[RFC4627]<SPAN> 
+href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#RFC4627">[RFC4627]<SPAN> 
 (</SPAN><SPAN class="info">Crockford, D., “The application/json Media Type for 
 JavaScript Object Notation (JSON),” July&nbsp;2006.</SPAN><SPAN>)</SPAN></A> 
 document providing the requester access token and the IP address of the 
@@ -1468,7 +1472,7 @@ Content-Type: application/json
 }
 </PRE></DIV>
 <P>The AM returns the token's status in an HTTP response using the 200 OK status 
-code, containing a JSON <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#RFC4627">[RFC4627]<SPAN> 
+code, containing a JSON <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#RFC4627">[RFC4627]<SPAN> 
 (</SPAN><SPAN class="info">Crockford, D., “The application/json Media Type for 
 JavaScript Object Notation (JSON),” July&nbsp;2006.</SPAN><SPAN>)</SPAN></A> 
 document supplying the token status description. The token status description 
@@ -1530,7 +1534,7 @@ Content-Type: application/uma-token-status+json
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.4"></A>
 <H3>3.4.&nbsp; Host-AM: Register a Permission</H3>
 <P>If the permissions returned by the AM from a token status request are 
@@ -1538,7 +1542,7 @@ insufficient to allow this requester's access attempt, the host registers a
 permission with the AM that it believes would be sufficient for the type of 
 access sought. As a result of the host registering a permission to the AM, the 
 AM returns a permission ticket for the host to give to the requester in its 
-response (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#insufficient-scope">Section&nbsp;3.1.3.1<SPAN> 
+response (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#insufficient-scope">Section&nbsp;3.1.3.1<SPAN> 
 (</SPAN><SPAN class="info">Requester's Token Has Insufficient 
 Permission</SPAN><SPAN>)</SPAN></A>).</P>
 <P>The permission ticket is a short-lived opaque structure whose form is 
@@ -1546,7 +1550,7 @@ determined by the AM. The ticket value MUST be securely random (for example, not
 merely part of a predictable sequential series), to avoid denial-of-service 
 attacks.</P>
 <P>Later, when the requester asks the AM to add permissions to the requester's 
-token (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#r-am-authz-scope">Section&nbsp;3.5<SPAN> 
+token (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#r-am-authz-scope">Section&nbsp;3.5<SPAN> 
 (</SPAN><SPAN class="info">Requester-AM: Request Authorization to Add 
 Permission</SPAN><SPAN>)</SPAN></A> it will submit this ticket to the AM. It is 
 therefore the task of the AM to perform binding of this ticket to the requester 
@@ -1554,7 +1558,7 @@ and its token.</P>
 <P>The host registers the permission using the POST method at the AM's 
 permission registration endpoint, providing its host access token to get 
 authorized access to this endpoint. The body of the HTTP request message 
-contains a JSON <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#RFC4627">[RFC4627]<SPAN> 
+contains a JSON <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#RFC4627">[RFC4627]<SPAN> 
 (</SPAN><SPAN class="info">Crockford, D., “The application/json Media Type for 
 JavaScript Object Notation (JSON),” July&nbsp;2006.</SPAN><SPAN>)</SPAN></A> 
 document providing the requester's access token and the requested permission.
@@ -1601,7 +1605,7 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 </PRE></DIV>
 <P>If the registration request fails, the AM responds with an HTTP 400 (Bad 
 Request) status code and includes one of the following error codes (see <A 
-class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#uma-error-response">Section&nbsp;4.2<SPAN> 
+class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#uma-error-response">Section&nbsp;4.2<SPAN> 
 (</SPAN><SPAN class="info">UMA Error Responses</SPAN><SPAN>)</SPAN></A>):</P>
 <BLOCKQUOTE class="text">
   <DL>
@@ -1619,7 +1623,7 @@ class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.5"></A>
 <H3>3.5.&nbsp; Requester-AM: Request Authorization to Add Permission</H3>
 <P>In this interaction, the requester asks the AM to grant it permission for 
@@ -1627,14 +1631,14 @@ access. It does this at the AM's permission endpoint by supplying the permission
 ticket it got from the host, along with its requester access token and other 
 pertinent information. The AM uses the ticket to look up the previously 
 registered permission, maps the requested permission to operative user policies, 
-undergoes any authorization flows required (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#authz-flows">Section&nbsp;3.6<SPAN> 
+undergoes any authorization flows required (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#authz-flows">Section&nbsp;3.6<SPAN> 
 (</SPAN><SPAN class="info">Authorization Flows</SPAN><SPAN>)</SPAN></A>), and 
 ultimately responds to the request positively or negatively.</P>
 <P>The requester learns about this endpoint by retrieving the AM's hostmeta 
-document (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+document (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A>) based on the 
 "am_uri" information that was provided by the host in its previous response, as 
-described in Section 2 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#hostmeta">hostmeta<SPAN> 
+described in Section 2 of <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#hostmeta">hostmeta<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “Web Host Metadata,” 
 May&nbsp;2011.</SPAN><SPAN>)</SPAN></A> [hostmeta]. For example, if the "am_uri" 
 is "am.example.com", the requester creates the URI 
@@ -1654,7 +1658,7 @@ tend to prefer POST when they want to sign the request message and preserve
 certain URL information; however, GET typically provides a smoother user 
 experience.)</P>
 <P>If the AM determines that the requesting party meets the authorization 
-criteria set out by the authorizing user's policy (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#authz-flows">Section&nbsp;3.6<SPAN> 
+criteria set out by the authorizing user's policy (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#authz-flows">Section&nbsp;3.6<SPAN> 
 (</SPAN><SPAN class="info">Authorization Flows</SPAN><SPAN>)</SPAN></A>), it 
 responds with an HTTP 201 (Created) status code and provides an updated token:
 </P>
@@ -1673,7 +1677,7 @@ malformed, the AM SHOULD inform the requester of the error by sending an HTTP
 error response.</P>
 <P>If the request fails due to an invalid, missing, or expired requester access 
 token or requires higher privileges at this endpoint than provided by the access 
-token, the AM responds with an OAuth error (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#oauth-error-response">Section&nbsp;4.1<SPAN> 
+token, the AM responds with an OAuth error (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#oauth-error-response">Section&nbsp;4.1<SPAN> 
 (</SPAN><SPAN class="info">OAuth Error Responses</SPAN><SPAN>)</SPAN></A>).</P>
 <P>For example:</P>
 <DIV style="width: 0px; margin-right: auto; margin-left: 3em; display: table;"><PRE>HTTP/1.1 401 Unauthorized
@@ -1683,7 +1687,7 @@ WWW-Authenticate: Bearer realm="example",
 </PRE></DIV>
 <P>If the AM ultimately does not add the requested permission, it responds using 
 the appropriate HTTP status code (typically 400 or 403), and includes one of the 
-following error codes in the response: (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#uma-error-response">Section&nbsp;4.2<SPAN> 
+following error codes in the response: (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#uma-error-response">Section&nbsp;4.2<SPAN> 
 (</SPAN><SPAN class="info">UMA Error Responses</SPAN><SPAN>)</SPAN></A>): </P>
 <BLOCKQUOTE class="text">
   <DL>
@@ -1714,7 +1718,7 @@ Cache-Control: no-store
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.6"></A>
 <H3>3.6.&nbsp; Authorization Flows</H3>
 <P>The AM MUST base its decisions to add permissions to requester access tokens 
@@ -1732,10 +1736,10 @@ provides a framework for handling human-driven requester apps and an optional
 solution for gathering standardized claims from that end-user, and allows for 
 extensions to support other solutions for this use case and other use cases. The 
 AM SHOULD document its claims-handling ability in its XRD metadata through the 
-claim_types property (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+claim_types property (see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A>). For the 
 business-level and legal implications of different technical authorization 
-flows, see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
+flows, see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
 (</SPAN><SPAN class="info">Maler, E., “UMA Trust Model,” 
 February&nbsp;2011.</SPAN><SPAN>)</SPAN></A>.</P><A name="trusted-claims-human-driven"></A><BR>
 <HR>
@@ -1743,7 +1747,7 @@ February&nbsp;2011.</SPAN><SPAN>)</SPAN></A>.</P><A name="trusted-claims-human-d
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.6.1"></A>
 <H3>3.6.1.&nbsp; Authorization Flow for Requester Apps Operated by 
 End-Users</H3>
@@ -1772,7 +1776,7 @@ requester app when reporting success.</P><A name="trusted-claims"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.3.6.1.1"></A>
 <H3>3.6.1.1.&nbsp; Gathering Claims from Requesting End-Users with OpenID 
 Connect</H3>
@@ -1780,17 +1784,17 @@ Connect</H3>
 end-user requesting party, leveraging OpenID Connect mechanisms to transmit 
 claims from distributed sources. If it supports this option, the AM MUST supply 
 the "openid" value for one of its claim_types properties in its AM metadata (see 
-<A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+<A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A> for how to 
 formulate this metadata).</P>
 <P>To conform to this option, the AM MUST do the following:</P>
 <UL class="text">
   <LI>Serve as a conforming OpenID Relying Party and Claims Client according to 
-  <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OCStandard">[OCStandard]<SPAN> 
+  <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OCStandard">[OCStandard]<SPAN> 
   (</SPAN><SPAN class="info">Sakimura, N., “OpenID Connect Standard 1.0,” 
   September&nbsp;2011.</SPAN><SPAN>)</SPAN></A></LI>
   <LI>Be able to utilize at least all of the reserved claims defined in <A 
-  class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OCMessages">[OCMessages]<SPAN> 
+  class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OCMessages">[OCMessages]<SPAN> 
   (</SPAN><SPAN class="info">Sakimura, N., “OpenID Connect Messages 1.0,” 
   September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> in assessing policy and granting 
   permissions</LI></UL>
@@ -1804,12 +1808,12 @@ policy may depend.</P><A name="errors"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.4"></A>
 <H3>4.&nbsp; Error Messages</H3>
 <P>Ultimately the host is responsible for either granting the access the 
 requester attempted, or returning an error response to the requester with a 
-reason for the failure. <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+reason for the failure. <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
 September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> defines several error responses 
 for a resource server to return. UMA makes use of these error responses, but 
@@ -1822,21 +1826,21 @@ the requester.</P><A name="oauth-error-response"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.4.1"></A>
 <H3>4.1.&nbsp; OAuth Error Responses</H3>
 <P>When a client (host or requester) attempts to access one of the AM endpoints 
-<A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+<A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A> or a client 
 (requester) attempts to access a protected resource at the host, it has to make 
 an authenticated request by including an OAuth access token in the HTTP request 
-as described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+as described in <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
 (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
 September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> Section 7.</P>
 <P>If the client's request failed authentication, the AM or the host responds 
-with an OAuth error message as described throughout <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#protecting-a-resource">Section&nbsp;2<SPAN> 
+with an OAuth error message as described throughout <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#protecting-a-resource">Section&nbsp;2<SPAN> 
 (</SPAN><SPAN class="info">Protecting a Resource</SPAN><SPAN>)</SPAN></A> and <A 
-class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#getting-authz-accessing-resource">Section&nbsp;3<SPAN> 
+class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#getting-authz-accessing-resource">Section&nbsp;3<SPAN> 
 (</SPAN><SPAN class="info">Getting Authorization and Accessing a 
 Resource</SPAN><SPAN>)</SPAN></A>.</P><A name="uma-error-response"></A><BR>
 <HR>
@@ -1844,11 +1848,11 @@ Resource</SPAN><SPAN>)</SPAN></A>.</P><A name="uma-error-response"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.4.2"></A>
 <H3>4.2.&nbsp; UMA Error Responses</H3>
 <P>When a client (host or requester) attempts to access one of the AM endpoints 
-<A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+<A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A> or a client 
 (requester) attempts to access a protected resource at the host, if the client 
 request is successfully authenticated by OAuth means, but is invalid for another 
@@ -1893,7 +1897,7 @@ Cache-Control: no-store
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.5"></A>
 <H3>5.&nbsp; Security Considerations</H3>
 <P>This specification relies mainly on OAuth security mechanisms for protecting 
@@ -1908,7 +1912,7 @@ token and the host-specific registration area on the AM to prevent a host from
 interacting with a registration area not its own.</P>
 <P>For information about the technical, operational, and legal elements of trust 
 establishment between UMA entities and parties, which affects security 
-considerations, see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
+considerations, see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
 (</SPAN><SPAN class="info">Maler, E., “UMA Trust Model,” 
 February&nbsp;2011.</SPAN><SPAN>)</SPAN></A>.</P><A name="anchor6"></A><BR>
 <HR>
@@ -1916,7 +1920,7 @@ February&nbsp;2011.</SPAN><SPAN>)</SPAN></A>.</P><A name="anchor6"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.6"></A>
 <H3>6.&nbsp; Privacy Considerations</H3>
 <P>The AM comes to be in possession of resource set information (such as names 
@@ -1929,7 +1933,7 @@ leaking personally identifiable information to requesters through the "scope"
 mechanism.</P>
 <P>For information about the technical, operational, and legal elements of trust 
 establishment between UMA entities and parties, which affects privacy 
-considerations, see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
+considerations, see <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMA-trustmodel">[UMA‑trustmodel]<SPAN> 
 (</SPAN><SPAN class="info">Maler, E., “UMA Trust Model,” 
 February&nbsp;2011.</SPAN><SPAN>)</SPAN></A>.</P><A name="conformance"></A><BR>
 <HR>
@@ -1937,24 +1941,24 @@ February&nbsp;2011.</SPAN><SPAN>)</SPAN></A>.</P><A name="conformance"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.7"></A>
 <H3>7.&nbsp; Conformance</H3>
 <P>This section outlines conformance requirements for various entities 
 implementing UMA endpoints.</P>
 <P>This specification has dependencies on other specifications, as follows:</P>
 <UL class="text">
-  <LI>OAuth 2.0: AMs, hosts, and requesters MUST support <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OAuth2">[OAuth2]<SPAN> 
+  <LI>OAuth 2.0: AMs, hosts, and requesters MUST support <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OAuth2">[OAuth2]<SPAN> 
   (</SPAN><SPAN class="info">Hammer-Lahav, E., “The OAuth 2.0 Protocol,” 
   September&nbsp;2011.</SPAN><SPAN>)</SPAN></A> features named in this 
   specification for conformance. For example, AMs MUST support the 
   authorization_code and client_credentials grant types.</LI>
   <LI>hostmeta: AMs, hosts, and requesters MUST support the <A class="info" 
-  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#hostmeta">[hostmeta]<SPAN> 
+  href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#hostmeta">[hostmeta]<SPAN> 
   (</SPAN><SPAN class="info">Hammer-Lahav, E., “Web Host Metadata,” 
   May&nbsp;2011.</SPAN><SPAN>)</SPAN></A> features named in this specification.
   </LI>
-  <LI>OpenID Connect: AMs MAY support <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
+  <LI>OpenID Connect: AMs MAY support <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#OCDynClientReg">[OCDynClientReg]<SPAN> 
   (</SPAN><SPAN class="info">Sakimura, N., “OpenID Connect Dynamic Client 
   Registration 1.0,” September&nbsp;2011.</SPAN><SPAN>)</SPAN></A>, and MAY 
   choose to conform to the "openid" claim format option corresponding to the 
@@ -1964,7 +1968,7 @@ indicate certain of the conformance options it has chosen. Several of the
 metadata fields allow for extensibility. Where this specification does not 
 already require optional features to be documented, it is RECOMMENDED that AM 
 developers and deployers document any profiled or extended features explicitly 
-and use XRD metadata to indicate their usage. See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#am-endpoints">Section&nbsp;1.5<SPAN> 
+and use XRD metadata to indicate their usage. See <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#am-endpoints">Section&nbsp;1.5<SPAN> 
 (</SPAN><SPAN class="info">AM Metadata</SPAN><SPAN>)</SPAN></A> for information 
 about providing and extending AM metadata.</P><A name="IANA"></A><BR>
 <HR>
@@ -1972,7 +1976,7 @@ about providing and extending AM metadata.</P><A name="IANA"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.8"></A>
 <H3>8.&nbsp; IANA Considerations</H3>
 <P>Several UMA-specific JSON-based media types are being proposed, as follows: 
@@ -1982,7 +1986,7 @@ about providing and extending AM metadata.</P><A name="IANA"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.9"></A>
 <H3>9.&nbsp; AM Metadata Example</H3>
 <P>Following is a conforming XRD metadata document for an AM (line breaks and 
@@ -2044,7 +2048,7 @@ spaces are provided for readability only):</P>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.10"></A>
 <H3>10.&nbsp; Example of Registering Resource Sets</H3>
 <P>The following example illustrates the intent and usage of resource set 
@@ -2256,7 +2260,7 @@ If-Match: "2"
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.11"></A>
 <H3>11.&nbsp; Acknowledgments</H3>
 <P>The current editor of this specification is Thomas Hardjono of MIT. The 
@@ -2269,7 +2273,7 @@ following people are co-authors:</P>
   <LI>Lukasz Moren, Newcastle University</LI>
   <LI>Christian Scholz, COMlounge GmbH (former editor)</LI></UL>
 <P>Additional contributors to this specification include the Kantara UMA Work 
-Group participants, a list of whom can be found at <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#UMAnitarians">[UMAnitarians]<SPAN> 
+Group participants, a list of whom can be found at <A class="info" href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#UMAnitarians">[UMAnitarians]<SPAN> 
 (</SPAN><SPAN class="info">Maler, E., “UMA Participant Roster,” 
 2011.</SPAN><SPAN>)</SPAN></A>.</P><A name="anchor7"></A><BR>
 <HR>
@@ -2277,7 +2281,7 @@ Group participants, a list of whom can be found at <A class="info" href="file://
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.12"></A>
 <H3>12.&nbsp; Issues</H3>
 <P>All issues are now captured at the project's GitHub site (<A href="https://github.com/xmlgrrl/UMA-Specifications/issues">https://github.com/xmlgrrl/UMA-Specifications/issues</A>).
@@ -2287,7 +2291,7 @@ Group participants, a list of whom can be found at <A class="info" href="file://
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.13"></A>
 <H3>13.&nbsp; References</H3><A name="rfc.references1"></A><BR>
 <HR>
@@ -2295,7 +2299,7 @@ Group participants, a list of whom can be found at <A class="info" href="file://
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <H3>13.1.&nbsp;Normative References</H3>
 <TABLE border="0" width="99%">
   <TBODY>
@@ -2352,7 +2356,7 @@ Group participants, a list of whom can be found at <A class="info" href="file://
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <H3>13.2.&nbsp;Informative References</H3>
 <TABLE border="0" width="99%">
   <TBODY>
@@ -2382,7 +2386,7 @@ name="History"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <A name="rfc.section.A"></A>
 <H3>Appendix A.&nbsp; Document History</H3>
 <P>NOTE: To be removed by RFC editor before publication as an RFC.</P><A name="rfc.authors"></A><BR>
@@ -2391,7 +2395,7 @@ name="History"></A><BR>
 <TABLE class="TOCbug" cellSpacing="2" summary="layout" cellPadding="0" align="right">
   <TBODY>
   <TR>
-    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-3593462367388776219.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
+    <TD class="TOCbug"><A href="file:///C:/Users/Thomas%20Hardjono/AppData/Local/Temp/xml2rfc-xxe-2902385992034798178.html#toc">&nbsp;TOC&nbsp;</A></TD></TR></TBODY></TABLE>
 <H3>Author's Address</H3>
 <TABLE border="0" cellSpacing="0" cellPadding="0" width="99%">
   <TBODY>

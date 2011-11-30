@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-02"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-03"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -840,17 +840,15 @@ ETag: (matches "_rev" property in returned object)
 }
 ]]></artwork>
             </figure>
-            
-            
-            <t>Optionally, upon successful registration by the host, 
-              the AM may return a redirect policy URI to the host. 
-              This policy URI allows the user to set access policies
-              at the AM for the resource set that was successfully registered by the Host.</t> 
-            
-            
+
+            <t>Optionally, upon successful registration by the host, the AM
+            may return a redirect policy URI to the host. This policy URI
+            allows the user to set access policies at the AM for the resource
+            set that was successfully registered by the Host.</t>
+
             <figure>
               <preamble>Form of a successful HTTP response:</preamble>
-              
+
               <artwork><![CDATA[
 HTTP/1.1 201 Created
 Content-Type: application/uma-status+json
@@ -865,10 +863,7 @@ ETag: (matches "_rev" property in returned object)
 }
 ]]></artwork>
             </figure>
-            
           </section>
-
-
 
           <section anchor="read-resource-set"
                    title="Read Resource Set Description">
@@ -1161,6 +1156,12 @@ WWW-Authenticate: UMA realm="example",
           status (see <xref target="h-am-token-validation"></xref>). If the AM
           supplies a token status description for a valid requester access
           token, the host examines the token status description.</t>
+
+          <t>When a requester presents a valid access token, the host SHOULD
+          provide the requester with access to the desired resource. Note that
+          that access to resources at a host remains at the discretion of the
+          host, even in cases where the requester has presented a valid access
+          token.</t>
 
           <section anchor="insufficient-scope"
                    title="Requester's Token Has Insufficient Permission">
