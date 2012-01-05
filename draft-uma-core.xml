@@ -37,7 +37,11 @@
       </address>
     </author>
 
+<<<<<<< HEAD
     <date day="22" month="October" year="2011" />
+=======
+    <date day="8" month="December" year="2011" />
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
 
     <abstract>
       <t>This specification defines the User-Managed Access (UMA) core
@@ -801,6 +805,30 @@
             successful, the AM MUST respond with a status message that
             includes an ETag header and _id and _rev properties for managing
             resource set description versioning.</t>
+<<<<<<< HEAD
+
+            <t>The host is free to use its own methods of identifying and
+            describing resource sets. The AM MUST treat them as opaque for the
+            purpose of authorizing access, other than associating them with
+            the authorizing user represented by the host access token used to
+            access the API. On successfully registering a resource set, the
+            host MUST use UMA mechanisms to limit access to any resources
+            corresponding to this resource set, relying on the AM to supply
+            currently valid permissions for authorized access.</t>
+
+            <figure>
+              <preamble>Form of a "create resource set description" HTTP
+              request:</preamble>
+
+              <artwork><![CDATA[
+PUT /resource_set/{rsid} HTTP/1.1
+Content-Type: application/uma-resource-set+json
+...
+
+(body contains JSON resource set description to be created)
+]]></artwork>
+            </figure>
+=======
 
             <t>The host is free to use its own methods of identifying and
             describing resource sets. The AM MUST treat them as opaque for the
@@ -840,6 +868,33 @@ ETag: (matches "_rev" property in returned object)
 }
 ]]></artwork>
             </figure>
+
+            <t>Optionally, upon successful registration by the host, the AM
+            may return a redirect policy URI to the host. This policy URI
+            allows the user to set access policies at the AM for the resource
+            set that was successfully registered by the Host.</t>
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
+
+            <figure>
+              <preamble>Form of a successful HTTP response:</preamble>
+
+              <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/uma-status+json
+ETag: (matches "_rev" property in returned object)
+...
+
+{
+  "status": "created",
+  "_id": (id of created resource set),
+  "_rev": (ETag of created resource set)
+<<<<<<< HEAD
+=======
+  "x-policy_uri":"http://am.example.com/host/222/resource/333/policy"
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
+}
+]]></artwork>
+            </figure>
           </section>
 
           <section anchor="read-resource-set"
@@ -875,6 +930,14 @@ Content-Type: application/uma-resource-set+json
             <t>If the referenced resource does not exist, the AM MUST produce
             an error response with an error property value of "not_found", as
             defined in <xref target="reg-api"></xref>.</t>
+<<<<<<< HEAD
+=======
+
+            <t>Optionally, upon a successful Read by the host, the AM may
+            return a redirect policy URI to the host. This policy URI allows
+            the user to set access policies at the AM for the resource set
+            that are already registered.</t>
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
           </section>
 
           <section anchor="update-resource-set"
@@ -898,6 +961,7 @@ If-Match: (entity tag of resource)
 
 (body contains JSON resource set description to be updated)
 ]]></artwork>
+<<<<<<< HEAD
             </figure>
 
             <figure>
@@ -913,6 +977,28 @@ ETag: "2"
             <t>If the entity tag does not match, the AM MUST produce an error
             response with an error property value of "precondition_failed", as
             defined in <xref target="reg-api"></xref>.</t>
+=======
+            </figure>
+
+            <figure>
+              <preamble>Form of a successful HTTP response:</preamble>
+
+              <artwork><![CDATA[
+HTTP/1.1 204 No Content
+ETag: "2"
+...
+]]></artwork>
+            </figure>
+
+            <t>If the entity tag does not match, the AM MUST produce an error
+            response with an error property value of "precondition_failed", as
+            defined in <xref target="reg-api"></xref>.</t>
+
+            <t>Optionally, upon a successful Update by the host, the AM may
+            return a redirect policy URI to the host. This policy URI allows
+            the user to set access policies at the AM for the resource set
+            that were updated.</t>
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
           </section>
 
           <section anchor="delete-resource-set"
@@ -1134,6 +1220,7 @@ WWW-Authenticate: UMA realm="example",
           supplies a token status description for a valid requester access
           token, the host examines the token status description.</t>
 
+<<<<<<< HEAD
           <section anchor="insufficient-scope"
                    title="Requester's Token Has Insufficient Permission">
             <t>If the token status is not associated with any currently valid
@@ -1170,6 +1257,50 @@ WWW-Authenticate: UMA realm="example",
             the requester, the host MUST give access to the desired
             resource.</t>
 
+=======
+          <t>When a requester presents a valid access token, the host SHOULD
+          provide the requester with access to the desired resource. Note that
+          that access to resources at a host remains at the discretion of the
+          host, even in cases where the requester has presented a valid access
+          token.</t>
+
+          <section anchor="insufficient-scope"
+                   title="Requester's Token Has Insufficient Permission">
+            <t>If the token status is not associated with any currently valid
+            permission that applies to the scope of access attempted by the
+            requester, the Host SHOULD register the desired permission with
+            the AM (see <xref target="h-am-register-scope"></xref>) and then
+            respond to the requester with the HTTP 403 (Forbidden) status code
+            indicating that the token has "insufficient_scope" (see Section
+            2.4.1 of <xref target="OAuth-bearer"></xref>), along with
+            providing the AM's URI to facilitate AM metadata discovery by the
+            requester, and the permission ticket it just received from the AM
+            iin the body of the response in JSON form.</t>
+
+            <figure>
+              <preamble>For example:</preamble>
+
+              <artwork><![CDATA[
+HTTP/1.1 403 Forbidden
+WWW-Authenticate: UMA realm="example",
+  host_id="photoz.example.com",
+  am_uri="http://am.example.com"
+
+{
+"ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
+}
+]]></artwork>
+            </figure>
+          </section>
+
+          <section anchor="sufficient-scope"
+                   title="Requester's Token Has Sufficient Permission">
+            <t>If the token status is associated with at least one currently
+            valid permission that applies to the scope of access attempted by
+            the requester, the host MUST give access to the desired
+            resource.</t>
+
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
             <figure>
               <preamble>For example:</preamble>
 
@@ -1345,7 +1476,11 @@ Content-Type: application/uma-token-status+json
                title="Host-AM: Register a Permission">
         <t>If the permissions returned by the AM from a token status request
         are insufficient to allow this requester's access attempt, the host
+<<<<<<< HEAD
         registers a permission with the AM that it believes would be
+=======
+        SHOULD register a permission with the AM that it believes would be
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
         sufficient for the type of access sought. As a result of the host
         registering a permission to the AM, the AM returns a permission ticket
         for the host to give to the requester in its response (see <xref
@@ -1354,7 +1489,13 @@ Content-Type: application/uma-token-status+json
         <t>The permission ticket is a short-lived opaque structure whose form
         is determined by the AM. The ticket value MUST be securely random (for
         example, not merely part of a predictable sequential series), to avoid
+<<<<<<< HEAD
         denial-of-service attacks.</t>
+=======
+        denial-of-service attacks. Since the ticket is an opaque structure
+        from the point of view of the requester, the AM MAY include
+        information regarding expiration time within the opaque ticket.</t>
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
 
         <t>Later, when the requester asks the AM to add permissions to the
         requester's token (see <xref target="r-am-authz-scope"></xref> it will
@@ -1420,6 +1561,7 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 }
 ]]></artwork>
         </figure>
+<<<<<<< HEAD
 
         <t>If the registration request fails, the AM responds with an HTTP 400
         (Bad Request) status code and includes one of the following error
@@ -1431,6 +1573,19 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
             <t hangText="invalid_scope">At least one of the scopes included in
             the request was not registered previously by this host.</t>
 
+=======
+
+        <t>If the registration request fails, the AM responds with an HTTP 400
+        (Bad Request) status code and includes one of the following error
+        codes (see <xref target="uma-error-response"></xref>):<list
+            style="hanging">
+            <t hangText="invalid_resource_set_id">The provided resource set
+            identifier was not found at the AM.</t>
+
+            <t hangText="invalid_scope">At least one of the scopes included in
+            the request was not registered previously by this host.</t>
+
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
             <t hangText="invalid_requester_token">The requester access token
             was not recognized by the AM.</t>
 
@@ -1462,6 +1617,7 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
         <t>The requester performs a GET or POST on the permission endpoint,
         supplying: <list style="symbols">
             <t>The permission ticket it received from the host</t>
+<<<<<<< HEAD
 
             <t>Its own requester access token</t>
 
@@ -1469,6 +1625,15 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 
             <t>A redirect URL</t>
 
+=======
+
+            <t>Its own requester access token</t>
+
+            <t>A state property (to help avoid replay attacks)</t>
+
+            <t>A redirect URL</t>
+
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
             <t>A callback URL</t>
           </list></t>
 
@@ -1477,6 +1642,7 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
         (Requesters will tend to prefer POST when they want to sign the
         request message and preserve certain URL information; however, GET
         typically provides a smoother user experience.)</t>
+<<<<<<< HEAD
 
         <t>If the AM determines that the requesting party meets the
         authorization criteria set out by the authorizing user's policy (see
@@ -1490,6 +1656,21 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 HTTP/1.1 201 Created
 Content-Type: application/uma-access-token+json
 
+=======
+
+        <t>If the AM determines that the requesting party meets the
+        authorization criteria set out by the authorizing user's policy (see
+        <xref target="authz-flows"></xref>), it responds with an HTTP 201
+        (Created) status code and provides an updated token:</t>
+
+        <figure>
+          <preamble>For example:</preamble>
+
+          <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/uma-access-token+json
+
+>>>>>>> ca01464fa9c37a54c1eb6ac0b3cda6a67fa42219
 {
   "token": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv"
 }
