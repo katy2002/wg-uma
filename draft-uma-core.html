@@ -143,8 +143,8 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">T. Hardjono, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">MIT</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">January 13, 2012</td></tr>
-<tr><td class="header">Expires: July 16, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">January 18, 2012</td></tr>
+<tr><td class="header">Expires: July 21, 2012</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-03</h1>
 
@@ -167,7 +167,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 16, 2012.</p>
+This Internet-Draft will expire on July 21, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -276,7 +276,7 @@ Author's Address<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>The User-Managed Access (UMA) core protocol provides a method based on <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> (currently draft 16) for users to control access to their protected resources, residing on any number of host sites, through a single authorization manager (AM) that governs access decisions based on user policy.
+<p>The User-Managed Access (UMA) core protocol provides a method based on OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> for users to control access to their protected resources, residing on any number of host sites, through a single authorization manager (AM) that governs access decisions based on user policy.
 </p>
 <p>There are numerous use cases for UMA, where a resource owner elects to have a third party to control access to these resources potentially without the real-time presence of the resource owner. A typical example is the following: a web user (authorizing user) can authorize a web app (requester) to gain one-time or ongoing access to a resource containing his home address stored at a "personal data store" service (host), by telling the host to act on access decisions made by his authorization decision-making service (authorization manager or AM). The requesting party might be an e-commerce company whose site is acting on behalf of the user himself to assist him/her in arranging for shipping a purchased item, or it might be his friend who is using an online address book service to collect addresses, or it might be a survey company that uses an online service to compile population demographics. Other scenarios and use cases for UMA usage can be found in <a class='info' href='#UMA-usecases'>[UMA&#8209;usecases]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Scenarios and Use Cases,&rdquo; October&nbsp;2010.</span><span>)</span></a> and <a class='info' href='#UMA-userstories'>[UMA&#8209;userstories]<span> (</span><span class='info'>Maler, E., &ldquo;UMA User Stories,&rdquo; November&nbsp;2010.</span><span>)</span></a>.
 </p>
@@ -409,13 +409,13 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 <dd>Part of standard OAuth, as profiled by UMA. The endpoint to which the host redirects the authorizing user to authorize the host to use this AM for protecting resources, if the OAuth authorization code grant type is being used.
 </dd>
 <dt>resource set registration endpoint</dt>
-<dd>The endpoint at which the host registers resource sets it wants the AM to protect.
+<dd>The endpoint at which the host registers resource sets it wants the AM to protect. The operations available at this endpoint constitute a resource set registration API that is a subset of the protection API (see <a class='info' href='#reg-api'>Section&nbsp;2.4.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>).
 </dd>
 <dt>permission registration endpoint</dt>
 <dd>The endpoint at which the host registers permissions that it anticipates a requester will shortly be asking for from the AM.
 </dd>
 <dt>token status endpoint</dt>
-<dd>The endpoint at which the host submits requester access tokens that have accompanied an access request, to learn what currently valid permissions are associated with them.
+<dd>The endpoint at which the host submits requester access tokens that have accompanied an access request, to learn what currently valid permissions are associated with them. This specification defines a mandatory-to-implement token type, "artifact", which REQUIRES the host to use this endpoint (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>).
 </dd>
 </dl></blockquote>
 
@@ -438,8 +438,6 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 
 <p>Similarly to OAuth authorization servers, an UMA AM has the opportunity to manage the validity periods of the access tokens, the corresponding refresh tokens, and even the client credentials that it issues. Different lifetime strategies may be suitable for different resources and scopes of access, and the AM has the opportunity to give the authorizing user control through policy.
 </p>
-<p>Access tokens are currently assumed to be merely opaque strings (as discussed in <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a> and <a class='info' href='#conformance'>Section&nbsp;7<span> (</span><span class='info'>Conformance</span><span>)</span></a>). Thus, when an AM associates a permission with a requester access token, a host cannot subsequently inspect such a token locally to assess whether a needed permission has been granted. It must instead ask the AM to provide the token's status.
-</p>
 <a name="scope-discussion"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
@@ -449,11 +447,11 @@ Scopes, Resource Sets, Permissions, and Authorization</h3>
 </p>
 <p>Resource sets and scopes have meaning only to hosts and their users, in the same way that application-specific host APIs have meaning only to these entities. The AM is merely a conveyor of labels and descriptions for these constructs, to help the authorizing user set policies that guide eventual authorization processes.
 </p>
-<p>In contrast to an UMA scope, an UMA permission reflects an <em>actual</em> authorization process for a requester to access a particular resource set in a scoped (bounded) manner. Hosts register permission requests on behalf of requesters that have attempted access. Requesters subsequently ask AMs for permissions to be associated with their tokens. AMs grant (or deny) permissions to requesters.
+<p>In contrast to an UMA scope, an UMA permission reflects an <em>actual</em> authorization process for a requester to access a particular resource set in a scoped (bounded) manner. Hosts register permission requests on behalf of requesters that have attempted access. Requesters subsequently ask AMs for (potentially multiple) permissions to be associated with their tokens. AMs grant (or deny) permissions to requesters.
 </p>
-<p>An access token is bound to a given resource set, to the host where that resource resides, to the AM that controls access to that resource at the host and the premissions and scopes relating to that resource set as configured by the resource owber (user).
+<p>A requester access token is bound to a single authorizing user, a single host where protected resources controlled by that user reside, a single AM that controls access to those resource sets, and a single requester. Put another way, each requester access token is associated with as many permissions as are appropriate for gaining authorized access to that user's resources at that host, protected by any single AM. Thus, if an authorizing user happens to protect different resources at a host using two AMs, any requester accessing resources on both sides of that "AM divide" would end up acquiring two access tokens.
 </p>
-<p>In order to represent meaningful, auditable, and potentially legally enforceable authorization (see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; February&nbsp;2011.</span><span>)</span></a>), a permission is bound to a particular set of UMA entities and parties. This includes the requesting party, the requester (so that the same requesting party would have to go through the authorization process for each client application they use), the host, the resource set on which access is being attempted, and therefore also the AM protecting it and the authorizing user who is controlling access.
+<p>In order to represent meaningful, auditable, and potentially legally enforceable authorization (see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; February&nbsp;2011.</span><span>)</span></a>), a permission is conceptually bound to a particular set of UMA entities and parties. This includes the requesting party, the requester (so that the same requesting party would have to go through the authorization process for each client application they use), the host, the resource set on which access is being attempted, and therefore also the AM protecting it and the authorizing user who is controlling access.
 </p>
 <p>Unlike scopes (but similarly to tokens themselves; see <a class='info' href='#endpoint-discussion'>Section&nbsp;1.3<span> (</span><span class='info'>Endpoints, Endpoint Protection, and Tokens</span><span>)</span></a>), permissions have a validity period.
 </p>
@@ -462,7 +460,7 @@ Scopes, Resource Sets, Permissions, and Authorization</h3>
 <a name="rfc.section.1.5"></a><h3>1.5.&nbsp;
 AM Metadata</h3>
 
-<p>The AM MUST provide an XRD 1.0-formatted document at the hostmeta location (see <a class='info' href='#hostmeta'>hostmeta<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; May&nbsp;2011.</span><span>)</span></a> [hostmeta]), documenting the following: </p>
+<p>The AM MUST provide an XRD 1.0-formatted document at its hostmeta <a class='info' href='#hostmeta'>[hostmeta]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; May&nbsp;2011.</span><span>)</span></a> location, documenting the following: </p>
 <ul class="text">
 <li>Major conformance options supported by the AM (described further in <a class='info' href='#conformance'>Section&nbsp;7<span> (</span><span class='info'>Conformance</span><span>)</span></a>)
 </li>
@@ -551,7 +549,7 @@ Host Looks Up AM Metadata</h3>
 
 <p>The host needs to learn the AM's protection API endpoints before they can begin interacting. To get the host started in this process, the authorizing user might provide the AM's location to it, for example, by typing a URL into a web form field or clicking a button. Alternatively, the host might already be configured to work with a single AM without requiring any user input. The exact process is beyond the scope of this specification, and it is up to the host to choose a method to learn the AM's general location.
 </p>
-<p>From the data provided, discovered, or configured, the host MUST use the process described in Section 2 of <a class='info' href='#hostmeta'>hostmeta<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; May&nbsp;2011.</span><span>)</span></a> [hostmeta] to retrieve the AM hostmeta document. For example, if the user supplied "am.example.com" as the Authorization Manager's domain, the host creates the URL "https://am.example.com/.well-known/host-meta" and performs a GET request on it. The AM MUST return content that includes UMA protection API endpoints as defined in <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a>.
+<p>From the data provided, discovered, or configured, the host MUST retrieve the AM's hostmeta document, as described in Section 2 of <a class='info' href='#hostmeta'>hostmeta<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; May&nbsp;2011.</span><span>)</span></a> [hostmeta]. For example, if the user supplied "am.example.com" as the Authorization Manager's domain, the host creates the URL "https://am.example.com/.well-known/host-meta" and performs a GET request on it. The AM MUST return content that includes UMA protection API endpoints as defined in <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a>.
 </p>
 <a name="anchor3"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -567,7 +565,7 @@ Host Obtains Host Access Token</h3>
 
 <p>In this step, the host acquires a host access token from the AM. The token represents the approval of the authorizing user for this host to trust this AM for protecting resources belonging to this user.
 </p>
-<p>The host MUST use <a class='info' href='#OAuth2'>OAuth2<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> [OAuth2] to obtain the host access token. Here the host acts in the role of an OAuth client; the authorizing user acts in the role of an OAuth end-user resource owner; and the AM acts in the role of an OAuth authorization server. Once the host has obtained an access token, it presents it to the AM at various protection API endpoints; in presenting these endpoints the AM acts in the role of a resource server.
+<p>The host MUST use OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> to obtain the host access token. Here the host acts in the role of an OAuth client; the authorizing user acts in the role of an OAuth end-user resource owner; and the AM acts in the role of an OAuth authorization server. Once the host has obtained an access token, it presents it to the AM at various protection API endpoints; in presenting these endpoints the AM acts in the role of a resource server.
 </p>
 <p>The AM MAY support the use of any grant type, but MUST support the authorization_code grant type, and SHOULD support the SAML bearer token grant type <a class='info' href='#OAuth-SAML'>[OAuth&#8209;SAML]<span> (</span><span class='info'>Campbell, B., &ldquo;SAML 2.0 Bearer Assertion Grant Type Profile for OAuth 2.0,&rdquo; August&nbsp;2011.</span><span>)</span></a> (urn:ietf:params:oauth:grant-type:saml2-bearer) if it anticipates working with hosts that are operating in environments where the use of SAML is prevalent. The AM MUST indicate all grant types it supports in its metadata, as defined in <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a>.
 </p>
@@ -619,7 +617,7 @@ Resource Set Descriptions</h3>
 
 <p>The host defines a resource set that needs protection by registering a resource set description at the AM. The host registers the description and manages its lifecycle at the AM's host resource set registration endpoint by using the resource set registration API, as defined in <a class='info' href='#reg-api'>Section&nbsp;2.4.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>.
 </p>
-<p>A resource set description is a <a class='info' href='#RFC4627'>JSON<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> [RFC4627] document with the following properties and a Content-Type of application/uma-resource-set+json.:</p>
+<p>A resource set description is a JSON document with the following properties and a Content-Type of application/uma-resource-set+json:</p>
 <blockquote class="text"><dl>
 <dt>name</dt>
 <dd>REQUIRED. A human-readable string describing a set of one or more resources. The AM SHOULD use the name in its user interface to assist the user in setting policies for protecting this resource set.
@@ -652,7 +650,7 @@ Resource Set Descriptions</h3>
 <a name="rfc.section.2.4.3"></a><h3>2.4.3.&nbsp;
 Resource Set Registration API</h3>
 
-<p>The host uses the RESTful API at the AM's resource set registration endpoint to create, read, update, and delete resource set descriptions, along with listing groups of such descriptions. The host MUST use its valid host access token obtained previously to gain access to this endpoint.
+<p>The host uses the RESTful API at the AM's resource set registration endpoint to create, read, update, and delete resource set descriptions, along with listing groups of such descriptions. The host MUST use its valid host access token obtained previously to gain access to this endpoint. The resource set registration API is a subset of the protection API.
 </p>
 <p>(Note carefully the similar but distinct senses in which the word "resource" is used in this section. UMA resource set descriptions are themselves managed as web resources at the AM through this API.)
 </p>
@@ -727,7 +725,7 @@ ETag: (matches "_rev" property in returned object)
   "_rev": (ETag of created resource set)
 }
 </pre></div>
-<p>Optionally, upon successful registration by the host, the AM may return a redirect policy URI to the host. This policy URI allows the user to set access policies at the AM for the resource set that was successfully registered by the Host.
+<p>On successful registration, the AM MAY return a redirect policy URI to the host in a property with the name "policy_uri". This URI allows the host to redirect the user to a specific user interface within the AM where the user can immediately set or modify access policies for the resource set that was just registered.
 </p>
 <p>Form of a successful HTTP response:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -740,7 +738,7 @@ ETag: (matches "_rev" property in returned object)
   "status": "created",
   "_id": (id of created resource set),
   "_rev": (ETag of created resource set)
-  "x-policy_uri":"http://am.example.com/host/222/resource/333/policy"
+  "policy_uri":"http://am.example.com/host/222/resource/333/policy"
 }
 </pre></div>
 <a name="read-resource-set"></a><br /><hr />
@@ -765,7 +763,7 @@ Content-Type: application/uma-resource-set+json
 </pre></div>
 <p>If the referenced resource does not exist, the AM MUST produce an error response with an error property value of "not_found", as defined in <a class='info' href='#reg-api'>Section&nbsp;2.4.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>.
 </p>
-<p>Optionally, upon a successful Read by the host, the AM may return a redirect policy URI to the host. This policy URI allows the user to set access policies at the AM for the resource set that are already registered.
+<p>On successful read, the AM MAY return a redirect policy URI to the host in a property with the name "policy_uri". This URI allows the host to redirect the user to a specific user interface within the AM where the user can immediately set or modify access policies for the resource set that was read.
 </p>
 <a name="update-resource-set"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -791,7 +789,7 @@ ETag: "2"
 </pre></div>
 <p>If the entity tag does not match, the AM MUST produce an error response with an error property value of "precondition_failed", as defined in <a class='info' href='#reg-api'>Section&nbsp;2.4.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>.
 </p>
-<p>Optionally, upon a successful Update by the host, the AM may return a redirect policy URI to the host. This policy URI allows the user to set access policies at the AM for the resource set that were updated.
+<p>On successful update, the AM MAY return a redirect policy URI to the host in a property with the name "policy_uri". This URI allows the host to redirect the user to a specific user interface within the AM where the user can immediately set or modify access policies for the resource set that was just updated.
 </p>
 <a name="delete-resource-set"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -854,13 +852,13 @@ Getting Authorization and Accessing a Resource</h3>
 </li>
 </ul>
 </li>
-<li>If the access attempt was accompanied by a requester access token, the host checks the token's status at the AM (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>).
+<li>If the access attempt was accompanied by a requester access token, the host checks the token's status (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>).
 <ul class="text">
-<li>If the AM reports that the requester access token is invalid (see <a class='info' href='#invalid-token'>Section&nbsp;3.1.2<span> (</span><span class='info'>Requester Presents an Invalid Access Token</span><span>)</span></a>), the host responds to the requester with an HTTP 401 (Unauthorized) response and instructions on where to go to obtain a token (see <a class='info' href='#no-token'>Section&nbsp;3.1.1<span> (</span><span class='info'>Requester Presents No Access Token</span><span>)</span></a>).
+<li>If the requester access token is invalid (see <a class='info' href='#invalid-token'>Section&nbsp;3.1.2<span> (</span><span class='info'>Requester Presents an Invalid Access Token</span><span>)</span></a>), the host responds to the requester with an HTTP 401 (Unauthorized) response and instructions on where to go to obtain a token (see <a class='info' href='#no-token'>Section&nbsp;3.1.1<span> (</span><span class='info'>Requester Presents No Access Token</span><span>)</span></a>).
 </li>
 </ul>
 </li>
-<li>If the AM supplies a token status description for a valid requester access token (see <a class='info' href='#valid-token'>Section&nbsp;3.1.3<span> (</span><span class='info'>Requester Presents a Valid Access Token</span><span>)</span></a>) but none of the permissions associated with the token match the scope of attempted access, the host registers a suitable permission on the requester's behalf at the AM (see <a class='info' href='#h-am-register-scope'>Section&nbsp;3.4<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>) and then responds to the requester with an HTTP 403 (Forbidden) response and instructions on where to go to request authorization to associate that permission with its token (see <a class='info' href='#insufficient-scope'>Section&nbsp;3.1.3.1<span> (</span><span class='info'>Requester's Token Has Insufficient Permission</span><span>)</span></a>).
+<li>If the requester access token is valid (see <a class='info' href='#valid-token'>Section&nbsp;3.1.3<span> (</span><span class='info'>Requester Presents a Valid Access Token</span><span>)</span></a>) but none of the permissions associated with the token match the scope of attempted access, the host registers a suitable permission on the requester's behalf at the AM (see <a class='info' href='#h-am-register-scope'>Section&nbsp;3.4<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>) and then responds to the requester with an HTTP 403 (Forbidden) response and instructions on where to go to request authorization to associate that permission with its token (see <a class='info' href='#insufficient-scope'>Section&nbsp;3.1.3.1<span> (</span><span class='info'>Requester's Token Has Insufficient Permission</span><span>)</span></a>).
 </li>
 <li>If the requester received instructions on where to get a token, it requests a token from the appropriate AM (see <a class='info' href='#r-am-obtain-token'>Section&nbsp;3.2<span> (</span><span class='info'>Requester-AM: Requester Obtains Access Token</span><span>)</span></a>).
 </li>
@@ -870,7 +868,7 @@ Getting Authorization and Accessing a Resource</h3>
 </li>
 </ul>
 </li>
-<li>If the AM gave status back on a valid requester access token, and at least one of the permissions associated with the token match the scope of attempted access, the host responds to the requester's access attempt with an HTTP 200 (OK) response and a representation of the resource (see <a class='info' href='#sufficient-scope'>Section&nbsp;3.1.3.2<span> (</span><span class='info'>Requester's Token Has Sufficient Permission</span><span>)</span></a>).
+<li>If the requester access token is valid, and at least one of the permissions associated with the token match the scope of attempted access, the host responds to the requester's access attempt with an HTTP 200 (OK) response and a representation of the resource (see <a class='info' href='#sufficient-scope'>Section&nbsp;3.1.3.2<span> (</span><span class='info'>Requester's Token Has Sufficient Permission</span><span>)</span></a>).
 </li>
 </ul>
 
@@ -907,7 +905,7 @@ WWW-Authenticate: UMA realm="example",
 <a name="rfc.section.3.1.2"></a><h3>3.1.2.&nbsp;
 Requester Presents an Invalid Access Token</h3>
 
-<p>If the requester presents an access token with its request, the host asks the AM to give it the requester access token's status (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>). If the AM reports that the token is invalid, the host MUST return an HTTP 401 (Unauthorized) status code, along with providing the AM's URI to facilitate AM metadata discovery by the requester.
+<p>If the requester presents an access token with its request, and the token is invalid (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>), the host MUST return an HTTP 401 (Unauthorized) status code, along with providing the AM's URI to facilitate AM metadata discovery by the requester.
 </p>
 <p>For example:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -922,16 +920,14 @@ WWW-Authenticate: UMA realm="example",
 <a name="rfc.section.3.1.3"></a><h3>3.1.3.&nbsp;
 Requester Presents a Valid Access Token</h3>
 
-<p>If the requester presents an access token with its request, the host SHOULD ask the AM to give it the requester access token's status (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>). If the AM supplies a token status description for a valid requester access token, the host examines the token status description.
-</p>
-<p>When a requester presents a valid access token, the host SHOULD provide the requester with access to the desired resource. Note that that access to resources at a host remains at the discretion of the host, even in cases where the requester has presented a valid access token.
+<p>If the requester presents an access token with its request, and the token is valid (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>), the host examines the token status description.
 </p>
 <a name="insufficient-scope"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1.3.1"></a><h3>3.1.3.1.&nbsp;
 Requester's Token Has Insufficient Permission</h3>
 
-<p>If the token status is not associated with any currently valid permission that applies to the scope of access attempted by the requester, the Host SHOULD register the desired permission with the AM (see <a class='info' href='#h-am-register-scope'>Section&nbsp;3.4<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>) and then respond to the requester with the HTTP 403 (Forbidden) status code indicating that the token has "insufficient_scope", along with providing the AM's URI to facilitate AM metadata discovery by the requester, and the permission ticket it just received from the AM iin the body of the response in JSON form.
+<p>If the token status is not associated with any currently valid permission that applies to the scope of access attempted by the requester, the Host SHOULD register a permission with the AM (see <a class='info' href='#h-am-register-scope'>Section&nbsp;3.4<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>) that would suffice for that scope of access, and then respond to the requester with the HTTP 403 (Forbidden) status code, along with providing the AM's URI in the header of the message and the permission ticket it just received from the AM in the body of the JSON form.
 </p>
 <p>For example:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -964,7 +960,7 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
 </pre></div>
 <p>This response constitutes the conclusion of Phase 3 of UMA.
 </p>
-<p>The host MUST NOT give access where its request for token status did not reveal at least one currently active permission for that scope of access.
+<p>The host MUST NOT give access where the token's status is not associated with at least one currently active permission hat suffices for that scope of access.
 </p>
 <a name="r-am-obtain-token"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -973,13 +969,11 @@ Requester-AM: Requester Obtains Access Token</h3>
 
 <p>When a requester does not possess a valid access token for accessing resources of a particular user at a particular host, it requests one from the AM's requester token endpoint.
 </p>
-<p>The requester learns about this endpoint by retrieving the AM's hostmeta document (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a>) based on the "am_uri" information that was provided by the host in its previous response, as described in Section 2 of <a class='info' href='#hostmeta'>hostmeta<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; May&nbsp;2011.</span><span>)</span></a> [hostmeta]. For example, if the "am_uri" is "am.example.com", the requester creates the URI "https://am.example.com/.well-known/host-meta" and performs a GET request on it.
+<p>The requester learns about this endpoint by retrieving the AM's hostmeta document based on the "am_uri" information that was provided by the host in its previous response, as described in Section 2 of <a class='info' href='#hostmeta'>hostmeta<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; May&nbsp;2011.</span><span>)</span></a> [hostmeta]. For example, if the "am_uri" is "am.example.com", the requester creates the URI "https://am.example.com/.well-known/host-meta" and performs a GET request on it.
 </p>
-<p>Each such token represents the set of permissions for that requesting party to access potentially many different resource sets (all controlled by a single authorizing user), with a variety of scopes, at that same host, on behalf of the same requesting party.
+<p>As discussed in <a class='info' href='#scope-discussion'>Section&nbsp;1.4<span> (</span><span class='info'>Scopes, Resource Sets, Permissions, and Authorization</span><span>)</span></a>, a requester access token represents, at any one time, the set of permissions for that requesting party to access potentially many different resource sets (all controlled by a single authorizing user), with an applicable set of scopes, at that same host.
 </p>
-<p>The requester SHOULD use the OAuth 2.0 client_credentials authorization grant type (see Section 4.4 of <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>).
-</p>
-<p>If the requester does not yet have a client identifier and optional client secret prior to requesting an access token, it MAY request these using <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, if the AM supports it (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a> for how the AM MAY indicate support).
+<p>The requester SHOULD use the OAuth client_credentials authorization grant type (see Section 4.4 of <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>). If the requester does not yet have a client identifier and optional client secret prior to requesting an access token, it MAY request these using <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, if the AM supports it (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a> for how the AM MAY indicate support).
 </p>
 <p>(Note that in UMA, unlike in plain OAuth, obtaining an access token does not automatically convey permission for access to any protected resource. The token must first be associated with at least one suitable permission for scoped access in order for the requester to succeed in accessing the resource.)
 </p>
@@ -988,13 +982,13 @@ Requester-AM: Requester Obtains Access Token</h3>
 <a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
 Host-AM: Ask for Requester Access Token Status</h3>
 
-<p>In the current specification, the only mandatory to implement access token type is the "artifact" token type consisting of an opaque string (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a>). This implies that upon receiving a requester access token in an access attempt, the host must ask the AM for that token's status. If it has a cached token status description available that has not expired yet, it MAY use it instead. Note that the current UMA approach of "artifact" token types does not preclude the future development of deployment profiles for UMA which specifies alternate forms of token types.
+<p>In this specification, the only access token type that is mandatory to implement is "artifact" (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Metadata</span><span>)</span></a>). On receiving a requester access token of this type in an access attempt, the host MUST ask the AM for that token's status. If it has a cached token status description available that has not expired yet, it MAY use it instead. Profiles defining alternate token types MAY require, allow, or prohibit the token status request-response interaction as appropriate.
 </p>
-<p>In order to request the AM for a token's status, the host makes the request to the AM with a POST request to the AM's token status endpoint. The body of the HTTP request message contains a JSON <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> document providing the requester access token and the IP address of the requester's request. The host MAY, at its discretion, instead supply the originating IP address indicated in the requester's X-Forwarded-For: header value. The IP address or originating IP address is advisory only; the AM MAY ignore it for purposes of its own token validation process.
+<p>In order to request the AM for a token's status, the host makes the request to the AM with a POST request to the AM's token status endpoint. The body of the HTTP request message contains a JSON document providing the requester access token and the IP address of the requester's request. The host MAY, at its discretion, instead supply the originating IP address indicated in the requester's X-Forwarded-For: header value. The IP address or originating IP address is advisory only; the AM MAY ignore it for purposes of its own token validation process.
 </p>
 <p>The host gains access to the token status endpoint by presenting its own host access token in the request.
 </p>
-<p>Note that although the use of a GET may be more advantageous for the cases where the requester provides a bearer token (e.g. reduces the attack possibilities on the bearer token should the AM becomes compromised), the current UMA specification relies on the POST request. This is in order to enable the host to deliver its own access token to the AM to access the token status endpoint.
+<p>Note that although the host's request is a safe operation, which normally would use the GET operation, this specification dictates the use of POST because it is advantageous for security in cases where the requester access token is a bearer token. Since the host provides its own host access token in the authorization header of the request, the requester's access token appears in the request body. A GET operation would expose the message to being recorded in AM access logs. The "artifact" token type, which is mandatory for AMs to implement, is a type of bearer token.
 </p>
 <p>Example of a request to the token validation endpoint that provides the host access token in the header:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1011,7 +1005,7 @@ Content-Type: application/json
   "ipaddr": "192.168.1.1"
 }
 </pre></div>
-<p>The AM returns the token's status in an HTTP response using the 200 OK status code, containing a JSON <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> document supplying the token status description. The token status description either contains all of the permissions that are currently valid for this requester access token at the host in question (and thus for the requesting party on whose behalf it is acting), or indicates that the token is invalid (see <a class='info' href='#scope-discussion'>Section&nbsp;1.4<span> (</span><span class='info'>Scopes, Resource Sets, Permissions, and Authorization</span><span>)</span></a>). The AM MAY set a cache period for the returned token status description that allows the host to reuse it over some period of time when it later sees the same requester access token.
+<p>The AM returns the token's status in an HTTP response using the 200 OK status code, containing a JSON document supplying the token status description. The token status description either contains all of the permissions that are currently valid for this requester access token at the host in question (and thus for the requesting party on whose behalf it is acting), or indicates that the token is invalid (see <a class='info' href='#scope-discussion'>Section&nbsp;1.4<span> (</span><span class='info'>Scopes, Resource Sets, Permissions, and Authorization</span><span>)</span></a>). The AM MAY set a cache period for the returned token status description that allows the host to reuse it over some period of time when it later sees the same requester access token.
 </p>
 <p>The token status description for a valid access token is a JSON array of zero or more permission objects, each with the following properties:</p>
 <blockquote class="text"><dl>
@@ -1061,11 +1055,11 @@ Host-AM: Register a Permission</h3>
 
 <p>If the permissions returned by the AM from a token status request are insufficient to allow this requester's access attempt, the host SHOULD register a permission with the AM that it believes would be sufficient for the type of access sought. As a result of the host registering a permission to the AM, the AM returns a permission ticket for the host to give to the requester in its response (see <a class='info' href='#insufficient-scope'>Section&nbsp;3.1.3.1<span> (</span><span class='info'>Requester's Token Has Insufficient Permission</span><span>)</span></a>).
 </p>
-<p>The permission ticket is a short-lived opaque structure whose form is determined by the AM. The ticket value MUST be securely random (for example, not merely part of a predictable sequential series), to avoid denial-of-service attacks. Since the ticket is an opaque structure from the point of view of the requester, the AM MAY include information regarding expiration time within the opaque ticket.
+<p>The permission ticket is a short-lived opaque structure whose form is determined by the AM. The ticket value MUST be securely random (for example, not merely part of a predictable sequential series), to avoid denial-of-service attacks. Since the ticket is an opaque structure from the point of view of the requester, the AM is free to include information regarding expiration time within the opaque ticket for its own consumption.
 </p>
 <p>Later, when the requester asks the AM to add permissions to the requester's token (see <a class='info' href='#r-am-authz-scope'>Section&nbsp;3.5<span> (</span><span class='info'>Requester-AM: Request Authorization to Add Permission</span><span>)</span></a> it will submit this ticket to the AM. It is therefore the task of the AM to perform binding of this ticket to the requester and its token.
 </p>
-<p>The host registers the permission using the POST method at the AM's permission registration endpoint, providing its host access token to get authorized access to this endpoint. The body of the HTTP request message contains a JSON <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> document providing the requester's access token and the requested permission.
+<p>The host registers the permission using the POST method at the AM's permission registration endpoint, providing its host access token to get authorized access to this endpoint. The body of the HTTP request message contains a JSON document providing the requester's access token and the requested permission.
 </p>
 <p>The requested scope is an object with the name "requested_permission" and the following properties:</p>
 <blockquote class="text"><dl>
@@ -1163,7 +1157,7 @@ WWW-Authenticate: Bearer realm="example",
   error="invalid_token",
   error_description="The access token expired"
 </pre></div>
-<p>If the AM ultimately does not add the requested permission, it responds using the appropriate HTTP status code (typically 400 or 403), and includes one of the following error codes in the response: (see <a class='info' href='#uma-error-response'>Section&nbsp;4.2<span> (</span><span class='info'>UMA Error Responses</span><span>)</span></a>): </p>
+<p>If the AM ultimately does not add the requested permission, it responds using the appropriate HTTP status code (typically 400 or 403), and includes one of the following error codes in the response (see <a class='info' href='#uma-error-response'>Section&nbsp;4.2<span> (</span><span class='info'>UMA Error Responses</span><span>)</span></a>): </p>
 <blockquote class="text"><dl>
 <dt>invalid_requester_ticket</dt>
 <dd>The provided ticket was not found at the AM. The AM SHOULD respond with the HTTP 400 (Bad Request) status code.
@@ -1319,7 +1313,7 @@ Conformance</h3>
 </li>
 <li>hostmeta: AMs, hosts, and requesters MUST support the <a class='info' href='#hostmeta'>[hostmeta]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; May&nbsp;2011.</span><span>)</span></a> features named in this specification.
 </li>
-<li>OpenID Connect: AMs MAY support <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, and MAY choose to conform to the "openid" claim format option corresponding to the OpenID Connect RP role and support for OpenID Connect reserved claims.
+<li>OpenID Connect: AMs MAY support <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, and MAY choose to conform to the "openid" claim format option, corresponding to the OpenID Connect RP role defined in <a class='info' href='#OCStandard'>[OCStandard]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Standard 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a> and support for OpenID Connect reserved claims defined in <a class='info' href='#OCMessages'>[OCMessages]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Messages 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>.
 </li>
 </ul>
 
@@ -1570,7 +1564,7 @@ Acknowledgments</h3>
 </li>
 </ul>
 
-<p>Additional contributors to this specification include the Kantara UMA Work Group participants, a list of whom can be found at <a class='info' href='#UMAnitarians'>[UMAnitarians]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Participant Roster,&rdquo; 2011.</span><span>)</span></a>.
+<p>Additional contributors to this specification include the Kantara UMA Work Group participants, a list of whom can be found at <a class='info' href='#UMAnitarians'>[UMAnitarians]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Participant Roster,&rdquo; 2012.</span><span>)</span></a>.
 </p>
 <a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -1589,9 +1583,7 @@ References</h3>
 <h3>13.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="OAuth-SAML">[OAuth-SAML]</a></td>
-<td class="author-text">Campbell, B., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer-08">SAML 2.0 Bearer Assertion Grant Type Profile for OAuth 2.0</a>,&rdquo; August&nbsp;2011.</td></tr>
-<tr><td class="author-text" valign="top"><a name="OAuth-bearer">[OAuth-bearer]</a></td>
-<td class="author-text">Jones, M., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-06">The OAuth 2.0 Protocol: Bearer Tokens</a>,&rdquo; June&nbsp;2011.</td></tr>
+<td class="author-text">Campbell, B., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">SAML 2.0 Bearer Assertion Grant Type Profile for OAuth 2.0</a>,&rdquo; August&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OAuth2">[OAuth2]</a></td>
 <td class="author-text">Hammer-Lahav, E., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2">The OAuth 2.0 Protocol</a>,&rdquo; September&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OCDynClientReg">[OCDynClientReg]</a></td>
@@ -1619,7 +1611,7 @@ References</h3>
 <tr><td class="author-text" valign="top"><a name="UMA-userstories">[UMA-userstories]</a></td>
 <td class="author-text">Maler, E., &ldquo;<a href="http://kantarainitiative.org/confluence/display/uma/User+Stories">UMA User Stories</a>,&rdquo; November&nbsp;2010.</td></tr>
 <tr><td class="author-text" valign="top"><a name="UMAnitarians">[UMAnitarians]</a></td>
-<td class="author-text">Maler, E., &ldquo;<a href="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">UMA Participant Roster</a>,&rdquo; 2011.</td></tr>
+<td class="author-text">Maler, E., &ldquo;<a href="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">UMA Participant Roster</a>,&rdquo; 2012.</td></tr>
 </table>
 
 <a name="History"></a><br /><hr />
