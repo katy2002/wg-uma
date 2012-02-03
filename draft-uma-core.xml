@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="18" month="January" year="2012" />
+    <date day="2" month="February" year="2012" />
 
     <abstract>
       <t>This specification defines the User-Managed Access (UMA) core
@@ -374,146 +374,164 @@
         period.</t>
       </section>
 
-      <section anchor="am-endpoints" title="AM Metadata">
-        <t>The AM MUST provide an XRD 1.0-formatted document at its hostmeta
-        <xref target="hostmeta"></xref> location, documenting the following:
-        <list style="symbols">
-            <t>Major conformance options supported by the AM (described
-            further in <xref target="conformance"></xref>)</t>
+      <section anchor="am-endpoints" title="AM Configuration Data">
+        <t>The AM MUST provide configuration data to other entities it
+        interacts with in a<xref format="default" target="RFC4627">
+        JSON</xref> document that resides in an /uma-configuration directory
+        at at its hostmeta <xref target="RFC6415"></xref> location. The
+        configuration data documents major conformance options supported by
+        the AM (described further in <xref target="conformance"></xref>) and
+        protection and authorization API endpoints (as described in <xref
+        target="endpoint-discussion"></xref>).</t>
 
-            <t>Protection and authorization API endpoints (as described in
-            <xref target="endpoint-discussion"></xref>)</t>
-          </list></t>
+        <t>The configuration data has the following properties and a
+        Content-Type of application/uma-configuration+json. All endpoint URIs
+        supplied SHOULD require the use of a transport-layer security
+        mechanism such as TLS.<list hangIndent="6" style="hanging">
+            <t hangText="version"><vspace />REQUIRED. The version of the UMA
+            core protocol to which this AM conforms. The value MUST be the
+            string "1.0".</t>
 
-        <t>See <xref target="am-metadata-example"></xref> for a full example
-        of AM metadata.</t>
+            <t hangText="issuer"><vspace />REQUIRED. A URI indicating the
+            party operating the AM.</t>
 
-        <t>XRD property type values for conformance options:<list
-            hangIndent="6" style="hanging">
             <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/client_reg"><vspace />OPTIONAL
-            (zero or one). Whether dynamic client registration, such as
-            through <xref target="OCDynClientReg"></xref>, is supported for
-            both hosts and requesters. The only values for this property
-            currently available are "yes" (dynamic registration is supported,
-            using an unspecified method) and "no" (it is not supported; hosts
-            and requesters are required to pre-register). The default is
+            hangText="dynamic_client_registration_supported"><vspace />OPTIONAL.
+            Whether dynamic client registration, such as through <xref
+            target="OCDynClientReg"></xref>, is supported for both hosts and
+            requesters. The value, if this property is present, the value MUST
+            be the string "yes" (dynamic registration is supported, using an
+            unspecified method) or "no" (it is not supported; hosts and
+            requesters are required to pre-register). The default is
             AM-specific. This property is not currently extensible. (This
             conformance option is largely a placeholder for now.)</t>
 
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/token_types"><vspace />REQUIRED
-            (one or more). An access token type produced by this AM. Currently
-            the only value for this property defined by this specification is
-            "artifact", meaning an opaque token string whose associations the
-            host MUST determine through a token status interaction with the AM
-            (see <xref target="h-am-token-validation"></xref>). The AM is
-            REQUIRED to support the artifact token type, and to supply this
-            value explicitly in the metadata. The AM MAY declare its support
-            for additional access token types by assigning each one a unique
-            absolute URI as the value of this property.</t>
+            <t hangText="token_types_supported"><vspace />REQUIRED. Access
+            token types produced by this AM. The property value is an array of
+            string values. Currently the only string value for this property
+            defined by this specification is "artifact", meaning an opaque
+            token string whose associations the host MUST determine through a
+            token status interaction with the AM (see <xref
+            target="h-am-token-validation"></xref>). The AM is REQUIRED to
+            support the artifact token type, and to supply this string value
+            explicitly. The AM MAY declare its support for additional access
+            token types by assigning each one a unique absolute URI in a
+            string value in the array.</t>
+
+            <t hangText="host_grant_types_supported"><vspace />REQUIRED. OAuth
+            grant types supported by this AM. The property value is an array
+            of string values. Each string value MUST be one of the grant_type
+            values defined in <xref target="OAuth2"></xref>, or alternatively
+            an extension grant type indicated by a unique absolute URI. The AM
+            is REQUIRED to support the "authorization_code" and
+            "client_credentials" grant types, and to supply these values
+            explicitly. The authorization_code grant type is primarily
+            intended for use with hosts, and the client_credentials grant type
+            is primarily intended for use with requesters.</t>
+
+            <t hangText="claim_types_supported"><vspace />OPTIONAL. Claim
+            formats and associated sub-protocols for gathering claims from
+            requesting parties, as supported by this AM. The property value is
+            an array of string values. Currently the only string value for
+            this property defined by this specification is "openid", for which
+            details are supplied in <xref target="trusted-claims"></xref>. The
+            AM MAY declare its support for additional claim types by assigning
+            each one a unique absolute URI in a string value in the array.</t>
+
+            <t hangText="host_token_endpoint"><vspace />REQUIRED. The property
+            value is a string conveying the host access token endpoint URI, at
+            which the host asks for a host access token. Available HTTP
+            methods are as defined by <xref target="OAuth2"></xref> for a
+            token endpoint.</t>
+
+            <t hangText="host_user_endpoint"><vspace />REQUIRED. The property
+            value is a string conveying the host user authorization endpoint
+            URI, at which the host gathers the consent of the authorizing user
+            for a host-AM relationship if it is using the "authorization_code"
+            grant type. Available HTTP methods are as defined by <xref
+            target="OAuth2"></xref> for an end-user authorization
+            endpoint.</t>
 
             <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/host_authz_grant_types"><vspace />REQUIRED
-            (one or more). An OAuth grant type supported by this AM. The value
-            MUST be one of the grant_type values defined in <xref
-            target="OAuth2"></xref>, or alternatively an extension grant type
-            indicated by a unique absolute URI. The AM is REQUIRED to support
-            the authorization_code and client_credentials grant types, and to
-            supply these values explicitly in the metadata. The
-            authorization_code grant type is primarily intended for use with
-            hosts, and the client_credentials grant type is primarily intended
-            for use with requesters.</t>
+            hangText="resource_set_registration_endpoint"><vspace />REQUIRED.
+            The property value is a string conveying the resource set
+            registration endpoint URI, at which the host registers resource
+            sets with the AM to put them under its protection (see <xref
+            target="reg-api"></xref>). Requests to this endpoint require a
+            host access token to be present.</t>
 
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/claim_types"><vspace />OPTIONAL
-            (zero or more). A claim format and associated sub-protocol for
-            gathering claims from requesting parties, as supported by this AM.
-            Currently the only value for this property defined by this
-            specification is "openid", for which details are supplied in <xref
-            target="trusted-claims"></xref>. The AM MAY declare its support
-            for claim types other than "openid" by assigning each one a unique
-            absolute URI as the value of this property.</t>
+            <t hangText="token_status_endpoint"><vspace />REQUIRED. The
+            property value is a string conveying the token status endpoint
+            URI, at which the host requests the status of access tokens
+            presented to them by requesters (see <xref
+            target="h-am-token-validation"></xref>). Requests to this endpoint
+            require a host access token to be present.</t>
+
+            <t hangText="permission_registration_endpoint"><vspace />REQUIRED.
+            The property value is a string conveying the permission
+            registration endpoint URI, at which the host registers permissions
+            with the AM for which a requester will be seeking authorization
+            (see <xref target="h-am-register-scope"></xref>). Requests to this
+            endpoint require a host access token to be present.</t>
+
+            <t hangText="requester_token_endpoint"><vspace />REQUIRED. The
+            property value is a string conveying the requester access token
+            endpoint URI, at which the requester asks for an access token.
+            Available HTTP methods are as defined by <xref
+            target="OAuth2"></xref> for a token issuance endpoint.</t>
+
+            <t hangText="permission_request_endpoint"><vspace />REQUIRED. The
+            property value is a string conveying the permission endpoint URI,
+            at which the requester asks for authorization to have a new
+            permission associated with its existing requester access token,
+            which MUST accompany the request (see <xref
+            target="r-am-authz-scope"></xref>).</t>
           </list></t>
 
-        <t>XRD link relationship rel values for protection API endpoints:
-        <list hangIndent="6" style="hanging">
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/host_token_uri"><vspace />REQUIRED.
-            The host access token endpoint. Available HTTP methods are as
-            defined by <xref target="OAuth2"></xref> for a token endpoint.
-            Supplies the endpoint the host uses to ask for a host access
-            token.</t>
+        <t>The following is an example of AM configuration data that resides
+        at https://example.com/.well-known/uma-configuration:</t>
 
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/host_user_uri"><vspace />REQUIRED.
-            The host user authorization endpoint. Available HTTP methods are
-            as defined by <xref target="OAuth2"></xref> for an end-user
-            authorization endpoint. Supplies the endpoint the host uses to
-            gather the consent of the authorizing user for a host-AM
-            relationship if it is using the authorization code grant type. The
-            AM MUST support the authorization code grant type method of
-            obtaining the authorizing user's consent.</t>
+        <figure>
+          <preamble>Example of AM configuration data that resides at
+          https://example.com/.well-known/uma-configuration:</preamble>
 
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/host_resource_reg_uri"><vspace />REQUIRED.
-            The resource set registration endpoint. Requests to this endpoint
-            require a host access token to be present. Supplies the endpoint
-            the host uses for registering resource sets with the AM to be
-            protected (see <xref target="reg-api"></xref>). This endpoint
-            SHOULD require the use of a transport-layer security mechanism
-            such as TLS.</t>
+          <artwork><![CDATA[{
+"version":"1.0",
+"issuer":"https://example.com",
+"dynamic_client_registration_supported":"yes",
+"token_types_supported":[
+  "artifact"
+],
+"host_grant_types_supported":[
+  "authorization_code",
+  "client_credentials"
+],
+"claim_types_supported":[
+  "openid"
+],
+"host_token_endpoint":"https://am.example.com/host/token_uri",
+"host_user_endpoint":"https://am.example.com/host/user_uri",
+"resource_set_registration_endpoint":"https://am.example.com/host/rsrc_uri",
+"token_status_endpoint":"https://am.example.com/host/status_uri",
+"permission_registration_endpoint":"https://am.example.com/host/perm_uri",
+"requester_token_endpoint":"https://am.example.com/requester/token_uri",
+"permission_request_endpoint":"https://am.example.com/requester/perm_uri"
+}]]></artwork>
+        </figure>
 
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/host_token_status_uri"><vspace />REQUIRED.
-            The token status endpoint. Requests to this endpoint require a
-            host access token to be present. Supplies the endpoint the host
-            uses to request the status of access tokens presented to them by
-            requesters with respect to currently valid permissions. This
-            endpoint SHOULD require the use of a transport-layer security
-            mechanism such as TLS.</t>
-
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/host_perm_reg_uri"><vspace />REQUIRED.
-            The permission registration endpoint. Requests to this endpoint
-            require a host access token to be present. Supplies the endpoint
-            the host uses for registering permissions with the AM for which a
-            requester will be seeking authorization (see <xref
-            target="h-am-register-scope"></xref>). This endpoint SHOULD
-            require the use of a transport-layer security mechanism such as
-            TLS.</t>
-          </list></t>
-
-        <t>XRD link relationship rel values for authorization API endpoints:
-        <list hangIndent="6" style="hanging">
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/req_token_uri"><vspace />REQUIRED.
-            The requester access token endpoint. Available HTTP methods are as
-            defined by <xref target="OAuth2"></xref> for a token issuance
-            endpoint. Supplies the endpoint the requester uses to ask for an
-            access token. This endpoint SHOULD require the use of a
-            transport-layer security mechanism such as TLS.</t>
-
-            <t
-            hangText="http://docs.kantarainitiative.org/uma/1.0/req_perm_uri"><vspace />REQUIRED.
-            The permission endpoint. Supplies the endpoint the requester uses
-            to ask for authorization to have a new permission associated with
-            its existing requester access token, which MUST accompany the
-            request. This endpoint SHOULD require the use of a transport-layer
-            security mechanism such as TLS.</t>
-          </list></t>
+        <t>AM configuration data MAY contain extension properties that are not
+        defined in this specification. The names of extension properties MUST
+        consist of a fully qualified URL, or begin with "x-" or "X-".</t>
       </section>
     </section>
-
-    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
     <section anchor="protecting-a-resource" title="Protecting a Resource">
       <t>Phase 1 of UMA is protecting a resource. The user, host, and AM
       perform the following steps in order to successfully complete Phase 1:
       <list style="numbers">
           <t>The host (having learned the general location of the relevant AM
-          out of band) looks up the AM's metadata and learns about its
-          protection API endpoints and supported formats.</t>
+          out of band) looks up the AM's configuration data and learns about
+          its protection API endpoints and supported formats.</t>
 
           <t>If the host has not yet obtained a unique OAuth client identifier
           and optional secret from the AM, it registers with the AM as
@@ -530,8 +548,8 @@
 
       <t>If the host undertakes these actions successfully, the results are as
       follows:<list style="symbols">
-          <t>The host has received metadata about the AM, such as endpoints it
-          needs to use in interacting with the AM.</t>
+          <t>The host has received configuration data about the AM, such as
+          endpoints it needs to use in interacting with the AM.</t>
 
           <t>The host has received an OAuth host access token that represents
           this authorizing user's approval for the host to work with the AM in
@@ -542,7 +560,7 @@
           user.</t>
         </list></t>
 
-      <section title="Host Looks Up AM Metadata">
+      <section title="Host Looks Up AM Configuration Data">
         <t>The host needs to learn the AM's protection API endpoints before
         they can begin interacting. To get the host started in this process,
         the authorizing user might provide the AM's location to it, for
@@ -554,9 +572,9 @@
 
         <t>From the data provided, discovered, or configured, the host MUST
         retrieve the AM's hostmeta document, as described in Section 2 of
-        <xref target="hostmeta">hostmeta</xref>. For example, if the user
-        supplied "am.example.com" as the Authorization Manager's domain, the
-        host creates the URL "https://am.example.com/.well-known/host-meta"
+        <xref target="RFC6415">hostmeta</xref>. For example, if the user
+        supplied "example.com" as the Authorization Manager's domain, the host
+        creates the URL "https://example.com/.well-known/uma-configuration"
         and performs a GET request on it. The AM MUST return content that
         includes UMA protection API endpoints as defined in <xref
         target="am-endpoints"></xref>.</t>
@@ -592,7 +610,8 @@
         (urn:ietf:params:oauth:grant-type:saml2-bearer) if it anticipates
         working with hosts that are operating in environments where the use of
         SAML is prevalent. The AM MUST indicate all grant types it supports in
-        its metadata, as defined in <xref target="am-endpoints"></xref>.</t>
+        its configuration data, as defined in <xref
+        target="am-endpoints"></xref>.</t>
 
         <t>The host has completed this step successfully when it possesses a
         host access token it can use at the AM's protection API.</t>
@@ -615,10 +634,9 @@
 
         <section anchor="action-desc" title="Scope Descriptions">
           <t>A scope is a bounded extent of access that is possible to perform
-          on a resource set. A scope description is a <xref format="default"
-          target="RFC4627">JSON</xref> document with the following properties
-          and a Content-Type of application/uma-scope+json:<list
-              style="hanging">
+          on a resource set. A scope description is a JSON document with the
+          following properties and a Content-Type of
+          application/uma-scope+json:<list style="hanging">
               <t hangText="name">REQUIRED. A human-readable string describing
               some scope (extent) of access. This name is intended for
               ultimate use in the AM's user interface to assist the user in
@@ -752,7 +770,7 @@
           <t>The components of these URIs are defined as follows:<list
               style="hanging">
               <t hangText="{rsreguri}">The AM's resource set registration
-              endpoint as advertised in its metadata (see <xref
+              endpoint as advertised in its configuration data (see <xref
               target="am-endpoints"></xref>).</t>
 
               <t hangText="{rsid}">An identifier for a resource set
@@ -1132,8 +1150,8 @@ Content-Type: application/json
         <section anchor="no-token" title="Requester Presents No Access Token">
           <t>If the requester does not present any access token with the
           request, the host MUST return an HTTP 401 (Unauthorized) status
-          code, along with providing the AM's URI to facilitate AM metadata
-          discovery by the requester.</t>
+          code, along with providing the AM's URI to facilitate AM
+          configuration data discovery by the requester.</t>
 
           <figure>
             <preamble>For example:</preamble>
@@ -1154,7 +1172,8 @@ WWW-Authenticate: UMA realm="example",
           the token is invalid (see <xref
           target="h-am-token-validation"></xref>), the host MUST return an
           HTTP 401 (Unauthorized) status code, along with providing the AM's
-          URI to facilitate AM metadata discovery by the requester.</t>
+          URI to facilitate AM configuration data discovery by the
+          requester.</t>
 
           <figure>
             <preamble>For example:</preamble>
@@ -1243,9 +1262,9 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         <t>The requester learns about this endpoint by retrieving the AM's
         hostmeta document based on the "am_uri" information that was provided
         by the host in its previous response, as described in Section 2 of
-        <xref target="hostmeta">hostmeta</xref>. For example, if the "am_uri"
+        <xref target="RFC6415">hostmeta</xref>. For example, if the "am_uri"
         is "am.example.com", the requester creates the URI
-        "https://am.example.com/.well-known/host-meta" and performs a GET
+        "https://example.com/.well-known/uma-configuration" and performs a GET
         request on it.</t>
 
         <t>As discussed in <xref target="scope-discussion"></xref>, a
@@ -1504,9 +1523,9 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
         hostmeta document (see <xref target="am-endpoints"></xref>) based on
         the "am_uri" information that was provided by the host in its previous
         response, as described in Section 2 of <xref
-        target="hostmeta">hostmeta</xref>. For example, if the "am_uri" is
-        "am.example.com", the requester creates the URI
-        "https://am.example.com/.well-known/host-meta" and performs a GET
+        target="RFC6415">hostmeta</xref>. For example, if the "am_uri" is
+        "example.com", the requester creates the URI
+        "https://example.com/.well-known/uma-configuration" and performs a GET
         request on it.</t>
 
         <t>The requester performs a GET or POST on the permission endpoint,
@@ -1622,8 +1641,8 @@ Cache-Control: no-store
         gathering standardized claims from that end-user, and allows for
         extensions to support other solutions for this use case and other use
         cases. The AM SHOULD document its claims-handling ability in its XRD
-        metadata through the claim_types property (see <xref
-        target="am-endpoints"></xref>). For the business-level and legal
+        configuration data through the claim_types_supported property (see
+        <xref target="am-endpoints"></xref>). For the business-level and legal
         implications of different technical authorization flows, see <xref
         target="UMA-trustmodel"></xref>.</t>
 
@@ -1662,9 +1681,9 @@ Cache-Control: no-store
             from an end-user requesting party, leveraging OpenID Connect
             mechanisms to transmit claims from distributed sources. If it
             supports this option, the AM MUST supply the "openid" value for
-            one of its claim_types properties in its AM metadata (see <xref
-            target="am-endpoints"></xref> for how to formulate this
-            metadata).</t>
+            one of its claim_types_supported values in its AM configuration
+            data (see <xref target="am-endpoints"></xref> for how to formulate
+            this data).</t>
 
             <t>To conform to this option, the AM MUST do the following:<list
                 style="symbols">
@@ -1774,6 +1793,13 @@ Cache-Control: no-store
       prevent a host from interacting with a registration area not its
       own.</t>
 
+      <t>This specification defines a number of JSON-based data formats. As a
+      subset of the JavaScript scripting language, JSON data SHOULD be
+      consumed through a process that does not dynamically execute it as code,
+      to avoid malicious code execution. One way to achieve this is to use a
+      JavaScript interpreter rather than the built-in JavaScript eval()
+      function.</t>
+
       <t>For information about the technical, operational, and legal elements
       of trust establishment between UMA entities and parties, which affects
       security considerations, see <xref target="UMA-trustmodel"></xref>.</t>
@@ -1809,7 +1835,7 @@ Cache-Control: no-store
           and client_credentials grant types.</t>
 
           <t>hostmeta: AMs, hosts, and requesters MUST support the <xref
-          target="hostmeta"></xref> features named in this specification.</t>
+          target="RFC6415"></xref> features named in this specification.</t>
 
           <t>OpenID Connect: AMs MAY support <xref
           target="OCDynClientReg"></xref>, and MAY choose to conform to the
@@ -1819,79 +1845,19 @@ Cache-Control: no-store
           target="OCMessages"></xref>.</t>
         </list></t>
 
-      <t>The AM's XRD metadata provides a machine-readable method for an AM to
-      indicate certain of the conformance options it has chosen. Several of
-      the metadata fields allow for extensibility. Where this specification
+      <t>The AM's configuration data provides a machine-readable method for an
+      AM to indicate certain of the conformance options it has chosen. Several
+      of the data properties allow for extensibility. Where this specification
       does not already require optional features to be documented, it is
       RECOMMENDED that AM developers and deployers document any profiled or
-      extended features explicitly and use XRD metadata to indicate their
-      usage. See <xref target="am-endpoints"></xref> for information about
-      providing and extending AM metadata.</t>
+      extended features explicitly and use configuration data to indicate
+      their usage. See <xref target="am-endpoints"></xref> for information
+      about providing and extending AM configuration data.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
       <t>Several UMA-specific JSON-based media types are being proposed, as
       follows: (TBS)</t>
-    </section>
-
-    <section anchor="am-metadata-example" title="AM Metadata Example">
-      <figure>
-        <preamble>Following is a conforming XRD metadata document for an AM
-        (line breaks and spaces are provided for readability only):</preamble>
-
-        <artwork><![CDATA[
-<!-- AM conformance options -->
-
-<Property type="http://docs.kantarainitiative.org/uma/1.0/client_reg">
-  yes
-</Property>
-<Property type="http://docs.kantarainitiative.org/uma/1.0/token_types">
-  artifact
-</Property>
-<Property type="http://docs.kantarainitiative.org/uma/1.0/host_authz_grant_types">
-  authorization_code
-</Property>
-<Property type="http://docs.kantarainitiative.org/uma/1.0/host_authz_grant_types">
-  client_credentials
-</Property>
-<Property type="http://docs.kantarainitiative.org/uma/1.0/claim_types">
-  openid
-</Property>
-
-<!-- Host protection API -->
-
-<Link
-  rel="http://docs.kantarainitiative.org/uma/1.0/host_token_uri"
-  href="https://am.example.com/host/token_uri">
-</Link>
-<Link
-  rel="http://docs.kantarainitiative.org/uma/1.0/host_user_uri"
-  href="https://am.example.com/host/user_uri">
-</Link>
-<Link
-  rel="http://docs.kantarainitiative.org/uma/1.0/host_resource_reg_uri"
-  href="https://am.example.com/host/resource_details_uri">
-</Link>
-<Link
-  rel="http://docs.kantarainitiative.org/uma/1.0/host_token_status_uri"
-  href="https://am.example.com/host/token_validation_uri">
-</Link>
-<Link
-  rel="http://docs.kantarainitiative.org/uma/1.0/host_perm_reg_uri"
-  href="https://am.example.com/host/scope_reg_uri">
-</Link>
-
-<!-- Requester authorization API -->
-
-<Link
-  rel="http://docs.kantarainitiative.org/uma/1.0/req_token_uri"
-  href="https://am.example.com/requester/token_uri">
-</Link>
-<Link
-  rel="http://docs.kantarainitiative.org/uma/1.0/req_perm_uri"
-  href="https://am.example.com/requester/perm_uri">
-</Link>       ]]></artwork>
-      </figure>
     </section>
 
     <section anchor="resource-reg-example"
@@ -2242,8 +2208,7 @@ If-Match: "2"
         </front>
       </reference>
 
-      <reference anchor="hostmeta"
-                 target="http://tools.ietf.org/html/draft-hammer-hostmeta-16">
+      <reference anchor="RFC6415" target="http://tools.ietf.org/html/rfc6415">
         <front>
           <title>Web Host Metadata</title>
 
@@ -2251,7 +2216,7 @@ If-Match: "2"
             <organization>Yahoo!</organization>
           </author>
 
-          <date day="20" month="May" year="2011" />
+          <date day="" month="October" year="2011" />
         </front>
       </reference>
 
