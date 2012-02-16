@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-03"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-04"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="2" month="February" year="2012" />
+    <date day="15" month="February" year="2012" />
 
     <abstract>
       <t>This specification defines the User-Managed Access (UMA) core
@@ -285,8 +285,8 @@
             submits requester access tokens that have accompanied an access
             request, to learn what currently valid permissions are associated
             with them. This specification defines a mandatory-to-implement
-            token type, "artifact", which REQUIRES the host to use this
-            endpoint (see <xref target="h-am-token-validation"></xref>).</t>
+            token type, "bearer", which REQUIRES the host to use this endpoint
+            (see <xref target="h-am-token-validation"></xref>).</t>
           </list></t>
 
         <t>The AM presents the following endpoints to the requester as part of
@@ -409,14 +409,13 @@
             <t hangText="token_types_supported"><vspace />REQUIRED. Access
             token types produced by this AM. The property value is an array of
             string values. Currently the only string value for this property
-            defined by this specification is "artifact", meaning an opaque
-            token string whose associations the host MUST determine through a
-            token status interaction with the AM (see <xref
-            target="h-am-token-validation"></xref>). The AM is REQUIRED to
-            support the artifact token type, and to supply this string value
-            explicitly. The AM MAY declare its support for additional access
-            token types by assigning each one a unique absolute URI in a
-            string value in the array.</t>
+            defined by this specification is "bearer", whose associations the
+            host MUST determine through a token status interaction with the AM
+            (see <xref target="h-am-token-validation"></xref>). The AM is
+            REQUIRED to support the bearer token type, and to supply this
+            string value explicitly. The AM MAY declare its support for
+            additional access token types by assigning each one a unique
+            absolute URI in a string value in the array.</t>
 
             <t hangText="host_grant_types_supported"><vspace />REQUIRED. OAuth
             grant types supported by this AM. The property value is an array
@@ -500,7 +499,7 @@
 "issuer":"https://example.com",
 "dynamic_client_registration_supported":"yes",
 "token_types_supported":[
-  "artifact"
+  "bearer"
 ],
 "host_grant_types_supported":[
   "authorization_code",
@@ -520,8 +519,9 @@
         </figure>
 
         <t>AM configuration data MAY contain extension properties that are not
-        defined in this specification. The names of extension properties MUST
-        consist of a fully qualified URL, or begin with "x-" or "X-".</t>
+        defined in this specification. Extension names that are unprotected
+        from collisions are outside the scope of the current
+        specification.</t>
       </section>
     </section>
 
@@ -664,9 +664,9 @@
           </figure>
 
           <t>Scope descriptions MAY contain extension properties that are not
-          defined in this specification. The names of extension properties
-          MUST consist of a fully qualified URL, or begin with "x-" or
-          "X-".</t>
+          defined in this specification. Extension names that are unprotected
+          from collisions are outside the scope of the current
+          specification.</t>
 
           <t>A host MUST list a resource set's available scopes using URI
           references (as defined in <xref target="resource-set-desc"></xref>).
@@ -733,9 +733,9 @@
           </figure>
 
           <t>Resource set descriptions MAY contain extension properties that
-          are not defined in this specification. The names of extension
-          properties MUST consist of a fully qualified URL or begin with "x-"
-          or "X-".</t>
+          are not defined in this specification. Extension names that are
+          unprotected from collisions are outside the scope of the current
+          specification.</t>
 
           <t>When a host creates or updates a resource set description (see
           <xref target="reg-api"></xref>), the AM MUST attempt to retrieve the
@@ -1291,23 +1291,18 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
       <section anchor="h-am-token-validation"
                title="Host-AM: Ask for Requester Access Token Status">
         <t>In this specification, the only access token type that is mandatory
-        to implement is "artifact" (see <xref target="am-endpoints"></xref>).
-        On receiving a requester access token of this type in an access
-        attempt, the host MUST ask the AM for that token's status. If it has a
-        cached token status description available that has not expired yet, it
-        MAY use it instead. Profiles defining alternate token types MAY
-        require, allow, or prohibit the token status request-response
-        interaction as appropriate.</t>
+        to implement is "bearer" (see <xref target="am-endpoints"></xref>). On
+        receiving a requester access token of this type in an access attempt,
+        the host MUST ask the AM for that token's status. If it has a cached
+        token status description available that has not expired yet, it MAY
+        use it instead. Profiles defining alternate token types MAY require,
+        allow, or prohibit the token status request-response interaction as
+        appropriate.</t>
 
         <t>In order to request the AM for a token's status, the host makes the
         request to the AM with a POST request to the AM's token status
         endpoint. The body of the HTTP request message contains a JSON
-        document providing the requester access token and the IP address of
-        the requester's request. The host MAY, at its discretion, instead
-        supply the originating IP address indicated in the requester's
-        X-Forwarded-For: header value. The IP address or originating IP
-        address is advisory only; the AM MAY ignore it for purposes of its own
-        token validation process.</t>
+        document providing the requester access token.</t>
 
         <t>The host gains access to the token status endpoint by presenting
         its own host access token in the request.</t>
@@ -1319,8 +1314,7 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         own host access token in the authorization header of the request, the
         requester's access token appears in the request body. A GET operation
         would expose the message to being recorded in AM access logs. The
-        "artifact" token type, which is mandatory for AMs to implement, is a
-        type of bearer token.</t>
+        "bearer" token type is mandatory for AMs to implement.</t>
 
         <figure>
           <preamble>Example of a request to the token validation endpoint that
@@ -1336,8 +1330,7 @@ Content-Type: application/json
 {
   "token": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
   "resource_set_id": "112210f47de98100",
-  "host_id": "photoz.example.com",
-  "ipaddr": "192.168.1.1"
+  "host_id": "photoz.example.com"
 }
 ]]></artwork>
         </figure>

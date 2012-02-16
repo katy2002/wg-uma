@@ -143,10 +143,10 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">T. Hardjono, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">MIT</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">February 2, 2012</td></tr>
-<tr><td class="header">Expires: August 5, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">February 15, 2012</td></tr>
+<tr><td class="header">Expires: August 18, 2012</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-03</h1>
+<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-04</h1>
 
 <h3>Abstract</h3>
 
@@ -167,7 +167,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on August 5, 2012.</p>
+This Internet-Draft will expire on August 18, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -413,7 +413,7 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 <dd>The endpoint at which the host registers permissions that it anticipates a requester will shortly be asking for from the AM.
 </dd>
 <dt>token status endpoint</dt>
-<dd>The endpoint at which the host submits requester access tokens that have accompanied an access request, to learn what currently valid permissions are associated with them. This specification defines a mandatory-to-implement token type, "artifact", which REQUIRES the host to use this endpoint (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>).
+<dd>The endpoint at which the host submits requester access tokens that have accompanied an access request, to learn what currently valid permissions are associated with them. This specification defines a mandatory-to-implement token type, "bearer", which REQUIRES the host to use this endpoint (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>).
 </dd>
 </dl></blockquote>
 
@@ -472,7 +472,7 @@ AM Configuration Data</h3>
 <dd>OPTIONAL. Whether dynamic client registration, such as through <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, is supported for both hosts and requesters. The value, if this property is present, the value MUST be the string "yes" (dynamic registration is supported, using an unspecified method) or "no" (it is not supported; hosts and requesters are required to pre-register). The default is AM-specific. This property is not currently extensible. (This conformance option is largely a placeholder for now.)
 </dd>
 <dt>token_types_supported</dt>
-<dd>REQUIRED. Access token types produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "artifact", meaning an opaque token string whose associations the host MUST determine through a token status interaction with the AM (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>). The AM is REQUIRED to support the artifact token type, and to supply this string value explicitly. The AM MAY declare its support for additional access token types by assigning each one a unique absolute URI in a string value in the array.
+<dd>REQUIRED. Access token types produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", whose associations the host MUST determine through a token status interaction with the AM (see <a class='info' href='#h-am-token-validation'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Access Token Status</span><span>)</span></a>). The AM is REQUIRED to support the bearer token type, and to supply this string value explicitly. The AM MAY declare its support for additional access token types by assigning each one a unique absolute URI in a string value in the array.
 </dd>
 <dt>host_grant_types_supported</dt>
 <dd>REQUIRED. OAuth grant types supported by this AM. The property value is an array of string values. Each string value MUST be one of the grant_type values defined in <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>, or alternatively an extension grant type indicated by a unique absolute URI. The AM is REQUIRED to support the "authorization_code" and "client_credentials" grant types, and to supply these values explicitly. The authorization_code grant type is primarily intended for use with hosts, and the client_credentials grant type is primarily intended for use with requesters.
@@ -511,7 +511,7 @@ AM Configuration Data</h3>
 "issuer":"https://example.com",
 "dynamic_client_registration_supported":"yes",
 "token_types_supported":[
-  "artifact"
+  "bearer"
 ],
 "host_grant_types_supported":[
   "authorization_code",
@@ -528,7 +528,7 @@ AM Configuration Data</h3>
 "requester_token_endpoint":"https://am.example.com/requester/token_uri",
 "permission_request_endpoint":"https://am.example.com/requester/perm_uri"
 }</pre></div>
-<p>AM configuration data MAY contain extension properties that are not defined in this specification. The names of extension properties MUST consist of a fully qualified URL, or begin with "x-" or "X-".
+<p>AM configuration data MAY contain extension properties that are not defined in this specification. Extension names that are unprotected from collisions are outside the scope of the current specification.
 </p>
 <a name="protecting-a-resource"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -619,7 +619,7 @@ Scope Descriptions</h3>
   "icon_uri": "http://www.example.com/icons/reading-glasses"
 }
 </pre></div>
-<p>Scope descriptions MAY contain extension properties that are not defined in this specification. The names of extension properties MUST consist of a fully qualified URL, or begin with "x-" or "X-".
+<p>Scope descriptions MAY contain extension properties that are not defined in this specification. Extension names that are unprotected from collisions are outside the scope of the current specification.
 </p>
 <p>A host MUST list a resource set's available scopes using URI references (as defined in <a class='info' href='#resource-set-desc'>Section&nbsp;2.4.2<span> (</span><span class='info'>Resource Set Descriptions</span><span>)</span></a>). The scopes available for use at any one host MUST have unique URI references so that the host's scope descriptions are uniquely distinguishable. A scope URI reference MAY include a fragment identifier. Scope descriptions MAY reside anywhere. The host is not required to self-host scope descriptions and may wish to point to standardized scope descriptions residing elsewhere. Scope description documents MUST be accessible to AMs through GET calls made to these URI references
 </p>
@@ -656,7 +656,7 @@ Resource Set Descriptions</h3>
   ]
 }
 </pre></div>
-<p>Resource set descriptions MAY contain extension properties that are not defined in this specification. The names of extension properties MUST consist of a fully qualified URL or begin with "x-" or "X-".
+<p>Resource set descriptions MAY contain extension properties that are not defined in this specification. Extension names that are unprotected from collisions are outside the scope of the current specification.
 </p>
 <p>When a host creates or updates a resource set description (see <a class='info' href='#reg-api'>Section&nbsp;2.4.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>), the AM MUST attempt to retrieve the referenced scope descriptions. It MAY cache such descriptions as long as indicated in the HTTP cache-control header for the scope description resource unless the resource set description is subsequently updated within the validity period. At the beginning of an authorizing user's login session at the AM, the AM MUST attempt to re-retrieve scope descriptions applying to that user whose cached versions have expired.
 </p>
@@ -997,13 +997,13 @@ Requester-AM: Requester Obtains Access Token</h3>
 <a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
 Host-AM: Ask for Requester Access Token Status</h3>
 
-<p>In this specification, the only access token type that is mandatory to implement is "artifact" (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). On receiving a requester access token of this type in an access attempt, the host MUST ask the AM for that token's status. If it has a cached token status description available that has not expired yet, it MAY use it instead. Profiles defining alternate token types MAY require, allow, or prohibit the token status request-response interaction as appropriate.
+<p>In this specification, the only access token type that is mandatory to implement is "bearer" (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). On receiving a requester access token of this type in an access attempt, the host MUST ask the AM for that token's status. If it has a cached token status description available that has not expired yet, it MAY use it instead. Profiles defining alternate token types MAY require, allow, or prohibit the token status request-response interaction as appropriate.
 </p>
-<p>In order to request the AM for a token's status, the host makes the request to the AM with a POST request to the AM's token status endpoint. The body of the HTTP request message contains a JSON document providing the requester access token and the IP address of the requester's request. The host MAY, at its discretion, instead supply the originating IP address indicated in the requester's X-Forwarded-For: header value. The IP address or originating IP address is advisory only; the AM MAY ignore it for purposes of its own token validation process.
+<p>In order to request the AM for a token's status, the host makes the request to the AM with a POST request to the AM's token status endpoint. The body of the HTTP request message contains a JSON document providing the requester access token.
 </p>
 <p>The host gains access to the token status endpoint by presenting its own host access token in the request.
 </p>
-<p>Note that although the host's request is a safe operation, which normally would use the GET operation, this specification dictates the use of POST because it is advantageous for security in cases where the requester access token is a bearer token. Since the host provides its own host access token in the authorization header of the request, the requester's access token appears in the request body. A GET operation would expose the message to being recorded in AM access logs. The "artifact" token type, which is mandatory for AMs to implement, is a type of bearer token.
+<p>Note that although the host's request is a safe operation, which normally would use the GET operation, this specification dictates the use of POST because it is advantageous for security in cases where the requester access token is a bearer token. Since the host provides its own host access token in the authorization header of the request, the requester's access token appears in the request body. A GET operation would expose the message to being recorded in AM access logs. The "bearer" token type is mandatory for AMs to implement.
 </p>
 <p>Example of a request to the token validation endpoint that provides the host access token in the header:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1016,8 +1016,7 @@ Content-Type: application/json
 {
   "token": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
   "resource_set_id": "112210f47de98100",
-  "host_id": "photoz.example.com",
-  "ipaddr": "192.168.1.1"
+  "host_id": "photoz.example.com"
 }
 </pre></div>
 <p>The AM returns the token's status in an HTTP response using the 200 OK status code, containing a JSON document supplying the token status description. The token status description either contains all of the permissions that are currently valid for this requester access token at the host in question (and thus for the requesting party on whose behalf it is acting), or indicates that the token is invalid (see <a class='info' href='#scope-discussion'>Section&nbsp;1.4<span> (</span><span class='info'>Scopes, Resource Sets, Permissions, and Authorization</span><span>)</span></a>). The AM MAY set a cache period for the returned token status description that allows the host to reuse it over some period of time when it later sees the same requester access token.
