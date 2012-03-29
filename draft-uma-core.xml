@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-03C"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-04"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="18" month="March" year="2012" />
+    <date day="29" month="March" year="2012" />
 
     <abstract>
       <t>This specification defines the User-Managed Access (UMA) core
@@ -279,7 +279,9 @@
             <t hangText="token endpoint">Part of standard OAuth, as profiled
             by UMA. The endpoint at which the host asks for a PAT and the
             requester asks for an AAT. (The AM may also choose to issue a
-            refresh token.)</t>
+            refresh token.) This specification makes the OAuth token profile
+            "bearer" mandatory for the AM to implement. The AM can declare its
+            ability to handle other token profiles.</t>
 
             <t hangText="user authorization endpoint">Part of standard OAuth,
             as profiled by UMA. The endpoint to which the host or requester
@@ -291,7 +293,7 @@
 
         <t>The AM presents the following endpoints to the host as part of its
         protection API; these endpoints are OAuth-protected and require a PAT
-        for access, which the "protection" OAuth scope is required:<list
+        for access, for which the "protection" OAuth scope is required:<list
             hangIndent="6" style="hanging">
             <t hangText="resource set registration endpoint">The endpoint at
             which the host registers resource sets it wants the AM to protect.
@@ -306,8 +308,9 @@
             <t hangText="RPT status endpoint">The endpoint at which the host
             submits (forwards) an RPT that has accompanied an access request,
             to learn what currently valid permissions are associated with it.
-            This specification defines a mandatory-to-implement token type,
-            "bearer", which REQUIRES the host to use this endpoint (see <xref
+            This specification defines an UMA token profile, "bearer", which
+            is mandatory for the AM to implement and which, if used, REQUIRES
+            the host to use this endpoint (see <xref
             target="h-am-rpt-status"></xref>).</t>
           </list></t>
 
@@ -332,11 +335,14 @@
 
         <t>Similarly to OAuth authorization servers, an UMA AM has the
         opportunity to manage the validity periods of the access tokens, the
-        corresponding refresh tokens, and even the client credentials that it
-        issues. Different lifetime strategies may be suitable for different
-        resources and scopes of access, and the AM has the opportunity to give
-        the authorizing user control through policy. These options are all
-        outside the scope of this specification.</t>
+        corresponding refresh tokens (in the case of the PAT and AAT), and
+        even the client credentials that it issues. Different lifetime
+        strategies may be suitable for different resources and scopes of
+        access, and the AM has the opportunity to give the authorizing user
+        control through policy. These options are all outside the scope of
+        this specification.</t>
+
+        <t>The "bearer" type and any associated protocol </t>
       </section>
 
       <section anchor="scope-discussion"
@@ -420,28 +426,28 @@
             AM-specific. This property is not currently extensible. (This
             conformance option is largely a placeholder for now.)</t>
 
-            <t hangText="oauth_token_types_supported"><vspace />REQUIRED. PAT
-            and AAT types produced by this AM. The property value is an array
-            of string values. Currently the only string value for this
-            property defined by this specification is "bearer", whose
-            associations the host MUST determine through a token status
-            interaction with the AM (see <xref
-            target="h-am-rpt-status"></xref>). The AM is REQUIRED to support
-            the "bearer" token type, and to supply this string value
-            explicitly. The AM MAY declare its support for additional access
-            token types by assigning each one a unique absolute URI in a
-            string value in the array.</t>
+            <t hangText="oauth_token_profiles_supported"><vspace />REQUIRED.
+            PAT and AAT profiles produced by this AM. The property value is an
+            array of string values. Currently the only string value for this
+            property defined by this specification is "bearer", corresponding
+            to the OAuth bearer token profile <xref
+            target="OAuth-bearer"></xref>. The AM is REQUIRED to support this
+            profile, and to supply this string value explicitly. The AM MAY
+            declare its support for additional access token profiles by
+            providing a unique absolute URI in a string value in the array for
+            each one.</t>
 
-            <t hangText="uma_token_types_supported"><vspace />REQUIRED. RPT
+            <t hangText="uma_token_profiles_supported"><vspace />REQUIRED. RPT
             types produced by this AM. The property value is an array of
             string values. Currently the only string value for this property
             defined by this specification is "bearer", whose associations the
             host MUST determine through a token status interaction with the AM
-            (see <xref target="h-am-rpt-status"></xref>). The AM is REQUIRED
-            to support the "bearer" token type, and to supply this string
-            value explicitly. The AM MAY declare its support for additional
-            access token types by assigning each one a unique absolute URI in
-            a string value in the array.</t>
+            (see <xref target="h-am-rpt-status"></xref> for the definition of
+            this profile). The AM is REQUIRED to support the UMA "bearer"
+            token profile, and to supply this string value explicitly. The AM
+            MAY declare its support for RPTs using additional UMA token
+            profiles by providing a unique absolute URI in a string value in
+            the array for each one.</t>
 
             <t hangText="oauth_grant_types_supported"><vspace />REQUIRED.
             OAuth grant types supported by this AM in issuing PATs and AATs.
@@ -450,14 +456,15 @@
             target="OAuth2"></xref>, or alternatively an extension grant type
             indicated by a unique absolute URI.</t>
 
-            <t hangText="claim_types_supported"><vspace />OPTIONAL. Claim
+            <t hangText="claim_profiles_supported"><vspace />OPTIONAL. Claim
             formats and associated sub-protocols for gathering claims from
             requesting parties, as supported by this AM. The property value is
             an array of string values. Currently the only string value for
             this property defined by this specification is "openid", for which
             details are supplied in <xref target="trusted-claims"></xref>. The
-            AM MAY declare its support for additional claim types by assigning
-            each one a unique absolute URI in a string value in the array.</t>
+            AM MAY declare its support for additional claim profiles by
+            assigning a unique absolute URI in a string value in the array for
+            each one.</t>
 
             <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
             at which the host or requester asks the AM for a PAT or AAT,
@@ -506,16 +513,16 @@
 "version":"1.0",
 "issuer":"https://example.com",
 "dynamic_client_registration_supported":"yes",
-"oauth_token_types_supported":[
+"oauth_token_profiles_supported":[
   "bearer"
 ],
-"uma_token_types_supported":[
+"uma_token_profiles_supported":[
   "bearer"
 ],
 "oauth_grant_types_supported":[
   "authorization_code"
 ],
-"claim_types_supported":[
+"claim_profiles_supported":[
   "openid"
 ],
 "token_endpoint":"https://am.example.com/token_uri",
@@ -1336,15 +1343,15 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
         <t>An RPT that a requester provides to a host in order to get access
         is associated with a set of permissions that govern whether the
         requester is authorized for access. The token's nature and format are
-        dictated by its type; its type might allow it to be self-contained,
-        such that the host is able to ascertain its status locally, or might
-        require or allow the host to make a run-time status request of the AM
-        that issued the token. This specification makes one type of RPT
-        mandatory to implement: the "bearer" type, as indicated in the
-        "uma_token_types_supported" property in the configuration data (see
-        <xref target="am-endpoints"></xref>). This section defines the
-        requirements for the "bearer" RPT type. Profiles defining alternate
-        RPT types MAY require, allow, or prohibit the RPT status
+        dictated by its defined profile; the profile might allow it to be
+        self-contained, such that the host is able to ascertain its status
+        locally, or might require or allow the host to make a run-time status
+        request of the AM that issued the token. This specification makes one
+        type of RPT mandatory to implement: the "bearer" profile, as indicated
+        in the "uma_token_profiles_supported" property in the configuration
+        data (see <xref target="am-endpoints"></xref>). This section defines
+        the requirements for the "bearer" UMA token profile. Profiles defining
+        alternate RPT types MAY require, allow, or prohibit the RPT status
         request-response interaction as appropriate, and MAY define token
         formats different from the format defined in this section.</t>
 
@@ -1545,24 +1552,22 @@ Content-Type: application/uma-rpt-status+json
           target="authz-flows"></xref>), and ultimately responds to the
           request positively or negatively.</t>
 
-          <t>The requester performs a GET or POST on the permission endpoint,
+          <t>The requester performs a POST on the permission endpoint,
           supplying: <list style="symbols">
               <t>The permission ticket it received from the host</t>
 
               <t>Its RPT, if it already has one</t>
 
-              <t>A state property (to help avoid replay attacks)</t>
-
-              <t>A redirect URL</t>
-
-              <t>A callback URL</t>
+              <t>Its own AAT in the header in order to gain access to the
+              permission endpoint</t>
             </list></t>
 
-          <t>The AM MUST support GET requests to this endpoint and MAY support
-          POST requests; if it supports POST, the endpoint MUST use SSL/TLS.
-          (Requesters will tend to prefer POST when they want to sign the
-          request message and preserve certain URL information; however, GET
-          typically provides a smoother user experience.)</t>
+          <t>The endpoint MUST use SSL/TLS. This specification dictates the
+          use of POST because it is advantageous for security in cases where
+          the RPT is a bearer token. Since the requester provides its own
+          authorization API token in the authorization header of the request,
+          the RPT appears in the request body. A GET operation would expose
+          the message to being recorded in AM access logs.</t>
 
           <t>If the AM determines that the requesting party meets the
           authorization criteria set out by the authorizing user's policy (see
@@ -1622,6 +1627,15 @@ WWW-Authenticate: Bearer realm="example",
               definitively not authorized for this permission according to
               user policy. The AM SHOULD respond with the HTTP 403 (Forbidden)
               status code.</t>
+
+              <t hangText="need_claims">The AM is unable to determine whether
+              the requester is authorized for this permission without
+              gathering claims from the requesting party. The AM SHOULD
+              respond with the HTTP 403 (Forbidden) status code. The requester
+              is therefore not authorized, but has the opportunity to engage
+              the requesting party in a claims-gathering flow with the AM (see
+              <xref target="authz-flows"></xref>) to potentially become
+              authorized.</t>
             </list></t>
 
           <figure>
@@ -1642,7 +1656,7 @@ Cache-Control: no-store
         </section>
       </section>
 
-      <section anchor="authz-flows" title="Authorization Flows">
+      <section anchor="authz-flows" title="Claims-Gathering Flows">
         <t>The AM MUST base its decisions to add permissions to RPTs on user
         policies. The nature of these policies is outside the scope of UMA,
         but generally speaking, they can be thought of as either independent
@@ -1659,14 +1673,14 @@ Cache-Control: no-store
         for handling human-driven requester apps and an optional solution for
         gathering standardized claims from that end-user, and allows for
         extensions to support other solutions for this use case and other use
-        cases. The AM SHOULD document its claims-handling ability in its XRD
-        configuration data through the claim_types_supported property (see
+        cases. The AM SHOULD document its claims-handling ability in its
+        configuration data through the claim_profiles_supported property (see
         <xref target="am-endpoints"></xref>). For the business-level and legal
         implications of different technical authorization flows, see <xref
         target="UMA-trustmodel"></xref>.</t>
 
         <section anchor="trusted-claims-human-driven"
-                 title="Authorization Flow for Requester Apps Operated by End-Users">
+                 title="Claims-Gathering Flow for Requester Apps Operated by End-Users">
           <t>A requester app, whether browser-based or native, is operated by
           a natural person (human end-user) in one of two typical
           situations:<list style="symbols">
@@ -1689,8 +1703,10 @@ Cache-Control: no-store
           the order is significant.</t>
 
           <t>An end-user-driven requester app MUST redirect the end-user to
-          the AM to complete the process of authorization. If the AM succeeds
-          in adding the requested permission, it MUST redirect the end-user
+          the AM to complete the process of authorization, providing a
+          redirect URL, a callback URL, and a method for retaining state
+          across the claims-gathering interaction. If the AM succeeds in
+          adding the requested permission, it MUST redirect the end-user
           requesting party back to the requester app when reporting
           success.</t>
 
@@ -1700,7 +1716,7 @@ Cache-Control: no-store
             from an end-user requesting party, leveraging OpenID Connect
             mechanisms to transmit claims from distributed sources. If it
             supports this option, the AM MUST supply the "openid" value for
-            one of its claim_types_supported values in its AM configuration
+            one of its claim_profiles_supported values in its AM configuration
             data (see <xref target="am-endpoints"></xref> for how to formulate
             this data).</t>
 
@@ -2212,6 +2228,19 @@ If-Match: "2"
         </front>
       </reference>
 
+      <reference anchor="OAuth-bearer"
+                 target="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer">
+        <front>
+          <title>The OAuth 2.0 Authorization Protocol: Bearer Tokens</title>
+
+          <author fullname="M. Jones">
+            <organization></organization>
+          </author>
+
+          <date day="12" month="March" year="2012" />
+        </front>
+      </reference>
+
       <reference anchor="OAuth-SAML"
                  target="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">
         <front>
@@ -2362,6 +2391,16 @@ If-Match: "2"
 
           <t>The Phase 2/3 flow has changed and been simplified to match the
           requirements of the new AAT and RPT.</t>
+
+          <t>Token types are now called token profiles, and this is reflected
+          in the configuration parameter names. Claim types are now called
+          claim profiles, and this is also reflected in the configuration
+          parameter name.</t>
+
+          <t>The requester now asks for permission in a back-channel
+          interaction, and the AM now produces a need_claims error that
+          instructs the requester to use a claims-gathering flow (renamed from
+          "authorization flow").</t>
         </list></t>
     </section>
   </back>

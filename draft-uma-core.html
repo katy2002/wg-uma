@@ -143,10 +143,10 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">T. Hardjono, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">MIT</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">March 18, 2012</td></tr>
-<tr><td class="header">Expires: September 19, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">March 29, 2012</td></tr>
+<tr><td class="header">Expires: September 30, 2012</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-03C</h1>
+<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-04</h1>
 
 <h3>Abstract</h3>
 
@@ -167,7 +167,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on September 19, 2012.</p>
+This Internet-Draft will expire on September 30, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -239,9 +239,9 @@ Requester Obtains Authorization API Token<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#r-am-authz-scope">3.4.4.</a>&nbsp;
 Requester-AM: Request Authorization to Add Permission<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#authz-flows">3.5.</a>&nbsp;
-Authorization Flows<br />
+Claims-Gathering Flows<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#trusted-claims-human-driven">3.5.1.</a>&nbsp;
-Authorization Flow for Requester Apps Operated by End-Users<br />
+Claims-Gathering Flow for Requester Apps Operated by End-Users<br />
 <a href="#errors">4.</a>&nbsp;
 Error Messages<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#oauth-error-response">4.1.</a>&nbsp;
@@ -405,14 +405,14 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 <p>The AM presents standard OAuth endpoints for token issuance and user authorization in protecting its own UMA APIs. Hosts asking to use the protection API would be issued a PAT. Requesters asking to use the authorization API would be issued an AAT:</p>
 <blockquote class="text"><dl>
 <dt>token endpoint</dt>
-<dd>Part of standard OAuth, as profiled by UMA. The endpoint at which the host asks for a PAT and the requester asks for an AAT. (The AM may also choose to issue a refresh token.)
+<dd>Part of standard OAuth, as profiled by UMA. The endpoint at which the host asks for a PAT and the requester asks for an AAT. (The AM may also choose to issue a refresh token.) This specification makes the OAuth token profile "bearer" mandatory for the AM to implement. The AM can declare its ability to handle other token profiles.
 </dd>
 <dt>user authorization endpoint</dt>
 <dd>Part of standard OAuth, as profiled by UMA. The endpoint to which the host or requester redirects an authorizing user or end-user requesting party, respectively, to authorize it to use this AM in resource protection or authorization, if the OAuth authorization code grant type (mandatory for the AM to implement) is being used.
 </dd>
 </dl></blockquote>
 
-<p>The AM presents the following endpoints to the host as part of its protection API; these endpoints are OAuth-protected and require a PAT for access, which the "protection" OAuth scope is required:</p>
+<p>The AM presents the following endpoints to the host as part of its protection API; these endpoints are OAuth-protected and require a PAT for access, for which the "protection" OAuth scope is required:</p>
 <blockquote class="text"><dl>
 <dt>resource set registration endpoint</dt>
 <dd>The endpoint at which the host registers resource sets it wants the AM to protect. The operations available at this endpoint constitute a resource set registration API that is a subset of the protection API (see <a class='info' href='#reg-api'>Section&nbsp;2.4.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>).
@@ -421,7 +421,7 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 <dd>The endpoint at which the host registers permissions that it anticipates a requester will shortly be asking for from the AM.
 </dd>
 <dt>RPT status endpoint</dt>
-<dd>The endpoint at which the host submits (forwards) an RPT that has accompanied an access request, to learn what currently valid permissions are associated with it. This specification defines a mandatory-to-implement token type, "bearer", which REQUIRES the host to use this endpoint (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Permission Token Status</span><span>)</span></a>).
+<dd>The endpoint at which the host submits (forwards) an RPT that has accompanied an access request, to learn what currently valid permissions are associated with it. This specification defines an UMA token profile, "bearer", which is mandatory for the AM to implement and which, if used, REQUIRES the host to use this endpoint (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Permission Token Status</span><span>)</span></a>).
 </dd>
 </dl></blockquote>
 
@@ -439,7 +439,9 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 </dd>
 </dl></blockquote>
 
-<p>Similarly to OAuth authorization servers, an UMA AM has the opportunity to manage the validity periods of the access tokens, the corresponding refresh tokens, and even the client credentials that it issues. Different lifetime strategies may be suitable for different resources and scopes of access, and the AM has the opportunity to give the authorizing user control through policy. These options are all outside the scope of this specification.
+<p>Similarly to OAuth authorization servers, an UMA AM has the opportunity to manage the validity periods of the access tokens, the corresponding refresh tokens (in the case of the PAT and AAT), and even the client credentials that it issues. Different lifetime strategies may be suitable for different resources and scopes of access, and the AM has the opportunity to give the authorizing user control through policy. These options are all outside the scope of this specification.
+</p>
+<p>The "bearer" type and any associated protocol 
 </p>
 <a name="scope-discussion"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -474,17 +476,17 @@ AM Configuration Data</h3>
 <dt>dynamic_client_registration_supported</dt>
 <dd>OPTIONAL. Whether dynamic client registration, such as through <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, is supported for both hosts and requesters. The value, if this property is present, the value MUST be the string "yes" (dynamic registration is supported, using an unspecified method) or "no" (it is not supported; hosts and requesters are required to pre-register). The default is AM-specific. This property is not currently extensible. (This conformance option is largely a placeholder for now.)
 </dd>
-<dt>oauth_token_types_supported</dt>
-<dd>REQUIRED. PAT and AAT types produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", whose associations the host MUST determine through a token status interaction with the AM (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Permission Token Status</span><span>)</span></a>). The AM is REQUIRED to support the "bearer" token type, and to supply this string value explicitly. The AM MAY declare its support for additional access token types by assigning each one a unique absolute URI in a string value in the array.
+<dt>oauth_token_profiles_supported</dt>
+<dd>REQUIRED. PAT and AAT profiles produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", corresponding to the OAuth bearer token profile <a class='info' href='#OAuth-bearer'>[OAuth&#8209;bearer]<span> (</span><span class='info'>, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; March&nbsp;2012.</span><span>)</span></a>. The AM is REQUIRED to support this profile, and to supply this string value explicitly. The AM MAY declare its support for additional access token profiles by providing a unique absolute URI in a string value in the array for each one.
 </dd>
-<dt>uma_token_types_supported</dt>
-<dd>REQUIRED. RPT types produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", whose associations the host MUST determine through a token status interaction with the AM (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Permission Token Status</span><span>)</span></a>). The AM is REQUIRED to support the "bearer" token type, and to supply this string value explicitly. The AM MAY declare its support for additional access token types by assigning each one a unique absolute URI in a string value in the array.
+<dt>uma_token_profiles_supported</dt>
+<dd>REQUIRED. RPT types produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", whose associations the host MUST determine through a token status interaction with the AM (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Permission Token Status</span><span>)</span></a> for the definition of this profile). The AM is REQUIRED to support the UMA "bearer" token profile, and to supply this string value explicitly. The AM MAY declare its support for RPTs using additional UMA token profiles by providing a unique absolute URI in a string value in the array for each one.
 </dd>
 <dt>oauth_grant_types_supported</dt>
 <dd>REQUIRED. OAuth grant types supported by this AM in issuing PATs and AATs. The property value is an array of string values. Each string value MUST be one of the grant_type values defined in <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>, or alternatively an extension grant type indicated by a unique absolute URI.
 </dd>
-<dt>claim_types_supported</dt>
-<dd>OPTIONAL. Claim formats and associated sub-protocols for gathering claims from requesting parties, as supported by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "openid", for which details are supplied in <a class='info' href='#trusted-claims'>Section&nbsp;3.5.1.1<span> (</span><span class='info'>Gathering Claims from Requesting End-Users with OpenID Connect</span><span>)</span></a>. The AM MAY declare its support for additional claim types by assigning each one a unique absolute URI in a string value in the array.
+<dt>claim_profiles_supported</dt>
+<dd>OPTIONAL. Claim formats and associated sub-protocols for gathering claims from requesting parties, as supported by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "openid", for which details are supplied in <a class='info' href='#trusted-claims'>Section&nbsp;3.5.1.1<span> (</span><span class='info'>Gathering Claims from Requesting End-Users with OpenID Connect</span><span>)</span></a>. The AM MAY declare its support for additional claim profiles by assigning a unique absolute URI in a string value in the array for each one.
 </dd>
 <dt>token_endpoint</dt>
 <dd>REQUIRED. The endpoint URI at which the host or requester asks the AM for a PAT or AAT, respectively. A requested scope of "protection" results in a PAT. A requested scope of "authorization" results in an AAT. Available HTTP methods are as defined by <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> for a token endpoint.
@@ -511,16 +513,16 @@ AM Configuration Data</h3>
 "version":"1.0",
 "issuer":"https://example.com",
 "dynamic_client_registration_supported":"yes",
-"oauth_token_types_supported":[
+"oauth_token_profiles_supported":[
   "bearer"
 ],
-"uma_token_types_supported":[
+"uma_token_profiles_supported":[
   "bearer"
 ],
 "oauth_grant_types_supported":[
   "authorization_code"
 ],
-"claim_types_supported":[
+"claim_profiles_supported":[
   "openid"
 ],
 "token_endpoint":"https://am.example.com/token_uri",
@@ -879,7 +881,7 @@ Getting Authorization and Accessing a Resource</h3>
 </dd>
 </dl></blockquote>
 </li>
-<li>If the requester received a permission ticket, it requests the permission (and a valid RPT for the host in question, as necessary) from the AM (<a class='info' href='#r-am-obtain-permission'>Section&nbsp;3.4<span> (</span><span class='info'>Requester-AM: Ask for Permission and Requester Permission Token</span><span>)</span></a>). The AM then engages in an authorization flow that MAY require claims from the requesting party prior to authorizing a new permission to be associated with an RPT (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Authorization Flows</span><span>)</span></a>).
+<li>If the requester received a permission ticket, it requests the permission (and a valid RPT for the host in question, as necessary) from the AM (<a class='info' href='#r-am-obtain-permission'>Section&nbsp;3.4<span> (</span><span class='info'>Requester-AM: Ask for Permission and Requester Permission Token</span><span>)</span></a>). The AM then engages in an authorization flow that MAY require claims from the requesting party prior to authorizing a new permission to be associated with an RPT (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>).
 <blockquote class="text"><dl>
 <dt>A.</dt>
 <dd>If the requester does not already have an AAT at the appropriate AM to be able to use its permission request endpoint, it first engages in an OAuth grant flow to obtain one (see <a class='info' href='#authz-api-token'>Section&nbsp;3.4.3<span> (</span><span class='info'>Requester Obtains Authorization API Token</span><span>)</span></a>).
@@ -1022,7 +1024,7 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 <a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
 Host-AM: Ask for Requester Permission Token Status</h3>
 
-<p>An RPT that a requester provides to a host in order to get access is associated with a set of permissions that govern whether the requester is authorized for access. The token's nature and format are dictated by its type; its type might allow it to be self-contained, such that the host is able to ascertain its status locally, or might require or allow the host to make a run-time status request of the AM that issued the token. This specification makes one type of RPT mandatory to implement: the "bearer" type, as indicated in the "uma_token_types_supported" property in the configuration data (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). This section defines the requirements for the "bearer" RPT type.  Profiles defining alternate RPT types MAY require, allow, or prohibit the RPT status request-response interaction as appropriate, and MAY define token formats different from the format defined in this section.
+<p>An RPT that a requester provides to a host in order to get access is associated with a set of permissions that govern whether the requester is authorized for access. The token's nature and format are dictated by its defined profile; the profile might allow it to be self-contained, such that the host is able to ascertain its status locally, or might require or allow the host to make a run-time status request of the AM that issued the token. This specification makes one type of RPT mandatory to implement: the "bearer" profile, as indicated in the "uma_token_profiles_supported" property in the configuration data (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). This section defines the requirements for the "bearer" UMA token profile. Profiles defining alternate RPT types MAY require, allow, or prohibit the RPT status request-response interaction as appropriate, and MAY define token formats different from the format defined in this section.
 </p>
 <p>On receiving an RPT of the "bearer" type in an access attempt, the host MUST ask the AM for the RPT's status unless it has an unexpired cached status description for this RPT, which it MAY use instead. In order to ask the AM for an RPT's status, the host makes the request to the AM with a POST request to the AM's RPT status endpoint. The body of the HTTP request message contains a JSON document providing the RPT. The host gains access to the RPT status endpoint by presenting its own PAT in the request.
 </p>
@@ -1130,25 +1132,21 @@ Requester-AM: Request Authorization to Add Permission</h3>
 
 <p>Once in possession of a permission ticket and an AAT, the requester asks the AM to authorize it to have the permission for the sought-for access. If the requester already has an RPT for this host, it presents the RPT in its request for the new permission.
 </p>
-<p>In this interaction, the requester uses the AM's permission request endpoint. The AM uses the ticket to look up the previously registered permission, maps the requested permission to operative user policies, undergoes any authorization flows required (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Authorization Flows</span><span>)</span></a>), and ultimately responds to the request positively or negatively.
+<p>In this interaction, the requester uses the AM's permission request endpoint. The AM uses the ticket to look up the previously registered permission, maps the requested permission to operative user policies, undergoes any authorization flows required (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>), and ultimately responds to the request positively or negatively.
 </p>
-<p>The requester performs a GET or POST on the permission endpoint, supplying: </p>
+<p>The requester performs a POST on the permission endpoint, supplying: </p>
 <ul class="text">
 <li>The permission ticket it received from the host
 </li>
 <li>Its RPT, if it already has one
 </li>
-<li>A state property (to help avoid replay attacks)
-</li>
-<li>A redirect URL
-</li>
-<li>A callback URL
+<li>Its own AAT in the header in order to gain access to the permission endpoint
 </li>
 </ul>
 
-<p>The AM MUST support GET requests to this endpoint and MAY support POST requests; if it supports POST, the endpoint MUST use SSL/TLS. (Requesters will tend to prefer POST when they want to sign the request message and preserve certain URL information; however, GET typically provides a smoother user experience.)
+<p>The endpoint MUST use SSL/TLS. This specification dictates the use of POST because it is advantageous for security in cases where the RPT is a bearer token. Since the requester provides its own authorization API token in the authorization header of the request, the RPT appears in the request body. A GET operation would expose the message to being recorded in AM access logs.
 </p>
-<p>If the AM determines that the requesting party meets the authorization criteria set out by the authorizing user's policy (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Authorization Flows</span><span>)</span></a>), it responds with an HTTP 201 (Created) status code and provides a new or updated RPT:
+<p>If the AM determines that the requesting party meets the authorization criteria set out by the authorizing user's policy (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>), it responds with an HTTP 201 (Created) status code and provides a new or updated RPT:
 </p>
 <p>For example:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1183,6 +1181,9 @@ WWW-Authenticate: Bearer realm="example",
 <dt>not_authorized_permission</dt>
 <dd>The requester is definitively not authorized for this permission according to user policy. The AM SHOULD respond with the HTTP 403 (Forbidden) status code.
 </dd>
+<dt>need_claims</dt>
+<dd>The AM is unable to determine whether the requester is authorized for this permission without gathering claims from the requesting party. The AM SHOULD respond with the HTTP 403 (Forbidden) status code. The requester is therefore not authorized, but has the opportunity to engage the requesting party in a claims-gathering flow with the AM (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>) to potentially become authorized.
+</dd>
 </dl></blockquote>
 
 <p>For example:
@@ -1200,16 +1201,16 @@ Cache-Control: no-store
 <a name="authz-flows"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.5"></a><h3>3.5.&nbsp;
-Authorization Flows</h3>
+Claims-Gathering Flows</h3>
 
 <p>The AM MUST base its decisions to add permissions to RPTs on user policies. The nature of these policies is outside the scope of UMA, but generally speaking, they can be thought of as either independent of requesting-party features (for example, time of day) or dependent on requesting-party features (for example, whether they are over 18). This latter case requires the requesting party to transmit identity claims to the AM in some fashion.
 </p>
-<p>The process for requesting and providing claims is extensible and may have a variety of dependencies on the type of requesting party (for example, natural person or legal person) and the type of requester application (for example, browser, native app, or autonomously running web service). UMA currently provides a framework for handling human-driven requester apps and an optional solution for gathering standardized claims from that end-user, and allows for extensions to support other solutions for this use case and other use cases. The AM SHOULD document its claims-handling ability in its XRD configuration data through the claim_types_supported property (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). For the business-level and legal implications of different technical authorization flows, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; February&nbsp;2011.</span><span>)</span></a>.
+<p>The process for requesting and providing claims is extensible and may have a variety of dependencies on the type of requesting party (for example, natural person or legal person) and the type of requester application (for example, browser, native app, or autonomously running web service). UMA currently provides a framework for handling human-driven requester apps and an optional solution for gathering standardized claims from that end-user, and allows for extensions to support other solutions for this use case and other use cases. The AM SHOULD document its claims-handling ability in its configuration data through the claim_profiles_supported property (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). For the business-level and legal implications of different technical authorization flows, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; February&nbsp;2011.</span><span>)</span></a>.
 </p>
 <a name="trusted-claims-human-driven"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.5.1"></a><h3>3.5.1.&nbsp;
-Authorization Flow for Requester Apps Operated by End-Users</h3>
+Claims-Gathering Flow for Requester Apps Operated by End-Users</h3>
 
 <p>A requester app, whether browser-based or native, is operated by a natural person (human end-user) in one of two typical situations:</p>
 <ul class="text">
@@ -1221,14 +1222,14 @@ Authorization Flow for Requester Apps Operated by End-Users</h3>
 
 <p>The AM has a variety of options at this point for satisfying the authorizing user's policy; this specification does not dictate a single answer. For example, the AM could require the end-user operating the requester app to register for and/or log in to a local AM account, or to fill in a questionnaire, or to complete a purchase. It could even require several of these operations, where the order is significant.
 </p>
-<p>An end-user-driven requester app MUST redirect the end-user to the AM to complete the process of authorization. If the AM succeeds in adding the requested permission, it MUST redirect the end-user requesting party back to the requester app when reporting success.
+<p>An end-user-driven requester app MUST redirect the end-user to the AM to complete the process of authorization, providing a redirect URL, a callback URL, and a method for retaining state across the claims-gathering interaction. If the AM succeeds in adding the requested permission, it MUST redirect the end-user requesting party back to the requester app when reporting success.
 </p>
 <a name="trusted-claims"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.5.1.1"></a><h3>3.5.1.1.&nbsp;
 Gathering Claims from Requesting End-Users with OpenID Connect</h3>
 
-<p>An AM MAY use OpenID Connect as one means of gathering claims from an end-user requesting party, leveraging OpenID Connect mechanisms to transmit claims from distributed sources. If it supports this option, the AM MUST supply the "openid" value for one of its claim_types_supported values in its AM configuration data (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a> for how to formulate this data).
+<p>An AM MAY use OpenID Connect as one means of gathering claims from an end-user requesting party, leveraging OpenID Connect mechanisms to transmit claims from distributed sources. If it supports this option, the AM MUST supply the "openid" value for one of its claim_profiles_supported values in its AM configuration data (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a> for how to formulate this data).
 </p>
 <p>To conform to this option, the AM MUST do the following:</p>
 <ul class="text">
@@ -1547,6 +1548,8 @@ References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="OAuth-SAML">[OAuth-SAML]</a></td>
 <td class="author-text">Campbell, B., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">SAML 2.0 Bearer Assertion Grant Type Profile for OAuth 2.0</a>,&rdquo; August&nbsp;2011.</td></tr>
+<tr><td class="author-text" valign="top"><a name="OAuth-bearer">[OAuth-bearer]</a></td>
+<td class="author-text">&ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer">The OAuth 2.0 Authorization Protocol: Bearer Tokens</a>,&rdquo; March&nbsp;2012.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OAuth2">[OAuth2]</a></td>
 <td class="author-text">Hammer-Lahav, E., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2">The OAuth 2.0 Protocol</a>,&rdquo; September&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OCDynClientReg">[OCDynClientReg]</a></td>
@@ -1597,6 +1600,10 @@ Document History</h3>
 <li>The configuration data format has changed to reflect the changes above.
 </li>
 <li>The Phase 2/3 flow has changed and been simplified to match the requirements of the new AAT and RPT.
+</li>
+<li>Token types are now called token profiles, and this is reflected in the configuration parameter names. Claim types are now called claim profiles, and this is also reflected in the configuration parameter name.
+</li>
+<li>The requester now asks for permission in a back-channel interaction, and the AM now produces a need_claims error that instructs the requester to use a claims-gathering flow (renamed from "authorization flow").
 </li>
 </ul>
 
