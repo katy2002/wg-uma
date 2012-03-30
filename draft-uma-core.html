@@ -441,8 +441,6 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 
 <p>Similarly to OAuth authorization servers, an UMA AM has the opportunity to manage the validity periods of the access tokens, the corresponding refresh tokens (in the case of the PAT and AAT), and even the client credentials that it issues. Different lifetime strategies may be suitable for different resources and scopes of access, and the AM has the opportunity to give the authorizing user control through policy. These options are all outside the scope of this specification.
 </p>
-<p>The "bearer" type and any associated protocol 
-</p>
 <a name="scope-discussion"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
@@ -881,7 +879,7 @@ Getting Authorization and Accessing a Resource</h3>
 </dd>
 </dl></blockquote>
 </li>
-<li>If the requester received a permission ticket, it requests the permission (and a valid RPT for the host in question, as necessary) from the AM (<a class='info' href='#r-am-obtain-permission'>Section&nbsp;3.4<span> (</span><span class='info'>Requester-AM: Ask for Permission and Requester Permission Token</span><span>)</span></a>). The AM then engages in an authorization flow that MAY require claims from the requesting party prior to authorizing a new permission to be associated with an RPT (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>).
+<li>If the requester received a permission ticket, it requests the permission (and a valid RPT for the host in question, as necessary) from the AM (<a class='info' href='#r-am-obtain-permission'>Section&nbsp;3.4<span> (</span><span class='info'>Requester-AM: Ask for Permission and Requester Permission Token</span><span>)</span></a>). The AM MAY then engage in a claims-gathering flow with the requesting party prior to authorizing a new permission to be associated with an RPT (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>).
 <blockquote class="text"><dl>
 <dt>A.</dt>
 <dd>If the requester does not already have an AAT at the appropriate AM to be able to use its permission request endpoint, it first engages in an OAuth grant flow to obtain one (see <a class='info' href='#authz-api-token'>Section&nbsp;3.4.3<span> (</span><span class='info'>Requester Obtains Authorization API Token</span><span>)</span></a>).
@@ -901,6 +899,19 @@ Requester-Host: Attempt Access at Protected Resource</h3>
 </p>
 <p>The requester typically attempts to access the desired resource at the host directly (for example, when a human operator of the requester software clicks on a thumbnail representation of the resource). The requester is expected to discover, or be provisioned or configured with, knowledge of the protected resource and its location out of band. Further, the requester is expected to acquire its own knowledge about the application-specific methods made available by the host for operating on this protected resource (such as viewing it with a GET method, or transforming it with some complex API call) and the possible scopes of access.
 </p>
+<p>Example of a request carrying no RPT:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+GET /album/photo.jpg HTTP/1.1
+Host: photoz.example.com
+...
+</pre></div>
+<p>Example of a request carrying an RPT:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+GET /album/photo.jpg HTTP/1.1
+Authorization: Bearer vF9dft4qmT
+Host: photoz.example.com
+...
+</pre></div>
 <p>The host responds in one of the following ways.
 </p>
 <a name="no-rpt"></a><br /><hr />
@@ -910,7 +921,7 @@ Requester Presents No Requester Permission Token</h3>
 
 <p>If the requester does not present an RPT with the request, the Host SHOULD register a permission with the AM that would suffice for that scope of access (see <a class='info' href='#h-am-register-permission'>Section&nbsp;3.2<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>), and then respond to the requester with the HTTP 401 (Unauthorized) status code, along with providing the AM's URI in the header of the message and the permission ticket it just received from the AM in the body in JSON form.
 </p>
-<p>For example:
+<p>Example of the host's response:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 HTTP/1.1 401 Unauthorized
 WWW-Authenticate: UMA realm="example",
@@ -928,7 +939,7 @@ Requester Presents a Requester Permission Token That Is Invalid Or Has Insuffici
 
 <p>If the requester presents an RPT with its request, the host SHOULD determine the RPT's status (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Permission Token Status</span><span>)</span></a>). If the token is invalid or has insufficient permission for the type of access sought, the Host SHOULD register a permission with the AM that would suffice for that scope of access (see <a class='info' href='#h-am-register-permission'>Section&nbsp;3.2<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>), and then respond to the requester with the HTTP 403 (Forbidden) status code, along with providing the AM's URI in the header of the message and the permission ticket it just received from the AM in the body in JSON form.
 </p>
-<p>For example:
+<p>Example of the host's response:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 HTTP/1.1 403 Forbidden
 WWW-Authenticate: UMA realm="example",
@@ -946,7 +957,7 @@ Requester Presents a Valid Requester Permission Token</h3>
 
 <p>If the RPT's status is associated with at least one currently valid permission that applies to the scope of access attempted by the requester (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host-AM: Ask for Requester Permission Token Status</span><span>)</span></a>), the host MUST give access to the desired resource.
 </p>
-<p>For example:
+<p>Example of the host's response:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 HTTP/1.1 200 OK
 Content-Type: image/jpeg
@@ -1132,6 +1143,17 @@ Requester-AM: Request Authorization to Add Permission</h3>
 
 <p>Once in possession of a permission ticket and an AAT, the requester asks the AM to authorize it to have the permission for the sought-for access. If the requester already has an RPT for this host, it presents the RPT in its request for the new permission.
 </p>
+<p>Example of a request message containing a permission ticket and RPT:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>POST /token_status HTTP/1.1
+Host: am.example.com
+Authorization: Bearer jwfLG53^sad$#f
+Content-Type: application/json
+...
+
+{
+ "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+ "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
+}</pre></div>
 <p>In this interaction, the requester uses the AM's permission request endpoint. The AM uses the ticket to look up the previously registered permission, maps the requested permission to operative user policies, undergoes any authorization flows required (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>), and ultimately responds to the request positively or negatively.
 </p>
 <p>The requester performs a POST on the permission endpoint, supplying: </p>
@@ -1144,7 +1166,7 @@ Requester-AM: Request Authorization to Add Permission</h3>
 </li>
 </ul>
 
-<p>The endpoint MUST use SSL/TLS. This specification dictates the use of POST because it is advantageous for security in cases where the RPT is a bearer token. Since the requester provides its own authorization API token in the authorization header of the request, the RPT appears in the request body. A GET operation would expose the message to being recorded in AM access logs.
+<p>The endpoint MUST use SSL/TLS.
 </p>
 <p>If the AM determines that the requesting party meets the authorization criteria set out by the authorizing user's policy (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>), it responds with an HTTP 201 (Created) status code and provides a new or updated RPT:
 </p>
@@ -1170,7 +1192,7 @@ WWW-Authenticate: Bearer realm="example",
   error="invalid_token",
   error_description="The access token expired"
 </pre></div>
-<p>If the AM ultimately does not add the requested permission, it responds using the appropriate HTTP status code (typically 400 or 403), and includes one of the following error codes in the response (see <a class='info' href='#uma-error-response'>Section&nbsp;4.2<span> (</span><span class='info'>UMA Error Responses</span><span>)</span></a>): </p>
+<p>If the AM does not add the requested permission, it responds using the appropriate HTTP status code (typically 400 or 403), and includes one of the following error codes in the response (see <a class='info' href='#uma-error-response'>Section&nbsp;4.2<span> (</span><span class='info'>UMA Error Responses</span><span>)</span></a>): </p>
 <blockquote class="text"><dl>
 <dt>invalid_requester_ticket</dt>
 <dd>The provided ticket was not found at the AM. The AM SHOULD respond with the HTTP 400 (Bad Request) status code.
@@ -1222,8 +1244,19 @@ Claims-Gathering Flow for Requester Apps Operated by End-Users</h3>
 
 <p>The AM has a variety of options at this point for satisfying the authorizing user's policy; this specification does not dictate a single answer. For example, the AM could require the end-user operating the requester app to register for and/or log in to a local AM account, or to fill in a questionnaire, or to complete a purchase. It could even require several of these operations, where the order is significant.
 </p>
-<p>An end-user-driven requester app MUST redirect the end-user to the AM to complete the process of authorization, providing a redirect URL, a callback URL, and a method for retaining state across the claims-gathering interaction. If the AM succeeds in adding the requested permission, it MUST redirect the end-user requesting party back to the requester app when reporting success.
-</p>
+<p>An end-user-driven requester app MUST redirect the end-user to the AM to complete the process of authorization. The redirection MUST include a URI query parameter with the name "ticket" whose value conveys the permission ticket for which the need_claims error was received; for example, "ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de". Each claim profile MUST provide the following capabilities:</p>
+<blockquote class="text"><dl>
+<dt>redirect URI</dt>
+<dd>A means by which the requester MUST supply the URI to which the AM MUST redirect the requesting end-user at the end of the claims-gathering process.
+</dd>
+<dt>callback URI</dt>
+<dd>A means by which the requester OPTIONALLY supplies a callback URI for the AM to use.
+</dd>
+<dt>state</dt>
+<dd>A means by which the requester SHOULD supply an opaque value used to maintain state between the request and the callback; serves as a protection against XSRF attacks.
+</dd>
+</dl></blockquote>
+
 <a name="trusted-claims"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.5.1.1"></a><h3>3.5.1.1.&nbsp;
@@ -1240,6 +1273,8 @@ Gathering Claims from Requesting End-Users with OpenID Connect</h3>
 </ul>
 
 <p>The AM can then use any conforming OpenID Connect mechanisms and typical user interfaces for engaging with the UserInfo endpoints of OpenID Providers and Claims Providers, potentially allowing for the delivery of "trusted claims" (such as a verified email address or a date or birth) on which authorization policy may depend.
+</p>
+<p>This claim profile adheres to the requirements listed in <a class='info' href='#trusted-claims-human-driven'>Section&nbsp;3.5.1<span> (</span><span class='info'>Claims-Gathering Flow for Requester Apps Operated by End-Users</span><span>)</span></a> through the redirect_uri and state parameters on the OpenID Connect client's authorization request message.
 </p>
 <a name="errors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
