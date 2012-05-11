@@ -1,0 +1,550 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>Binding Obligations on User-Managed Access (UMA) Participants</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Binding Obligations on User-Managed Access (UMA) Participants">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">E. Maler, Ed.</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">XMLgrrl.com</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">May 9, 2012</td></tr>
+<tr><td class="header">Expires: November 10, 2012</td><td class="header">&nbsp;</td></tr>
+</table></td></tr></table>
+<h1><br />Binding Obligations on User-Managed Access (UMA) Participants<br />draft-maler-oauth-umatrust-00a</h1>
+
+<h3>Abstract</h3>
+
+<p>The User-Managed Access (UMA) core protocol provides a method for users to control access to their protected resources, residing on any number of host sites, through an authorization manager that governs access decisions based on user policy. This specification provides a contractual framework that defines the minimum obligations of entities that operate and use software that claims to conform to the UMA protocol. The overall goal of this specification is to support legal enforceability of any agreements made between the authorizing and requesting sides using UMA. The audience for this specification includes technologists, legal professionals, and operators of UMA-conforming services.
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on November 10, 2012.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2012 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#introduction">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor1">1.1.</a>&nbsp;
+Notational Conventions<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">1.2.</a>&nbsp;
+Sharing Constellations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">1.3.</a>&nbsp;
+How to Use the Contractual Framework<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">1.4.</a>&nbsp;
+Obligations Not in the Scope of the Contractual Framework<br />
+<a href="#clauses">2.</a>&nbsp;
+Binding Obligations on UMA Participants<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#terminology-clauses">2.1.</a>&nbsp;
+Terminology<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">2.2.</a>&nbsp;
+Obligations of the Requesting Party<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">2.3.</a>&nbsp;
+Obligations of the Requester Operator<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">2.4.</a>&nbsp;
+Obligations of the Host Operator<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">2.5.</a>&nbsp;
+Obligations of the AM Operator<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">2.6.</a>&nbsp;
+Obligations of the Authorizing Party<br />
+<a href="#anchor10">3.</a>&nbsp;
+Issues<br />
+<a href="#Acknowledgments">4.</a>&nbsp;
+Acknowledgments<br />
+<a href="#rfc.references1">5.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">5.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">5.2.</a>&nbsp;
+Informative References<br />
+<a href="#History">Appendix&nbsp;A.</a>&nbsp;
+Document History<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Author's Address<br />
+</p>
+<br clear="all" />
+
+<a name="introduction"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>The User-Managed Access (UMA) core protocol <a class='info' href='#UMAcore'>[UMAcore]<span> (</span><span class='info'>Hardjono, T., &ldquo;User-Managed Access (UMA) Core Protocol,&rdquo; April&nbsp;2012.</span><span>)</span></a> provides a method for users to control access to their protected resources, residing on any number of host sites, through an authorization manager that governs access decisions based on user policy. This specification provides a contractual framework that defines the minimum obligations of entities that operate and use software that claims to conform to the UMA protocol. The overall goal of this framework is to support legal enforceability of any agreements made between the authorizing and requesting sides using UMA. The audience for this specification includes technologists, legal professionals, and operators of UMA-conforming services.
+</p>
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+Notational Conventions</h3>
+
+<p>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this document are to be interpreted as described in <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+Sharing Constellations</h3>
+
+<p>UMA makes possible an end-to-end access sharing relationship between an Authorizing Party and a Requesting Party, with its primary goals being to constrain access according to the Authorizing Party's access policies and to require the Requesting Party to adhere to any obligations it consented to in the authorization process. Following are sample use cases that explore the potential differences in these obligations. Each constellation's requirements for successful user-managed access may be distinct.</p>
+<blockquote class="text"><dl>
+<dt>Person-to-self sharing</dt>
+<dd>This describes most types of today's OAuth-mediated access, for example, when Alice introduces the Klout service to her Twitter account. She uses both services herself, and wants them to communicate together on her behalf. Alice is both the Authorizing Party and the Requesting Party. In this circumstance, it's unlikely Alice will want to impose stringent contract terms on herself.
+</dd>
+<dt>Person-to-person sharing</dt>
+<dd>Today, many Web 2.0 sites offer some level of this control, but methods, strengths, and interfaces are inconsistent between sites and we're not able to reuse policies across sites. For example, Alice can share Flickr photos with Bob by adding him to her Flickr "friends" or "family" list or by mailing him a special link to a photo album. Or Alice can add Bob as a "friend" on Facebook. Alice is the Authorizing Party and Bob is the Requesting Party.
+</dd>
+<dt>Mediated person-to-organization sharing</dt>
+<dd>For example, Alice wants to give her dentist's office, DentalCare, temporary access to her calendar, to make it easier to schedule a series of root canal appointments. Carl, the office assistant, might be the actual person acting on behalf of the dental practice who sees Alice's calendar. Alice is the Authorizing Party, DentalCare is the Requesting Party, and Carl is the Requesting Party Agent. In this circumstance, Alice may require Carl to prove he is acting on behalf of DentalCare.
+</dd>
+<dt>Autonomous person-to-organization sharing</dt>
+<dd>For example, Alice has crafted a "personal request for proposals" (known as a pRFP among the Vendor Relationship Management community) because she's in the market for a new car, and she's willing to let car dealerships in her region of the country see the RFP and make her offers. Different car dealerships might use Web crawler services to go out and collect such RFPs, and these services will have to prove in automated fashion that they legitimately represent the right kind of business. Alice is the Authorizing Party and each dealership is a Requesting Party. In this circumstance, it makes no sense for an AM or Host to present a browser-interaction interface to each Requester since no human is sitting behind the latter.
+</dd>
+</dl></blockquote>
+
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
+How to Use the Contractual Framework</h3>
+
+<p>Contracts or laws that bind Entities that take part in UMA-based interactions MUST reuse, or incorporate by reference, the entirety of <a class='info' href='#clauses'>Section&nbsp;2<span> (</span><span class='info'>Binding Obligations on UMA Participants</span><span>)</span></a>. It forms the minimum set of obligations that these Entities MUST accept in order to use UMA. The Entities MAY adopt additional obligations, and MAY further refine or constrain the obligations listed here, but MUST NOT make these minimum obligations less strict. See <a class='info' href='#terminology-clauses'>Section&nbsp;2.1<span> (</span><span class='info'>Terminology</span><span>)</span></a> for definitions of the capitalized terms and the abbreviations used in this introductory section.
+</p>
+<p>Each clause takes the following form: "[Clause ID]. When [protocol interaction takes place], the [obligated party] gains an obligation to the [expecting party] to [behave in a particular way]." The clause ID uses the abbreviations T, R, RO, H, AM, and AP respectively for the Terminology, Requesting Party, Requester Operator, Host Operator, AM Operator, and Authorizing Party. Clauses are sometimes followed by non-normative explanatory comments, which are labeled with "Comments:".
+</p>
+<p>The Authorizing Party, AM Operator, Host Operator, and Requesting Party Entities take on binding obligations by interacting with the others using software that claims to be UMA-conforming. These obligations come as a result of specific protocol interactions. Following are the key interactions that result in obligations, along with references to the relevant sections in <a class='info' href='#UMAcore'>[UMAcore]<span> (</span><span class='info'>Hardjono, T., &ldquo;User-Managed Access (UMA) Core Protocol,&rdquo; April&nbsp;2012.</span><span>)</span></a> that define these interactions:</p>
+<ul class="text">
+<li>A Host responds to a Requester's access request: Section 3.
+</li>
+<li>An AM issues a protection API token (PAT) to a Host: Section 2.3.
+</li>
+<li>An AM issues an authorization API token (AAT) to a Requester: Section 3.4.3.
+</li>
+<li>An AM issues a requester permission token (RPT) to a Requester: Section 3.4.4.
+</li>
+<li>An AM grants a permission to a Requesting Party with a 201 response: Section 3.4.4.
+</li>
+<li>A Host checks the status of an RPT: Section 3.3.
+</li>
+<li>A Host registers a permission on behalf of a Requester: Section 3.2.
+</li>
+<li>A Requester supplies claims to an AM: Section 3.5.
+</li>
+<li>A Requester successfully receives access: Section 3.1.3.
+</li>
+</ul>
+
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
+Obligations Not in the Scope of the Contractual Framework</h3>
+
+<p>Requesting Party Agents have no UMA-dictated obligations, though they might have obligations as part of contractual agreements with other UMA-related Entities, for example, pairwise contracts or membership in trust frameworks. Additionally, Entities that are directly UMA-related might have obligations between themselves apart from the ones specified here. Following are some typical examples:</p>
+<ul class="text">
+<li>A Host Operator relies on an Authorizing Party to adhere to its terms of service (TOS) at the moment the latter initially registers for an account at the Host service of the former.
+</li>
+<li>An AM Operator relies on a Requester Operator, apart from any particular Requesting Party's usage of that web app, to adhere to the AM Operator's TOS for application programming interface (API) clients when the client app developer registers for client credentials or through "API-wrap" TOS.
+</li>
+<li>A Requesting Party relies on its employee to act as its Requesting Party Agent when the employee signs an employment agreement. The Authorizing Party's policy might require the Requesting Party to prove that the request is being mediated by a legitimate agent for that Entity. However, the Requesting Party itself is the one who might impose constraints on its workforce around keeping information learned in the course of business confidential, etc.
+</li>
+<li>A Requesting Party relies on a Requester Operator to adhere to any contractual agreement governing that service. For example, a car dealership may contract out to use a cloud service that crawls the Web looking for personal RFPs that meet the dealership's criteria.
+</li>
+<li>A Requester Operator relies on a Host Operator to be a trustworthy Entity for sourcing data controlled by a particular Authorizing Party. For example, in a scenario where the Requesting Party is also the Authorizing Party and is trying to fill in an online loan application through a financial service (the Requester), where the Host Operator provides credit risk data about the Authorizing User, the financial service Requester will want to authenticate the Host service in some fashion.
+</li>
+</ul>
+
+<a name="clauses"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Binding Obligations on UMA Participants</h3>
+
+<a name="terminology-clauses"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
+Terminology</h3>
+
+<p>
+</p>
+<p><strong>T1.</strong> This specification uses the following terms. Where terms are used without capitalization and are  not otherwise defined in the <a class='info' href='#UMAcore'>[UMAcore]<span> (</span><span class='info'>Hardjono, T., &ldquo;User-Managed Access (UMA) Core Protocol,&rdquo; April&nbsp;2012.</span><span>)</span></a>, they are used in their normal sense.</p>
+<blockquote class="text"><dl>
+<dt>Entity</dt>
+<dd>A natural person (that is, a human being) or a legal person (such as a corporation) with the legal capacity to take on contractual duties and obligations as a participant in an UMA interaction. Entities play various roles in achieving and seeking user-managed access, and the same Entity might serve in multiple contractual roles.
+</dd>
+<dt>Conformance</dt>
+<dd>Claimed or objectively tested compliance of a running software program or service with the requirements of the UMA core protocol, as defined in its specification. Software components play various roles in participating in the technical interactions necessary to achieve and seek user-managed access, and the same software component might serve in multiple technical roles.
+</dd>
+<dt>Authorizing Party</dt>
+<dd>An Entity in the conceptual role of the "user" in "User-Managed Access", typically but not exclusively a natural person, which uses and configures software services that fill the AM and Host roles in the UMA core protocol.
+</dd>
+<dt>Authorization Manager (AM)</dt>
+<dd>A software service that fills the "authorization manager (AM)" role as defined in the UMA core protocol.
+</dd>
+<dt>Authorization Manager (AM) Operator</dt>
+<dd>An Entity responsible for running and operating an AM.
+</dd>
+<dt>Host</dt>
+<dd>A software service that fills the "host" role as defined in the UMA core protocol.
+</dd>
+<dt>Host Operator</dt>
+<dd>An Entity responsible for running and operating a Host.
+</dd>
+<dt>Requester</dt>
+<dd>A software application or service that fills the "requester" role as defined in the UMA core protocol.
+</dd>
+<dt>Requester Operator</dt>
+<dd>An Entity responsible for running and operating a Requester.
+</dd>
+<dt>Requesting Party</dt>
+<dd>An Entity, either a natural or a legal person, which uses a Requester to seek access to a protected resource. The Requesting Party and the Authorizing Party may be the same Entity or different Entities.
+</dd>
+<dt>Requesting Party Agent</dt>
+<dd>An Entity, typically a natural person acting on behalf of a legal person, which uses a Requester to seek access to a protected resource on behalf of a Requesting Party.
+</dd>
+</dl></blockquote>
+
+<p>Comments: The <a class='info' href='#UETA'>[UETA]<span> (</span><span class='info'>Smedinghoff, T., &ldquo;Uniform Electronic Transactions Act,&rdquo; 1999.</span><span>)</span></a> defines two terms that are particularly relevant to understanding the interactions among UMA participants:</p>
+<ul class="text">
+<li>"'Automated transaction' means a transaction conducted or performed, in whole or in part, by electronic means or electronic records, in which the acts or records of one or both parties are not reviewed by an individual in the ordinary course in forming a contract, performing under an existing contract, or fulfilling an obligation required by the transaction."
+</li>
+<li>"'Electronic agent' means a computer program or an electronic or other automated means used independently to initiate an action or respond to electronic records or performances in whole or in part, without review or action by an individual."
+</li>
+</ul><p>Where a Requester is used by a human Requesting Party or a human Requesting Party Agent, at times human-computer interaction (HCI) will be required, but otherwise the access-attempt transaction is likely to be fully automatic from the perspective of the "requesting side". Furthermore, where the Authorizing Party and the Requesting Party are the same natural person, or where the Authorizing Party has set a policy that requires real-time approval through some out-of-band method, this person can expect to engage in HCI. Otherwise the access-attempt transaction is likely to be fully automatic from the perspective of the "authorizing side" because the access attempt is made without any requirement for the Authorizing Party to be present at run time.
+</p>
+<p><strong>T2.</strong> This specification uses the following abbreviations.</p>
+<blockquote class="text"><dl>
+<dt>AAT</dt>
+<dd>"Authorization API token", as defined in the UMA core protocol.
+</dd>
+<dt>PAT</dt>
+<dd>"Protection API token", as defined in the UMA core protocol.
+</dd>
+<dt>RPT</dt>
+<dd>Requester permission token", as defined in the UMA core protocol.
+</dd>
+<dt>UMA</dt>
+<dd>"User-Managed Access", the interoperability technology defined by the UMA core protocol and the other specifications it includes by reference (including this specification).
+</dd>
+</dl></blockquote>
+
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
+Obligations of the Requesting Party</h3>
+
+<p><strong>R1.</strong> When the Requester successfully receives access from a Host to a protected resource by wielding a valid requester permission token with a currently valid permission for the type of access sought, the Requesting Party gains a) an obligation to the Authorizing Party to adhere to promises it made in order to get access authorization granted, and b) a further obligation to the Authorizing Party not to further delegate a wider scope of access rights to the same resource to other Entities than the Requesting Party itself was authorized for.
+</p>
+<p>Comments: Previously, the requesting party asked for the permission from the AM and might have had to provide claims asserting willingness to adhere to data usage constraints imposed by the user. This is precisely the end-to-end access authorization agreement that UMA exists to forge. Accepting access to the protected resource binds the Requesting Party to the terms it agreed to, for example, only reading the resource rather than modifying it, or selling the data it contains if it agreed not to. Further, the restriction on scope of access is an attempt to put "chain-link confidentiality" (and other chain-linked constraints) into effect, as discussed in <a class='info' href='#ChainLink'>[ChainLink]<span> (</span><span class='info'>Hartzog, W., &ldquo;Chain-Link Confidentiality,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+</p>
+<p><strong>R2.</strong> When the AM issues an authorization API token to a Requester, the Requesting Party gains an obligation to the AM Operator to truthfully supply any self-asserted claims required for access authorization at this AM.
+</p>
+<p>Comments: Later, the Requesting Party might be asked to provide claims to support authorization processes at this AM, for accessing all resources protected by this AM, managed by any Authorizing Parties.The Requesting Party's responsibility to provide truthful claims in all these cases begins now. The Requesting Party can remove this duty by revoking the AAT.
+</p>
+<p><strong>R3.</strong> When the Requesting Party provides claims to an AM to satisfy the AM's authorization process, the Requesting Party gains an obligation to the AM Operator to truthfully supply any claims required for access authorization for the requested permission.
+</p>
+<p>Comments: Where claims are supplied that can be verified by the AM, the risk imposed by this need for "trust" can be reduced. Note that UMA defines an "OpenID Connect claim profile" that provides one way to collect trusted claims from third-party claim providers.
+</p>
+<p><strong>R4.</strong> When the AM issues a requester permission token to a Requester, the Requesting Party using that Requester gains an obligation to the Host Operator to represent the legitimate bearer of the requester permission token whenever it presents this token to the Host.
+</p>
+<p>Comments: In the case where the "bearer" UMA token profile is being used, the token cannot be bound in any meaningful way to the Entity to which it was originally issued, so the Requesting Party takes on the duty of protecting and not maliciously sharing the RPT. This is a recommended area of exploration for additional UMA token profiles that can effect higher levels of technical trust in order to rely less on business trust. For example, a new UMA token profile could mitigate this risk by using digital signatures to test the putative requesting party's right to possess the token.
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.3"></a><h3>2.3.&nbsp;
+Obligations of the Requester Operator</h3>
+
+<p><strong>RO1.</strong> When the Requester successfully receives access from a Host to a protected resource by wielding a valid requester permission token with a currently valid permission for the type of access sought, the Requester Operator gains an obligation to the Requesting Party to adhere to all existing obligations it has to the Requesting Party regarding data access, transformation, storage, and usage that it performs on the Requesting Party's behalf.
+</p>
+<p>Comments: The intent is for there to be no "leakage"; UMA should not enable a Requester Operator to handle information in a manner that is outside the scope of what has been previously agreed to with the Requesting Party, in the context of the Requesting Party's contract to use the Requester. This obligation is intended to put "chain-link confidentiality" (and other chain-linked constraints) into effect, as discussed in <a class='info' href='#ChainLink'>[ChainLink]<span> (</span><span class='info'>Hartzog, W., &ldquo;Chain-Link Confidentiality,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.4"></a><h3>2.4.&nbsp;
+Obligations of the Host Operator</h3>
+
+<p><strong>H1.</strong> When the AM issues a protection API token to the Host, the Host Operator gains an obligation to the Authorizing Party to outsource authorization to the AM Operator for the set of protectable resources for which it advertised this capability to the Authorizing Party, and to respect the access constraints represented by the permissions generated by the AM.
+</p>
+<p>Comments: Once the AM Operator becomes the Authorizing Party's authorization proxy, it begins relying on the Host Operator in other, more specific ways. The Host has the opportunity to inspect permissions later, but its responsibility for respecting them begins now. The Authorizing Party can remove this duty by revoking the PAT. When it is possible in OAuth to perform token revocation, the Host Operator can remove this duty itself by revoking the PAT.
+</p>
+<p><strong>H2.</strong> When the AM issues a protection API token to the Host, the Host Operator gains an obligation to the AM Operator to register resource sets and applicable actions accurately and timely according to the Authorizing Party&#8217;s wishes for protection.
+</p>
+<p>Comments: The Host has the opportunity to register resource sets later, but its responsibility for performing this task begins now. The Authorizing Party can remove this duty by revoking the PAT. When it is possible in OAuth to perform token revocation, the Host Operator can remove this duty itself by revoking the PAT.
+</p>
+<p><strong>H3.</strong> When the Host checks the status of a requester permision token, the Host Operator gains an obligation to the AM Operator to respect the status of permissions granted by the AM in allowing or disallowing access by the Requester.
+</p>
+<p>Comments: The Host Operator, as an Entity that is otherwise potentially not obligated to the AM Operator at all, carries a great deal of responsibility here not to allow access where the AM has not granted permission and to make every effort to grant access where the AM has granted permission. Its interpretation of scopes and permissions is not directly auditable by the AM. Further, issues can arise from the skew between permission validity periods and actual access. This is a recommended area of exploration for additional UMA token profiles that can effect higher levels of technical trust in order to rely less on business trust.
+</p>
+<p><strong>H4.</strong> When the Host responds in any fashion to a Requester's access request, the Host Operator gains an obligation to the Requesting Party to give accurate access to the protected resource according to whether the Requesting Party has permission to do so.
+</p>
+<p>Comments: The Host Operator, as an Entity that is otherwise potentially not obligated to the AM Operator at all, carries a great deal of responsibility here to make every effort to grant access where the AM has granted permission. Its interpretation of scopes and permissions is not directly auditable by the requester or AM. Further, issues can arise from the skew between permission validity periods and actual access. This is a recommended area of exploration for additional UMA token profiles that can effect higher levels of technical trust in order to rely less on business trust.
+</p>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.5"></a><h3>2.5.&nbsp;
+Obligations of the AM Operator</h3>
+
+<p><strong>AM1.</strong> When the AM issues a protection API token to the Host, the AM Operator gains an obligation to the Authorizing Party to collaborate with the Host Operator in protecting the user's resources managed at this Host.
+</p>
+<p>Comments: Later, the AM will require the Host to present the PAT whenever it uses the AM&#8217;s protection API on behalf of this Authorizing Party. The Authorizing Party can remove this duty by revoking the PAT. When it is possible in OAuth to perform token revocation, the Host Operator can remove this duty itself by revoking the PAT.
+</p>
+<p><strong>AM2.</strong> When the Host registers a permission at the AM, the AM Operator gains an obligation to the Host Operator to represent the user&#8217;s authorization policies accurately and timely the permissions it has granted.
+</p>
+<p>Comments: Later, when a Requester approaches the AM seeking that permission, the AM matches user policies to the requested permission to drive any requests for claims and its ultimate authorization decision, but its responsibility for performing this task begins now.
+</p>
+<p><strong>AM3.</strong> When the AM issues an authorization API token to a Requester, the AM Operator gains an obligation to the Requesting Party to request only claims that support the purpose of satisfying the user's policy.
+</p>
+<p>Comments: Later, the AM might ask the requesting party to provide claims for specific permission purposes, but its responsibility begins now. The Requesting Party can remove this duty by revoking the AAT. When it is possible in OAuth to perform token revocation, the Requester Operator can remove this duty itself by revoking the AAT.
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.6"></a><h3>2.6.&nbsp;
+Obligations of the Authorizing Party</h3>
+
+<p><strong>AP1.</strong> When the AM grants a Requester a permission, the Authorizing Party gains an obligation to the Requesting Party to respect the boundaries of data usage constraints placed on the Requesting Party in the form of requests for promissory claims driven by the Authorizing Party's policy at the AM.
+</p>
+<p>Comments: For example, the Authorizing User cannot subsequently protest or sue the Requesting Party for resale of the user&#8217;s data if this was allowed by the terms of the granted permission.
+</p>
+<p><strong>AP1.</strong> When the AM issues a protection API token to the Host, the Authorizing Party gains an obligation to the AM Operator to introduce the desired Host to this AM in outsourcing protection of this host's resources.
+</p>
+<p>Comments: How the Host learned of the AM's location is out of band for UMA; it is the Authorizing Party's responsibility to check that it has been redirected to an acceptable AM before the AM successfully issues the PAT. The Authorizing Party can remove this obligation by revoking the PAT.
+</p>
+<p><strong>AP3.</strong> When the AM issues a protection API token to the Host, the Authorizing Party gains an obligation to the Host Operator to introduce the desired AM to this Host in outsourcing protection of this host's resources.
+</p>
+<p>Comments: Once the AM Operator becomes the Authorizing Party&#8217;s authorization proxy, the Host Operator begins relying on it in other, more specific ways. How the Authorizing Party indicated the desired AM to the host is out of band for UMA; it is the Authorizing Party's responsibility to check that it has been redirected to an acceptable AM before the AM successfully issues the PAT. The Authorizing Party can remove this obligation by revoking the PAT.
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Issues</h3>
+
+<p>Following are open issues on this specification.</p>
+<ol class="text">
+<li>When we finish revising Section 3.4.x around the RPT and permission endpoints, we should be sure to check and revise the mention of "An AM grants a permission to a Requesting Party with a 201 response: Section 3.4.4." as required.
+</li>
+<li>Is there reason to define Authorizing Party Agent (parallel with Requesting Party Agent) for enterprise UMA case cases where the user is acting on behalf of their company?
+</li>
+</ol>
+
+<a name="Acknowledgments"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Acknowledgments</h3>
+
+<p>The current editor of this specification is Eve Maler of XMLgrrl.com. The following people are co-authors:</p>
+<ul class="text">
+<li>Domenico Catalano, Oracle Corp.
+</li>
+<li>Kevin Cox, Edentiti
+</li>
+<li>Sal D'Agostino, IDmachines
+</li>
+<li>Susan Morrow, Avoco Secure
+</li>
+</ul>
+
+<p>Additional contributors to this specification include the Kantara UMA Work Group participants, a list of whom can be found at <a class='info' href='#UMAnitarians'>[UMAnitarians]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Participant Roster,&rdquo; 2012.</span><span>)</span></a>. The co-authors and contributors thank Scott David, Dazza Greenwood, and Tom Smedinghoff for offering their legal expertise and insight in the preparation of this specification.
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>5.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="UMAcore">[UMAcore]</a></td>
+<td class="author-text">Hardjono, T., &ldquo;<a href="http://docs.kantarainitiative.org/uma/draft-uma-core.html">User-Managed Access (UMA) Core Protocol</a>,&rdquo; April&nbsp;2012.</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>5.2.&nbsp;Informative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="ChainLink">[ChainLink]</a></td>
+<td class="author-text">Hartzog, W., &ldquo;<a href="http://cyberlaw.stanford.edu/publications/chain-link-confidentiality">Chain-Link Confidentiality</a>,&rdquo; April&nbsp;2012.</td></tr>
+<tr><td class="author-text" valign="top"><a name="UETA">[UETA]</a></td>
+<td class="author-text">Smedinghoff, T., &ldquo;<a href="http://www.law.upenn.edu/bll/archives/ulc/fnact99/1990s/ueta99.htm">Uniform Electronic Transactions Act</a>,&rdquo; 1999.</td></tr>
+<tr><td class="author-text" valign="top"><a name="UMAnitarians">[UMAnitarians]</a></td>
+<td class="author-text">Maler, E., &ldquo;<a href="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">UMA Participant Roster</a>,&rdquo; 2012.</td></tr>
+</table>
+
+<a name="History"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Document History</h3>
+
+<p>NOTE: To be removed by RFC editor before publication as an RFC.
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Author's Address</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Eve Maler (editor)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">XMLgrrl.com</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:eve@xmlgrrl.com">eve@xmlgrrl.com</a></td></tr>
+</table>
+</body></html>
