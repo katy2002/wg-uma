@@ -143,10 +143,10 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">T. Hardjono, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">MIT</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">April 30, 2012</td></tr>
-<tr><td class="header">Expires: November 1, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">June 12, 2012</td></tr>
+<tr><td class="header">Expires: December 14, 2012</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-04B</h1>
+<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-05A</h1>
 
 <h3>Abstract</h3>
 
@@ -167,7 +167,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on November 1, 2012.</p>
+This Internet-Draft will expire on December 14, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -231,7 +231,7 @@ Requester-Host: Attempt Access at Protected Resource<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#no-rpt">3.1.1.</a>&nbsp;
 Requester Presents No Requester Permission Token<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#insufficient-rpt">3.1.2.</a>&nbsp;
-Requester Presents a Requester Permission Token That Is Invalid Or Has Insufficient Permission<br />
+Requester Presents a Requester Permission Token That Has Insufficient Permission<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sufficient-rpt">3.1.3.</a>&nbsp;
 Requester Presents a Valid Requester Permission Token with Sufficient Permissions<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#h-am-register-permission">3.2.</a>&nbsp;
@@ -241,7 +241,7 @@ Host Determines the Requester Permission Token Status<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#uma-bearer-token-profile">3.3.1.</a>&nbsp;
 UMA Bearer Token Profile<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#r-am-obtain-permission">3.4.</a>&nbsp;
-Requester-AM: Ask for Permission and Requester Permission Token<br />
+Requester-AM: Ask for Requester Permission Token and Permission<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">3.4.1.</a>&nbsp;
 Requester Looks Up AM Configuration Data<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#requester-registers-with-am">3.4.2.</a>&nbsp;
@@ -446,10 +446,10 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 <p>The AM presents the following endpoint to the requester as part of its authorization API; this endpoint is OAuth-protected and requires an AAT for access, for which the "authorization" OAuth scope is required:</p>
 <blockquote class="text"><dl>
 <dt>RPT endpoint</dt>
-<dd>The endpoint at which the requester asks the AM for the issuance of a new or refreshed RPT relating to this requesting party, host, and AM.
+<dd>The endpoint at which the requester asks the AM for the issuance of an RPT relating to this requesting party, host, and AM.
 </dd>
 <dt>permission request endpoint</dt>
-<dd>The endpoint at which the requester asks for authorization to have permissions associated with an RPT and, as necessary.
+<dd>The endpoint at which the requester asks for authorization to have permissions associated with an RPT.
 </dd>
 </dl></blockquote>
 
@@ -891,12 +891,14 @@ Getting Authorization and Accessing a Resource</h3>
 <li>The requester attempts access at a particular protected resource at a host (see <a class='info' href='#r-h-attempt-access'>Section&nbsp;3.1<span> (</span><span class='info'>Requester-Host: Attempt Access at Protected Resource</span><span>)</span></a>).
 <blockquote class="text"><dl>
 <dt>A.</dt>
-<dd>If the access attempt is unaccompanied by a requester permission token (RPT) the host registers a suitable permission request at the AM (see <a class='info' href='#h-am-register-permission'>Section&nbsp;3.2<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>) and provides the resulting permission ticket from the AM and redirects the requester to the AM so that it can obtain an RPT (see <a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>) and attempt to obtain the permission that matches the ticket (see <a class='info' href='#r-am-obtain-permission'>Section&nbsp;3.4<span> (</span><span class='info'>Requester-AM: Ask for Permission and Requester Permission Token</span><span>)</span></a>). The host delivers the permission ticket to the requester through an HTTP 401 (Unauthorized) response message with instructions on where to go next.
+<dd>If the access attempt is unaccompanied by a requester access token, the host responds immediately with an HTTP 401 (Unauthorized) response and instructions on where to go to obtain one (see <a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>).
 </dd>
 <dt>B.</dt>
-<dd>If the access attempt was accompanied by an RPT, the host checks the token's status (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host Determines the Requester Permission Token Status</span><span>)</span></a>).
+<dd>If the access attempt was accompanied by an RPT, the host checks the RPT's status (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host Determines the Requester Permission Token Status</span><span>)</span></a>).
 <ol class="text">
-<li>If the RPT is invalid (for example, not applicable to this host), or has insufficient permissions (see <a class='info' href='#insufficient-rpt'>Section&nbsp;3.1.2<span> (</span><span class='info'>Requester Presents a Requester Permission Token That Is Invalid Or Has Insufficient Permission</span><span>)</span></a>), the host registers a suitable permission request at the AM (see <a class='info' href='#h-am-register-permission'>Section&nbsp;3.2<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>) and then responds to the requester with an HTTP 403 (Forbidden) response and instructions on where to go to request a valid RPT and attempt to obtain the permission that matches the ticket.
+<li>If the RPT is invalid (for example, it is not applicable to this host), the host responds to the requester with an HTTP 401 (Unauthorized) response and instructions on where to go to obtain a token (see <a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>).
+</li>
+<li>If the RPT is valid but has insufficient permission, the host registers a suitable permission request on the requester's behalf at the AM (see <a class='info' href='#h-am-register-permission'>Section&nbsp;3.2<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>), and then responds to the requester with an HTTP 403 (Forbidden) response and instructions on where to go to request authorization to associate that permission with its token (see <a class='info' href='#insufficient-rpt'>Section&nbsp;3.1.2<span> (</span><span class='info'>Requester Presents a Requester Permission Token That Has Insufficient Permission</span><span>)</span></a>).
 </li>
 <li>If the RPT is valid, and at least one of the permissions associated with the token matches the scope of attempted access, the host responds to the requester's access attempt with an HTTP 200 (OK) response and a representation of the resource (see <a class='info' href='#sufficient-rpt'>Section&nbsp;3.1.3<span> (</span><span class='info'>Requester Presents a Valid Requester Permission Token with Sufficient Permissions</span><span>)</span></a>).
 </li>
@@ -904,7 +906,9 @@ Getting Authorization and Accessing a Resource</h3>
 </dd>
 </dl></blockquote>
 </li>
-<li>If the requester received a permission ticket, it requests a valid RPT if it does not have one, and subsequently the permission that matches the ticket, from the AM (<a class='info' href='#r-am-obtain-permission'>Section&nbsp;3.4<span> (</span><span class='info'>Requester-AM: Ask for Permission and Requester Permission Token</span><span>)</span></a>). If the AM needs requesting party claims in order to assess this requester's suitability to have the permission, it engage in a claims-gathering flow with the requesting party (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>).
+<li>If the requester (possessing no RPT or an invalid RPT) received a 401 response and an RPT endpoint, it then requests an RPT from that endpoint (see <a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>).
+</li>
+<li>If the requester (posessing a valid RPT) received a 403 response and a permission ticket, it then requests from the AM the permission that matches the ticket (<a class='info' href='#r-am-authz-scope'>Section&nbsp;3.4.5<span> (</span><span class='info'>Requester Asks for Authorization to Add Permission</span><span>)</span></a>). If the AM needs requesting party claims in order to assess this requester's suitability to have the permission, it engages in a claims-gathering flow with the requesting party (see <a class='info' href='#authz-flows'>Section&nbsp;3.5<span> (</span><span class='info'>Claims-Gathering Flows</span><span>)</span></a>).
 <blockquote class="text"><dl>
 <dt>A.</dt>
 <dd>If the requester does not already have an AAT at the appropriate AM to be able to use its permission request endpoint, it first engages in an OAuth grant flow to obtain one (see <a class='info' href='#authz-api-token'>Section&nbsp;3.4.3<span> (</span><span class='info'>Requester Obtains Authorization API Token</span><span>)</span></a>).
@@ -949,9 +953,11 @@ Requester Presents No Requester Permission Token</h3>
 <a name="insufficient-rpt"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1.2"></a><h3>3.1.2.&nbsp;
-Requester Presents a Requester Permission Token That Is Invalid Or Has Insufficient Permission</h3>
+Requester Presents a Requester Permission Token That Has Insufficient Permission</h3>
 
-<p>If the requester presents an RPT with its request, the host SHOULD determine the RPT's status (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host Determines the Requester Permission Token Status</span><span>)</span></a>). If the token is invalid or has insufficient permission for the type of access sought, the Host SHOULD register a permission with the AM that would suffice for that scope of access (see <a class='info' href='#h-am-register-permission'>Section&nbsp;3.2<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>), and then respond to the requester with the HTTP 403 (Forbidden) status code, along with providing the AM's URI in the header of the message and the permission ticket it just received from the AM in the body in JSON form.
+<p>If the requester presents an RPT with its request, the host SHOULD determine the RPT's status (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host Determines the Requester Permission Token Status</span><span>)</span></a>). If the RPT is invalid, the host redirects the requester to the RPT endpoint at the AM in order to obtain a correct RPT (see <a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>).
+</p>
+<p>If the RPT is valid but has insufficient permission for the type of access sought, the Host SHOULD register a permission with the AM that would suffice for that scope of access (see <a class='info' href='#h-am-register-permission'>Section&nbsp;3.2<span> (</span><span class='info'>Host-AM: Register a Permission</span><span>)</span></a>), and then respond to the requester with the HTTP 403 (Forbidden) status code, along with providing the AM's URI in the header of the message and the permission ticket it just received from the AM in the body in JSON form.
 </p>
 <p>Example of the host's response:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1124,9 +1130,11 @@ Content-Type: application/uma-rpt-status+json
 <a name="r-am-obtain-permission"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.4"></a><h3>3.4.&nbsp;
-Requester-AM: Ask for Permission and Requester Permission Token</h3>
+Requester-AM: Ask for Requester Permission Token and Permission</h3>
 
-<p>If a requester has received a permission ticket in an Unauthorized or Forbidden response to an access attempt, this means that the requester originally presented no RPT, or presented an RPT that was invalid, or presented a valid RPT that had insufficient permissions associated with it. The requester uses the permission ticket to ask for the necessary permission -- and an RPT with which to associate it, as required -- from the AM's permission request endpoint. This process necessarily involves the requesting party (the natural or legal person who is operating the requester).
+<p>A requester making an access attempt accompanied by no RPT or by an invalid RPT will receive a 401 response back from the host, along with the AM's location from which it can learn the RPT endpoint. In this case, the requester must obtain a valid RPT from the AM's RPT endpoint provided in the response (see <a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>).
+</p>
+<p>A requester making an access attempt with a valid RPT that has insufficient permissions associated with it will receive a 403 response back from the host, along with a permission ticket and the AM's location from which it can learn the permission request endpoint. In this case, the requester uses the permission ticket to ask for the necessary permission to be associated with its RPT. This process necessarily involves the requesting party (the natural or legal person operating the requester application).
 </p>
 <p>The requester takes action in the following ways.
 </p>
@@ -1135,7 +1143,7 @@ Requester-AM: Ask for Permission and Requester Permission Token</h3>
 <a name="rfc.section.3.4.1"></a><h3>3.4.1.&nbsp;
 Requester Looks Up AM Configuration Data</h3>
 
-<p>The requester needs to learn the AM's permission request endpoint before they can begin interacting. From the "am_uri" information provided in the host's previous response containing the permission ticket, the requester MUST retrieve the AM's configuration data document, as described in Section 2 of <a class='info' href='#RFC6415'>hostmeta<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; October&nbsp;2011.</span><span>)</span></a> [RFC6415]. For example, if the "am_uri" is "example.com", the requester creates the URL "https://example.com/.well-known/uma-configuration" and performs a GET request on it. The AM MUST return content that includes UMA authorization API endpoints as defined in <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>.
+<p>The requester needs to learn the AM's various authorization API endpoints. From the "am_uri" information provided in the host's response, the requester MUST retrieve the AM's configuration data document, as described in Section 2 of <a class='info' href='#RFC6415'>hostmeta<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; October&nbsp;2011.</span><span>)</span></a> [RFC6415]. For example, if the "am_uri" is "example.com", the requester creates the URL "https://example.com/.well-known/uma-configuration" and performs a GET request on it. The AM MUST return content that includes UMA authorization API endpoints as defined in <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>.
 </p>
 <a name="requester-registers-with-am"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -1149,7 +1157,7 @@ Requester Registers with AM</h3>
 <a name="rfc.section.3.4.3"></a><h3>3.4.3.&nbsp;
 Requester Obtains Authorization API Token</h3>
 
-<p>In this step, the requester acquires an AAT from the AM. The token represents the approval of this requesting party for this requester to engage with this AM for to supply claims, ask for permissions, and perform any other tasks needed for obtaining authorization for access to resources at all hosts that use this AM.
+<p>In this step, the requester acquires an AAT from the AM. The token represents the approval of this requesting party for this requester to engage with this AM to supply claims, ask for permissions, and perform any other tasks needed for obtaining authorization for access to resources at all hosts that use this AM.
 </p>
 <p>The requester MUST use OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> to obtain the AAT. Here the requester acts in the role of an OAuth client requesting the "authorization" scope; the requesting party acts in the role of an OAuth resource owner; and the AM acts in the role of an OAuth authorization server. Once the requester has obtained its AAT, it presents it to the AM at the permission request API endpoint; in presenting this endpoint the AM acts in the role of a resource server.
 </p>
@@ -1164,7 +1172,7 @@ Requester Obtains Authorization API Token</h3>
 <a name="rfc.section.3.4.4"></a><h3>3.4.4.&nbsp;
 Requester Obtains Requester Permission Token</h3>
 
-<p>In this step, if the requester needs an RPT that applies to this requesting party for this host and this AM, the requester obtains an RPT from the AM. On first issuance is is associated with no permissions and thus does not convey any authorizations for access. Once the requester obtains an RPT from the AM, it can ask the AM for authorization to have permissions associated with the RPT (see <a class='info' href='#r-am-authz-scope'>Section&nbsp;3.4.5<span> (</span><span class='info'>Requester Asks for Authorization to Add Permission</span><span>)</span></a>).
+<p>In this step, if the requester needs an RPT that applies to this requesting party for this host and this AM, the requester obtains an RPT from the AM. On first issuance the RPT is associated with no permissions and thus does not convey any authorizations for access. Once the requester obtains an RPT from the AM, it can ask the AM for authorization to have permissions associated with the RPT (see <a class='info' href='#r-am-authz-scope'>Section&nbsp;3.4.5<span> (</span><span class='info'>Requester Asks for Authorization to Add Permission</span><span>)</span></a>).
 </p>
 <p>The requester performs a POST on the RPT endpoint, supplying its own AAT in the header in order to gain access to the RPT endpoint.
 </p>
@@ -1206,13 +1214,13 @@ WWW-Authenticate: Bearer realm="example",
 <a name="rfc.section.3.4.5"></a><h3>3.4.5.&nbsp;
 Requester Asks for Authorization to Add Permission</h3>
 
-<p>Once in possession of an AAT for this AM and a permission ticket for this host and AM, the requester asks the AM to give it a permission for the sought-for access. The requester performs a POST on the permission endpoint, supplying: </p>
+<p>Once in possession of an AAT for this AM, an RPT that applies to this requesting party for this host and this AM, and a permission ticket, the requester asks the AM to give it a permission for the sought-for access. The requester performs a POST on the permission request endpoint, supplying: </p>
 <ul class="text">
 <li>The permission ticket it received from the host
 </li>
 <li>Its RPT for this host
 </li>
-<li>Its own AAT in the header in order to gain access to the permission endpoint
+<li>Its own AAT in the header in order to gain access to the permission request endpoint
 </li>
 </ul>
 
@@ -1689,6 +1697,14 @@ Document History</h3>
 <li>The requester now asks for permission in a back-channel interaction, and the AM now produces a need_claims error that instructs the requester to use a claims-gathering flow (renamed from "authorization flow").
 </li>
 <li>Named subsections for token and claim profiles have been added so that they show up in the TOC.
+</li>
+</ul>
+
+<p>From I-D rev 04 to rev 05, the following major changes have been made:</p>
+<ul class="text">
+<li>The RPT-getting flow and the permission-requesting flow have been separated back out, with two distinct endpoints, RPT and permission request.
+</li>
+<li>The configuration data format has changed to reflect the changes above.
 </li>
 </ul>
 
