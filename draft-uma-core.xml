@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-05A"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-05B"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="12" month="June" year="2012" />
+    <date day="18" month="July" year="2012" />
 
     <abstract>
       <t>This specification defines the User-Managed Access (UMA) core
@@ -301,8 +301,9 @@
 
         <t>The AM presents the following endpoints to the host as part of its
         protection API; these endpoints are OAuth-protected and require a PAT
-        for access, for which the "protection" OAuth scope is required:<list
-            hangIndent="6" style="hanging">
+        for access, for which the
+        "http://docs.kantarainitiative.org/uma/scopes/prot.json" OAuth scope
+        is required:<list hangIndent="6" style="hanging">
             <t hangText="resource set registration endpoint">The endpoint at
             which the host registers resource sets it wants the AM to protect.
             The operations available at this endpoint constitute a resource
@@ -324,8 +325,9 @@
 
         <t>The AM presents the following endpoint to the requester as part of
         its authorization API; this endpoint is OAuth-protected and requires
-        an AAT for access, for which the "authorization" OAuth scope is
-        required:<list hangIndent="6" style="hanging">
+        an AAT for access, for which the
+        "http://docs.kantarainitiative.org/uma/scopes/authorization" OAuth
+        scope is required:<list hangIndent="6" style="hanging">
             <t hangText="RPT endpoint">The endpoint at which the requester
             asks the AM for the issuance of an RPT relating to this requesting
             party, host, and AM.</t>
@@ -427,7 +429,7 @@
             <t
             hangText="dynamic_client_registration_supported"><vspace />OPTIONAL.
             Whether dynamic client registration, such as through <xref
-            target="OCDynClientReg"></xref>, is supported for both hosts and
+            target="DynClientReg"></xref>, is supported for both hosts and
             requesters. The value, if this property is present, the value MUST
             be the string "yes" (dynamic registration is supported, using an
             unspecified method) or "no" (it is not supported; hosts and
@@ -477,10 +479,12 @@
 
             <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
             at which the host or requester asks the AM for a PAT or AAT,
-            respectively. A requested scope of "protection" results in a PAT.
-            A requested scope of "authorization" results in an AAT. Available
-            HTTP methods are as defined by <xref target="OAuth2"></xref> for a
-            token endpoint.</t>
+            respectively. A requested scope of
+            "http://docs.kantarainitiative.org/uma/scopes/prot.json" results
+            in a PAT. A requested scope of
+            "http://docs.kantarainitiative.org/uma/scopes/authorization"
+            results in an AAT. Available HTTP methods are as defined by <xref
+            target="OAuth2"></xref> for a token endpoint.</t>
 
             <t hangText="user_endpoint"><vspace />REQUIRED. The endpoint URI
             at which the host gathers the consent of the authorizing user or
@@ -566,12 +570,12 @@
 
           <t>If the host has not yet obtained a unique OAuth client identifier
           and optional secret from the AM, it registers with the AM as
-          required. It MAY do this using <xref
-          target="OCDynClientReg"></xref>, if the AM supports it.</t>
+          required. It MAY do this using <xref target="DynClientReg"></xref>,
+          if the AM supports it.</t>
 
           <t>The host obtains a protection API token (PAT) from the AM with
-          the authorizing user's consent, by asking for the "protection"
-          scope.</t>
+          the authorizing user's consent, by asking for the
+          "http://docs.kantarainitiative.org/uma/scopes/prot.json" scope.</t>
 
           <t>The host registers any resource sets with the AM that are
           intended to be protected. (This step is repeated when and as
@@ -616,8 +620,8 @@
         <t>If the host has not already obtained an OAuth client identifier and
         optional secret from this AM, in this step it MUST do so in order to
         engage in OAuth-based interactions with the AM. It MAY do this using
-        <xref target="OCDynClientReg"></xref>, if the AM supports it (see
-        <xref target="am-endpoints"></xref> for how the AM MAY indicate
+        <xref target="DynClientReg"></xref>, if the AM supports it (see <xref
+        target="am-endpoints"></xref> for how the AM MAY indicate
         support).</t>
       </section>
 
@@ -629,12 +633,13 @@
 
         <t>The host MUST use OAuth 2.0 <xref target="OAuth2"></xref> to obtain
         the protection API token. Here the host acts in the role of an OAuth
-        client requesting the "protection" scope; the authorizing user acts in
-        the role of an OAuth end-user resource owner; and the AM acts in the
-        role of an OAuth authorization server. Once the host has obtained its
-        PAT, it presents it to the AM at various protection API endpoints; in
-        presenting these endpoints the AM acts in the role of a resource
-        server.</t>
+        client requesting the
+        "http://docs.kantarainitiative.org/uma/scopes/prot.json" scope; the
+        authorizing user acts in the role of an OAuth end-user resource owner;
+        and the AM acts in the role of an OAuth authorization server. Once the
+        host has obtained its PAT, it presents it to the AM at various
+        protection API endpoints; in presenting these endpoints the AM acts in
+        the role of a resource server.</t>
 
         <t>The AM MAY support the use of any grant type, but MUST support the
         authorization_code grant type, and SHOULD support the SAML bearer
@@ -1207,10 +1212,24 @@ Host: photoz.example.com
 
         <section anchor="no-rpt"
                  title="Requester Presents No Requester Permission Token">
-          <t>If the requester does not present an RPT with the request, then
-          the host MUST redirect the requester to the appropriate endpoint at
-          the AM to obtain an RPT (see <xref
-          target="authz-permission-token"></xref>).</t>
+          <t>If the requester does not present any access token with the
+          request, the host MUST return an HTTP 401 (Unauthorized) status
+          code, along with providing the AM's URI in an "am_uri" property to
+          facilitate AM metadata discovery, including discovery of the
+          endpoint where the requester can request an RPT (<xref
+          target="authz-permission-token"></xref>), by the requester.</t>
+
+          <figure>
+            <preamble>For example:</preamble>
+
+            <artwork><![CDATA[
+HTTP/1.1 401 Unauthorized
+   WWW-Authenticate: UMA realm="example",
+    host_id="photoz.example.com",
+    am_uri="http://am.example.com"
+   ...
+]]></artwork>
+          </figure>
         </section>
 
         <section anchor="insufficient-rpt"
@@ -1536,7 +1555,7 @@ Content-Type: application/uma-rpt-status+json
           <t>If the requester has not already obtained an OAuth client
           identifier and optional secret from this AM, in this step it MUST do
           so in order to engage in OAuth-based interactions with the AM. It
-          MAY do this using <xref target="OCDynClientReg"></xref>, if the AM
+          MAY do this using <xref target="DynClientReg"></xref>, if the AM
           supports it (see <xref target="am-endpoints"></xref> for how the AM
           MAY indicate support).</t>
         </section>
@@ -1552,12 +1571,13 @@ Content-Type: application/uma-rpt-status+json
 
           <t>The requester MUST use OAuth 2.0 <xref target="OAuth2"></xref> to
           obtain the AAT. Here the requester acts in the role of an OAuth
-          client requesting the "authorization" scope; the requesting party
-          acts in the role of an OAuth resource owner; and the AM acts in the
-          role of an OAuth authorization server. Once the requester has
-          obtained its AAT, it presents it to the AM at the permission request
-          API endpoint; in presenting this endpoint the AM acts in the role of
-          a resource server.</t>
+          client requesting the
+          "http://docs.kantarainitiative.org/uma/scopes/authz.json" scope; the
+          requesting party acts in the role of an OAuth resource owner; and
+          the AM acts in the role of an OAuth authorization server. Once the
+          requester has obtained its AAT, it presents it to the AM at the
+          permission request API endpoint; in presenting this endpoint the AM
+          acts in the role of a resource server.</t>
 
           <t>By virtue of being able to identify this requester/requesting
           party pair uniquely across all hosts, the AM is able to manage the
@@ -1927,6 +1947,29 @@ Cache-Control: no-store
       </section>
     </section>
 
+    <section anchor="profiles" title="Specification of Additional Profiles">
+      <t>This specification defines a selected set of profiles, but others
+      will possibly be developed in the future. It is not possible for this
+      specification to standardize all of these additional profiles. The
+      following sections define rules for third parties that specify UMA
+      profiles.</t>
+
+      <t>(Get text from
+      http://docs.oasis-open.org/security/saml/v2.0/saml-profiles-2.0-os.pdf
+      .)</t>
+
+      <t>(Put references to this section in the appropriate places above, and
+      add a discussion of profiles somewhere in the intro.)</t>
+
+      <section title="Specifying UMA Profiles">
+        <t></t>
+      </section>
+
+      <section title="Specifying UMA Token Profiles">
+        <t></t>
+      </section>
+    </section>
+
     <section title="Security Considerations">
       <t>This specification relies mainly on OAuth security mechanisms for
       protecting the host registration endpoint at the AM so that only a
@@ -1983,7 +2026,7 @@ Cache-Control: no-store
           target="RFC6415"></xref> features named in this specification.</t>
 
           <t>OpenID Connect: AMs MAY support <xref
-          target="OCDynClientReg"></xref>, and MAY choose to conform to the
+          target="DynClientReg"></xref>, and MAY choose to conform to the
           "openid" claim format option, corresponding to the OpenID Connect RP
           role defined in <xref target="OCStandard"></xref> and support for
           OpenID Connect reserved claims defined in <xref
@@ -2383,16 +2426,16 @@ If-Match: "2"
 
       &RFC4627;
 
-      <reference anchor="OCDynClientReg"
-                 target="http://openid.net/specs/openid-connect-registration-1_0.html">
+      <reference anchor="DynClientReg"
+                 target="https://datatracker.ietf.org/doc/draft-ietf-oauth-dyn-reg/">
         <front>
-          <title>OpenID Connect Dynamic Client Registration 1.0</title>
+          <title>OAuth Dynamic Client Registration Protocol</title>
 
-          <author initials="N." surname="Sakimura">
+          <author initials="T." surname="Hardjono">
             <organization>IETF</organization>
           </author>
 
-          <date day="30" month="September" year="2011" />
+          <date day="23" month="May" year="2012" />
         </front>
       </reference>
 
@@ -2493,8 +2536,10 @@ If-Match: "2"
 
           <t>The token and user authorization endpoints for the different APIs
           at the AM have been joined together, and are now distinguished
-          through the "protection" scope (for the protection API) and the
-          "authorization" scope (for the authorization API).</t>
+          through the "http://docs.kantarainitiative.org/uma/scopes/prot.json"
+          scope (for the protection API) and the
+          "http://docs.kantarainitiative.org/uma/scopes/authz.json" scope (for
+          the authorization API).</t>
 
           <t>The token status description format and JSON media type, and the
           RPT/permission delivery response, have been updated to reflect the
