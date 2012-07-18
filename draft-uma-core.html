@@ -143,10 +143,10 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">T. Hardjono, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">MIT</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">June 12, 2012</td></tr>
-<tr><td class="header">Expires: December 14, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">July 18, 2012</td></tr>
+<tr><td class="header">Expires: January 19, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-05A</h1>
+<h1><br />User-Managed Access (UMA) Core Protocol<br />draft-hardjono-oauth-umacore-05B</h1>
 
 <h3>Abstract</h3>
 
@@ -167,7 +167,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 14, 2012.</p>
+This Internet-Draft will expire on January 19, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -264,25 +264,33 @@ Error Messages<br />
 OAuth Error Responses<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#uma-error-response">4.2.</a>&nbsp;
 UMA Error Responses<br />
-<a href="#anchor6">5.</a>&nbsp;
+<a href="#profiles">5.</a>&nbsp;
+Specification of Additional Profiles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">5.1.</a>&nbsp;
+Specifying UMA Profiles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">5.2.</a>&nbsp;
+Specifying UMA Token Profiles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">5.3.</a>&nbsp;
+Specifying UMA Claim Profiles<br />
+<a href="#anchor9">6.</a>&nbsp;
 Security Considerations<br />
-<a href="#anchor7">6.</a>&nbsp;
+<a href="#anchor10">7.</a>&nbsp;
 Privacy Considerations<br />
-<a href="#conformance">7.</a>&nbsp;
+<a href="#conformance">8.</a>&nbsp;
 Conformance<br />
-<a href="#IANA">8.</a>&nbsp;
+<a href="#IANA">9.</a>&nbsp;
 IANA Considerations<br />
-<a href="#resource-reg-example">9.</a>&nbsp;
+<a href="#resource-reg-example">10.</a>&nbsp;
 Example of Registering Resource Sets<br />
-<a href="#Acknowledgments">10.</a>&nbsp;
+<a href="#Acknowledgments">11.</a>&nbsp;
 Acknowledgments<br />
-<a href="#anchor8">11.</a>&nbsp;
+<a href="#anchor11">12.</a>&nbsp;
 Issues<br />
-<a href="#rfc.references1">12.</a>&nbsp;
+<a href="#rfc.references1">13.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">12.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">13.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">12.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">13.2.</a>&nbsp;
 Informative References<br />
 <a href="#History">Appendix&nbsp;A.</a>&nbsp;
 Document History<br />
@@ -300,11 +308,11 @@ Introduction</h3>
 </p>
 <p>There are numerous use cases for UMA, where a resource owner elects to have a third party to control access to these resources potentially without the real-time presence of the resource owner. A typical example is the following: a web user (authorizing user) can authorize a web app (requester) to gain one-time or ongoing access to a resource containing his home address stored at a "personal data store" service (host), by telling the host to act on access decisions made by his authorization decision-making service (authorization manager or AM). The requesting party might be an e-commerce company whose site is acting on behalf of the user himself to assist him/her in arranging for shipping a purchased item, or it might be his friend who is using an online address book service to collect addresses, or it might be a survey company that uses an online service to compile population demographics. Other scenarios and use cases for UMA usage can be found in <a class='info' href='#UMA-usecases'>[UMA&#8209;usecases]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Scenarios and Use Cases,&rdquo; October&nbsp;2010.</span><span>)</span></a> and <a class='info' href='#UMA-userstories'>[UMA&#8209;userstories]<span> (</span><span class='info'>Maler, E., &ldquo;UMA User Stories,&rdquo; November&nbsp;2010.</span><span>)</span></a>.
 </p>
-<p>Practical control of access among loosely coupled parties requires more than just messaging protocols. This specification defines only the technical "contract" between UMA-compliant entities; its companion Trust Model specification <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; April&nbsp;2012.</span><span>)</span></a> defines the expected behaviors of parties operating and using these entities. Parties operating entities that claim to be UMA-compliant MUST adhere to these expected behaviors.
+<p>Practical control of access among loosely coupled parties requires more than just messaging protocols. This specification defines only the technical "contract" between UMA-compliant entities; its companion Trust Model specification <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;Binding Obligations on User-Managed Access (UMA) Participants,&rdquo; May&nbsp;2012.</span><span>)</span></a> defines the expected behaviors of parties operating and using these entities. Parties operating entities that claim to be UMA-compliant MUST adhere to these expected behaviors.
 </p>
 <p>In enterprise settings, application access management often involves letting back-office applications serve only as policy enforcement points (PEPs), depending entirely on access decisions coming from a central policy decision point (PDP) to govern the access they give to requesters. This separation eases auditing and allows policy administration to scale in several dimensions. UMA makes use of a separation similar to this, letting the authorizing user serve as a policy administrator crafting authorization strategies on his or her own behalf.
 </p>
-<p>The UMA protocol can be considered an advanced application of <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> in that it profiles, extends, and embeds OAuth in various ways. In the big picture, an AM can be thought of as an enhanced OAuth authorization server; a host as an enhanced resource server; and a requester as an enhanced client, acquiring an access token and the requisite authorization to access a protected resource at the host.
+<p>The UMA protocol can be considered an advanced application of <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> in that it embeds, profiles (reduces available options), and extends (expands available options) OAuth in various ways. In the big picture, an AM can be thought of as an enhanced OAuth authorization server; a host as an enhanced resource server; and a requester as an enhanced client, acquiring an access token and the requisite authorization to access a protected resource at the host.
 </p>
 <p>The UMA protocol has three broad phases, as shown in <a class='info' href='#UMA-phases'>Figure&nbsp;1</a>.
 </p><br /><hr class="insert" />
@@ -357,6 +365,8 @@ Introduction</h3>
 </li>
 </ol>
 
+<p>In deploying UMA, implementers are expected to develop one or more UMA Profiles (described in <a class='info' href='#profiles'>Section&nbsp;5<span> (</span><span class='info'>Specification of Additional Profiles</span><span>)</span></a>) that specify and restrict the various UMA protocol options, according to the deployment conditions.
+</p>
 <a name="anchor1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
@@ -430,7 +440,7 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 </dd>
 </dl></blockquote>
 
-<p>The AM presents the following endpoints to the host as part of its protection API; these endpoints are OAuth-protected and require a PAT for access, for which the "protection" OAuth scope is required:</p>
+<p>The AM presents the following endpoints to the host as part of its protection API; these endpoints are OAuth-protected and require a PAT for access, for which the "http://docs.kantarainitiative.org/uma/scopes/prot.json" OAuth scope is required:</p>
 <blockquote class="text"><dl>
 <dt>resource set registration endpoint</dt>
 <dd>The endpoint at which the host registers resource sets it wants the AM to protect. The operations available at this endpoint constitute a resource set registration API that is a subset of the protection API (see <a class='info' href='#reg-api'>Section&nbsp;2.4.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>).
@@ -443,7 +453,7 @@ Endpoints, Endpoint Protection, and Tokens</h3>
 </dd>
 </dl></blockquote>
 
-<p>The AM presents the following endpoint to the requester as part of its authorization API; this endpoint is OAuth-protected and requires an AAT for access, for which the "authorization" OAuth scope is required:</p>
+<p>The AM presents the following endpoint to the requester as part of its authorization API; this endpoint is OAuth-protected and requires an AAT for access, for which the "http://docs.kantarainitiative.org/uma/scopes/authorization" OAuth scope is required:</p>
 <blockquote class="text"><dl>
 <dt>RPT endpoint</dt>
 <dd>The endpoint at which the requester asks the AM for the issuance of an RPT relating to this requesting party, host, and AM.
@@ -473,7 +483,7 @@ Scopes, Resource Sets, Permissions, and Authorization</h3>
 </p>
 <p>In contrast to an UMA scope, an UMA permission reflects an <em>actual</em> result of an authorization process for a specific requester (on behalf of a specific requesting party) to access a particular resource set in a scoped (bounded) manner. Hosts register permission requests with AMs on behalf of requesters that have attempted access there and transmit the resulting temporary permission tickets to requesters. Requesters subsequently ask AMs for permissions to be associated with their RPTs. AMs grant (or deny) permissions to requesters.
 </p>
-<p>An RPT is bound to a requesting party, the requester (client) being used by that party, the host at which protected resources of interest reside, and the AM that protects those resources. It becomes associated with as many permissions as are appropriate for gaining authorized access to resources protected at that host by any single AM (even if those permissions apply to resources managed by two or more different authorizing users at the same host using the same AM). Each individual permission is associated, in addition, with the authorizing user whose policies drove the authorization process. This enables meaningful, auditable, and potentially legally enforceable authorization for access (see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; April&nbsp;2012.</span><span>)</span></a>).
+<p>An RPT is bound to a requesting party, the requester (client) being used by that party, the host at which protected resources of interest reside, and the AM that protects those resources. It becomes associated with as many permissions as are appropriate for gaining authorized access to resources protected at that host by any single AM (even if those permissions apply to resources managed by two or more different authorizing users at the same host using the same AM). Each individual permission is associated, in addition, with the authorizing user whose policies drove the authorization process. This enables meaningful, auditable, and potentially legally enforceable authorization for access (see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;Binding Obligations on User-Managed Access (UMA) Participants,&rdquo; May&nbsp;2012.</span><span>)</span></a>).
 </p>
 <p>Unlike UMA scopes (but similarly to tokens themselves; see <a class='info' href='#endpoint-discussion'>Section&nbsp;1.3<span> (</span><span class='info'>Endpoints, Endpoint Protection, and Tokens</span><span>)</span></a>), permissions have a validity period that the AM has the opportunity to control independently or with input from the authorizing user. These options are outside the scope of this specification.
 </p>
@@ -482,7 +492,7 @@ Scopes, Resource Sets, Permissions, and Authorization</h3>
 <a name="rfc.section.1.5"></a><h3>1.5.&nbsp;
 AM Configuration Data</h3>
 
-<p>The AM MUST provide configuration data to other entities it interacts with in a<a class='info' href='#RFC4627'>JSON<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> [RFC4627] document that resides in an /uma-configuration directory at at its hostmeta <a class='info' href='#RFC6415'>[RFC6415]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; October&nbsp;2011.</span><span>)</span></a> location. The configuration data documents major conformance options supported by the AM (described further in <a class='info' href='#conformance'>Section&nbsp;7<span> (</span><span class='info'>Conformance</span><span>)</span></a>) and protection and authorization API endpoints (as described in <a class='info' href='#endpoint-discussion'>Section&nbsp;1.3<span> (</span><span class='info'>Endpoints, Endpoint Protection, and Tokens</span><span>)</span></a>).
+<p>The AM MUST provide configuration data to other entities it interacts with in a<a class='info' href='#RFC4627'>JSON<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> [RFC4627] document that resides in an /uma-configuration directory at at its hostmeta <a class='info' href='#RFC6415'>[RFC6415]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; October&nbsp;2011.</span><span>)</span></a> location. The configuration data documents major conformance options supported by the AM (described further in <a class='info' href='#conformance'>Section&nbsp;8<span> (</span><span class='info'>Conformance</span><span>)</span></a>) and protection and authorization API endpoints (as described in <a class='info' href='#endpoint-discussion'>Section&nbsp;1.3<span> (</span><span class='info'>Endpoints, Endpoint Protection, and Tokens</span><span>)</span></a>).
 </p>
 <p>The configuration data has the following properties and a Content-Type of application/uma-configuration+json. All endpoint URIs supplied SHOULD require the use of a transport-layer security mechanism such as TLS.</p>
 <blockquote class="text"><dl>
@@ -493,22 +503,22 @@ AM Configuration Data</h3>
 <dd>REQUIRED. A URI indicating the party operating the AM.
 </dd>
 <dt>dynamic_client_registration_supported</dt>
-<dd>OPTIONAL. Whether dynamic client registration, such as through <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, is supported for both hosts and requesters. The value, if this property is present, the value MUST be the string "yes" (dynamic registration is supported, using an unspecified method) or "no" (it is not supported; hosts and requesters are required to pre-register). The default is AM-specific. This property is not currently extensible. (This conformance option is largely a placeholder for now.)
+<dd>OPTIONAL. Whether dynamic client registration, such as through <a class='info' href='#DynClientReg'>[DynClientReg]<span> (</span><span class='info'>Hardjono, T., &ldquo;OAuth Dynamic Client Registration Protocol,&rdquo; May&nbsp;2012.</span><span>)</span></a>, is supported for both hosts and requesters. The value, if this property is present, the value MUST be the string "yes" (dynamic registration is supported, using an unspecified method) or "no" (it is not supported; hosts and requesters are required to pre-register). The default is AM-specific. This property is not currently extensible. (This conformance option is largely a placeholder for now.)
 </dd>
 <dt>oauth_token_profiles_supported</dt>
-<dd>REQUIRED. PAT and AAT profiles produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", corresponding to the OAuth bearer token profile <a class='info' href='#OAuth-bearer'>[OAuth&#8209;bearer]<span> (</span><span class='info'>, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; March&nbsp;2012.</span><span>)</span></a>. The AM is REQUIRED to support this profile, and to supply this string value explicitly. The AM MAY declare its support for additional access token profiles by providing a unique absolute URI in a string value in the array for each one.
+<dd>REQUIRED. OAuth token profiles supported by this AM for PATs and AATs. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", corresponding to the OAuth bearer token profile <a class='info' href='#OAuth-bearer'>[OAuth&#8209;bearer]<span> (</span><span class='info'>, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; March&nbsp;2012.</span><span>)</span></a>. The AM is REQUIRED to support this profile, and to supply this string value explicitly. The AM MAY declare its support for additional access token profiles by providing a unique absolute URI in a string value in the array for each one.
 </dd>
 <dt>uma_token_profiles_supported</dt>
-<dd>REQUIRED. RPT types produced by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", whose associations the host MUST determine through a token status interaction with the AM (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host Determines the Requester Permission Token Status</span><span>)</span></a> for the definition of this profile). The AM is REQUIRED to support the UMA bearer token profile, and to supply this string value explicitly. The AM MAY declare its support for RPTs using additional UMA token profiles by providing a unique absolute URI in a string value in the array for each one.
+<dd>REQUIRED. UMA token profiles supported by this AM for RPTs. The property value is an array of string values. Currently the only string value for this property defined by this specification is "bearer", whose associations the host MUST determine through a token status interaction with the AM (see <a class='info' href='#h-am-rpt-status'>Section&nbsp;3.3<span> (</span><span class='info'>Host Determines the Requester Permission Token Status</span><span>)</span></a> for the definition of this profile). The AM is REQUIRED to support the UMA bearer token profile, and to supply this string value explicitly. The AM MAY declare its support for third-party UMA token profiles for RPTs by providing the URI for each profile in a string value in the array (see <a class='info' href='#profiles'>Section&nbsp;5<span> (</span><span class='info'>Specification of Additional Profiles</span><span>)</span></a>).
 </dd>
 <dt>oauth_grant_types_supported</dt>
 <dd>REQUIRED. OAuth grant types supported by this AM in issuing PATs and AATs. The property value is an array of string values. Each string value MUST be one of the grant_type values defined in <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>, or alternatively an extension grant type indicated by a unique absolute URI.
 </dd>
 <dt>claim_profiles_supported</dt>
-<dd>OPTIONAL. Claim formats and associated sub-protocols for gathering claims from requesting parties, as supported by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "openid", for which details are supplied in <a class='info' href='#trusted-claims'>Section&nbsp;3.5.1.1<span> (</span><span class='info'>OpenID Connect Claim Profile</span><span>)</span></a>. The AM MAY declare its support for additional claim profiles by assigning a unique absolute URI in a string value in the array for each one.
+<dd>OPTIONAL. Claim formats and associated sub-protocols for gathering claims from requesting parties, as supported by this AM. The property value is an array of string values. Currently the only string value for this property defined by this specification is "openid", for which details are supplied in <a class='info' href='#trusted-claims'>Section&nbsp;3.5.1.1<span> (</span><span class='info'>OpenID Connect Claim Profile</span><span>)</span></a>. The AM MAY declare its support for third-party UMA claim profiles for RPTs by providing the URI for each profile in a string value in the array (see <a class='info' href='#profiles'>Section&nbsp;5<span> (</span><span class='info'>Specification of Additional Profiles</span><span>)</span></a>).
 </dd>
 <dt>token_endpoint</dt>
-<dd>REQUIRED. The endpoint URI at which the host or requester asks the AM for a PAT or AAT, respectively. A requested scope of "protection" results in a PAT. A requested scope of "authorization" results in an AAT. Available HTTP methods are as defined by <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> for a token endpoint.
+<dd>REQUIRED. The endpoint URI at which the host or requester asks the AM for a PAT or AAT, respectively. A requested scope of "http://docs.kantarainitiative.org/uma/scopes/prot.json" results in a PAT. A requested scope of "http://docs.kantarainitiative.org/uma/scopes/authorization" results in an AAT. Available HTTP methods are as defined by <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> for a token endpoint.
 </dd>
 <dt>user_endpoint</dt>
 <dd>REQUIRED. The endpoint URI at which the host gathers the consent of the authorizing user or end-user requesting party, if the "authorization_code" grant type is used. Available HTTP methods are as defined by <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> for an end-user authorization endpoint.
@@ -566,9 +576,9 @@ Protecting a Resource</h3>
 <ol class="text">
 <li>The host (having learned the general location of the relevant AM out of band) looks up the AM's configuration data and learns about its relevant endpoints and supported formats.
 </li>
-<li>If the host has not yet obtained a unique OAuth client identifier and optional secret from the AM, it registers with the AM as required. It MAY do this using <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, if the AM supports it.
+<li>If the host has not yet obtained a unique OAuth client identifier and optional secret from the AM, it registers with the AM as required. It MAY do this using <a class='info' href='#DynClientReg'>[DynClientReg]<span> (</span><span class='info'>Hardjono, T., &ldquo;OAuth Dynamic Client Registration Protocol,&rdquo; May&nbsp;2012.</span><span>)</span></a>, if the AM supports it.
 </li>
-<li>The host obtains a protection API token (PAT) from the AM with the authorizing user's consent, by asking for the "protection" scope.
+<li>The host obtains a protection API token (PAT) from the AM with the authorizing user's consent, by asking for the "http://docs.kantarainitiative.org/uma/scopes/prot.json" scope.
 </li>
 <li>The host registers any resource sets with the AM that are intended to be protected. (This step is repeated when and as needed.)
 </li>
@@ -598,7 +608,7 @@ Host Looks Up AM Configuration Data</h3>
 <a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
 Host Registers with AM</h3>
 
-<p>If the host has not already obtained an OAuth client identifier and optional secret from this AM, in this step it MUST do so in order to engage in OAuth-based interactions with the AM. It MAY do this using <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, if the AM supports it (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a> for how the AM MAY indicate support).
+<p>If the host has not already obtained an OAuth client identifier and optional secret from this AM, in this step it MUST do so in order to engage in OAuth-based interactions with the AM. It MAY do this using <a class='info' href='#DynClientReg'>[DynClientReg]<span> (</span><span class='info'>Hardjono, T., &ldquo;OAuth Dynamic Client Registration Protocol,&rdquo; May&nbsp;2012.</span><span>)</span></a>, if the AM supports it (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a> for how the AM MAY indicate support).
 </p>
 <a name="host-access-token"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -607,7 +617,7 @@ Host Obtains Protection API Token</h3>
 
 <p>In this step, the host acquires a PAT from the AM. The token represents the approval of the authorizing user for this host to trust this AM for protecting resources belonging to this user.
 </p>
-<p>The host MUST use OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> to obtain the protection API token. Here the host acts in the role of an OAuth client requesting the "protection" scope; the authorizing user acts in the role of an OAuth end-user resource owner; and the AM acts in the role of an OAuth authorization server. Once the host has obtained its PAT, it presents it to the AM at various protection API endpoints; in presenting these endpoints the AM acts in the role of a resource server.
+<p>The host MUST use OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> to obtain the protection API token. Here the host acts in the role of an OAuth client requesting the "http://docs.kantarainitiative.org/uma/scopes/prot.json" scope; the authorizing user acts in the role of an OAuth end-user resource owner; and the AM acts in the role of an OAuth authorization server. Once the host has obtained its PAT, it presents it to the AM at various protection API endpoints; in presenting these endpoints the AM acts in the role of a resource server.
 </p>
 <p>The AM MAY support the use of any grant type, but MUST support the authorization_code grant type, and SHOULD support the SAML bearer token grant type <a class='info' href='#OAuth-SAML'>[OAuth&#8209;SAML]<span> (</span><span class='info'>Campbell, B., &ldquo;SAML 2.0 Bearer Assertion Grant Type Profile for OAuth 2.0,&rdquo; August&nbsp;2011.</span><span>)</span></a> (urn:ietf:params:oauth:grant-type:saml2-bearer) if it anticipates working with hosts that are operating in environments where the use of SAML is prevalent. The AM MUST indicate all grant types it supports in its configuration data, as defined in <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>.
 </p>
@@ -622,7 +632,7 @@ Host Registers Sets of Resources to Be Protected</h3>
 </p>
 <p>Note that the host is free to offer the option to protect any subset of the user's resources using different AMs or other means entirely, or to protect some resources and not others. Additionally, the choice of protection regimes can be made explicitly by the user or implicitly by the host. Any such partitioning by the host or user is outside the scope of this specification.
 </p>
-<p>See <a class='info' href='#resource-reg-example'>Section&nbsp;9<span> (</span><span class='info'>Example of Registering Resource Sets</span><span>)</span></a> for an extended example of registering resource sets.
+<p>See <a class='info' href='#resource-reg-example'>Section&nbsp;10<span> (</span><span class='info'>Example of Registering Resource Sets</span><span>)</span></a> for an extended example of registering resource sets.
 </p>
 <a name="action-desc"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -650,7 +660,7 @@ Scope Descriptions</h3>
 </p>
 <p>A host MUST list a resource set's available scopes using URI references (as defined in <a class='info' href='#resource-set-desc'>Section&nbsp;2.4.2<span> (</span><span class='info'>Resource Set Descriptions</span><span>)</span></a>). The scopes available for use at any one host MUST have unique URI references so that the host's scope descriptions are uniquely distinguishable. A scope URI reference MAY include a fragment identifier. Scope descriptions MAY reside anywhere. The host is not required to self-host scope descriptions and may wish to point to standardized scope descriptions residing elsewhere. Scope description documents MUST be accessible to AMs through GET calls made to these URI references
 </p>
-<p>See <a class='info' href='#scope-discussion'>Section&nbsp;1.4<span> (</span><span class='info'>Scopes, Resource Sets, Permissions, and Authorization</span><span>)</span></a> for further discussion of scope-related concepts, and <a class='info' href='#resource-reg-example'>Section&nbsp;9<span> (</span><span class='info'>Example of Registering Resource Sets</span><span>)</span></a> for a long-form example of scopes used in resource set registration.
+<p>See <a class='info' href='#scope-discussion'>Section&nbsp;1.4<span> (</span><span class='info'>Scopes, Resource Sets, Permissions, and Authorization</span><span>)</span></a> for further discussion of scope-related concepts, and <a class='info' href='#resource-reg-example'>Section&nbsp;10<span> (</span><span class='info'>Example of Registering Resource Sets</span><span>)</span></a> for a long-form example of scopes used in resource set registration.
 </p>
 <a name="resource-set-desc"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -948,8 +958,16 @@ Host: photoz.example.com
 <a name="rfc.section.3.1.1"></a><h3>3.1.1.&nbsp;
 Requester Presents No Requester Permission Token</h3>
 
-<p>If the requester does not present an RPT with the request, then the host MUST redirect the requester to the appropriate endpoint at the AM to obtain an RPT (see <a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>).
+<p>If the requester does not present any access token with the request, the host MUST return an HTTP 401 (Unauthorized) status code, along with providing the AM's URI in an "am_uri" property to facilitate AM metadata discovery, including discovery of the endpoint where the requester can request an RPT (<a class='info' href='#authz-permission-token'>Section&nbsp;3.4.4<span> (</span><span class='info'>Requester Obtains Requester Permission Token</span><span>)</span></a>), by the requester.
 </p>
+<p>For example:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+HTTP/1.1 401 Unauthorized
+   WWW-Authenticate: UMA realm="example",
+    host_id="photoz.example.com",
+    am_uri="http://am.example.com"
+   ...
+</pre></div>
 <a name="insufficient-rpt"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1.2"></a><h3>3.1.2.&nbsp;
@@ -1055,16 +1073,16 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 <a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
 Host Determines the Requester Permission Token Status</h3>
 
-<p>On receiving an RPT, the host MUST ascertain its status before granting or denying access to the requester. An RPT that a requester provides to a host in order to get access is associated with a set of permissions that govern whether the requester is authorized for access. The token's nature and format are dictated by its defined profile; the profile might allow it to be self-contained, such that the host is able to ascertain its status locally, or might require or allow the host to make a run-time status request of the AM that issued the token.
+<p>On receiving an RPT, the host MUST ascertain its status before granting or denying access to the requester. An RPT that a requester provides to a host in order to get access is associated with a set of permissions that govern whether the requester is authorized for access. The token's nature and format are dictated by its defined UMA token profile; the profile might allow it to be self-contained, such that the host is able to ascertain its status locally, or might require or allow the host to make a run-time status request of the AM that issued the token.
 </p>
-<p>This specification makes one type of RPT mandatory to implement: the UMA bearer token profile, as defined in <a class='info' href='#uma-bearer-token-profile'>Section&nbsp;3.3.1<span> (</span><span class='info'>UMA Bearer Token Profile</span><span>)</span></a>. Alternate RPT profiles MAY define their own unique token formats and MAY require, allow, or prohibit use of the RPT status endpoint.
+<p>This specification makes one type of RPT REQUIRED for the AM to support and to declare in its AM configuration data: the UMA bearer token profile, as defined in <a class='info' href='#uma-bearer-token-profile'>Section&nbsp;3.3.1<span> (</span><span class='info'>UMA Bearer Token Profile</span><span>)</span></a>. Alternate RPT profiles MAY define their own unique token formats and MAY require, allow, or prohibit use of the RPT status endpoint (see <a class='info' href='#profiles'>Section&nbsp;5<span> (</span><span class='info'>Specification of Additional Profiles</span><span>)</span></a>).
 </p>
 <a name="uma-bearer-token-profile"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.3.1"></a><h3>3.3.1.&nbsp;
 UMA Bearer Token Profile</h3>
 
-<p>This section defines the format and protocol requirements for the UMA bearer token profile. An AM MUST support the UMA bearer token profile and must indicate its support in the "uma_token_profiles_supported" property in the configuration data (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>).
+<p>This section defines the UMA bearer token profile.
 </p>
 <p>On receiving an RPT of the "Bearer" type in an authorization header from a requester making an access attempt, the host MUST ask the AM for the RPT's status unless it has an unexpired cached status description for this RPT, which it MAY use instead. In order to ask the AM for an RPT's status, the host makes the request to the AM with a POST request to the AM's RPT status endpoint. The body of the HTTP request message contains a JSON document providing the RPT. The host gains access to the RPT status endpoint by presenting its own PAT in the request.
 </p>
@@ -1150,7 +1168,7 @@ Requester Looks Up AM Configuration Data</h3>
 <a name="rfc.section.3.4.2"></a><h3>3.4.2.&nbsp;
 Requester Registers with AM</h3>
 
-<p>If the requester has not already obtained an OAuth client identifier and optional secret from this AM, in this step it MUST do so in order to engage in OAuth-based interactions with the AM. It MAY do this using <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, if the AM supports it (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a> for how the AM MAY indicate support).
+<p>If the requester has not already obtained an OAuth client identifier and optional secret from this AM, in this step it MUST do so in order to engage in OAuth-based interactions with the AM. It MAY do this using <a class='info' href='#DynClientReg'>[DynClientReg]<span> (</span><span class='info'>Hardjono, T., &ldquo;OAuth Dynamic Client Registration Protocol,&rdquo; May&nbsp;2012.</span><span>)</span></a>, if the AM supports it (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a> for how the AM MAY indicate support).
 </p>
 <a name="authz-api-token"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -1159,7 +1177,7 @@ Requester Obtains Authorization API Token</h3>
 
 <p>In this step, the requester acquires an AAT from the AM. The token represents the approval of this requesting party for this requester to engage with this AM to supply claims, ask for permissions, and perform any other tasks needed for obtaining authorization for access to resources at all hosts that use this AM.
 </p>
-<p>The requester MUST use OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> to obtain the AAT. Here the requester acts in the role of an OAuth client requesting the "authorization" scope; the requesting party acts in the role of an OAuth resource owner; and the AM acts in the role of an OAuth authorization server. Once the requester has obtained its AAT, it presents it to the AM at the permission request API endpoint; in presenting this endpoint the AM acts in the role of a resource server.
+<p>The requester MUST use OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> to obtain the AAT. Here the requester acts in the role of an OAuth client requesting the "http://docs.kantarainitiative.org/uma/scopes/authz.json" scope; the requesting party acts in the role of an OAuth resource owner; and the AM acts in the role of an OAuth authorization server. Once the requester has obtained its AAT, it presents it to the AM at the permission request API endpoint; in presenting this endpoint the AM acts in the role of a resource server.
 </p>
 <p>By virtue of being able to identify this requester/requesting party pair uniquely across all hosts, the AM is able to manage the process of authorization and claims-gathering efficiently. These management processes are outside the scope of this specificaiton.
 </p>
@@ -1279,9 +1297,9 @@ Cache-Control: no-store
 <a name="rfc.section.3.5"></a><h3>3.5.&nbsp;
 Claims-Gathering Flows</h3>
 
-<p>The AM MUST base its decisions to add permissions to RPTs on user policies. The nature of these policies is outside the scope of UMA, but generally speaking, they can be thought of as either independent of requesting-party features (for example, time of day) or dependent on requesting-party features (for example, whether they are over 18). This latter case requires the requesting party to transmit identity claims to the AM in some fashion.
+<p>The AM MUST base the data it associates with RPTs on user policies. The nature of these policies is outside the scope of UMA, but generally speaking, they can be thought of as either independent of requesting-party features (for example, time of day) or dependent on requesting-party features (for example, whether they are over 18). This latter case requires the requesting party to transmit identity claims to the AM in some fashion.
 </p>
-<p>The process for requesting and providing claims is extensible and may have a variety of dependencies on the type of requesting party (for example, natural person or legal person) and the type of requester application (for example, browser, native app, or autonomously running web service). UMA currently provides a framework for handling human-driven requester apps and an optional solution for gathering standardized claims from that end-user, and allows for extensions to support other solutions for this use case and other use cases. The AM SHOULD document its claims-handling ability in its configuration data through the claim_profiles_supported property (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). For the business-level and legal implications of different technical authorization flows, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+<p>The process for requesting and providing claims is extensible and may have a variety of dependencies on the type of requesting party (for example, natural person or legal person) and the type of requester application (for example, browser, native app, or autonomously running web service). This specification currently provides a framework for handling human-driven requester apps and an optional solution for gathering standardized claims from that end-user, and allows for extensions to support other solutions for this use case and other use cases. The AM SHOULD document its support for claims profiles in its configuration data through the claim_profiles_supported property (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a>). For the business-level and legal implications of different technical authorization flows, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;Binding Obligations on User-Managed Access (UMA) Participants,&rdquo; May&nbsp;2012.</span><span>)</span></a>.
 </p>
 <a name="trusted-claims-human-driven"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -1318,6 +1336,8 @@ Claims-Gathering Flow for Requester Apps Operated by End-Users</h3>
 <a name="rfc.section.3.5.1.1"></a><h3>3.5.1.1.&nbsp;
 OpenID Connect Claim Profile</h3>
 
+<p>This section defines the UMA OpenID Connect claim profile.
+</p>
 <p>If an AM supports the OpenID Connect claim profile, it MUST supply the "openid" value for one of its claim_profiles_supported values in its AM configuration data (see <a class='info' href='#am-endpoints'>Section&nbsp;1.5<span> (</span><span class='info'>AM Configuration Data</span><span>)</span></a> for how to formulate this data).
 </p>
 <p>To conform to this option, the AM MUST do the following:</p>
@@ -1387,9 +1407,97 @@ Cache-Control: no-store
   "error_uri": "http://am.example.com/errors/resource_exists"
 }
 </pre></div>
-<a name="anchor6"></a><br /><hr />
+<a name="profiles"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
+Specification of Additional Profiles</h3>
+
+<p>This specification defines a protocol that has optional features in it. For interoperability and deployment purposes to serve particular use cases, third parties may want to define profiles of the UMA core protocol that restrict these options.
+</p>
+<p>Further, this specification has two modular and extensible elements of its design that are specified in terms of specific kinds of profiles:</p>
+<ul class="text">
+<li>RPT token formats and associated sub-protocol flows: These are specified in terms of UMA token profiles.
+</li>
+<li>Claims-gathering sub-protocol flows and specific claim types: These are specified in terms of UMA claims profiles.
+</li>
+</ul>
+
+<p>Likewise, third parties may want to define additional token and claim profiles to achieve interoperability and deployment success for particular use cases. It is not practical for this specification to standardize all of these additional profiles, but to serve overall interoperability goals, the following sections define rules for third parties that specify UMA profiles.
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+Specifying UMA Profiles</h3>
+
+<p>This section provides a checklist of issues that each UMA profile MUST address.
+</p>
+<p></p>
+<ol class="text">
+<li>Specify a URI that uniquely identifies the profile; provide postal or electronic contact information for the responsible author; and supply references to previously defined profiles that the new profile updates or obsoletes.
+</li>
+<li>Specify the set of interactions between endpoint entites involved in the profile, calling out any restrictions on ordinary UMA-conformant operations.
+</li>
+<li>Identify the legally responsible parties involved in each interaction and any new obligations imposed in the fashion of <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;Binding Obligations on User-Managed Access (UMA) Participants,&rdquo; May&nbsp;2012.</span><span>)</span></a>.
+</li>
+<li>Identify any additional or changed security considerations, including analysis of threats and description of countermeasures.
+</li>
+<li>Identify and additional or changed error states.
+</li>
+<li>Identify relevant AM configuration data defined and/or utilized by the profile.
+</li>
+</ol>
+
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Specifying UMA Token Profiles</h3>
+
+<p>This section provides a checklist of items that each UMA token profile MUST address.
+</p>
+<p></p>
+<ol class="text">
+<li>Specify a URI that uniquely identifies the token profile; provide postal or electronic contact information for the responsible author; and supply references to previously defined token profiles that the new profile updates or obsoletes.
+</li>
+<li>Identify the syntax and restrictions on the acceptable values for the token profile, including the keyword to be used in HTTP Authorization headers with tokens conforming to this profile.
+</li>
+<li>Specify any obligations specific to the token profile, in the fashion of <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;Binding Obligations on User-Managed Access (UMA) Participants,&rdquo; May&nbsp;2012.</span><span>)</span></a>.
+</li>
+<li>Specify how the token data is associated with, protected within, and/or retrieved by means of, the token.
+</li>
+<li>Identify rules in the processing of the fields within the token profile.
+</li>
+<li>Identify any restrictions on grant types to be used with the token profile.
+</li>
+<li>Identify and additional or changed error states.
+</li>
+<li>Identify relevant AM configuration data defined and/or utilized by the token profile.
+</li>
+</ol>
+
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+Specifying UMA Claim Profiles</h3>
+
+<p>This section provides a checklist of items that each UMA claim profile MUST address.
+</p>
+<p></p>
+<ol class="text">
+<li>Specify a URI that uniquely identifies the claim profile; provide postal or electronic contact information for the responsible author; and supply references to previously defined claim profiles that the new profile updates or obsoletes.
+</li>
+<li>Specify the claim syntax and semantics.
+</li>
+<li>Specify how the claims are gathered.
+</li>
+<li>Identify and additional or changed error states.
+</li>
+<li>Identify relevant AM configuration data defined and/or utilized by the claim profile.
+</li>
+</ol>
+
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 Security Considerations</h3>
 
 <p>This specification relies mainly on OAuth security mechanisms for protecting the host registration endpoint at the AM so that only a properly authorized host can access it on behalf of the intended user. For example, the host needs to use a valid protection API token (PAT) issued through a user authorization process at the endpoint, and the interaction SHOULD take place over TLS. It is expected that the host will protect its client secret (if it was issued one) and its PAT, particularly if used in "bearer token" fashion.
@@ -1398,20 +1506,20 @@ Security Considerations</h3>
 </p>
 <p>This specification defines a number of JSON-based data formats. As a subset of the JavaScript scripting language, JSON data SHOULD be consumed through a process that does not dynamically execute it as code, to avoid malicious code execution. One way to achieve this is to use a JavaScript interpreter rather than the built-in JavaScript eval() function.
 </p>
-<p>For information about the technical, operational, and legal elements of trust establishment between UMA entities and parties, which affects security considerations, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+<p>For information about the technical, operational, and legal elements of trust establishment between UMA entities and parties, which affects security considerations, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;Binding Obligations on User-Managed Access (UMA) Participants,&rdquo; May&nbsp;2012.</span><span>)</span></a>.
 </p>
-<a name="anchor7"></a><br /><hr />
+<a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
+<a name="rfc.section.7"></a><h3>7.&nbsp;
 Privacy Considerations</h3>
 
 <p>The AM comes to be in possession of resource set information (such as names and icons) that may reveal information about the user, which the AM's trust relationship with the host is assumed to accommodate. However, the requester is a less-trusted party (in fact, entirely untrustworthy until it acquires permissions for an RPT in UMA protocol phase 2. This specification recommends obscuring resource set identifiers in order to avoid leaking personally identifiable information to requesters through the "scope" mechanism.
 </p>
-<p>For information about the technical, operational, and legal elements of trust establishment between UMA entities and parties, which affects privacy considerations, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Trust Model,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+<p>For information about the technical, operational, and legal elements of trust establishment between UMA entities and parties, which affects privacy considerations, see <a class='info' href='#UMA-trustmodel'>[UMA&#8209;trustmodel]<span> (</span><span class='info'>Maler, E., &ldquo;Binding Obligations on User-Managed Access (UMA) Participants,&rdquo; May&nbsp;2012.</span><span>)</span></a>.
 </p>
 <a name="conformance"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.8"></a><h3>8.&nbsp;
 Conformance</h3>
 
 <p>This section outlines conformance requirements for various entities implementing UMA endpoints.
@@ -1422,7 +1530,7 @@ Conformance</h3>
 </li>
 <li>hostmeta: AMs, hosts, and requesters MUST support the <a class='info' href='#RFC6415'>[RFC6415]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;Web Host Metadata,&rdquo; October&nbsp;2011.</span><span>)</span></a> features named in this specification.
 </li>
-<li>OpenID Connect: AMs MAY support <a class='info' href='#OCDynClientReg'>[OCDynClientReg]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Dynamic Client Registration 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>, and MAY choose to conform to the "openid" claim format option, corresponding to the OpenID Connect RP role defined in <a class='info' href='#OCStandard'>[OCStandard]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Standard 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a> and support for OpenID Connect reserved claims defined in <a class='info' href='#OCMessages'>[OCMessages]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Messages 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>.
+<li>OpenID Connect: AMs MAY support <a class='info' href='#DynClientReg'>[DynClientReg]<span> (</span><span class='info'>Hardjono, T., &ldquo;OAuth Dynamic Client Registration Protocol,&rdquo; May&nbsp;2012.</span><span>)</span></a>, and MAY choose to conform to the "openid" claim format option, corresponding to the OpenID Connect RP role defined in <a class='info' href='#OCStandard'>[OCStandard]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Standard 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a> and support for OpenID Connect reserved claims defined in <a class='info' href='#OCMessages'>[OCMessages]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Messages 1.0,&rdquo; September&nbsp;2011.</span><span>)</span></a>.
 </li>
 </ul>
 
@@ -1430,14 +1538,14 @@ Conformance</h3>
 </p>
 <a name="IANA"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8"></a><h3>8.&nbsp;
+<a name="rfc.section.9"></a><h3>9.&nbsp;
 IANA Considerations</h3>
 
 <p>Several UMA-specific JSON-based media types are being proposed, as follows: (TBS)
 </p>
 <a name="resource-reg-example"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.9"></a><h3>9.&nbsp;
+<a name="rfc.section.10"></a><h3>10.&nbsp;
 Example of Registering Resource Sets</h3>
 
 <p>The following example illustrates the intent and usage of resource set descriptions and scope descriptions as part of resource set registration.
@@ -1596,7 +1704,7 @@ If-Match: "2"
 </pre></div>
 <a name="Acknowledgments"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.10"></a><h3>10.&nbsp;
+<a name="rfc.section.11"></a><h3>11.&nbsp;
 Acknowledgments</h3>
 
 <p>The current editor of this specification is Thomas Hardjono of MIT. The following people are co-authors:</p>
@@ -1621,30 +1729,30 @@ Acknowledgments</h3>
 
 <p>Additional contributors to this specification include the Kantara UMA Work Group participants, a list of whom can be found at <a class='info' href='#UMAnitarians'>[UMAnitarians]<span> (</span><span class='info'>Maler, E., &ldquo;UMA Participant Roster,&rdquo; 2012.</span><span>)</span></a>.
 </p>
-<a name="anchor8"></a><br /><hr />
+<a name="anchor11"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.11"></a><h3>11.&nbsp;
+<a name="rfc.section.12"></a><h3>12.&nbsp;
 Issues</h3>
 
 <p>All issues are now captured at the project's GitHub site (<a href='https://github.com/xmlgrrl/UMA-Specifications/issues'>https://github.com/xmlgrrl/UMA-Specifications/issues</a>).
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.12"></a><h3>12.&nbsp;
+<a name="rfc.section.13"></a><h3>13.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>12.1.&nbsp;Normative References</h3>
+<h3>13.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="DynClientReg">[DynClientReg]</a></td>
+<td class="author-text">Hardjono, T., &ldquo;<a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-dyn-reg/">OAuth Dynamic Client Registration Protocol</a>,&rdquo; May&nbsp;2012.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OAuth-SAML">[OAuth-SAML]</a></td>
 <td class="author-text">Campbell, B., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">SAML 2.0 Bearer Assertion Grant Type Profile for OAuth 2.0</a>,&rdquo; August&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OAuth-bearer">[OAuth-bearer]</a></td>
 <td class="author-text">&ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer">The OAuth 2.0 Authorization Protocol: Bearer Tokens</a>,&rdquo; March&nbsp;2012.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OAuth2">[OAuth2]</a></td>
 <td class="author-text">Hammer-Lahav, E., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2">The OAuth 2.0 Protocol</a>,&rdquo; September&nbsp;2011.</td></tr>
-<tr><td class="author-text" valign="top"><a name="OCDynClientReg">[OCDynClientReg]</a></td>
-<td class="author-text">Sakimura, N., &ldquo;<a href="http://openid.net/specs/openid-connect-registration-1_0.html">OpenID Connect Dynamic Client Registration 1.0</a>,&rdquo; September&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OCMessages">[OCMessages]</a></td>
 <td class="author-text">Sakimura, N., &ldquo;<a href="http://openid.net/specs/openid-connect-messages-1_0.html">OpenID Connect Messages 1.0</a>,&rdquo; September&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="OCStandard">[OCStandard]</a></td>
@@ -1656,12 +1764,12 @@ References</h3>
 <tr><td class="author-text" valign="top"><a name="RFC6415">[RFC6415]</a></td>
 <td class="author-text">Hammer-Lahav, E., &ldquo;<a href="http://tools.ietf.org/html/rfc6415">Web Host Metadata</a>,&rdquo; October&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="UMA-trustmodel">[UMA-trustmodel]</a></td>
-<td class="author-text">Maler, E., &ldquo;<a href="http://kantarainitiative.org/confluence/display/uma/UMA+Trust+Model">UMA Trust Model</a>,&rdquo; April&nbsp;2012.</td></tr>
+<td class="author-text">Maler, E., &ldquo;<a href="http://docs.kantarainitiative.org/uma/draft-uma-trust.html">Binding Obligations on User-Managed Access (UMA) Participants</a>,&rdquo; May&nbsp;2012.</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>12.2.&nbsp;Informative References</h3>
+<h3>13.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="UMA-usecases">[UMA-usecases]</a></td>
 <td class="author-text">Maler, E., &ldquo;<a href="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">UMA Scenarios and Use Cases</a>,&rdquo; October&nbsp;2010.</td></tr>
@@ -1684,7 +1792,7 @@ Document History</h3>
 </li>
 <li>The requester access token has been split into two tokens, and all of the tokens have been renamed. The host access token is now the PAT. The requester access token used at the AM's API is now the AAT, and consists of vanilla OAuth. The requester access token used at the host is now the RPT.
 </li>
-<li>The token and user authorization endpoints for the different APIs at the AM have been joined together, and are now distinguished through the "protection" scope (for the protection API) and the "authorization" scope (for the authorization API).
+<li>The token and user authorization endpoints for the different APIs at the AM have been joined together, and are now distinguished through the "http://docs.kantarainitiative.org/uma/scopes/prot.json" scope (for the protection API) and the "http://docs.kantarainitiative.org/uma/scopes/authz.json" scope (for the authorization API).
 </li>
 <li>The token status description format and JSON media type, and the RPT/permission delivery response, have been updated to reflect the RPT naming.
 </li>
