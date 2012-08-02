@@ -1,0 +1,27 @@
+                                           +--------------+
+                                           | authorizing  |
+          +---------manage (A)------------ |    user      |
+          |                                +--------------+
+          |         Phase 1:                      |
+          |         protect a                control (B)
+          |         resource                      |
+          v                                       v
+   +------------+               +----------+--------------+
+   |            |               |protection|              |
+   |            |               |   API    | authorization|
+   |    host    |<-protect (C)--| (*needs  |  manager (AM)|
+   |            |               |   PAT)   |              |
+   +------------+               +----------+--------------+
+   | protected  |                          | authorization|
+   | resource   |                          |     API      |
+   |(*needs RPT)|                          | (*needs AAT) |
+   +------------+                          +--------------+
+          ^                                      |
+          |         Phases 2 and 3:         authorize (D)
+          |         get authz and                |
+          |         access a resource            v
+          |                                +--------------+
+          +---------access (E)-------------|  requester   |
+                                           +--------------+
+
+                                         (requesting party)
