@@ -143,10 +143,10 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Maler, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">XMLgrrl.com</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">July 24, 2012</td></tr>
-<tr><td class="header">Expires: January 25, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">October 21, 2012</td></tr>
+<tr><td class="header">Expires: April 24, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />Binding Obligations on User-Managed Access (UMA) Participants<br />draft-maler-uma-trust-00c</h1>
+<h1><br />Binding Obligations on User-Managed Access (UMA) Participants<br />draft-maler-uma-trust-00d</h1>
 
 <h3>Abstract</h3>
 
@@ -167,7 +167,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on January 25, 2013.</p>
+This Internet-Draft will expire on April 24, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -360,7 +360,7 @@ Terminology</h3>
 <dd>A Subject that uses a Requester to seek access to a protected resource. This Subject may be an Individual or an NPE. The Requesting Party and the Authorizing Party may be the same Subject or different Subjects.
 </dd>
 <dt>Requesting Party Agent</dt>
-<dd>A Subject using a Requester to seek access to a protected resource on behalf of a Requesting Party. Typically this Subject is an Individual  acting on behalf of an NPE.
+<dd>A Subject using a Requester to seek access to a protected resource on behalf of a Requesting Party. Typically this Subject is an Individual acting on behalf of an NPE.
 </dd>
 </dl></blockquote>
 
@@ -410,9 +410,9 @@ Terminology</h3>
 <a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
 Obligations of the Requesting Party</h3>
 
-<p><strong>R1.</strong> When the Requester successfully receives access from a Host to a protected resource by wielding a valid "UMA bearer token profile" RPT with a currently valid permission for the type of access sought, the Requesting Party gains a) an obligation to the Authorizing Party to adhere to promises it made in order to get access authorization granted, and b) a further obligation to the Authorizing Party not to delegate to third-party Subjects a wider scope of access rights to the same resource than the Requesting Party itself was authorized for.
+<p><strong>R1.</strong> When the Requester successfully receives access from a Host to a protected resource by wielding a valid "UMA bearer token profile" RPT with a currently valid permission for the type of access sought, the Requesting Party gains an obligation to the Authorizing Party to adhere to promises it made in order to get access authorization granted.
 </p>
-<p>Comments: At a previous stage, the Requesting Party asked for a relevant permission from the AM and might have had to provide "promissory" claims asserting willingness, for example, to adhere to data usage constraints imposed by the user. This is precisely the end-to-end access authorization agreement that UMA exists to forge. Accepting access to the protected resource binds the Requesting Party to the terms it agreed to, for example, only reading the resource rather than modifying it, or not selling the resource data to someone else if that is what it agreed. The downstream restriction on scope of access is an attempt to put a limited form of "chain-link confidentiality" (and other chain-linked constraints) into effect, as discussed in <a class='info' href='#ChainLink'>[ChainLink]<span> (</span><span class='info'>Hartzog, W., &ldquo;Chain-Link Confidentiality,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+<p>Comments: At a previous stage, the Requesting Party asked for a relevant permission from the AM and might have had to provide "promissory" claims asserting willingness, for example, to adhere to data usage constraints imposed by the user. This is precisely the end-to-end access authorization agreement that UMA exists to forge. Accepting access to the protected resource binds the Requesting Party to the terms it agreed to, for example, only reading the resource rather than modifying it, or not selling the resource data to someone else if that is what it agreed.
 </p>
 <p>Issues: Note that the obligation goes into effect the first time a Requester gains access under the power of a "currently valid permission". If there was more than one valid permission attached to different sets of promises, without a record (kept by the Host and/or AM) of which permission it used for granting access, ambiguity is introduced. Also note that defining and using token profiles other than the "UMA bearer token profile" might lessen the potential ambiguity.
 </p>
@@ -537,6 +537,12 @@ Change History</h3>
 </li>
 </ul>
 
+<p>The following changes were made from 00c to 00d:</p>
+<ul class="text">
+<li>Removed R1b based on the conclusion in UMA telecon 2012-09-27.
+</li>
+</ul>
+
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
@@ -556,8 +562,6 @@ References</h3>
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>5.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="ChainLink">[ChainLink]</a></td>
-<td class="author-text">Hartzog, W., &ldquo;<a href="http://cyberlaw.stanford.edu/publications/chain-link-confidentiality">Chain-Link Confidentiality</a>,&rdquo; April&nbsp;2012.</td></tr>
 <tr><td class="author-text" valign="top"><a name="NSTIC">[NSTIC]</a></td>
 <td class="author-text">US Federal Government, &ldquo;<a href="http://www.whitehouse.gov/sites/default/files/rss_viewer/NSTICstrategy_041511.pdf">National Strategy for Trusted Identities in Cyberspace</a>,&rdquo; April&nbsp;2011.</td></tr>
 <tr><td class="author-text" valign="top"><a name="UETA">[UETA]</a></td>

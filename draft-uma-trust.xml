@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-maler-uma-trust-00c" ipr="trust200902">
+<rfc category="std" docName="draft-maler-uma-trust-00d" ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -35,7 +35,7 @@
       </address>
     </author>
 
-    <date day="24" month="July" year="2012" />
+    <date day="21" month="October" year="2012" />
 
     <abstract>
       <t>The User-Managed Access (UMA) core protocol provides a method for
@@ -404,12 +404,9 @@
         <t><spanx style="strong">R1.</spanx> When the Requester successfully
         receives access from a Host to a protected resource by wielding a
         valid "UMA bearer token profile" RPT with a currently valid permission
-        for the type of access sought, the Requesting Party gains a) an
+        for the type of access sought, the Requesting Party gains an
         obligation to the Authorizing Party to adhere to promises it made in
-        order to get access authorization granted, and b) a further obligation
-        to the Authorizing Party not to delegate to third-party Subjects a
-        wider scope of access rights to the same resource than the Requesting
-        Party itself was authorized for.</t>
+        order to get access authorization granted.</t>
 
         <t>Comments: At a previous stage, the Requesting Party asked for a
         relevant permission from the AM and might have had to provide
@@ -419,10 +416,7 @@
         Accepting access to the protected resource binds the Requesting Party
         to the terms it agreed to, for example, only reading the resource
         rather than modifying it, or not selling the resource data to someone
-        else if that is what it agreed. The downstream restriction on scope of
-        access is an attempt to put a limited form of "chain-link
-        confidentiality" (and other chain-linked constraints) into effect, as
-        discussed in <xref target="ChainLink"></xref>.</t>
+        else if that is what it agreed.</t>
 
         <t>Issues: Note that the obligation goes into effect the first time a
         Requester gains access under the power of a "currently valid
@@ -672,6 +666,11 @@
           cleanly, and removed clause-specific issues having to do with token
           profile specificity.</t>
         </list></t>
+
+      <t>The following changes were made from 00c to 00d:<list style="symbols">
+          <t>Removed R1b based on the conclusion in UMA telecon
+          2012-09-27.</t>
+        </list></t>
     </section>
   </middle>
 
@@ -718,19 +717,6 @@
           </author>
 
           <date year="1999" />
-        </front>
-      </reference>
-
-      <reference anchor="ChainLink"
-                 target="http://cyberlaw.stanford.edu/publications/chain-link-confidentiality">
-        <front>
-          <title>Chain-Link Confidentiality</title>
-
-          <author initials="W." surname="Hartzog">
-            <organization>The Center for Internet and Society</organization>
-          </author>
-
-          <date day="24" month="April" year="2012" />
         </front>
       </reference>
 
