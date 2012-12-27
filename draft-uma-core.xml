@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-06B"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-06"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -25,8 +25,8 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="UMA Core Protocol">User-Managed Access (UMA) Core
-    Protocol</title>
+    <title abbrev="UMA Core">User-Managed Access (UMA) Profile of OAuth
+    2.0</title>
 
     <author fullname="Thomas Hardjono" initials="T" role="editor"
             surname="Hardjono">
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="17" month="December" year="2012" />
+    <date day="27" month="December" year="2012" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -55,7 +55,10 @@
       access to their protected resources made by clients operated by
       arbitrary requesting parties, where the resources reside on any number
       of resource servers, and where a centralized authorization server
-      governs access based on resource owner policy.</t>
+      governs access based on resource owner policy. Resource owners configure
+      authorization servers with access policies that serve as implicit
+      authorization grants. Thus, the UMA profile of OAuth includes an
+      authorization grant flow.</t>
 
       <t>UMA serves numerous use cases where a resource owner outsources
       authorization for access to their resources, potentially even without
@@ -104,7 +107,7 @@
       target="UMA-phases"></xref>.</t>
 
       <figure align="center" anchor="UMA-phases">
-        <preamble>The Three Phases of the UMA Protocol</preamble>
+        <preamble>The Three Phases of the UMA Profile of OAuth</preamble>
 
         <artwork align="left"><![CDATA[                                           +--------------+
                                            |   resource   |
@@ -117,22 +120,23 @@
    +------------+               +----------+--------------+
    |            |               |protection|              |
    |  resource  |               |   API    | authorization|
-   |   server   |<-protect (C)--| (*needs  |    server    |
+   |   server   |<-protect (C)--|  (needs  |    server    |
    |            |               |   PAT)   |              |
    +------------+               +----------+--------------+
    | protected  |                          | authorization|
    | resource   |                          |     API      |
-   |(*needs RPT)|                          | (*needs AAT) |
+   |(needs RPT) |                          |  (needs AAT) |
    +------------+                          +--------------+
-          ^                                      |
+          ^                                       |
           |         Phases 2 and 3:         authorize (D)
-          |         get authz and                |
-          |         access a resource            v
+          |         get authorization,            |
+          |         access a resource             v
           |                                +--------------+
           +---------access (E)-------------|    client    |
                                            +--------------+
 
-                                         (requesting party)]]></artwork>
+                                           requesting party
+]]></artwork>
       </figure>
 
       <t>In broad strokes, the phases are as follows:<list style="numbers">
@@ -169,18 +173,17 @@
           (along with its operator, the "requesting party") for the first
           time. The client approaches the resource server seeking access to a
           protected resource ("E"). In order to access it, the client must
-          first obtain a requester permission token (RPT) from the
-          authorization server on behalf of its requesting party. The client
-          and requesting party are then redirected to the authorization server
-          to ask for appropriate authorization data (the form of this data
-          depends on the UMA token profile in use). In doing so, the
-          requesting party must demonstrate to the authorization server that
-          it satisfies the resource owner's policy governing the sought-for
-          resource and scope ("D"). To use the authorization server's
-          authorization API in the first place, the requesting party has to
-          agree to communication with this server for the purpose of seeking
-          authorization, which results in the client obtaining an
-          authorization API token (AAT).</t>
+          first obtain a requesting party token (RPT) from the authorization
+          server on behalf of its requesting party. The client and requesting
+          party are then redirected to the authorization server to ask for
+          appropriate authorization data (the form of this data depends on the
+          RPT profile in use). In doing so, the requesting party must
+          demonstrate to the authorization server that it satisfies the
+          resource owner's policy governing the sought-for resource and scope
+          ("D"). To use the authorization server's authorization API in the
+          first place, the requesting party has to agree to communication with
+          this server for the purpose of seeking authorization, which results
+          in the client obtaining an authorization API token (AAT).</t>
 
           <t><spanx>Access a resource:</spanx> This phase involves the client
           successfully presenting an RPT that has sufficient authorization
@@ -190,8 +193,8 @@
         </list></t>
 
       <t>In deploying UMA, implementers are expected to develop one or more
-      UMA profiles (described in <xref target="profiles"></xref>) that specify
-      and restrict the various UMA protocol options, according to the
+      profiles of UMA (described in <xref target="profiles"></xref>) that
+      specify and restrict the various UMA protocol options, according to the
       deployment conditions.</t>
 
       <section title="Notational Conventions">
@@ -237,26 +240,27 @@
             that can logically apply to a resource set ("object"). UMA
             associates scope types with labeled resource sets.</t>
 
-            <t hangText="authorization data">Data associated with a requester
-            permission token that enables some combination of the
-            authorization server and resource server to determine the correct
-            extent of access to allow to a client. Authorization data is a key
-            part of the definition of an UMA token profile.</t>
+            <t hangText="authorization data">Data associated with a requesting
+            party token that enables some combination of the authorization
+            server and resource server to determine the correct extent of
+            access to allow to a client. Authorization data is a key part of
+            the definition of an RPT profile.</t>
 
             <t hangText="permission">A scope of access over a particular
             resource set at a particular resource server that is being asked
             for by, or being granted to, a requesting party. In authorization
-            policy terminology, a permission includes a "subject" (requesting
-            party), "verbs" (one or more scopes of access), and an "object"
-            (resource set). A permission is one example of authorization
-            data.</t>
+            policy terminology, a permission is an entitlement that includes a
+            "subject" (requesting party), "verbs" (one or more scopes of
+            access), and an "object" (resource set). A permission is one
+            example of authorization data that an authorization server may
+            grant.</t>
 
             <t hangText="permission ticket">A correlation handle that is
             conveyed from an authorization server to a resource server, from a
             resource server to a client, and ultimately from a client to an
             authorization server, to enable the authorization server to assess
-            the correct resource owner policies to apply to an access
-            request.</t>
+            the correct resource owner policies to apply to a request for an
+            authorization grant.</t>
           </list></t>
       </section>
 
@@ -284,8 +288,8 @@
             proprietary API. This API is protected by the UMA profile of
             OAuth, requiring a client to obtain from the authorization server
             an OAuth access token, referred to in this specification as a
-            <spanx>requester permission token (RPT)</spanx> to distinguish it
-            from other tokens with other purposes.</t>
+            <spanx>requesting party token (RPT)</spanx> to distinguish it from
+            other tokens with other purposes.</t>
           </list></t>
 
         <t>The authorization server presents standard OAuth endpoints for
@@ -336,9 +340,9 @@
             resource server forwards an RPT that has accompanied an access
             request to learn what authorization data is associated with it, as
             defined by <xref target="OAuth-introspection"></xref>. This
-            specification defines an UMA token profile, "bearer", which is
-            mandatory for the authorization server to implement and which, if
-            used, REQUIRES the resource server to use this endpoint (see <xref
+            specification defines an RPT profile, "bearer", which is mandatory
+            for the authorization server to implement and which, if used,
+            REQUIRES the resource server to use this endpoint (see <xref
             target="h-am-rpt-status"></xref>). The
             "http://docs.kantarainitiative.org/uma/scopes/prot.json" scope is
             a superset of the scope that governs usage of the token
@@ -408,11 +412,11 @@
         partie) that has attempted access, and transmits the resulting
         permission ticket to the client. The client subsequently asks the
         authorization server for authorization data to be associated with its
-        RPT. If the UMA token profile is in use, the authorization server
-        grants (or denies) the permission to the requesting party. (If another
-        token profile is in use, the authorization server might generate a
-        different type of authorization data, such as an authorization
-        decision or a package of the claims it has collected.)</t>
+        RPT. If the RPT profile is in use, the authorization server grants (or
+        denies) the permission to the requesting party. (If another token
+        profile is in use, the authorization server might generate a different
+        type of authorization data, such as an authorization decision or a
+        package of the claims it has collected.)</t>
 
         <t>An RPT is bound to a requesting party, the client being used by
         that party, the resource server at which protected resources of
@@ -445,8 +449,10 @@
         (described further in <xref target="conformance"></xref>) and
         protection and authorization API endpoints (as described in <xref
         target="endpoint-discussion"></xref>). (At the appropriate time, this
-        section will instead profile or extend the <xref
-        target="OAuth-linktypes"></xref> specification.)</t>
+        section will instead profile whatever self-describing metadata
+        specification OAuth adopts, for example, <xref
+        target="OAuth-linktypes"></xref> or <xref
+        target="OAuth-meta"></xref>.)</t>
 
         <t>The configuration data has the following properties. All endpoint
         URIs supplied SHOULD require the use of a transport-layer security
@@ -483,8 +489,8 @@
             profile). The authorization server is REQUIRED to support the UMA
             bearer token profile, and to supply this string value explicitly.
             The authorization server MAY declare its support for RPTs using
-            additional UMA token profiles by providing a unique absolute URI
-            in a string value in the array for each one.</t>
+            additional RPT profiles by providing a unique absolute URI in a
+            string value in the array for each one.</t>
 
             <t hangText="oauth_grant_types_supported"><vspace />REQUIRED.
             OAuth grant types supported by this authorization server in
@@ -602,8 +608,7 @@
           target="resource-set-reg"></xref> for additional details.</t>
         </list></t>
 
-      <section anchor="host-access-token"
-               title="Resource Server Obtains Protection API Token">
+      <section anchor="host-access-token" title="Resource Server Obtains PAT">
         <t>In this step, the resource server acquires a PAT from the
         authorization server. The token represents the approval of the
         resource owner for this resource server to trust this authorization
@@ -739,7 +744,7 @@
 
           <t>If the client (posessing a valid RPT) received a 403 response and
           a permission ticket, it then asks the authorization server for
-          authorization that matches the ticket (<xref
+          authorization data that matches the ticket (<xref
           target="r-am-authz-scope"></xref>). If the authorization server
           needs requesting party claims in order to assess this client's
           authorization, it engages in a claims-gathering flow with the
@@ -756,7 +761,7 @@
       sections.</t>
 
       <section anchor="r-h-attempt-access"
-               title="Client Attempts to Access Protected Resource at Resource Server">
+               title="Client Attempts to Access Protected Resource">
         <t>This interaction assumes that the resource server has previously
         registered with an authorization server one or more resource sets that
         correspond to the resource to which access is being attempted, such
@@ -798,12 +803,11 @@ Host: photoz.example.com
 
         <t>The resource server responds in one of the following ways.</t>
 
-        <section anchor="no-rpt"
-                 title="Client Presents No Requester Permission Token">
+        <section anchor="no-rpt" title="Client Presents No RPT">
           <t>If the client does not present any access token with the request,
           the resource server MUST return an HTTP 401 (Unauthorized) status
           code, along with providing the authorization server's URI in an
-          "am_uri" property to facilitate authorization server configuration
+          "as_uri" property to facilitate authorization server configuration
           data discovery, including discovery of the endpoint where the client
           can request an RPT (<xref
           target="authz-permission-token"></xref>).</t>
@@ -815,14 +819,14 @@ Host: photoz.example.com
 HTTP/1.1 401 Unauthorized
    WWW-Authenticate: UMA realm="example",
     host_id="photoz.example.com",
-    am_uri="http://am.example.com"
+    as_uri="http://am.example.com"
    ...
 ]]></artwork>
           </figure>
         </section>
 
         <section anchor="insufficient-rpt"
-                 title="Client Presents a Requester Permission Token That Has Insufficient Permission">
+                 title="Client Presents an RPT That Has Insufficient Authorization Data">
           <t>If the client presents an RPT with its request, the resource
           server SHOULD determine the RPT's status (see <xref
           target="h-am-rpt-status"></xref>). If the RPT is invalid, the
@@ -846,7 +850,7 @@ HTTP/1.1 401 Unauthorized
 HTTP/1.1 403 Forbidden
 WWW-Authenticate: UMA realm="example",
   host_id="photoz.example.com",
-  am_uri="http://am.example.com"
+  as_uri="http://am.example.com"
   error="insufficient_scope"
 
 {
@@ -857,7 +861,7 @@ WWW-Authenticate: UMA realm="example",
         </section>
 
         <section anchor="sufficient-rpt"
-                 title="Client Presents a Valid Requester Permission Token with Sufficient Permissions">
+                 title="Client Presents a Valid RPT with Sufficient Authorization Data">
           <t>If the RPT's status is associated with authorization data that is
           consistent with authorized access of the scope sought by the client
           (see <xref target="h-am-rpt-status"></xref>), the resource server
@@ -889,11 +893,11 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
       <section anchor="h-am-register-permission"
                title="Resource Server Registers a Permission With Authorization Server">
         <t>In response to receiving an access request accompanied by an RPT
-        that is invalid or has insufficient permissions, the resource server
-        SHOULD register a permission with the authorization server that would
-        be sufficient for the type of access sought. The authorization server
-        returns a permission ticket for the resource server to give to the
-        client in its response.</t>
+        that is invalid or has insufficient authorization data, the resource
+        server SHOULD register a permission with the authorization server that
+        would be sufficient for the type of access sought. The authorization
+        server returns a permission ticket for the resource server to give to
+        the client in its response.</t>
 
         <t>The permission ticket is a short-lived opaque structure whose form
         is determined by the authorization server. The ticket value MUST be
@@ -982,7 +986,7 @@ Location: https://am.example.com/permreg/host/photoz.example.com/5454345rdsaa454
       </section>
 
       <section anchor="h-am-rpt-status"
-               title="Resource Server Determines the Requester Permission Token Status">
+               title="Resource Server Determines the RPT Status">
         <t>On receiving an RPT, the resource server MUST ascertain its status
         before granting or denying access to the client. An RPT is associated
         with a set of authorization data that governs whether the client is
@@ -1111,7 +1115,7 @@ Content-Type: application/json
       </section>
 
       <section anchor="r-am-obtain-permission"
-               title="Client Asks Authorization Server for Requester Permission Token and Permission">
+               title="Client Asks Authorization Server for RPT and Authorization Data">
         <t>A client making an access attempt accompanied by no RPT or by an
         invalid RPT will receive a 401 response back from the resource server,
         along with the authorization server's location from which it can learn
@@ -1147,8 +1151,7 @@ Content-Type: application/json
             details.</t>
           </list></t>
 
-        <section anchor="authz-api-token"
-                 title="Client Obtains Authorization API Token">
+        <section anchor="authz-api-token" title="Client Obtains AAT">
           <t>In this step, the client acquires an AAT from the authorization
           server on the requesting party's behalf. The token represents the
           approval of this requesting party for this client to engage with
@@ -1190,8 +1193,7 @@ Content-Type: application/json
           processes are outside the scope of this specification.</t>
         </section>
 
-        <section anchor="authz-permission-token"
-                 title="Client Obtains Requester Permission Token">
+        <section anchor="authz-permission-token" title="Client Obtains RPT">
           <t>In this step, if the client needs an RPT that applies to this
           requesting party for this resource server and this authorization
           server, it obtains an RPT. On first issuance the RPT is associated
@@ -1261,7 +1263,7 @@ WWW-Authenticate: Bearer realm="example",
         </section>
 
         <section anchor="r-am-authz-scope"
-                 title="Client Asks for Authorization">
+                 title="Client Asks for Authorization Data">
           <t>Once in possession of an AAT for this authorization server, an
           RPT that applies to this requesting party for this resource server
           and this authorization server, and a permission ticket, the client
@@ -1293,12 +1295,21 @@ Authorization: Bearer jwfLG53^sad$#f
           </figure>
 
           <t>In this interaction, the client uses the authorization server's
-          permission request endpoint. The authorization server uses the
-          ticket to look up the details of the previously registered
-          permission, maps the requested permission to operative user
-          policies, undergoes any authorization flows required (see <xref
+          permission request endpoint.</t>
+
+          <t>The authorization server uses the ticket to look up the details
+          of the previously registered permission, maps the requested
+          permission to operative resource owner policies, undergoes any
+          authorization flows required (see <xref
           target="authz-flows"></xref>), and ultimately responds to the
-          request positively or negatively.</t>
+          request positively or negatively. The resource owner's policies at
+          the authorization server amount to an implicit authorization grant
+          in governing the issuance of authorization data. (The authorization
+          server is also free to enable resource owners to set policies that
+          require them to provide a run-time explicit authorization grant
+          mediated by the authorization server. This setting of policies and
+          gathering of authorization grants is outside the scope of this
+          specification.)</t>
 
           <t>If the request fails due to an invalid, missing, or expired AAT
           (or RPT) or requires higher privileges at this endpoint than
@@ -1441,8 +1452,8 @@ Cache-Control: no-store
           target="trusted-claims"></xref>).</t>
 
           <section anchor="trusted-claims"
-                   title="UMA OpenID Connect Claim Profile">
-            <t>This section defines the UMA OpenID Connect claim profile.
+                   title="OpenID Connect Claim Profile">
+            <t>This section defines the OpenID Connect claim profile for UMA.
             Following is a summary:<list style="symbols">
                 <t>Identifying URI:
                 http://docs.kantarainitiative.org/uma/profiles/uma-claim-openid-1.0</t>
@@ -1584,10 +1595,10 @@ Cache-Control: no-store
       of its design that are specified in terms of specific kinds of
       profiles:<list style="symbols">
           <t>RPT token formats and associated sub-protocol flows: These are
-          specified in terms of UMA token profiles.</t>
+          specified in terms of RPT profiles.</t>
 
           <t>Claims-gathering sub-protocol flows and specific claim types:
-          These are specified in terms of UMA claim profiles.</t>
+          These are specified in terms of claim profiles.</t>
         </list></t>
 
       <t>Likewise, third parties may want to define additional token and claim
@@ -1595,11 +1606,11 @@ Cache-Control: no-store
       particular use cases. It is not practical for this specification to
       standardize all of these additional profiles. However, to serve overall
       interoperability goals, the following sections provide guidelines for
-      third parties that wish to specify UMA profiles.</t>
+      third parties that wish to specify profiles of UMA.</t>
 
-      <section title="Specifying UMA Profiles">
-        <t>It is STRONGLY RECOMMENDED that UMA profiles document the following
-        information:</t>
+      <section title="Specifying Profiles of UMA">
+        <t>It is STRONGLY RECOMMENDED that profiles of UMA document the
+        following information:</t>
 
         <t><list style="numbers">
             <t>Specify a URI that uniquely identifies the profile.</t>
@@ -1630,9 +1641,9 @@ Cache-Control: no-store
           </list></t>
       </section>
 
-      <section title="Specifying UMA Token Profiles">
-        <t>It is STRONGLY RECOMMENDED that UMA token profiles document the
-        following information:</t>
+      <section title="Specifying RPT Profiles">
+        <t>It is STRONGLY RECOMMENDED that RPT profiles document the following
+        information:</t>
 
         <t><list style="numbers">
             <t>Specify a URI that uniquely identifies the token profile.</t>
@@ -1676,8 +1687,8 @@ Cache-Control: no-store
         example.</t>
       </section>
 
-      <section title="Specifying UMA Claim Profiles">
-        <t>It is STRONGLY RECOMMENDED that UMA claim profiles document the
+      <section title="Specifying Claim Profiles">
+        <t>It is STRONGLY RECOMMENDED that claim profiles document the
         following information:<list style="numbers">
             <t>Specify a URI that uniquely identifies the claim profile.</t>
 
@@ -1757,31 +1768,21 @@ Cache-Control: no-store
       implementing UMA endpoints.</t>
 
       <t>This specification has dependencies on other specifications, as
-      follows:<list style="symbols">
-          <t>OAuth 2.0: AMs, hosts, and requesters MUST support <xref
-          target="OAuth2"></xref> features named in this specification for
-          conformance. For example, AMs MUST support the authorization_code
-          grant type.</t>
+      referenced under the normative references listed in this specification.
+      Its dependencies on some specifications, such as OpenID Connect (<xref
+      target="OCStandard"></xref> and <xref target="OCMessages"></xref>), are
+      optional depending on whether the feature in question is used in the
+      implementation.</t>
 
-          <t>hostmeta: AMs, hosts, and requesters MUST support the <xref
-          target="RFC6415"></xref> features named in this specification.</t>
-
-          <t>OpenID Connect: AMs MAY support <xref
-          target="DynClientReg"></xref>, and MAY choose to conform to the
-          "openid" claim format option, corresponding to the OpenID Connect RP
-          role defined in <xref target="OCStandard"></xref> and support for
-          OpenID Connect reserved claims defined in <xref
-          target="OCMessages"></xref>.</t>
-        </list></t>
-
-      <t>The AM's configuration data provides a machine-readable method for an
-      AM to indicate certain of the conformance options it has chosen. Several
-      of the data properties allow for extensibility. Where this specification
-      does not already require optional features to be documented, it is
-      RECOMMENDED that AM developers and deployers document any profiled or
-      extended features explicitly and use configuration data to indicate
-      their usage. See <xref target="am-endpoints"></xref> for information
-      about providing and extending AM configuration data.</t>
+      <t>The authorization server's configuration data provides a
+      machine-readable method for it to indicate certain of the conformance
+      options it has chosen. Several of the configuration data properties
+      allow for indicating extension features. Where this specification does
+      not already require optional features to be documented, it is
+      RECOMMENDED that authorization server developers and deployers document
+      any profiled or extended features explicitly and use configuration data
+      to indicate their usage. See <xref target="am-endpoints"></xref> for
+      information about providing and extending the configuration data.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1823,16 +1824,15 @@ Cache-Control: no-store
     <references title="Normative References">
       <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
 
-      <reference anchor="OAuth2"
-                 target="http://tools.ietf.org/html/draft-ietf-oauth-v2">
+      <reference anchor="OAuth2" target="http://tools.ietf.org/html/rfc6749">
         <front>
-          <title>The OAuth 2.0 Protocol</title>
+          <title>The OAuth 2.0 Authorization Framework</title>
 
-          <author initials="E." surname="Hammer-Lahav">
+          <author initials="D." surname="Hardt">
             <organization>IETF</organization>
           </author>
 
-          <date day="22" month="September" year="2011" />
+          <date day="" month="October" year="2012" />
         </front>
       </reference>
 
@@ -1849,25 +1849,12 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="OAuth-introspection"
-                 target="http://tools.ietf.org/html/draft-richer-oauth-introspection-00">
+                 target="http://tools.ietf.org/html/draft-richer-oauth-introspection">
         <front>
-          <title>OAuth 2.0 Token Introspection</title>
+          <title>OAuth Token Introspection</title>
 
           <author initials="J." surname="Richer">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="27" month="November" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-linktypes"
-                 target="https://datatracker.ietf.org/doc/draft-wmills-oauth-lrdd/?include_text=1">
-        <front>
-          <title>Link Type Registrations for OAuth2</title>
-
-          <author initials="W." surname="Mills">
-            <organization>IETF</organization>
+            <organization></organization>
           </author>
 
           <date day="27" month="November" year="2012" />
@@ -1884,21 +1871,20 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="1" month="October" year="2012" />
+          <date day="" month="October" year="2012" />
         </front>
       </reference>
 
       <reference anchor="OAuth-SAML"
                  target="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">
         <front>
-          <title>SAML 2.0 Bearer Assertion Grant Type Profile for OAuth
-          2.0</title>
+          <title>SAML 2.0 Bearer Assertion Profiles for OAuth 2.0</title>
 
           <author initials="B." surname="Campbell">
             <organization>Campbell</organization>
           </author>
 
-          <date month="August" year="2011" />
+          <date day="7" month="November" year="2012" />
         </front>
       </reference>
 
@@ -2006,6 +1992,32 @@ Cache-Control: no-store
           </author>
 
           <date year="2012" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-linktypes"
+                 target="http://tools.ietf.org/html/draft-wmills-oauth-lrdd">
+        <front>
+          <title>Link Type Registrations for OAuth 2</title>
+
+          <author initials="W." surname="Mills">
+            <organization></organization>
+          </author>
+
+          <date day="17" month="October" year="2012" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-meta"
+                 target="http://tools.ietf.org/html/draft-sakimura-oauth-meta">
+        <front>
+          <title>JSON Metadata for OAuth Responses</title>
+
+          <author initials="N." surname="Sakimura">
+            <organization></organization>
+          </author>
+
+          <date day="18" month="December" year="2012" />
         </front>
       </reference>
     </references>
