@@ -25,8 +25,7 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="OAUTH Intro Protocol">OAuth 2.0 Resource Set
-    Registration</title>
+    <title abbrev="OAuth RReg">OAuth 2.0 Resource Set Registration</title>
 
     <author fullname="Thomas Hardjono" initials="T" role="editor"
             surname="Hardjono">
@@ -37,7 +36,7 @@
       </address>
     </author>
 
-    <date day="19" month="December" year="2012" />
+    <date day="27" month="December" year="2012" />
 
     <abstract>
       <t>This specification defines a resource set registration mechanism
@@ -50,27 +49,30 @@
   <middle>
     <section anchor="introduction" title="Introduction">
       <t>There are various circumstances under which an OAuth 2.0 <xref
-      target="OAuth2"></xref> resource server (RS) needs to communicate to its
-      authorization server (AS) information about its protected resources. An
-      RS and AS may need to communicate with each other about resources in one
-      of several circumstances:<list style="symbols">
-          <t>In some OAuth 2.0 deployments, the RS and AS are operated by the
-          same organization and deployed in the same domain, but many resource
-          servers share a single authorization server (a security token
-          service (STS) component). Thus, even though the trust between these
-          two is typically tightly bound, there is value in defining a
-          singular standardized resource protection communications interface
-          between the AS and each of the RSs.</t>
+      target="OAuth2"></xref> resource server needs to communicate to its
+      authorization server information about its protected resources. A
+      resource server and authorization server may need to communicate with
+      each other about resources in one of several circumstances:<list
+          style="symbols">
+          <t>In some OAuth 2.0 deployments, the resource server and
+          authorization server are operated by the same organization and
+          deployed in the same domain, but many resource servers share a
+          single authorization server (a security token service (STS)
+          component). Thus, even though the trust between these two is
+          typically tightly bound, there is value in defining a singular
+          standardized resource protection communications interface between
+          the authorization server and each of the resource servers.</t>
 
           <t>In some deployments of OpenID Connect, which has a dependency on
           OAuth 2.0, the OpenID Provider (OP) component is a specialized
-          version of an OAuth AS that brokers availability of user attributes
-          by dealing with with an ecosystem of attribute providers (APs).
-          These APs effectively function as third-party resource servers.
-          Thus, there is value in defining a mechanism by which all of the
-          third-party APs can communicate with a central OP, as well as
-          ensuring that trust between the AS and RSs is able to be established
-          in a dynamic, loosely coupled fashion.</t>
+          version of an OAuth authorization server that brokers availability
+          of user attributes by dealing with with an ecosystem of attribute
+          providers (APs). These APs effectively function as third-party
+          resource servers. Thus, there is value in defining a mechanism by
+          which all of the third-party APs can communicate with a central OP,
+          as well as ensuring that trust between the authorization server and
+          resource servers is able to be established in a dynamic, loosely
+          coupled fashion.</t>
 
           <t>In some deployments of User-Managed Access (UMA), which has a
           dependency on OAuth 2.0, an end-user resource owner (the "user" in
@@ -80,12 +82,14 @@
           value in defining a mechanism by which all of the third-party
           resource servers can outsource resource protection (and potentially
           discovery) to a central authorization server, as well as ensuring
-          that trust between the AS and RSs is able to be established by the
-          resource owner in a dynamic, loosely coupled fashion.</t>
+          that trust between the authorization server and resource servers is
+          able to be established by the resource owner in a dynamic, loosely
+          coupled fashion.</t>
         </list></t>
 
-      <t>This specification defines an API through which the RS can register
-      information about resource sets with the AS.</t>
+      <t>This specification defines an API through which the resource server
+      can register information about resource sets with the authorization
+      server.</t>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
@@ -117,21 +121,22 @@
             example, a resource set representing a status update API might
             have scope types that include adding an update or reading updates.
             A resource set representing a photo album might have scope types
-            that include viewing a slideshow or printing the album. The RS
-            registers resource sets and their scope types when there is not
-            yet any particular client in the picture.</t>
+            that include viewing a slideshow or printing the album. The
+            resource server registers resource sets and their scope types when
+            there is not yet any particular client in the picture.</t>
 
             <t hangText="resource set registration endpoint">The endpoint at
-            which the RS registers resource sets it wants the AS to know
-            about. The operations available at this endpoint constitute a
-            resource set registration API (see <xref
-            target="reg-api"></xref>).</t>
+            which the resource server registers resource sets it wants the
+            authorization server to know about. The operations available at
+            this endpoint constitute a resource set registration API (see
+            <xref target="reg-api"></xref>).</t>
           </list></t>
       </section>
 
-      <section anchor="am-endpoints" title="AS Configuration Data">
-        <t>If the AS declares its endpoints and any other configuration data
-        in a machine-readable form, for example <xref
+      <section anchor="am-endpoints"
+               title="Authorization Server Configuration Data">
+        <t>If the authorization server declares its endpoints and any other
+        configuration data in a machine-readable form, for example <xref
         target="OAuth-linktypes"></xref>, it SHOULD convey its resource set
         registration endpoint in this fashion as well.</t>
       </section>
@@ -140,9 +145,9 @@
     <section anchor="protecting-a-resource" title="Resource Set Registration">
       <t>This specification defines a resource set registration API. If this
       API is not open, it MUST be OAuth-protected. For any of the resource
-      owner's sets of resources this AS needs to be aware of, the resource
-      server MUST register these resource sets at the AS's registration
-      endpoint.</t>
+      owner's sets of resources this authorization server needs to be aware
+      of, the resource server MUST register these resource sets at the
+      authorization server's registration endpoint.</t>
 
       <section anchor="action-desc" title="Scope Type Descriptions">
         <t>A scope type is a bounded extent of access that is possible to
@@ -150,15 +155,15 @@
         with the following properties:<list style="hanging">
             <t hangText="name">REQUIRED. A human-readable string describing
             some scope (extent) of access. This name is intended for ultimate
-            use in the AS's user interface to assist the user in setting
-            policies for protected resource sets that have this available
-            scope.</t>
+            use in the authorization server's user interface to assist the
+            user in setting policies for protected resource sets that have
+            this available scope.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the scope. The referenced icon is intended for
-            ultimate use in the AS's user interface to assist the user in
-            setting policies for protected resource sets that have this
-            available scope.</t>
+            ultimate use in the authorization server's user interface to
+            assist the user in setting policies for protected resource sets
+            that have this available scope.</t>
           </list></t>
 
         <figure>
@@ -179,13 +184,14 @@
         unprotected from collisions are outside the scope of the current
         specification.</t>
 
-        <t>An RS MUST list a resource set's available scopes using URI
-        references (as defined in <xref target="resource-set-desc"></xref>).
-        The scope types available for use at any one RS MUST have unique URI
-        references so that the RS's scope descriptions are uniquely
-        distinguishable. A scope type URI reference MAY include a fragment
-        identifier. Scope type descriptions MAY reside anywhere. The RS is not
-        required to self-host scope type descriptions and may wish to point to
+        <t>A resource server MUST list a resource set's available scopes using
+        URI references (as defined in <xref
+        target="resource-set-desc"></xref>). The scope types available for use
+        at any one resource server MUST have unique URI references so that the
+        resource server's scope descriptions are uniquely distinguishable. A
+        scope type URI reference MAY include a fragment identifier. Scope type
+        descriptions MAY reside anywhere. The resource server is not required
+        to self-host scope type descriptions and may wish to point to
         standardized scope type descriptions residing elsewhere. Scope type
         description documents MUST be accessible to authorization servers
         through GET calls made to these URI references.</t>
@@ -195,15 +201,16 @@
       </section>
 
       <section anchor="resource-set-desc" title="Resource Set Descriptions">
-        <t>The RS defines a resource set that the AS needs to be aware of by
-        registering a resource set description at the AS.</t>
+        <t>The resource server defines a resource set that the authorization
+        server needs to be aware of by registering a resource set description
+        at the authorization server.</t>
 
         <t>A resource set description is a JSON document with the following
         properties:<list style="hanging">
             <t hangText="name">REQUIRED. A human-readable string describing a
-            set of one or more resources. The AS SHOULD use the name in its
-            user interface to assist the user in setting policies for
-            protecting this resource set.</t>
+            set of one or more resources. The authorization server SHOULD use
+            the name in its user interface to assist the user in setting
+            policies for protecting this resource set.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource set.</t>
@@ -212,17 +219,11 @@
             references of scope type descriptions that are available for this
             resource set.</t>
 
-            <t hangText="resource_set_type">OPTIONAL. A URI referring to the
-            semantics of the resource set, or reserved string "implicit". For
-            example, if the resource set consists of a single resource that is
-            an identity claim that leverages standardized claim semantics, the
-            value of this property would be the identifying URI for this
-            claim. This information can be used to enable clients to discover,
-            through the AS, the locations of resources belonging to this
-            resource owner across many RSs. The reserved string "implicit"
-            means that the RS and AS have a privately defined understanding of
-            the the resource set in question, such that only the scope types
-            are exposed through resource set registration.</t>
+            <t hangText="type">OPTIONAL. A string uniquely identifying the
+            semantics of the resource set. For example, if the resource set
+            consists of a single resource that is an identity claim that
+            leverages standardized claim semantics, the value of this property
+            could be an identifying URI for this claim.</t>
           </list></t>
 
         <figure>
@@ -250,34 +251,35 @@
         unprotected from collisions are outside the scope of the current
         specification.</t>
 
-        <t>When an RS creates or updates a resource set description (see <xref
-        target="reg-api"></xref>), the AS MUST attempt to retrieve the
-        referenced scope descriptions so that it can present fresh data in
-        resource owner interactions.</t>
+        <t>When a resource server creates or updates a resource set
+        description (see <xref target="reg-api"></xref>), the authorization
+        server MUST attempt to retrieve the referenced scope descriptions so
+        that it can present fresh data in resource owner interactions.</t>
       </section>
 
       <section anchor="reg-api" title="Resource Set Registration API">
-        <t>The RS uses the RESTful API at the AS's resource set registration
-        endpoint to create, read, update, and delete resource set
-        descriptions, along with listing groups of such descriptions. The RS
-        is free to use its own methods of identifying and describing resource
-        sets.</t>
+        <t>The resource server uses the RESTful API at the authorization
+        server's resource set registration endpoint to create, read, update,
+        and delete resource set descriptions, along with listing groups of
+        such descriptions. The resource server is free to use its own methods
+        of identifying and describing resource sets.</t>
 
         <t>(Note carefully the similar but distinct senses in which the word
         "resource" is used in this section. The resource set descriptions are
-        themselves managed as web resources at the AS through this API.)</t>
+        themselves managed as web resources at the authorization server
+        through this API.)</t>
 
-        <t>The AS MUST present an API for registering resource set
-        descriptions at a set of URIs with the structure
+        <t>The authorization server MUST present an API for registering
+        resource set descriptions at a set of URIs with the structure
         "{rsreguri}/resource_set/{rsid}", where the PAT provides sufficient
         context to distinguish between identical resource set identifiers
         assigned by different hosts.</t>
 
         <t>The components of these URIs are defined as follows:<list
             style="hanging">
-            <t hangText="{rsreguri}">The AS's resource set registration
-            endpoint as advertised in its configuration data (see <xref
-            target="am-endpoints"></xref>).</t>
+            <t hangText="{rsreguri}">The authorization server's resource set
+            registration endpoint as advertised in its configuration data (see
+            <xref target="am-endpoints"></xref>).</t>
 
             <t hangText="{rsid}">An identifier for a resource set
             description.</t>
@@ -287,11 +289,11 @@
         applies to the set of resource set descriptions already
         registered.</t>
 
-        <t>Following is a summary of the five registration operations the AS
-        is REQUIRED to support. Each is defined in its own section below. All
-        other methods are unsupported. This API uses ETag and If-Match to
-        ensure the desired resource at the AS is targeted.<list
-            style="symbols">
+        <t>Following is a summary of the five registration operations the
+        authorization server is REQUIRED to support. Each is defined in its
+        own section below. All other methods are unsupported. This API uses
+        ETag and If-Match to ensure the desired resource at the authorization
+        server is targeted.<list style="symbols">
             <t>Create resource set description: PUT /resource_set/{rsid}</t>
 
             <t>Read resource set description: GET /resource_set/{rsid}</t>
@@ -307,31 +309,32 @@
           </list></t>
 
         <t>If the request to the resource set registration endpoint is
-        incorrect, then the AS responds with an error message by including one
-        of the following error codes with the response: <list style="hanging">
-            <t hangText="unsupported_method_type">The RS request used an
-            unsupported HTTP method. The AS MUST respond with the HTTP 405
-            (Method Not Allowed) status code and MUST fail to act on the
-            request.</t>
+        incorrect, then the authorization server responds with an error
+        message by including one of the following error codes with the
+        response: <list style="hanging">
+            <t hangText="unsupported_method_type">The resource server request
+            used an unsupported HTTP method. The authorization server MUST
+            respond with the HTTP 405 (Method Not Allowed) status code and
+            MUST fail to act on the request.</t>
 
-            <t hangText="not_found">The resource set requested from the AS
-            cannot be found. The AS MUST respond with HTTP 404 (Not Found)
-            status code.</t>
+            <t hangText="not_found">The resource set requested from the
+            authorization server cannot be found. The authorization server
+            MUST respond with HTTP 404 (Not Found) status code.</t>
 
             <t hangText="precondition_failed">The resource set that was
-            requested to be deleted or updated at the AS did not match the
-            If-Match value present in the request. The AS MUST respond with
-            HTTP 412 (Precondition Failed) status code and MUST fail to act on
-            the request.</t>
+            requested to be deleted or updated at the authorization server did
+            not match the If-Match value present in the request. The
+            authorization server MUST respond with HTTP 412 (Precondition
+            Failed) status code and MUST fail to act on the request.</t>
           </list></t>
 
         <section anchor="create-resource-set"
                  title="Create Resource Set Description">
           <t>Adds a new resource set description using the PUT method, thereby
-          putting it under the AS's protection. If the request is successful,
-          the AS MUST respond with a status message that includes an ETag
-          header and _id and _rev properties for managing resource set
-          description versioning.</t>
+          putting it under the authorization server's protection. If the
+          request is successful, the authorization server MUST respond with a
+          status message that includes an ETag header and _id and _rev
+          properties for managing resource set description versioning.</t>
 
           <figure>
             <preamble>Form of a "create resource set description" HTTP
@@ -363,11 +366,12 @@ ETag: (matches "_rev" property in returned object)
 ]]></artwork>
           </figure>
 
-          <t>On successful registration, the AS MAY return a redirect policy
-          URI to the RS in a property with the name "policy_uri". This URI
-          allows the RS to redirect the user to a specific user interface
-          within the AS where the user can immediately set or modify access
-          policies for the resource set that was just registered.</t>
+          <t>On successful registration, the authorization server MAY return a
+          redirect policy URI to the resource server in a property with the
+          name "policy_uri". This URI allows the resource server to redirect
+          the user to a specific user interface within the authorization
+          server where the user can immediately set or modify access policies
+          for the resource set that was just registered.</t>
 
           <figure>
             <preamble>Form of a successful HTTP response:</preamble>
@@ -391,9 +395,10 @@ ETag: (matches "_rev" property in returned object)
         <section anchor="read-resource-set"
                  title="Read Resource Set Description">
           <t>Reads a previously registered resource set description using the
-          GET method. If the request is successful, the AS MUST respond with a
-          status message that includes an ETag header and _id and _rev
-          properties for managing resource set description versioning.</t>
+          GET method. If the request is successful, the authorization server
+          MUST respond with a status message that includes an ETag header and
+          _id and _rev properties for managing resource set description
+          versioning.</t>
 
           <figure>
             <preamble>Form of a "read resource set description" HTTP
@@ -417,24 +422,26 @@ Content-Type: application/intro-resource-set+json
 ]]></artwork>
           </figure>
 
-          <t>If the referenced resource does not exist, the AS MUST produce an
-          error response with an error property value of "not_found", as
-          defined in <xref target="reg-api"></xref>.</t>
+          <t>If the referenced resource does not exist, the authorization
+          server MUST produce an error response with an error property value
+          of "not_found", as defined in <xref target="reg-api"></xref>.</t>
 
-          <t>On successful read, the AS MAY return a redirect policy URI to
-          the RS in a property with the name "policy_uri". This URI allows the
-          RS to redirect the user to a specific user interface within the AS
-          where the user can immediately set or modify access policies for the
-          resource set that was read.</t>
+          <t>On successful read, the authorization server MAY return a
+          redirect policy URI to the resource server in a property with the
+          name "policy_uri". This URI allows the resource server to redirect
+          the user to a specific user interface within the authorization
+          server where the user can immediately set or modify access policies
+          for the resource set that was read.</t>
         </section>
 
         <section anchor="update-resource-set"
                  title="Update Resource Set Description">
           <t>Updates a previously registered resource set description using
           the PUT method, thereby changing the resource set's protection
-          characteristics. If the request is successful, the AS MUST respond
-          with a status message that includes an ETag header and _id and _rev
-          properties for managing resource set description versioning.</t>
+          characteristics. If the request is successful, the authorization
+          server MUST respond with a status message that includes an ETag
+          header and _id and _rev properties for managing resource set
+          description versioning.</t>
 
           <figure>
             <preamble>Form of an "update resource set description" HTTfP
@@ -460,22 +467,24 @@ ETag: "2"
 ]]></artwork>
           </figure>
 
-          <t>If the entity tag does not match, the AS MUST produce an error
-          response with an error property value of "precondition_failed", as
-          defined in <xref target="reg-api"></xref>.</t>
+          <t>If the entity tag does not match, the authorization server MUST
+          produce an error response with an error property value of
+          "precondition_failed", as defined in <xref
+          target="reg-api"></xref>.</t>
 
-          <t>On successful update, the AS MAY return a redirect policy URI to
-          the RS in a property with the name "policy_uri". This URI allows the
-          RS to redirect the user to a specific user interface within the AS
-          where the user can immediately set or modify access policies for the
-          resource set that was just updated.</t>
+          <t>On successful update, the authorization server MAY return a
+          redirect policy URI to the resource server in a property with the
+          name "policy_uri". This URI allows the resource server to redirect
+          the user to a specific user interface within the authorization
+          server where the user can immediately set or modify access policies
+          for the resource set that was just updated.</t>
         </section>
 
         <section anchor="delete-resource-set"
                  title="Delete Resource Set Description">
           <t>Deletes a previously registered resource set description using
-          the DELETE method, thereby removing it from the AS's protection
-          regime.</t>
+          the DELETE method, thereby removing it from the authorization
+          server's protection regime.</t>
 
           <figure>
             <preamble>Form of a "delete resource set description" HTTP
@@ -498,21 +507,22 @@ HTTP/1.1 204 No content
           </figure>
 
           <t>As defined in <xref target="reg-api"></xref>, if the referenced
-          resource does not exist the AS MUST produce an error response with
-          an error property value of "not_found", and if the entity tag does
-          not match the AS MUST produce an error response with an error
-          property value of "precondition_failed".</t>
+          resource does not exist the authorization server MUST produce an
+          error response with an error property value of "not_found", and if
+          the entity tag does not match the authorization server MUST produce
+          an error response with an error property value of
+          "precondition_failed".</t>
         </section>
 
         <section anchor="list-resource-sets"
                  title="List Resource Set Descriptions">
           <t>Lists all previously registered resource set identifiers for this
-          user using the GET method. The AS MUST return the list in the form
-          of a JSON array of {rsid} values.</t>
+          user using the GET method. The authorization server MUST return the
+          list in the form of a JSON array of {rsid} values.</t>
 
-          <t>The RS uses this method as a first step in checking whether its
-          understanding of protected resources is in full synchronization with
-          the AS's understanding.</t>
+          <t>The resource server uses this method as a first step in checking
+          whether its understanding of protected resources is in full
+          synchronization with the authorization server's understanding.</t>
 
           <figure>
             <preamble>Form of a "list resource set descriptions" HTTP
@@ -539,14 +549,15 @@ HTTP/1.1 200 OK
     </section>
 
     <section anchor="errors" title="Error Messages">
-      <t>When an RS attempts to access the resource set registration endpoint
-      at the AS, if the request is successfully authenticated by OAuth means,
-      but is invalid for another reason, the AS produces an error response by
-      adding the following properties to the entity body of the HTTP
-      response:<list style="hanging">
+      <t>When a resource server attempts to access the resource set
+      registration endpoint at the authorization server, if the request is
+      successfully authenticated by OAuth means, but is invalid for another
+      reason, the authorization server produces an error response by adding
+      the following properties to the entity body of the HTTP response:<list
+          style="hanging">
           <t hangText="error">REQUIRED. A single error code, as noted in the
           API definition. Value for this property is defined in the specific
-          AS endpoint description.</t>
+          authorization server endpoint description.</t>
 
           <t hangText="error_description">OPTIONAL. A human-readable text
           providing additional information, used to assist in the
@@ -564,9 +575,10 @@ HTTP/1.1 200 OK
     </section>
 
     <section title="Privacy Considerations">
-      <t>The communication between the AS and RS may expose personally
-      identifiable information. The context in which this API is used SHOULD
-      deal with its own unique privacy considerations.</t>
+      <t>The communication between the authorization server and resource
+      server may expose personally identifiable information. The context in
+      which this API is used SHOULD deal with its own unique privacy
+      considerations.</t>
     </section>
 
     <section anchor="conformance" title="Conformance">
@@ -593,24 +605,26 @@ HTTP/1.1 200 OK
       discussed. These are labeled "Internal only".</t>
 
       <t>A resource owner, Alice Adams, has just uploaded a photo of her new
-      puppy to a RS, Photoz.example.com, and wants to ensure that this
-      specific photo is not publicly accessible.</t>
+      puppy to a resource server, Photoz.example.com, and wants to ensure that
+      this specific photo is not publicly accessible.</t>
 
-      <t>Alice has already introduced this RS to her AS,
-      CopMonkey.example.com, and thus Photoz has already obtained a PAT from
-      CopMonkey. However, Alice has not previously instructed Photoz to use
-      CopMonkey to protect any other photos of hers.</t>
+      <t>Alice has already introduced this resource server to her
+      authorization server, CopMonkey.example.com, and thus Photoz has already
+      obtained a PAT from CopMonkey. However, Alice has not previously
+      instructed Photoz to use CopMonkey to protect any other photos of
+      hers.</t>
 
       <t>Alice has previously visited CopMonkey to map a default "do not share
       with anyone" policy to any resource sets registered by Photoz, until
       such time as she maps some other more permissive policies to those
       resources. (User experience only. This may have been done at the time
-      Alice introduced the RS to the AS, and/or it could have been a global or
-      RS-specific preference setting. A different constraint or no constraint
-      at all might be associated with newly protected resources.) Other kinds
-      of policies she may eventually map to particular photos or albums might
-      be "Share only with husband@email.example.net" or "Share only with
-      people in my 'family' group".</t>
+      Alice introduced the resource server to the authorization server, and/or
+      it could have been a global or resource server-specific preference
+      setting. A different constraint or no constraint at all might be
+      associated with newly protected resources.) Other kinds of policies she
+      may eventually map to particular photos or albums might be "Share only
+      with husband@email.example.net" or "Share only with people in my
+      'family' group".</t>
 
       <t>Photoz itself has a publicly documented application-specific API that
       offers two dozen different methods that apply to single photos, such as
@@ -627,9 +641,10 @@ HTTP/1.1 200 OK
       while visiting CopMonkey, such that Alice would see the strings "View
       Photo and Related Info" and "All Actions", likely accompanied by the
       referenced icons, in the CopMonkey interface. (Other users of Photoz
-      might similarly see the same labels at CopMonkey or whatever other AS
-      they use. Photoz could distinguish natural-language labels per user if
-      it wishes, by pointing to scopes with differently translated names.)</t>
+      might similarly see the same labels at CopMonkey or whatever other
+      authorization server they use. Photoz could distinguish natural-language
+      labels per user if it wishes, by pointing to scopes with differently
+      translated names.)</t>
 
       <t>Example of the viewing-related scope type description document
       available at http://photoz.example.com/dev/scopes/view with a
@@ -728,8 +743,8 @@ ETag: "1"
 
       <t>At the time Alice indicates she would like this photo protected,
       Photoz can choose to redirect Alice to CopMonkey for further policy
-      setting, access auditing, and other AS-related tasks (user experience
-      only).</t>
+      setting, access auditing, and other authorization server-related tasks
+      (user experience only).</t>
 
       <t>Once it has successfully registered this description, Photoz is
       responsible for outsourcing to CopMonkey all questions of authorization
@@ -759,7 +774,7 @@ Host: as.example.com
       <figure>
         <preamble>Example of an HTTP response to a "read resource set
         description" request, containing a resource set description from the
-        AS:</preamble>
+        authorization server:</preamble>
 
         <artwork><![CDATA[
 HTTP/1.1 200 OK
@@ -871,7 +886,7 @@ If-Match: "2"
     <section anchor="Acknowledgments" title="Acknowledgments">
       <t>The current editor of this specification is Thomas Hardjono of MIT.
       The following people are co-authors:<list style="symbols">
-          <t>Paul C. Bryan, ForgeRock US, Inc. (former editor)</t>
+          <t>Paul C. Bryan, ForgeRock US, Inc.</t>
 
           <t>Domenico Catalano, Oracle Corp.</t>
 
@@ -883,14 +898,12 @@ If-Match: "2"
 
           <t>Lukasz Moren, Newcastle University</t>
 
-          <t>Christian Scholz, COMlounge GmbH (former editor)</t>
+          <t>Christian Scholz, COMlounge GmbH</t>
+
+          <t>Nat Sakimura, NRI</t>
 
           <t>Jacek Szpot, Newcastle University</t>
         </list></t>
-
-      <t>Additional contributors to this specification include the Kantara UMA
-      Work Group participants, a list of whom can be found at <xref
-      target="UMAnitarians"></xref>.</t>
     </section>
 
     <section title="Issues">
@@ -915,178 +928,19 @@ If-Match: "2"
           <date day="22" month="September" year="2011" />
         </front>
       </reference>
-
-      <reference anchor="OAuth-bearer"
-                 target="http://tools.ietf.org/html/rfc6750">
-        <front>
-          <title>The OAuth 2.0 Authorization Framework: Bearer Token
-          Usage</title>
-
-          <author fullname="M. Jones">
-            <organization></organization>
-          </author>
-
-          <date day="1" month="October" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-SAML"
-                 target="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">
-        <front>
-          <title>SAML 2.0 Bearer Assertion Grant Type Profile for OAuth
-          2.0</title>
-
-          <author initials="B." surname="Campbell">
-            <organization>Campbell</organization>
-          </author>
-
-          <date month="August" year="2011" />
-        </front>
-      </reference>
-
-      <reference anchor="RFC6415" target="http://tools.ietf.org/html/rfc6415">
-        <front>
-          <title>Web Host Metadata</title>
-
-          <author initials="E." surname="Hammer-Lahav">
-            <organization>Yahoo!</organization>
-          </author>
-
-          <date day="" month="October" year="2011" />
-        </front>
-      </reference>
-
-      &RFC4627;
-
-      <reference anchor="DynClientReg"
-                 target="https://datatracker.ietf.org/doc/draft-ietf-oauth-dyn-reg/">
-        <front>
-          <title>OAuth Dynamic Client Registration Protocol</title>
-
-          <author initials="J." surname="Richer">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="27" month="November" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="OCMessages"
-                 target="http://openid.net/specs/openid-connect-messages-1_0.html">
-        <front>
-          <title>OpenID Connect Messages 1.0</title>
-
-          <author initials="N." surname="Sakimura">
-            <organization></organization>
-          </author>
-
-          <date day="30" month="September" year="2011" />
-        </front>
-      </reference>
-
-      <reference anchor="OCStandard"
-                 target="http://openid.net/specs/openid-connect-standard-1_0.html">
-        <front>
-          <title>OpenID Connect Standard 1.0</title>
-
-          <author initials="N." surname="Sakimura">
-            <organization></organization>
-          </author>
-
-          <date day="30" month="September" year="2011" />
-        </front>
-      </reference>
-
-      <reference anchor="UMA-trustmodel"
-                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Trust+Model">
-        <front>
-          <title>UMA Trust Model</title>
-
-          <author initials="E." surname="Maler">
-            <organization></organization>
-          </author>
-
-          <date day="20" month="April" year="2012" />
-        </front>
-      </reference>
     </references>
 
     <references title="Informative References">
-      <reference anchor="UMA-usecases"
-                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">
+      <reference anchor="OAuth-linktypes"
+                 target="http://tools.ietf.org/html/draft-wmills-oauth-lrdd">
         <front>
-          <title>UMA Scenarios and Use Cases</title>
+          <title>Link Type Registrations for OAuth 2</title>
 
-          <author initials="E." surname="Maler">
-            <organization>Kantara</organization>
-          </author>
-
-          <date month="October" year="2010" />
-        </front>
-      </reference>
-
-      <reference anchor="UMA-userstories"
-                 target="http://kantarainitiative.org/confluence/display/uma/User+Stories">
-        <front>
-          <title>UMA User Stories</title>
-
-          <author initials="E." surname="Maler">
+          <author initials="J." surname="Richer">
             <organization></organization>
           </author>
 
-          <date month="November" year="2010" />
-        </front>
-      </reference>
-
-      <reference anchor="UMAnitarians"
-                 target="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">
-        <front>
-          <title>UMA Participant Roster</title>
-
-          <author initials="E." surname="Maler">
-            <organization>Maler</organization>
-          </author>
-
-          <date year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-linktypes"
-                 target="https://datatracker.ietf.org/doc/draft-wmills-oauth-lrdd/?include_text=1">
-        <front>
-          <title>Link Type Registrations for OAuth2</title>
-
-          <author initials="W." surname="Mills">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="27" month="November" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-linktypes"
-                 target="https://datatracker.ietf.org/doc/draft-wmills-oauth-lrdd/?include_text=1">
-        <front>
-          <title>Link Type Registrations for OAuth2</title>
-
-          <author initials="W." surname="Mills">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="27" month="November" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-linktypes"
-                 target="https://datatracker.ietf.org/doc/draft-wmills-oauth-lrdd/?include_text=1">
-        <front>
-          <title>Link Type Registrations for OAuth2</title>
-
-          <author initials="W." surname="Mills">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="27" month="November" year="2012" />
+          <date day="17" month="October" year="2012" />
         </front>
       </reference>
     </references>
@@ -1094,9 +948,9 @@ If-Match: "2"
     <section anchor="History" title="Document History">
       <t>NOTE: To be removed by RFC editor before publication as an RFC.</t>
 
-      <t>From I-D rev 01:<list style="symbols">
-          <t>Document started by splitting-off UMA Phase-1 and generalizing
-          the protocol design following basic OAuth2.0.</t>
+      <t>From I-D rev 00:<list style="symbols">
+          <t>Broken out of draft-oauth-umacore (post-rev 05) I-D and made
+          generic to apply to a variety of OAuth-based use cases.</t>
         </list></t>
     </section>
   </back>
