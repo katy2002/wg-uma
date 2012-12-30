@@ -143,10 +143,10 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">T. Hardjono, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">MIT</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">December 27, 2012</td></tr>
-<tr><td class="header">Expires: June 30, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">December 28, 2012</td></tr>
+<tr><td class="header">Expires: July 1, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />OAuth 2.0 Resource Set Registration<br />draft-hardjono-oauth-resource-reg-00</h1>
+<h1><br />OAuth 2.0 Resource Set Registration<br />draft-hardjono-oauth-resource-reg-01a</h1>
 
 <h3>Abstract</h3>
 
@@ -167,7 +167,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on June 30, 2013.</p>
+This Internet-Draft will expire on July 1, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -197,7 +197,7 @@ Authorization Server Configuration Data<br />
 <a href="#protecting-a-resource">2.</a>&nbsp;
 Resource Set Registration<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#action-desc">2.1.</a>&nbsp;
-Scope Type Descriptions<br />
+Scope Descriptions<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#resource-set-desc">2.2.</a>&nbsp;
 Resource Set Descriptions<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#reg-api">2.3.</a>&nbsp;
@@ -226,13 +226,11 @@ IANA Considerations<br />
 Example of Registering Resource Sets<br />
 <a href="#Acknowledgments">9.</a>&nbsp;
 Acknowledgments<br />
-<a href="#anchor4">10.</a>&nbsp;
-Issues<br />
-<a href="#rfc.references1">11.</a>&nbsp;
+<a href="#rfc.references1">10.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">11.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">10.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">11.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">10.2.</a>&nbsp;
 Informative References<br />
 <a href="#History">Appendix&nbsp;A.</a>&nbsp;
 Document History<br />
@@ -246,13 +244,13 @@ Author's Address<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>There are various circumstances under which an OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> resource server needs to communicate to its authorization server information about its protected resources. A resource server and authorization server may need to communicate with each other about resources in one of several circumstances:</p>
+<p>There are various circumstances under which an OAuth 2.0 <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> resource server may need to communicate to its authorization server information about its protected resources:</p>
 <ul class="text">
 <li>In some OAuth 2.0 deployments, the resource server and authorization server are operated by the same organization and deployed in the same domain, but many resource servers share a single authorization server (a security token service (STS) component). Thus, even though the trust between these two is typically tightly bound, there is value in defining a singular standardized resource protection communications interface between the authorization server and each of the resource servers.
 </li>
-<li>In some deployments of OpenID Connect, which has a dependency on OAuth 2.0, the OpenID Provider (OP) component is a specialized version of an OAuth authorization server that brokers availability of user attributes by dealing with with an ecosystem of attribute providers (APs). These APs effectively function as third-party resource servers. Thus, there is value in defining a mechanism by which all of the third-party APs can communicate with a central OP, as well as ensuring that trust between the authorization server and resource servers is able to be established in a dynamic, loosely coupled fashion.
+<li>In some deployments of OpenID Connect <a class='info' href='#OpenIDConnect'>[OpenIDConnect]<span> (</span><span class='info'>Sakimura, N., &ldquo;OpenID Connect Standard 1.0 - draft 07,&rdquo; December&nbsp;2011.</span><span>)</span></a>, which has a dependency on OAuth 2.0, the OpenID Provider (OP) component is a specialized version of an OAuth authorization server that brokers availability of user attributes by dealing with an ecosystem of attribute providers (APs). These APs effectively function as third-party resource servers. Thus, there is value in defining a mechanism by which all of the third-party APs can communicate with a central OP, as well as ensuring that trust between the authorization server and resource servers is able to be established in a dynamic, loosely coupled fashion.
 </li>
-<li>In some deployments of User-Managed Access (UMA), which has a dependency on OAuth 2.0, an end-user resource owner (the "user" in UMA) may choose their own authorization server as an independent "CloudOS" authorization service, along with using any number of resource servers that make up their "personal cloud". Thus, there is value in defining a mechanism by which all of the third-party resource servers can outsource resource protection (and potentially discovery) to a central authorization server, as well as ensuring that trust between the authorization server and resource servers is able to be established by the resource owner in a dynamic, loosely coupled fashion.
+<li>In some deployments of User-Managed Access <a class='info' href='#UMA'>[UMA]<span> (</span><span class='info'>Hardjono, T., &ldquo;User-Managed Access (UMA) Profile of OAuth 2.0,&rdquo; December&nbsp;2012.</span><span>)</span></a>, which has a dependency on OAuth 2.0, an end-user resource owner (the "user" in UMA) may choose their own authorization server as an independent "CloudOS" authorization service, along with using any number of resource servers that make up their "personal cloud". Thus, there is value in defining a mechanism by which all of the third-party resource servers can outsource resource protection (and potentially discovery) to a central authorization server, as well as ensuring that trust between the authorization server and resource servers is able to be established by the resource owner in a dynamic, loosely coupled fashion.
 </li>
 </ul>
 
@@ -277,8 +275,8 @@ Terminology</h3>
 <dt>resource set</dt>
 <dd>One or more resources that the resource server manages as a set.
 </dd>
-<dt>scope type</dt>
-<dd>A bounded extent of access that is possible to perform on a resource set. In authorization policy terminology, a scope type is one of the potentially many "verbs" that can logically apply to a resource set ("object"). This specification extends the OAuth concept of a "scope" by defining scope types as applying to particular labeled resource sets, rather than leaving the relevant resources (such as API endpoints or URIs) implicit. A resource set can have any number of scope types, which together describe the universe of actions that <em>can be</em> taken on this protected resource set. For example, a resource set representing a status update API might have scope types that include adding an update or reading updates. A resource set representing a photo album might have scope types that include viewing a slideshow or printing the album. The resource server registers resource sets and their scope types when there is not yet any particular client in the picture.
+<dt>scope</dt>
+<dd>A bounded extent of access that is possible to perform on a resource set. In authorization policy terminology, a scope is one of the potentially many "verbs" that can logically apply to a resource set ("object"). This specification enhances the OAuth concept of a "scope" by defining scopes as applying to particular labeled resource sets, rather than leaving the relevant resources (such as API endpoints or URIs) implicit. A resource set can have any number of scopes, which together describe the universe of actions that <em>can be</em> taken on this protected resource set. For example, a resource set representing a status update API might have scopes that include adding an update or reading updates. A resource set representing a photo album might have scopes that include viewing a slideshow or printing the album. The resource server registers resource sets and their scopes when there is not yet any particular client in the picture.
 </dd>
 <dt>resource set registration endpoint</dt>
 <dd>The endpoint at which the resource server registers resource sets it wants the authorization server to know about. The operations available at this endpoint constitute a resource set registration API (see <a class='info' href='#reg-api'>Section&nbsp;2.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>).
@@ -290,67 +288,69 @@ Terminology</h3>
 <a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
 Authorization Server Configuration Data</h3>
 
-<p>If the authorization server declares its endpoints and any other configuration data in a machine-readable form, for example <a class='info' href='#OAuth-linktypes'>[OAuth&#8209;linktypes]<span> (</span><span class='info'>Richer, J., &ldquo;Link Type Registrations for OAuth 2,&rdquo; October&nbsp;2012.</span><span>)</span></a>, it SHOULD convey its resource set registration endpoint in this fashion as well.
+<p>If the authorization server declares its endpoints and any other configuration data in a machine-readable form, for example <a class='info' href='#OAuth-linktypes'>[OAuth&#8209;linktypes]<span> (</span><span class='info'>Richer, J., &ldquo;Link Type Registrations for OAuth 2,&rdquo; October&nbsp;2012.</span><span>)</span></a> or <a class='info' href='#OAuth-meta'>[OAuth&#8209;meta]<span> (</span><span class='info'>Sakimura, N., &ldquo;JSON Metadata for OAuth Responses,&rdquo; December&nbsp;2012.</span><span>)</span></a>, it SHOULD convey its resource set registration endpoint in this fashion as well.
 </p>
 <a name="protecting-a-resource"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Resource Set Registration</h3>
 
-<p>This specification defines a resource set registration API. If this API is not open, it MUST be OAuth-protected. For any of the resource owner's sets of resources this authorization server needs to be aware of, the resource server MUST register these resource sets at the authorization server's registration endpoint.
+<p>This specification defines a resource set registration API. The endpoint for this API SHOULD also require some form of authentication to access this endpoint, such as Client Authentication as described in <a class='info' href='#OAuth2'>[OAuth2]<span> (</span><span class='info'>Hammer-Lahav, E., &ldquo;The OAuth 2.0 Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> or a separate OAuth access token. The methods of managing and validating these authentication credentials are out of scope of this specification.
+</p>
+<p>For any of the resource owner's sets of resources this authorization server needs to be aware of, the resource server MUST register these resource sets at the authorization server's registration endpoint.
 </p>
 <a name="action-desc"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
-Scope Type Descriptions</h3>
+Scope Descriptions</h3>
 
-<p>A scope type is a bounded extent of access that is possible to perform on a resource set. A scope type description is a JSON document with the following properties:</p>
+<p>A scope is a bounded extent of access that is possible to perform on a resource set. A scope description is a JSON document with the following properties:</p>
 <blockquote class="text"><dl>
 <dt>name</dt>
-<dd>REQUIRED. A human-readable string describing some scope (extent) of access. This name is intended for ultimate use in the authorization server's user interface to assist the user in setting policies for protected resource sets that have this available scope.
+<dd>REQUIRED. A human-readable string describing some scope (extent) of access. This name MAY be used by the authorization server in its resource owner user interface for the resource owner.
 </dd>
 <dt>icon_uri</dt>
-<dd>OPTIONAL. A URI for a graphic icon representing the scope. The referenced icon is intended for ultimate use in the authorization server's user interface to assist the user in setting policies for protected resource sets that have this available scope.
+<dd>OPTIONAL. A URI for a graphic icon representing the scope. The referenced icon MAY be used by the authorization server in its resource owner user interface for the resource owner.
 </dd>
 </dl></blockquote>
 
-<p>For example, this description characterizes a scope type that involves reading or viewing resources (vs. creating them or editing them in some fashion):
+<p>For example, this description characterizes a scope that involves reading or viewing resources (vs. creating them or editing them in some fashion):
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 {
   "name": "View",
   "icon_uri": "http://www.example.com/icons/reading-glasses"
 }
 </pre></div>
-<p>Scope type descriptions MAY contain extension properties that are not defined in this specification. Extension names that are unprotected from collisions are outside the scope of the current specification.
+<p>scope descriptions MAY contain extension properties that are not defined in this specification. Extension names that are unprotected from collisions are outside the scope of the current specification.
 </p>
-<p>A resource server MUST list a resource set's available scopes using URI references (as defined in <a class='info' href='#resource-set-desc'>Section&nbsp;2.2<span> (</span><span class='info'>Resource Set Descriptions</span><span>)</span></a>). The scope types available for use at any one resource server MUST have unique URI references so that the resource server's scope descriptions are uniquely distinguishable. A scope type URI reference MAY include a fragment identifier. Scope type descriptions MAY reside anywhere. The resource server is not required to self-host scope type descriptions and may wish to point to standardized scope type descriptions residing elsewhere. Scope type description documents MUST be accessible to authorization servers through GET calls made to these URI references.
+<p>A resource server MUST list a resource set's available scopes using URI references (as defined in <a class='info' href='#resource-set-desc'>Section&nbsp;2.2<span> (</span><span class='info'>Resource Set Descriptions</span><span>)</span></a>). The scopes available for use at any one resource server MUST have unique URI references so that the resource server's scope descriptions are uniquely distinguishable. A scope URI reference MAY include a fragment identifier. Scope descriptions MAY reside anywhere. The resource server is not required to self-host scope descriptions and may wish to point to standardized scope descriptions residing elsewhere. Scope description documents MUST be accessible to authorization servers through GET calls made to these URI references.
 </p>
-<p>See <a class='info' href='#resource-reg-example'>Section&nbsp;8<span> (</span><span class='info'>Example of Registering Resource Sets</span><span>)</span></a> for a long-form example of scope types used in resource set registration.
+<p>See <a class='info' href='#resource-reg-example'>Section&nbsp;8<span> (</span><span class='info'>Example of Registering Resource Sets</span><span>)</span></a> for a long-form example of scopes used in resource set registration.
 </p>
 <a name="resource-set-desc"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
 Resource Set Descriptions</h3>
 
-<p>The resource server defines a resource set that the authorization server needs to be aware of by registering a resource set description at the authorization server.
+<p>The resource server defines a resource set that the authorization server needs to be aware of by registering a resource set description at the authorization server. This registration process results in a unique identifier for the resource set that the resource server can later use for managing its description.
 </p>
-<p>A resource set description is a JSON document with the following properties:</p>
+<p>The resource server is free to use its own methods of describing resource sets. A resource set description is a JSON document with the following properties:</p>
 <blockquote class="text"><dl>
 <dt>name</dt>
-<dd>REQUIRED. A human-readable string describing a set of one or more resources. The authorization server SHOULD use the name in its user interface to assist the user in setting policies for protecting this resource set.
+<dd>REQUIRED. A human-readable string describing a set of one or more resources. This name MAY be used by the authorization server in its resource owner user interface for the resource owner.
 </dd>
 <dt>icon_uri</dt>
-<dd>OPTIONAL. A URI for a graphic icon representing the resource set.
+<dd>OPTIONAL. A URI for a graphic icon representing the resource set. The referenced icon MAY be used by the authorization server in its resource owner user interface for the resource owner.
 </dd>
 <dt>scopes</dt>
-<dd>REQUIRED. An array providing the URI references of scope type descriptions that are available for this resource set.
+<dd>REQUIRED. An array providing the URI references of scope descriptions that are available for this resource set.
 </dd>
 <dt>type</dt>
-<dd>OPTIONAL. A string uniquely identifying the semantics of the resource set. For example, if the resource set consists of a single resource that is an identity claim that leverages standardized claim semantics, the value of this property could be an identifying URI for this claim.
+<dd>OPTIONAL. A string uniquely identifying the semantics of the resource set. For example, if the resource set consists of a single resource that is an identity claim that leverages standardized claim semantics for "verified email address", the value of this property could be an identifying URI for this claim.
 </dd>
 </dl></blockquote>
 
-<p>For example, this description characterizes a resource set (a photo album) that can potentially be only viewed, or alternatively to which full access can be granted; the URIs point to scope descriptions as defined in <a class='info' href='#action-desc'>Section&nbsp;2.1<span> (</span><span class='info'>Scope Type Descriptions</span><span>)</span></a>:
+<p>For example, this description characterizes a resource set (a photo album) that can potentially be only viewed, or alternatively to which full access can be granted; the URIs point to scope descriptions as defined in <a class='info' href='#action-desc'>Section&nbsp;2.1<span> (</span><span class='info'>Scope Descriptions</span><span>)</span></a>:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 {
   "name": "Photo Album",
@@ -364,18 +364,22 @@ Resource Set Descriptions</h3>
 </pre></div>
 <p>Resource set descriptions MAY contain extension properties that are not defined in this specification. Extension names that are unprotected from collisions are outside the scope of the current specification.
 </p>
-<p>When a resource server creates or updates a resource set description (see <a class='info' href='#reg-api'>Section&nbsp;2.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>), the authorization server MUST attempt to retrieve the referenced scope descriptions so that it can present fresh data in resource owner interactions.
+<p>When a resource server creates or updates a resource set description (see <a class='info' href='#reg-api'>Section&nbsp;2.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>), the authorization server MUST attempt to retrieve the referenced scope descriptions so that it can present fresh data in any resource owner interactions.
 </p>
 <a name="reg-api"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.3"></a><h3>2.3.&nbsp;
 Resource Set Registration API</h3>
 
-<p>The resource server uses the RESTful API at the authorization server's resource set registration endpoint to create, read, update, and delete resource set descriptions, along with listing groups of such descriptions. The resource server is free to use its own methods of identifying and describing resource sets.
+<p>The resource server uses the RESTful API at the authorization server's resource set registration endpoint to create, read, update, and delete resource set descriptions, along with retrieving lists of such descriptions.
 </p>
 <p>(Note carefully the similar but distinct senses in which the word "resource" is used in this section. The resource set descriptions are themselves managed as web resources at the authorization server through this API.)
 </p>
-<p>The authorization server MUST present an API for registering resource set descriptions at a set of URIs with the structure "{rsreguri}/resource_set/{rsid}", where the PAT provides sufficient context to distinguish between identical resource set identifiers assigned by different hosts.
+<p>The authorization server MUST present an API for registering resource set descriptions at a set of URIs with the following structure:
+</p>
+<p>{rsreguri}/resource_set/{rsid}
+</p>
+<p>The method of authentication that the resource server uses SHOULD sufficient context to distinguish between identical resource set identifiers assigned by different resource servers.
 </p>
 <p>The components of these URIs are defined as follows:</p>
 <blockquote class="text"><dl>
@@ -383,12 +387,10 @@ Resource Set Registration API</h3>
 <dd>The authorization server's resource set registration endpoint as advertised in its configuration data (see <a class='info' href='#am-endpoints'>Section&nbsp;1.3<span> (</span><span class='info'>Authorization Server Configuration Data</span><span>)</span></a>).
 </dd>
 <dt>{rsid}</dt>
-<dd>An identifier for a resource set description.
+<dd>An identifier for a resource set description. It is RECOMMENDED to obscure resource set identifiers in order to avoid leaking personally identifiable information to clients that are exposed to scope information.
 </dd>
 </dl></blockquote>
 
-<p>Without a specific resource set identifier path component, the URI applies to the set of resource set descriptions already registered.
-</p>
 <p>Following is a summary of the five registration operations the authorization server is REQUIRED to support. Each is defined in its own section below. All other methods are unsupported. This API uses ETag and If-Match to ensure the desired resource at the authorization server is targeted.</p>
 <ul class="text">
 <li>Create resource set description: PUT /resource_set/{rsid}
@@ -403,7 +405,7 @@ Resource Set Registration API</h3>
 </li>
 </ul>
 
-<p>If the request to the resource set registration endpoint is incorrect, then the authorization server responds with an error message by including one of the following error codes with the response: </p>
+<p>If the request to the resource set registration endpoint is incorrect, then the authorization server responds with an error message by including one of the following error codes with the response (see <a class='info' href='#errors'>Section&nbsp;3<span> (</span><span class='info'>Error Messages</span><span>)</span></a>):</p>
 <blockquote class="text"><dl>
 <dt>unsupported_method_type</dt>
 <dd>The resource server request used an unsupported HTTP method. The authorization server MUST respond with the HTTP 405 (Method Not Allowed) status code and MUST fail to act on the request.
@@ -421,7 +423,7 @@ Resource Set Registration API</h3>
 <a name="rfc.section.2.3.1"></a><h3>2.3.1.&nbsp;
 Create Resource Set Description</h3>
 
-<p>Adds a new resource set description using the PUT method, thereby putting it under the authorization server's protection. If the request is successful, the authorization server MUST respond with a status message that includes an ETag header and _id and _rev properties for managing resource set description versioning.
+<p>Adds a new resource set description using the PUT method. If the request is successful, the authorization server MUST respond with a status message that includes an ETag header and _id and _rev properties for managing resource set description versioning.
 </p>
 <p>Form of a "create resource set description" HTTP request:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -444,7 +446,7 @@ ETag: (matches "_rev" property in returned object)
   "_rev": (ETag of created resource set)
 }
 </pre></div>
-<p>On successful registration, the authorization server MAY return a redirect policy URI to the resource server in a property with the name "policy_uri". This URI allows the resource server to redirect the user to a specific user interface within the authorization server where the user can immediately set or modify access policies for the resource set that was just registered.
+<p>On successful registration, the authorization server MAY return a redirect policy URI to the resource server in a property with the name "policy_uri". This URI allows the resource server to redirect the resource owner to a specific user interface within the authorization server where the resource owner can immediately set or modify access policies for the resource set that was just registered.
 </p>
 <p>Form of a successful HTTP response:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -482,16 +484,16 @@ Content-Type: application/intro-resource-set+json
 </pre></div>
 <p>If the referenced resource does not exist, the authorization server MUST produce an error response with an error property value of "not_found", as defined in <a class='info' href='#reg-api'>Section&nbsp;2.3<span> (</span><span class='info'>Resource Set Registration API</span><span>)</span></a>.
 </p>
-<p>On successful read, the authorization server MAY return a redirect policy URI to the resource server in a property with the name "policy_uri". This URI allows the resource server to redirect the user to a specific user interface within the authorization server where the user can immediately set or modify access policies for the resource set that was read.
+<p>On successful read, the authorization server MAY return a redirect policy URI to the resource server in a property with the name "policy_uri". This URI allows the resource server to redirect the resource owner to a specific user interface within the authorization server where the resource owner can immediately set or modify access policies for the resource set that was read.
 </p>
 <a name="update-resource-set"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.3.3"></a><h3>2.3.3.&nbsp;
 Update Resource Set Description</h3>
 
-<p>Updates a previously registered resource set description using the PUT method, thereby changing the resource set's protection characteristics. If the request is successful, the authorization server MUST respond with a status message that includes an ETag header and _id and _rev properties for managing resource set description versioning.
+<p>Updates a previously registered resource set description using the PUT method. If the request is successful, the authorization server MUST respond with a status message that includes an ETag header and _id and _rev properties for managing resource set description versioning.
 </p>
-<p>Form of an "update resource set description" HTTfP request:
+<p>Form of an "update resource set description" HTTP request:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 PUT /resource_set/{rsid} HTTP/1.1
 Content-Type: application/resource-set+json
@@ -602,28 +604,28 @@ IANA Considerations</h3>
 <a name="rfc.section.8"></a><h3>8.&nbsp;
 Example of Registering Resource Sets</h3>
 
-<p>The following example illustrates the intent and usage of resource set descriptions and scope type descriptions as part of resource set registration for the purposes of User-Managed Access (UMA).
+<p>The following example illustrates the intent and usage of resource set descriptions and scope descriptions as part of resource set registration for the purposes of <a class='info' href='#UMA'>[UMA]<span> (</span><span class='info'>Hardjono, T., &ldquo;User-Managed Access (UMA) Profile of OAuth 2.0,&rdquo; December&nbsp;2012.</span><span>)</span></a>.
 </p>
 <p>This example contains some steps that are exclusively in the realm of user experience rather than web protocol, to achieve realistic illustration. These steps are labeled "User experience only". Some other steps are exclusively internal to the operation of the entity being discussed. These are labeled "Internal only".
 </p>
 <p>A resource owner, Alice Adams, has just uploaded a photo of her new puppy to a resource server, Photoz.example.com, and wants to ensure that this specific photo is not publicly accessible.
 </p>
-<p>Alice has already introduced this resource server to her authorization server, CopMonkey.example.com, and thus Photoz has already obtained a PAT from CopMonkey. However, Alice has not previously instructed Photoz to use CopMonkey to protect any other photos of hers.
+<p>Alice has already introduced this resource server to her authorization server, CopMonkey.example.com. However, Alice has not previously instructed Photoz to use CopMonkey to protect any photos of hers.
 </p>
 <p>Alice has previously visited CopMonkey to map a default "do not share with anyone" policy to any resource sets registered by Photoz, until such time as she maps some other more permissive policies to those resources. (User experience only. This may have been done at the time Alice introduced the resource server to the authorization server, and/or it could have been a global or resource server-specific preference setting. A different constraint or no constraint at all might be associated with newly protected resources.) Other kinds of policies she may eventually map to particular photos or albums might be "Share only with husband@email.example.net" or "Share only with people in my 'family' group".
 </p>
-<p>Photoz itself has a publicly documented application-specific API that offers two dozen different methods that apply to single photos, such as "addTags" and "getSizes", but rolls them up into two photo-related scope types of access: "view" (consisting of various read-only operations) and "all" (consisting of various reading, editing, and printing operations). It defines two scope type descriptions that represent these scope types, which it is able to reuse for all of its users (not just Alice), and ensures that these scope type description documents are available through HTTP GET requests that may be made by authorization servers.
+<p>Photoz itself has a publicly documented application-specific API that offers two dozen different methods that apply to single photos, such as "addTags" and "getSizes", but rolls them up into two photo-related scopes of access: "view" (consisting of various read-only operations) and "all" (consisting of various reading, editing, and printing operations). It defines two scope descriptions that represent these scopes, which it is able to reuse for all of its users (not just Alice), and ensures that these scope description documents are available through HTTP GET requests that may be made by authorization servers.
 </p>
 <p>The "name" property values are intended to be seen by Alice when she maps authorization constraints to specific resource sets and actions while visiting CopMonkey, such that Alice would see the strings "View Photo and Related Info" and "All Actions", likely accompanied by the referenced icons, in the CopMonkey interface. (Other users of Photoz might similarly see the same labels at CopMonkey or whatever other authorization server they use. Photoz could distinguish natural-language labels per user if it wishes, by pointing to scopes with differently translated names.)
 </p>
-<p>Example of the viewing-related scope type description document available at http://photoz.example.com/dev/scopes/view with a Content-Type of application/intro-scope+json:
+<p>Example of the viewing-related scope description document available at http://photoz.example.com/dev/scopes/view:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 {
   "name": "View Photo and Related Info",
   "icon_uri": "http://www.example.com/icons/reading-glasses.png"
 }
 </pre></div>
-<p>Example of the broader scope type description document available at http://photoz.example.com/dev/scopes/all, likewise with a Content-Type of application/intro-scope+json:
+<p>Example of the broader scope description document available at http://photoz.example.com/dev/scopes/all:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 {
   "name": "All Actions",
@@ -643,10 +645,10 @@ Example of Registering Resource Sets</h3>
   ]
 }
 </pre></div>
-<p>Photoz uses the "create resource set description" method of CopMonkey's standard UMA resource set registration API, presenting its Alice-specific PAT there, to register and assign an identifier to the resource set description.
+<p>Photoz uses the "create resource set description" method of CopMonkey's standard OAuth resource set registration API, presenting its Alice-specific access token to use the API to register and assign an identifier to the resource set description.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 PUT /resource_set/112210f47de98100 HTTP/1.1
-Content-Type: application/intro-resource-set+json
+Content-Type: application/json
 ...
 
 {
@@ -661,7 +663,7 @@ Content-Type: application/intro-resource-set+json
 <p>If the registration attempt succeeds, CopMonkey responds in the following fashion.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 HTTP/1.1 201 Created
-Content-Type: application/intro-status+json
+Content-Type: application/json
 ETag: "1"
 ...
 
@@ -673,9 +675,9 @@ ETag: "1"
 </pre></div>
 <p>At the time Alice indicates she would like this photo protected, Photoz can choose to redirect Alice to CopMonkey for further policy setting, access auditing, and other authorization server-related tasks (user experience only).
 </p>
-<p>Once it has successfully registered this description, Photoz is responsible for outsourcing to CopMonkey all questions of authorization for access attempts made to this photo.
+<p>Once it has successfully registered this description, Photoz is responsible for outsourcing protection to CopMonkey for access attempts made to this photo.
 </p>
-<p>Over time, as Alice uploads other photos and creates and organizes photo albums, and as Photoz makes new action functionality available, Photoz can use additional methods of the resource set registration API to ensure that CopMonkey's understanding of Alice's protected resources matches its own.
+<p>Over time, as Alice uploads other photos and creates and organizes photo albums, Photoz can use additional methods of the resource set registration API to ensure that CopMonkey's understanding of Alice's protected resources matches its own.
 </p>
 <p>For example, if Photoz suspects that somehow its understanding of the resource set has gotten out of sync with CopMonkey's, it can ask to read the resource set description as follows.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -688,7 +690,7 @@ Host: as.example.com
 <p>Example of an HTTP response to a "read resource set description" request, containing a resource set description from the authorization server:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 HTTP/1.1 200 OK
-Content-Type: application/intro-resource-set+json
+Content-Type: application/json
 ETag: "1"
 ...
 
@@ -719,7 +721,7 @@ HTTP/1.1 200 OK
 <p>If Alice later changes the photo's title (user experience only) on Photoz from "Steve the puppy!" to "Steve on October 14, 2011", Photoz would use the "update resource set description" method to ensure that Alice's experience of policy-setting at CopMonkey remains consistent with what she sees at Photoz. Following is an example of this request.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 PUT /resource_set/112210f47de98100 HTTP/1.1
-Content-Type: application/intro-resource-set+json
+Content-Type: application/json
 Host: as.example.com
 If-Match: "1"
 ...
@@ -748,7 +750,7 @@ ETag: "2"
 </pre></div>
 <p>There are other reasons Photoz might want to update resource set descriptions, having nothing to do with Alice's actions or wishes. For example, it might extend its API to include new features, and want to add new scopes to all of Alice's and other users' resource set descriptions.
 </p>
-<p>if Alice later decides to entirely remove sharing protection (user experience only) on this photo while visiting Photoz, ensuring that the public can get access without any UMA-based protection, Photoz is responsible for deleting the relevant resource set registration, as follows:
+<p>if Alice later decides to entirely remove sharing protection (user experience only) on this photo while visiting Photoz, ensuring that the public can get access without any protection, Photoz is responsible for deleting the relevant resource set registration, as follows:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 DELETE /resource_set/112210f47de98100 HTTP/1.1
 Host: as.example.com
@@ -782,21 +784,14 @@ Acknowledgments</h3>
 </li>
 </ul>
 
-<a name="anchor4"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.10"></a><h3>10.&nbsp;
-Issues</h3>
-
-<p>All issues are now captured at the project's GitHub site (<a href='https://github.com/xmlgrrl/UMA-Specifications/issues'>https://github.com/xmlgrrl/UMA-Specifications/issues</a>).
-</p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.11"></a><h3>11.&nbsp;
+<a name="rfc.section.10"></a><h3>10.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>11.1.&nbsp;Normative References</h3>
+<h3>10.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="OAuth2">[OAuth2]</a></td>
 <td class="author-text">Hammer-Lahav, E., &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2">The OAuth 2.0 Protocol</a>,&rdquo; September&nbsp;2011.</td></tr>
@@ -806,10 +801,16 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>11.2.&nbsp;Informative References</h3>
+<h3>10.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="OAuth-linktypes">[OAuth-linktypes]</a></td>
 <td class="author-text">Richer, J., &ldquo;<a href="http://tools.ietf.org/html/draft-wmills-oauth-lrdd">Link Type Registrations for OAuth 2</a>,&rdquo; October&nbsp;2012.</td></tr>
+<tr><td class="author-text" valign="top"><a name="OAuth-meta">[OAuth-meta]</a></td>
+<td class="author-text">Sakimura, N., &ldquo;<a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">JSON Metadata for OAuth Responses</a>,&rdquo; December&nbsp;2012.</td></tr>
+<tr><td class="author-text" valign="top"><a name="OpenIDConnect">[OpenIDConnect]</a></td>
+<td class="author-text">Sakimura, N., &ldquo;<a href="http://openid.net/specs/openid-connect-standard-1_0-07.html">OpenID Connect Standard 1.0 - draft 07</a>,&rdquo; December&nbsp;2011.</td></tr>
+<tr><td class="author-text" valign="top"><a name="UMA">[UMA]</a></td>
+<td class="author-text">Hardjono, T., &ldquo;<a href="http://tools.ietf.org/html/draft-hardjono-oauth-umacore">User-Managed Access (UMA) Profile of OAuth 2.0</a>,&rdquo; December&nbsp;2012.</td></tr>
 </table>
 
 <a name="History"></a><br /><hr />
@@ -819,9 +820,17 @@ Document History</h3>
 
 <p>NOTE: To be removed by RFC editor before publication as an RFC.
 </p>
-<p>From I-D rev 00:</p>
+<p>At I-D rev 00:</p>
 <ul class="text">
 <li>Broken out of draft-oauth-umacore (post-rev 05) I-D and made generic to apply to a variety of OAuth-based use cases.
+</li>
+</ul>
+
+<p>From rev 00 to 01:</p>
+<ul class="text">
+<li>Made editorial changes based on comments from Amanda Anganes.
+</li>
+<li>Removed previously overlooked references to UMA-specific constructs in the normative section.
 </li>
 </ul>
 
