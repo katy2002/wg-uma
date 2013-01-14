@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-maler-uma-trust-00d" ipr="trust200902">
+<rfc category="std" docName="draft-maler-uma-trust-01" ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -35,72 +35,79 @@
       </address>
     </author>
 
-    <date day="21" month="October" year="2012" />
+    <date day="13" month="January" year="2013" />
 
     <abstract>
-      <t>The User-Managed Access (UMA) core protocol provides a method for
-      users to control access to their protected resources, residing on any
-      number of host sites, through an authorization manager that governs
-      access decisions based on user policy. This document provides a
-      contractual framework that defines the minimum obligations of parties
-      that operate and use UMA-conforming software programs and services. The
-      overall goal of this framework is to support legal enforceability of
-      access-sharing agreements made between the authorizing and requesting
-      sides using UMA. The audience for this document includes technologists,
-      legal professionals, and operators of UMA-conforming services.</t>
+      <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
+      resource owners can control protected-resource access by clients
+      operated by arbitrary requesting parties, where the resources reside on
+      any number of resource servers, and where a centralized authorization
+      server governs access based on resource owner policy. This document
+      provides a contractual framework that defines the minimum obligations of
+      parties that operate and use UMA-conforming software programs and
+      services. The goal of this framework is to support end-to-end legal
+      enforceability of the terms and conditions of access sharing
+      relationships between authorizing and requesting sides that use UMA. The
+      audience for this document includes technologists, legal professionals,
+      and operators of UMA-conforming services.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>The User-Managed Access (UMA) core protocol <xref
-      target="UMAcore"></xref> provides a method for users to control access
-      to their protected resources, residing on any number of host sites,
-      through an authorization manager that governs access decisions based on
-      user policy. This document provides a contractual framework that defines
-      the minimum obligations of parties that operate and use UMA-conforming
-      software programs and services. The overall goal of this framework is to
-      support legal enforceability of access-sharing agreements made between
-      the authorizing and requesting sides using UMA. The audience for this
-      document includes technologists, legal professionals, and operators of
-      UMA-conforming services.</t>
+      <t>User-Managed Access (UMA) <xref target="UMAcore"></xref> is a profile
+      of OAuth 2.0. UMA defines how resource owners can control
+      protected-resource access by clients operated by arbitrary requesting
+      parties, where the resources reside on any number of resource servers,
+      and where a centralized authorization server governs access based on
+      resource owner policy. This document provides a contractual framework
+      that defines the minimum obligations of parties that operate and use
+      UMA-conforming software programs and services. The goal of this
+      framework is to support end-to-end legal enforceability of the terms and
+      conditions of access sharing relationships between authorizing and
+      requesting sides that use UMA. The audience for this document includes
+      technologists, legal professionals, and operators of UMA-conforming
+      services.</t>
 
-      <t>Capitalized terms and abbreviations in this document are defined in
-      <xref target="terminology-clauses"></xref>.</t>
+      <t>Capitalized terms and abbreviations used in this document are defined
+      in <xref target="terminology-clauses"></xref> because they form a
+      normative part of the framework defined in <xref
+      target="clauses"></xref>. Readers are strongly encouraged to review
+      these definitions before reading the rest of the introduction.</t>
 
       <section title="Sample Use Cases for Sharing Access to Resources">
-        <t>UMA makes possible an end-to-end access sharing relationship
-        between an Authorizing Party and a Requesting Party, with its primary
-        goals being to constrain access according to the Authorizing Party's
-        access policies and to encourage the Requesting Party to adhere to any
-        obligations it consented to in the authorization process by raising
-        the consequences for doing otherwise. Following are sample use cases
-        that explore the potential differences in these obligations beyond the
-        basic level represented in the contractual framework.<list
-            style="hanging">
-            <t hangText="Person-to-self sharing">Here, Alice is both an
-            Authorizing Party and a Requesting Party. This use case describes
-            most types of today's OAuth-mediated access, for example, when
-            Alice introduces the Klout service to her Twitter account. She
-            uses both services herself, and wants them to communicate together
-            on her behalf. With UMA, Alice can potentially manage the entire
-            set of such access connections from a single place rather than
-            from Twitter and other online "home bases" separately. In this
-            circumstance, it's unlikely Alice will want to impose stringent
-            contract terms on herself.</t>
+        <t>UMA makes possible a loosely coupled end-to-end access sharing
+        relationship between an Authorizing Party and a Requesting Party, with
+        its primary goals being to constrain access according to the
+        Authorizing Party's access policies and to encourage the Requesting
+        Party to adhere to any obligations it consented to in the
+        authorization process by raising the consequences for doing otherwise.
+        Following are sample use cases that explore the potential differences
+        in these obligations beyond the basic level represented in the
+        contractual framework.<list style="hanging">
+            <t hangText="Person-to-self sharing">Here, Alice is both the
+            Authorizing Party and the Requesting Party. This use case
+            describes most types of today's OAuth-mediated access, for
+            example, when Alice introduces the Klout service to her Twitter
+            account. She uses both services herself, and wants them to
+            communicate together on her behalf. With UMA, Alice can
+            potentially manage the entire set of such access connections from
+            a single place rather than from Twitter and other online "home
+            bases" separately. In this circumstance, it's unlikely Alice will
+            want to impose stringent contract terms on herself.</t>
 
             <t hangText="Person-to-person sharing">Here, Alice is an
             Authorizing Party and Bob is a Requesting Party. Today, many Web
-            2.0 sites offer some level of this control, but methods,
-            strengths, and interfaces are inconsistent between sites and
-            people are unable to reuse policies across sites. Alice can share
-            Flickr photos with Bob by adding him to her Flickr friends list or
-            family list or by mailing him a special link to a photo album, or
-            Alice can add Bob as a friend on Facebook. With UMA, Alice can
-            craft authorization policies that let Bob "qualify in" to get
-            access to her photo album and even to other resources she manages
-            at other sites, without her having to be present during this
-            process.</t>
+            2.0 sites offer some level of selective sharing between people,
+            but methods, strengths, and interfaces are inconsistent between
+            sites and people are unable to reuse policies across sites. Alice
+            can share Flickr photos with Bob by adding him to her Flickr
+            friends list or family list or by mailing him a special link to a
+            photo album, or Alice can add Bob as a friend on Facebook. With
+            UMA, Alice can craft authorization policies that let Bob "qualify
+            in" to get access to her photo album and even to other resources
+            she manages at other sites, without her having to be present
+            during this process.</t>
 
             <t hangText="Mediated person-to-organization sharing">Here, Alice
             is an Authorizing Party, the DentalCare company is a Requesting
@@ -110,8 +117,9 @@
             series of root canal appointments. Carl might be the actual person
             acting on behalf of the dental practice who actually asks for and
             views Alice's calendar. With UMA, Alice can require Carl to prove
-            he is acting on behalf of DentalCare before seeing her
-            calendar.</t>
+            he is acting on behalf of DentalCare -- for example, demonstrating
+            control of an email address in the dentalcare.com domain -- before
+            seeing her calendar.</t>
 
             <t hangText="Autonomous person-to-organization sharing">Here,
             Alice is an Authorizing Party and the Valley Vehicles car
@@ -131,86 +139,97 @@
       <section title="How to Use the Contractual Framework">
         <t>The contractual framework in <xref target="clauses"></xref> is the
         normative portion of this document. It is intended to apply to all
-        Subjects that take part in software interactions that are declared to
-        be UMA-conforming. It define the minimum set of obligations that these
-        Subjects accept. The Subjects can adopt additional obligations, and
-        further refine or constrain the obligations listed here, but cannot
-        make these minimum obligations less strict.</t>
+        Subjects that take part in software interactions using services that
+        are declared to be UMA-conforming. It defines the minimum set of
+        obligations that these Subjects accept. The Subjects can adopt
+        additional obligations, and can further refine or constrain the
+        obligations listed here, but cannot make these minimum obligations
+        less strict.</t>
 
         <t>Each clause takes the following form:</t>
 
         <t>"[<spanx>Clause ID</spanx>]. When [<spanx>protocol interaction takes place</spanx>],
         the [<spanx>obligated Subject</spanx>] gains an obligation to the
-        [<spanx>expecting Subject</spanx>] to [<spanx>behave in a particular way</spanx>]."</t>
+        [<spanx>expecting Subject</spanx>] to [<spanx>behave towards it in a particular way</spanx>]."</t>
 
-        <t>The clause ID uses the abbreviation T for terminology, R for
-        Requesting Party, H for Host Operator, AM for AM Operator, and AP for
-        Authorizing Party respectively. Clauses are sometimes followed by
-        non-normative explanatory comments, which are labeled with
-        "Comments:", and open issues, which are labeled with "Issues:" and are
-        meant to be resolved and removed before final publication.</t>
+        <t>The clause ID has the following internal structure:</t>
 
-        <t>The various Subjects take on binding obligations by interacting
-        with the others using software programs or services that are declared
-        by their operators to be UMA-conforming. The specific obligations come
-        as a result of precise protocol interactions, so that at a moment in
-        time, any one Subject may not yet have taken on all of the obligations
-        defined in the contractual framework as belonging to that Subject. By
-        analogy, if Alice were to visit a website that imposes terms of
-        service on the site's users, but it requires users to consent actively
-        by clicking on an "I Agree" button, Alice would take on
-        terms-of-service obligations only after she pushes the button.</t>
+        <t>"[<spanx>obligated</spanx>]-[<spanx>expecting</spanx>]-[<spanx>keyword</spanx>]"</t>
+
+        <t>It uses abbreviations for the obligated and expecting Subjects as
+        follows: RqP for Requesting Party, RSO for Resource Server Operator,
+        ASO for Authorization Server Operator, and AzP for Authorizing Party.
+        Clauses are generally followed by non-normative explanatory comments,
+        which are labeled with "Comments:", and occasionally open issues,
+        which are labeled with "Issues:". The latter are meant to be resolved
+        and removed before final publication.</t>
+
+        <t>Specific obligations come as a result of precise protocol
+        interactions, so that at a moment in time, any one Subject may not yet
+        have taken on all of the obligations defined in the contractual
+        framework as belonging to that Subject. By analogy, if Alice were to
+        visit a website that imposes terms of service on the site's users, but
+        it requires users to consent actively by clicking on an "I Agree"
+        button, Alice would take on terms-of-service obligations only after
+        she clicks on the button.</t>
 
         <t>Following are the key UMA interactions that result in obligations,
-        along with references to the relevant sections in <xref
-        target="UMAcore"></xref> that define these interactions:<list
-            style="symbols">
-            <t>A Host responds to a Requester's access request: Section
-            3.1.</t>
+        with specific cross-references into the <xref target="UMAcore"></xref>
+        specification. A non-normative visual correlation of interactions to
+        binding obligations can be found at <xref
+        target="UMAFAQ-swim"></xref>. (Lowercase versions of names are
+        references to constructs in the technical specification versus this
+        document.)<list style="symbols">
+            <t>An authorization server issues a protection API token (PAT) to
+            a resource server: Section 1.3.1.</t>
 
-            <t>An AM issues a protection API token (PAT) to a Host: Section
-            2.3.</t>
+            <t>An authorization server issues an authorization API token (AAT)
+            to a client: Section 1.3.1.</t>
 
-            <t>An AM issues an authorization API token (AAT) to a Requester:
-            Section 3.4.3.</t>
+            <t>An authorization server issues a requesting party token (RPT)
+            to a client: Section 3.4.1.</t>
 
-            <t>An AM issues a requester permission token (RPT) to a Requester:
-            Section 3.4.4.</t>
+            <t>An authorization server responds positively to a client's
+            authorization request: Section 3.4.2.</t>
 
-            <t>An AM responds positively to a Requester's permission request:
-            Section 3.4.5.</t>
+            <t>A resource server determines the status of an RPT: Section
+            3.3.</t>
 
-            <t>A Host checks the status of an RPT: Section 3.3.</t>
+            <t>A resource server registers a client-requested permission:
+            Section 3.2.</t>
 
-            <t>A Host registers a permission on behalf of a Requester: Section
-            3.2.</t>
+            <t>A requesting party supplies claims to an authorization server:
+            Section 3.5.</t>
 
-            <t>A Requester supplies claims to an AM: Section 3.5.</t>
+            <t>A resource server responds to a client's request for access:
+            Sections 3.1.1 and 3.1.2.</t>
 
-            <t>A Requester successfully receives access: Section 3.1.3.</t>
+            <t>A client successfully receives access: Section 3.1.2.</t>
           </list></t>
       </section>
 
       <section title="Obligations Not in the Scope of the Contractual Framework">
-        <t>Of the Subject types discussed in this document, some -- Requesting
-        Party Agents and Requester Operators -- have no UMA-dictated
-        obligations, though they might have obligations as part of contractual
-        agreements with other UMA-related Subjects, for example, pairwise
-        contracts or membership in trust frameworks. Additionally, pairs or
-        groups of Subjects that do have obligations imposed by the contractual
-        framework might have additional obligations among themselves beyond
-        those in the framework. Following are some typical examples:<list
-            style="symbols">
-            <t>When an Authorizing Party registers for an account at a Host,
-            the Authorizing Party might gain an obligation to the Host
-            Operator to adhere to the Host Operator's terms of service.</t>
+        <t>Of the Subject types defined and discussed in this document, some
+        -- Requesting Party Agents and Client Operators -- have no
+        UMA-dictated obligations, though they might have obligations as part
+        of contractual agreements with other UMA-related Subjects, for
+        example, pairwise contracts or membership in trust frameworks.
+        Additionally, pairs or groups of Subjects that do have obligations
+        imposed by the contractual framework might have additional obligations
+        among themselves beyond those in the framework. Following are some
+        typical examples:<list style="symbols">
+            <t>When a Resource Owner registers for an account at a Resource
+            Server, the Authorizing Party might gain an obligation to the
+            Resource Server Operator to adhere to the Resource Server
+            Operator's terms of service.</t>
 
-            <t>When a Requester registers with an AM for OAuth client
-            credentials (for example, through an explicit approval process or
-            through a passive "API-wrap" process), the Requester Operator
-            might gain an obligation to the AM Operator (apart from any
-            particular Requesting Party's usage of that Requester) to adhere
-            to the AM Operator's terms of service for API clients.</t>
+            <t>When a Client registers with an Authorization Server for OAuth
+            client credentials (for example, through an explicit approval
+            process or through a passive "API-wrap" process), the Client
+            Operator might gain an obligation to the Authorization Server
+            Operator (apart from any particular Requesting Party's usage of
+            that Client) to adhere to the Authorization Server Operator's
+            terms of service for API clients.</t>
 
             <t>When a Subject becomes a Requesting Party Agent for a
             Requesting Party (for example, through an employment agreement),
@@ -218,400 +237,458 @@
             any agent agreements in place in the Subject's UMA-related
             interactions performed on behalf of the Requesting Party.</t>
 
-            <t>When a Requesting Party contracts with a Requester Operator to
+            <t>When a Requesting Party contracts with a Client Operator to
             engage in UMA-related interactions on the Requesting Party's
-            behalf, the Requester Operator might gain an obligation to adhere
-            to the terms of that contract. For example, a car dealership may
+            behalf, the Client Operator might gain an obligation to adhere to
+            the terms of that contract. For example, a car dealership may
             contract out to use a cloud service that crawls the Web looking
             for personal RFPs that meet the dealership's criteria, and want to
             impose confidentiality requirements.</t>
 
-            <t>When a Requester accesses a protected resource at a Host, the
-            Host Operator might gain an obligation to the Requester Operator
-            to be trustworthy as a source of the expected data. For example,
-            in a scenario where the Requesting Party is also the Authorizing
-            Party and is trying to fill in an online loan application through
-            an online financial service (the Requester), where the Host
-            Operator provides credit risk data about the Authorizing User, the
-            Requester Operator will want to authenticate the Host service in
-            some fashion.</t>
+            <t>When a Client accesses a protected resource at a Resource
+            Server, the Resource Server Operator might gain an obligation to
+            the Client Operator to be trustworthy as a source of the expected
+            data. For example, in a scenario where the Requesting Party is
+            also the Authorizing Party and is trying to fill in an online loan
+            application through an online financial service (the Client),
+            where the Resource Server Operator provides credit risk data about
+            the Authorizing User, the Client Operator will want to
+            authenticate the Resource Server service in some fashion.</t>
           </list></t>
       </section>
     </section>
 
     <section anchor="clauses" title="Binding Obligations on UMA Participants">
-      <t>This section defines a normative framework that defines the minimum
-      obligations gained by parties that operate and use software programs and
-      services that the operators declare to be UMA-conforming.</t>
+      <t>This section constitutes a normative framework that defines the
+      minimum obligations gained by parties that operate and use software
+      programs and services that the operators declare to be UMA-conforming.
+      The framework consists of clauses, where each subsection with content is
+      a clause.</t>
 
       <section anchor="terminology-clauses" title="Terminology">
-        <t><spanx style="strong">T1.</spanx> This framework uses the following
-        terms. Where terms are used without capitalization and are not
-        otherwise defined in the <xref target="UMAcore"></xref>, they are used
-        in their normal sense.<list hangIndent="6" style="hanging">
-            <t anchor="Individual" hangText="Individual"><vspace />A natural
-            person (that is, a human being) with the capacity to take on
-            contractual duties and obligations as a participant in an UMA
-            interaction.</t>
+        <section title="Terms">
+          <t></t>
 
-            <t anchor="Non-PersonEntity"
-            hangText="Non-Person Entity (NPE)"><vspace />A legal person (such
-            as a corporation) with the capacity to take on contractual duties
-            and obligations as a participant in an UMA interaction.</t>
+          <t>This framework uses the following terms. Where terms are used
+          without capitalization and are not otherwise defined in the <xref
+          target="UMAcore"></xref>, they are used in their normal sense.<list
+              hangIndent="6" style="hanging">
+              <t anchor="Individual" hangText="Individual"><vspace />A natural
+              person (that is, a human being) with the capacity to take on
+              contractual duties and obligations as a participant in an UMA
+              interaction.</t>
 
-            <t anchor="Subject" hangText="Subject"><vspace />An Individual or
-            NPE. Subjects play various roles in achieving and seeking
-            user-managed access, and the same Subject might serve in multiple
-            contractual roles.</t>
+              <t anchor="Non-PersonEntity"
+              hangText="Non-Person Entity (NPE)"><vspace />A legal person
+              (such as a corporation) with the capacity to take on contractual
+              duties and obligations as a participant in an UMA
+              interaction.</t>
 
-            <t anchor="Conformance" hangText="Conformance"><vspace />Claimed
-            adherence of a running software program or service with the
-            requirements of one or more of the roles ("authorization manager
-            (AM)", "host", and "requester") defined in the UMA core protocol,
-            as defined in its specification. Software components play various
-            roles in participating in the technical interactions necessary to
-            achieve and seek user-managed access, and the same software
-            component might serve in multiple technical roles.</t>
+              <t anchor="Subject" hangText="Subject"><vspace />An Individual
+              or NPE. Subjects play various roles in achieving and seeking
+              user-managed access, and the same Subject might serve in
+              multiple contractual roles.</t>
 
-            <t anchor="AuthorizingParty"
-            hangText="Authorizing Party"><vspace />A Subject that fills the
-            "authorizing user" role as defined in the UMA core protocol, using
-            and configuring software services that variously fill the "AM" and
-            "host" roles in the protocol. This Subject is the "user" in
-            "User-Managed Access"; UMA's first priority is to enable
-            Individuals to serve in the Authorizing Party role, though NPEs
-            can serve in this role as well.</t>
+              <t anchor="Conformance" hangText="Conformance"><vspace />Claimed
+              adherence of a running software program or service to the
+              requirements of one or more of the roles "authorization server",
+              "resource server", or "client", as defined in <xref
+              target="UMAcore"></xref>. Software components play various roles
+              in participating in the technical interactions necessary to
+              achieve and seek user-managed access, and the same software
+              component might serve in multiple technical roles.</t>
 
-            <t anchor="AuthorizationManager"
-            hangText="Authorization Manager (AM)"><vspace />A software service
-            that fills the "authorization manager (AM)" role as defined in the
-            UMA core protocol.</t>
+              <t anchor="AuthorizingParty"
+              hangText="Authorizing Party"><vspace />A Subject that fills the
+              "resource owner" role as defined in <xref
+              target="UMAcore"></xref>, using and configuring software
+              services that variously fill the "authorization server" and
+              "resource server" roles. This Subject is the "user" in
+              "User-Managed Access"; UMA's first priority is to enable
+              Individuals to serve in the Authorizing Party role, though NPEs
+              can serve in this role as well.</t>
 
-            <t anchor="AMOperator"
-            hangText="Authorization Manager (AM) Operator"><vspace />A Subject
-            responsible for running and operating an AM.</t>
+              <t anchor="AuthorizationManager"
+              hangText="Authorization Server"><vspace />A software service
+              that fills the "authorization server" role as defined in <xref
+              target="UMAcore"></xref>.</t>
 
-            <t anchor="Host" hangText="Host"><vspace />A software service that
-            fills the "host" role as defined in the UMA core protocol.</t>
+              <t anchor="AMOperator"
+              hangText="Authorization Server Operator"><vspace />A Subject
+              responsible for running and operating an Authorization
+              Server.</t>
 
-            <t anchor="HostOperator" hangText="Host Operator"><vspace />A
-            Subject responsible for running and operating a Host.</t>
+              <t anchor="Host" hangText="Resource Server"><vspace />A software
+              service that fills the "resource server" role as defined in
+              <xref target="UMAcore"></xref>.</t>
 
-            <t anchor="Requester" hangText="Requester"><vspace />A software
-            application or service that fills the "requester" role as defined
-            in the UMA core protocol.</t>
+              <t anchor="HostOperator"
+              hangText="Resource Server Operator"><vspace />A Subject
+              responsible for running and operating a Resource Server.</t>
 
-            <t anchor="RequesterOperator"
-            hangText="Requester Operator"><vspace />A Subject responsible for
-            running and operating a Requester.</t>
+              <t anchor="Requester" hangText="Client"><vspace />A software
+              application or service that fills the "client" role as defined
+              in <xref target="UMAcore"></xref>.</t>
 
-            <t anchor="RequestingParty"
-            hangText="Requesting Party"><vspace />A Subject that uses a
-            Requester to seek access to a protected resource. This Subject may
-            be an Individual or an NPE. The Requesting Party and the
-            Authorizing Party may be the same Subject or different
-            Subjects.</t>
+              <t anchor="RequesterOperator"
+              hangText="Client Operator"><vspace />A Subject responsible for
+              running and operating a Client.</t>
 
-            <t anchor="RequestingPartyAgent"
-            hangText="Requesting Party Agent"><vspace />A Subject using a
-            Requester to seek access to a protected resource on behalf of a
-            Requesting Party. Typically this Subject is an Individual acting
-            on behalf of an NPE.</t>
-          </list></t>
+              <t anchor="RequestingParty"
+              hangText="Requesting Party"><vspace />A Subject that uses a
+              Client to seek access to a protected resource. This Subject may
+              be an Individual or an NPE. The Requesting Party and the
+              Authorizing Party may be the same Subject or different
+              Subjects.</t>
 
-        <t>Comments: The <xref target="UETA"></xref> defines two terms that
-        are particularly relevant to understanding the interactions among UMA
-        participants:<list style="symbols">
-            <t>"'Automated transaction' means a transaction conducted or
-            performed, in whole or in part, by electronic means or electronic
-            records, in which the acts or records of one or both parties are
-            not reviewed by an individual in the ordinary course in forming a
-            contract, performing under an existing contract, or fulfilling an
-            obligation required by the transaction."</t>
+              <t anchor="RequestingPartyAgent"
+              hangText="Requesting Party Agent"><vspace />A Subject using a
+              Client to seek access to a protected resource on behalf of a
+              Requesting Party. Typically this Subject is an Individual acting
+              on behalf of an NPE.</t>
+            </list></t>
 
-            <t>"'Electronic agent' means a computer program or an electronic
-            or other automated means used independently to initiate an action
-            or respond to electronic records or performances in whole or in
-            part, without review or action by an individual."</t>
-          </list>Where a Requester is used by a human Requesting Party or a
-        human Requesting Party Agent, at times human-computer interaction
-        (HCI) will be required, but otherwise the access-attempt transaction
-        is likely to be fully automatic from the perspective of the
-        "requesting side". Furthermore, where the Authorizing Party and the
-        Requesting Party are the same natural person, or where the Authorizing
-        Party has set a policy that requires real-time approval through some
-        out-of-band method, this person can expect to engage in HCI. Otherwise
-        the access-attempt transaction is likely to be fully automatic from
-        the perspective of the "authorizing side" because the access attempt
-        is made without any requirement for the Authorizing Party to be
-        present at run time.</t>
+          <t>Comments: The <xref target="UETA"></xref> defines two terms that
+          are particularly relevant to understanding the interactions among
+          UMA participants:<list style="symbols">
+              <t>"'Automated transaction' means a transaction conducted or
+              performed, in whole or in part, by electronic means or
+              electronic records, in which the acts or records of one or both
+              parties are not reviewed by an individual in the ordinary course
+              in forming a contract, performing under an existing contract, or
+              fulfilling an obligation required by the transaction."</t>
 
-        <t>The National Strategy for Trusted Identities in Cyberspace <xref
-        target="NSTIC"></xref> defines some terms similar to those defined
-        here:<list style="symbols">
-            <t>"An individual is a person engaged in an online transaction.
-            Individuals are the first priority of the Strategy."</t>
+              <t>"'Electronic agent' means a computer program or an electronic
+              or other automated means used independently to initiate an
+              action or respond to electronic records or performances in whole
+              or in part, without review or action by an individual."</t>
+            </list>Where a Client is used by a human Requesting Party or a
+          human Requesting Party Agent, at times human-computer interaction
+          (HCI) will be required, but otherwise the access-attempt transaction
+          is likely to be fully automatic from the perspective of the
+          "requesting side". Furthermore, where the Authorizing Party and the
+          Requesting Party are the same natural person, or where the
+          Authorizing Party has set a policy that requires real-time approval
+          through some out-of-band method, this person can expect to engage in
+          HCI. Otherwise the access-attempt transaction is likely to be fully
+          automatic from the perspective of the "authorizing side" because the
+          access attempt is made without any requirement for the Authorizing
+          Party to be present at run time.</t>
 
-            <t>"A non-person entity (NPE) may also require authentication in
-            the Identity Ecosystem. NPEs can be organizations, hardware,
-            networks, software, or services and are treated much like
-            individuals within the Identity Ecosystem. NPEs may engage in or
-            support a transaction."</t>
+          <t>The National Strategy for Trusted Identities in Cyberspace <xref
+          target="NSTIC"></xref> defines some terms similar to those defined
+          here:<list style="symbols">
+              <t>"An individual is a person engaged in an online transaction.
+              Individuals are the first priority of the Strategy."</t>
 
-            <t>"The subject of a transaction may be an individual or an
-            NPE."</t>
-          </list></t>
+              <t>"A non-person entity (NPE) may also require authentication in
+              the Identity Ecosystem. NPEs can be organizations, hardware,
+              networks, software, or services and are treated much like
+              individuals within the Identity Ecosystem. NPEs may engage in or
+              support a transaction."</t>
 
-        <t>UMA shares with NSTIC a priority to enable and empower individual
-        people in the context of their online interactions. Note that this
-        framework uses the terms Individual, NPE, and Subject exclusively for
-        parties that have the capacity to take on contractual obligations,
-        distinguishing them "from hardware, networks, software, or services",
-        which do not have this capacity.</t>
+              <t>"The subject of a transaction may be an individual or an
+              NPE."</t>
+            </list></t>
 
-        <t><spanx style="strong">T2.</spanx> This framework uses the following
-        abbreviations.<list style="hanging">
-            <t anchor="UMA" hangText="UMA">User-Managed Access, the
-            interoperability protocol defined by the UMA core protocol
-            specification and the other specifications it includes by
-            reference.</t>
+          <t>UMA shares with NSTIC a priority to enable and empower individual
+          people in the context of their online interactions. Note that this
+          framework uses the terms Individual, NPE, and Subject exclusively
+          for parties that have the capacity to take on contractual
+          obligations, distinguishing them "from hardware, networks, software,
+          or services", which do not have this capacity.</t>
+        </section>
 
-            <t anchor="API" hangText="API">Application programming
-            interface.</t>
+        <section title="Abbreviations">
+          <t> This framework uses the following abbreviations.<list
+              style="hanging">
+              <t anchor="UMA" hangText="UMA">User-Managed Access, the
+              interoperability protocol defined by in <xref
+              target="UMAcore"></xref> and the other specifications it
+              includes normatively by reference.</t>
 
-            <t anchor="AAT" hangText="AAT">Authorization API token, as defined
-            in the UMA core protocol.</t>
+              <t anchor="API" hangText="API">Application programming
+              interface.</t>
 
-            <t anchor="PAT" hangText="PAT">Protection API token, as defined in
-            the UMA core protocol.</t>
+              <t anchor="PAT" hangText="PAT">Protection API token, as defined
+              iin <xref target="UMAcore"></xref>.</t>
 
-            <t anchor="RPT" hangText="RPT">Requester permission token, as
-            defined in the UMA core protocol.</t>
-          </list></t>
+              <t anchor="AAT" hangText="AAT">Authorization API token, as
+              defined in <xref target="UMAcore"></xref>.</t>
 
-        <t>Comments: The AAT is a protocol element that is specific to
-        entities in the AM, requester, and requesting party roles defined by
-        the UMA core protocol. The PAT is a protocol element that is specific
-        to entities in the AM, host, and authorizing user roles. The RPT is a
-        protocol element that is specific to entities in the AM, host,
-        authorizing user, requester, and requesting party roles. The RPT
-        protocol element has a definition that can vary, depending on the UMA
-        token profile in use; thus, any obligations that depend on an UMA
-        token profile specify that token profile by name.</t>
+              <t anchor="RPT" hangText="RPT">Requesting party token, as
+              defined in <xref target="UMAcore"></xref>.</t>
+            </list></t>
+
+          <t>Comments: Tokens are critical to managing authorization and
+          auditing of resource access. Section 1.3 is recommended reading for
+          understanding what the various tokens represent and how they are
+          issued and used. The RPT, in particular, has a definition that can
+          vary depending on the RPT profile in use; thus, any obligations in
+          this framework that depend on an RPT profile specify it by name.</t>
+        </section>
       </section>
 
       <section title="Obligations of the Requesting Party">
-        <t><spanx style="strong">R1.</spanx> When the Requester successfully
-        receives access from a Host to a protected resource by wielding a
-        valid "UMA bearer token profile" RPT with a currently valid permission
-        for the type of access sought, the Requesting Party gains an
-        obligation to the Authorizing Party to adhere to promises it made in
-        order to get access authorization granted.</t>
+        <section title="RqP-AzP-promises">
+          <t>When the Client successfully gains access from a Resource Server
+          to a protected resource by wielding a valid "bearer" RPT associated
+          with at least one currently valid permission for the type of access
+          sought, the Requesting Party using that Client gains an obligation
+          to the Authorizing Party to adhere to any terms it agreed to in
+          order to gain the permission.</t>
 
-        <t>Comments: At a previous stage, the Requesting Party asked for a
-        relevant permission from the AM and might have had to provide
-        "promissory" claims asserting willingness, for example, to adhere to
-        data usage constraints imposed by the user. This is precisely the
-        end-to-end access authorization agreement that UMA exists to forge.
-        Accepting access to the protected resource binds the Requesting Party
-        to the terms it agreed to, for example, only reading the resource
-        rather than modifying it, or not selling the resource data to someone
-        else if that is what it agreed.</t>
+          <t>Comments: This key obligation enables the end-to-end access
+          authorization agreement that UMA exists to forge. At a previous
+          stage, the Requesting Party asked for a relevant permission from the
+          Authorization Server and might have had to provide claims of a
+          promissory nature. Accepting access to the protected resource binds
+          the Requesting Party to any terms it agreed to using the claims
+          mechanism, for example, agreeing only to read the resource rather
+          than modifying it, or forbearing from selling the resource data to
+          someone else.</t>
 
-        <t>Issues: Note that the obligation goes into effect the first time a
-        Requester gains access under the power of a "currently valid
-        permission". If there was more than one valid permission attached to
-        different sets of promises, without a record (kept by the Host and/or
-        AM) of which permission it used for granting access, ambiguity is
-        introduced. Also note that defining and using token profiles other
-        than the "UMA bearer token profile" might lessen the potential
-        ambiguity.</t>
+          <t>Issues: Note that the obligation goes into effect the first time
+          a Client gains access under the power of a "currently valid
+          permission". If there was more than one valid permission attached to
+          different sets of promises, if a secure record was not kept by the
+          Resource Server and/or Authorization Server of which permission was
+          used for granting access, ambiguity is introduced. Defining and
+          using RPT profiles other than the "bearer" profile might lessen the
+          potential ambiguity.</t>
+        </section>
 
-        <t><spanx style="strong">R2.</spanx> When the AM issues an AAT to a
-        Requester, the Requesting Party using that Requester gains an
-        obligation to the AM Operator to truthfully supply any self-asserted
-        claims required for access authorization at this AM.</t>
+        <section title="RqP-AzP-facts">
+          <t>When the Requesting Party provides, or facilitates the sourcing
+          of, claims to an Authorization Server in a claims-gathering flow,
+          the Requesting Party gains an obligation to the Authorizing Party to
+          stand behind any factual representations it makes in order to gain
+          the permission.</t>
 
-        <t>Comments: At a later stage, the Requesting Party might be asked to
-        provide claims to support authorization processes at this AM, for
-        accessing all resources protected by this AM, managed by any
-        Authorizing Parties, at any Hosts.The Requesting Party's
-        responsibility to provide truthful claims in all these cases begins
-        now. The Requesting Party can remove this obligation by revoking the
-        AAT.</t>
+          <t>Comments: This obligation is gained during the providing of
+          actual claims, rather than at the time of AAT issuance or protected
+          resource access, because factual claims might age and expire. Where
+          the Requesting Party supplies or sources claims in a manner that can
+          be verified by the Authorization Server, the risk imposed by this
+          need for "trust" can be reduced. Note that UMA defines an optional
+          OpenID Connect claim profile that provides one way to collect
+          trusted claims from third-party claim providers.</t>
+        </section>
 
-        <t><spanx style="strong">R3.</spanx> When the Requesting Party
-        provides claims to an AM to satisfy the AM's authorization process,
-        the Requesting Party gains an obligation to the AM Operator to
-        truthfully supply any claims required for access authorization for the
-        requested permission.</t>
+        <section title="RqP-ASO-claims">
+          <t>When the Authorization Server issues an AAT to a Client and for
+          as long as the AAT is valid, the Requesting Party using that Client
+          gains an obligation to the Authorization Server Operator to
+          truthfully supply any claims required for access authorization at
+          this AM that it chooses to supply.</t>
 
-        <t>Comments: This clause is specific to the action of providing actual
-        claims, as opposed to clause R2. Where the Requesting Party supplies
-        claims in a form that can be verified by the AM, the risk imposed by
-        this need for "trust" can be reduced. Note that UMA defines an
-        optional "OpenID Connect claim profile" that provides one way to
-        collect trusted claims from third-party claim providers.</t>
+          <t>Comments: At a later stage, the Requesting Party might be asked
+          to provide claims to support authorization processes at this
+          Authorization Server for accessing <spanx>all</spanx> resources
+          protected by this Authorization Server, managed by any Authorizing
+          Parties, at any Resource Servers. The Requesting Party's
+          responsibility to act in good faith in interacting with this
+          Authorization Server begins now because factual claims it supplies
+          could be reused for more than one access-sharing relationship. This
+          obligation can be removed through AAT revocation.</t>
+        </section>
 
-        <t>Issues: Is this clause really about an obligation to the AM
-        Operator, or ultimately to the Authorizing Party? Claims gathered at
-        this moment could, for example, be promissory: "I agree not to release
-        this data publicly until after embargo date XYZ." Would this just be a
-        repeat of clause R1? Do we even need R3 giaven that we have R1 and R2
-        in the mix?</t>
+        <section title="RqP-RSO-bearer">
+          <t>When the Authorization Server issues an RPT to a Client and for
+          as long as the RPT is valid, the Requesting Party using that Client
+          gains an obligation to the Resource Server Operator to represent the
+          legitimate bearer of the RPT or its authorized representative, and
+          not to allow others to impersonate the Requesting Party.</t>
 
-        <t><spanx style="strong">R4.</spanx> When the AM issues an RPT to a
-        Requester, the Requesting Party using that Requester gains an
-        obligation to the Host Operator to represent the legitimate bearer of
-        the RPT whenever it presents this token to the Host.</t>
-
-        <t>Comments: In the case where the "UMA bearer token profile" is being
-        used, the token cannot be bound in any meaningful way to the specific
-        requester and requesting party it applies to, so the Requesting Party
-        takes on the obligation of protecting the RPT from theft and not
-        maliciously sharing the RPT to be used by others. Defining and using
-        different UMA token profiles can mitigate the risk of a failure on the
-        Requesting Party's part.</t>
+          <t>Comments: In the case where the "bearer" RPT profile or any other
+          bearer-style RPT profile is used, the token may not be bound in any
+          technically confirmable way to the specific client and requesting
+          party it applies to. Defining and using different UMA token profiles
+          can mitigate the risk of failure or malice on the Requesting Party's
+          part. The "authorized representative" phrase is intended to clear
+          the way for token-chaining profiles or similar.</t>
+        </section>
       </section>
 
-      <section title="Obligations of the Host Operator">
-        <t><spanx style="strong">H1.</spanx> When the AM issues a PAT to a
-        Host, the Host Operator gains an obligation to the Authorizing Party
-        to delegate protection services to the AM Operator for the set of
-        protectable resources for which it represents this capability to the
-        Authorizing Party, and to respect the access constraints represented
-        by RPTs generated by the AM.</t>
+      <section title="Obligations of the Resource Server Operator">
+        <section title="RSO-AzP-protection">
+          <t>When the Authorization Server issues a PAT to a Resource Server
+          and as long as the PAT is valid, the Resource Server Operator gains
+          an obligation to the Authorizing Party to delegate protection
+          services to the Authorization Server Operator for the set of
+          protectable resources for which it represents this capability to the
+          Authorizing Party, and to respect the authorization data that the
+          Authorization Server has associated with an RPT when the Resource
+          Server subsequently allows or disallows access by the Client that
+          presented that RPT.</t>
 
-        <t>Comments: Once the AM Operator becomes the Authorizing Party's
-        authorization proxy, it begins relying on the Host Operator in other,
-        more specific ways. The Host has the opportunity to inspect AM-issued
-        permissions or take other actions that delegate protection
-        responsibility to the AM at a later stage, but its responsibility for
-        respecting them begins now. The specific protection services made
-        available to the Host by the AM differ depending on the "UMA token
-        profile" in use. The Authorizing Party can remove this obligation by
-        revoking the PAT.</t>
+          <t>Comments: Once the Authorization Server Operator becomes the
+          Authorizing Party's authorization proxy, it begins relying on the
+          Resource Server Operator in other, more specific ways. The Resource
+          Server has the opportunity to inspect AM-issued permissions or take
+          other actions that delegate protection responsibility to the
+          Authorization Server at a later stage, but its responsibility for
+          respecting them begins now. The specific protection services made
+          available to the Resource Server by the Authorization Server differ
+          depending on the RPT profile in use. This obligation can be removed
+          through PAT revocation.</t>
+        </section>
 
-        <t><spanx style="strong">H2.</spanx> When the AM issues a PAT to the
-        Host, the Host Operator gains an obligation to the AM Operator to
-        register resource sets and applicable actions accurately and timely
-        according to the Authorizing Party&rsquo;s expressed instructions for
-        protection.</t>
+        <section title="RSO-ASO-registration">
+          <t>When the Authorization Server issues a PAT to the Resource Server
+          and as long as the PAT is valid, the Resource Server Operator gains
+          an obligation to the Authorization Server Operator to register
+          resource set descriptions accurately and timely according to the
+          Authorizing Party&rsquo;s expressed instructions for protection.</t>
 
-        <t>Comments: At a later stage, the Host has the opportunity to
-        register resource sets, but its responsibility for performing this
-        task begins now. The Authorizing Party can remove this duty by
-        revoking the PAT. The Host Operator may have contracted with the
-        Authorizing Party for service-level agreements to respond specifically
-        to timeliness needs and so on.</t>
+          <t>Comments: At a later stage, the Resource Server has the
+          opportunity to register resource sets, but its responsibility for
+          performing this task begins now. The Resource Server Operator may
+          have contracted with the Authorizing Party for service-level
+          agreements to respond specifically to timeliness needs and so on.
+          This obligation can be removed through PAT revocation.</t>
+        </section>
 
-        <t><spanx style="strong">H3.</spanx> When the Host checks the status
-        of an "UMA bearer token profile" RPT, the Host Operator gains an
-        obligation to the AM Operator to respect the status of permissions
-        granted by the AM in allowing or disallowing access by the
-        Requester.</t>
+        <section title="RSO-ASO-permissions">
+          <t>When the Resource Server successfully introspects a "bearer" RPT,
+          the Resource Server Operator gains an obligation to the
+          Authorization Server Operator to respect the permissions that the
+          Authorization Server has associated with the RPT when the Resource
+          Server subsequently allows or disallows access by the Client that
+          presented that RPT.</t>
 
-        <t>Comments: The Host Operator, as a Subject that is otherwise
-        potentially not obligated to the AM Operator, carries a great deal of
-        responsibility here not to allow access where the AM has not granted
-        permission and to make every effort to grant access where the AM has
-        granted permission. Its interpretation of scopes and permissions is
-        not directly auditable by the AM. Further, issues can arise from the
-        skew between permission validity periods and actual access. Defining
-        and using different UMA token profiles can mitigate the risk of
-        failure or malice on the Host Operator's part.</t>
+          <t>Comments: The Resource Server Operator, as a Subject that is
+          otherwise potentially not obligated to the Authorization Server
+          Operator, carries a great deal of responsibility here not to allow
+          access where the Authorization Server has not granted permission and
+          to make every effort to grant access where the Authorization Server
+          has granted permission. Its interpretation of scopes and permissions
+          is not directly auditable by the Authorization Server. Further,
+          issues can arise from the skew between permission validity periods
+          and actual access. Defining and using different RPT profiles can
+          mitigate the risk of failure or malice on the Resource Server
+          Operator's part.</t>
+        </section>
 
-        <t><spanx style="strong">H4.</spanx> When the Host responds in any
-        fashion to a Requester's access request, the Host Operator gains an
-        obligation to the Requesting Party to give accurate access to the
-        protected resource according to whether the Requesting Party has
-        permission to do so.</t>
+        <section title="RSO-RqP-access">
+          <t>When the Resource Server responds in any fashion to a Client's
+          access request, the Resource Server Operator gains an obligation to
+          the Requesting Party to give accurate access to the protected
+          resource according to whether the Requesting Party has permission to
+          do so.</t>
 
-        <t>Comments: The Host Operator, as a Subject that is otherwise
-        potentially not obligated to the AM Operator, carries a great deal of
-        responsibility here to make every effort to grant access where the AM
-        has granted permission. Its interpretation of scopes and permissions,
-        particularly in the case where the RPT presented by the Requester uses
-        the "UMA bearer token profile", is not entirely auditable by the
-        requester or AM. Further, issues can arise from the skew between
-        permission validity periods and actual access. Defining and using
-        different UMA token profiles can mitigate the risk of failure on the
-        Host Operator's part.</t>
+          <t>Comments: The Resource Server Operator, as a Subject that is
+          otherwise potentially not obligated to the Authorization Server
+          Operator, carries a great deal of responsibility here to make every
+          effort to grant access where the Authorization Server has associated
+          authorization data to guide access. Its interpretation of scopes and
+          permissions, particularly in the case where the RPT presented by the
+          Client uses the "bearer" RPT profile, is not entirely auditable by
+          the requester or Authorization Server. Further, issues can arise
+          from the skew between permission validity periods and actual access.
+          Defining and using different RPT profiles can mitigate the risk of
+          failure on the Resource Server Operator's part.</t>
+
+          <t>Issues: The relying party traditionally always has the right of
+          refusal. The resource server may have additional authorization
+          context available only to it that suggests it should not grant
+          access, for example. Should this obligation be struck?</t>
+        </section>
       </section>
 
-      <section title="Obligations of the AM Operator">
-        <t><spanx style="strong">AM1.</spanx> When the AM issues a PAT to the
-        Host, the AM Operator gains an obligation to the Authorizing Party to
-        represent the Authorizing Party's policies accurately and timely in
-        granting permissions.</t>
+      <section title="Obligations of the Authorization Server Operator">
+        <section title="ASO-AzP-policies">
+          <t>When the Authorization Server issues a PAT to the Resource Server
+          and as long as the PAT is valid, the Authorization Server Operator
+          gains an obligation to the Authorizing Party to represent the
+          Authorizing Party's policies accurately and timely in granting
+          permissions.</t>
 
-        <t>Comments: At a later stage, the AM will require the Host to present
-        the PAT whenever it uses the AM&rsquo;s protection API on behalf of
-        this Authorizing Party. The Authorizing Party can remove this
-        obligation by revoking the PAT. The AM Operator may have contracted
-        with the Authorizing Party for service-level agreements to respond
-        specifically to timeliness needs and so on.</t>
+          <t>Comments: At a later stage, the Authorization Server will require
+          the Resource Server to present the PAT whenever it uses the
+          Authorization Server&rsquo;s protection API on behalf of this
+          Authorizing Party. The Authorization Server Operator may have
+          contracted with the Authorizing Party for service-level agreements
+          to respond specifically to timeliness needs and so on. This
+          obligation can be removed through PAT revocation.</t>
+        </section>
 
-        <t><spanx style="strong">AM2.</spanx> When the Host registers a
-        permission at the AM, the AM Operator gains an obligation to the Host
-        Operator to represent the Authorizing Party&rsquo;s authorization
-        policies accurately and timely in granting permissions.</t>
+        <section title="ASO-RSO-policies">
+          <t>When the Resource Server registers a requested permission at the
+          Authorization Server, the Authorization Server Operator gains an
+          obligation to the Resource Server Operator to represent the
+          Authorizing Party&rsquo;s authorization policies accurately and
+          timely in associating authorization data with RPTs presented with
+          the registered permission's ticket.</t>
 
-        <t>Comments: At a later stage, when a Requester approaches the AM
-        seeking a previously registered permission, the AM matches Authorizing
-        Party policies to the requested permission to drive any requests for
-        claims and ultimate access authorizations, but its responsibility for
-        performing this task begins now.</t>
+          <t>Comments: At a later stage, when a Client approaches the
+          Authorization Server presenting an RPT and a permission ticket, the
+          Authorization Server matches Authorizing Party policies to the
+          requested permission to drive any requests for claims and ultimate
+          authorization processes, but its responsibility for performing this
+          task begins now.</t>
+        </section>
 
-        <t><spanx style="strong">AM3.</spanx> When the AM issues an AAT to a
-        Requester, the AM Operator gains an obligation to the Requesting Party
-        to request only claims that support the purpose of satisfying the
-        user's policy.</t>
+        <section title="ASO-RqP-limits">
+          <t>When the Authorization Server issues an AAT to a Client and as
+          long as the AAT is valid, the Authorization Server Operator gains an
+          obligation to the Requesting Party to request only claims that
+          support the purpose of satisfying an Authorizing Party's policy.</t>
 
-        <t>Comments: At a later stage, the AM might ask the Requesting Party
-        to provide claims for specific permission purposes, but its
-        responsibility begins now. The Requesting Party can remove this duty
-        by revoking the AAT. When it is possible in OAuth to perform token
-        revocation, the Requester Operator can remove this duty itself by
-        revoking the AAT.</t>
+          <t>Comments: At a later stage, the Authorization Server might ask
+          the Requesting Party to provide claims for specific permission
+          purposes at multiple Resource Servers and/or for multiple
+          Authorizing Parties, but its responsibility begins now. This
+          obligation can be removed through AAT revocation.</t>
+        </section>
       </section>
 
       <section title="Obligations of the Authorizing Party">
-        <t><spanx style="strong">AP1.</spanx> When the AM responds positively
-        to a Requester's request for a permission, the Authorizing Party gains
-        an obligation to the Requesting Party using that Requester to respect
-        the boundaries of data usage constraints placed on the Requesting
-        Party in the form of requests for claims driven by the Authorizing
-        Party's policy at the AM.</t>
+        <section title="AzP-RqP-promises">
+          <t>When the Authorization Server responds positively to a Client's
+          request for authorization, the Authorizing Party gains an obligation
+          to the Requesting Party using that Client to respect the boundaries
+          of data usage constraints placed on the Requesting Party in the form
+          of requests for claims driven by the Authorizing Party's policy at
+          the Authorization Server.</t>
 
-        <t>Comments: For example, the Authorizing User cannot subsequently
-        protest or sue the Requesting Party for resale of the user&rsquo;s
-        data if this was allowed by the terms of the granted permission.</t>
+          <t>Comments: For example, the Authorizing User cannot subsequently
+          protest or sue the Requesting Party for resale of the user&rsquo;s
+          data if this was allowed by the terms of access authorization.</t>
+        </section>
 
-        <t><spanx style="strong">AP2.</spanx> When the AM issues a PAT to a
-        Host, the Authorizing Party gains an obligation to the AM Operator to
-        introduce the desired Host to this AM in outsourcing protection of
-        this host's resources.</t>
+        <section title="AzP-ASO-introduction">
+          <t>When the Authorization Server issues a PAT to a Resource Server
+          and as long as the PAT is valid, the Authorizing Party gains an
+          obligation to the Authorization Server Operator to introduce the
+          desired Resource Server to this Authorization Server in outsourcing
+          protection of this Resource Server's resources.</t>
 
-        <t>Comments: How the Host learned of the AM's location is out of band
-        for UMA; it is the Authorizing Party's responsibility to check that it
-        has been redirected to an acceptable AM before the AM successfully
-        issues the PAT. The Authorizing Party can remove this obligation by
-        revoking the PAT.</t>
+          <t>Comments: How the Resource Server learned of the Authorization
+          Server's location is out of band for UMA; it is the Authorizing
+          Party's responsibility to check that it has been redirected to an
+          acceptable Authorization Server before the Authorization Server
+          successfully issues the PAT. This obligation can be removed through
+          PAT revocation.</t>
+        </section>
 
-        <t><spanx style="strong">AP3.</spanx> When the AM issues a PAT to a
-        Host, the Authorizing Party gains an obligation to the Host Operator
-        to introduce the desired AM to this Host in outsourcing protection of
-        this host's resources.</t>
+        <section title="AzP-RSO-introduction">
+          <t>When the Authorization Server issues a PAT to a Resource Server
+          and as long as the PAT is valid, the Authorizing Party gains an
+          obligation to the Resource Server Operator to introduce the desired
+          Authorization Server to this Resource Server in outsourcing
+          protection of this Resource Server's resources.</t>
 
-        <t>Comments: Once the AM Operator becomes the Authorizing
-        Party&rsquo;s authorization proxy, the Host Operator begins relying on
-        it in other, more specific ways. How the Authorizing Party indicated
-        the desired AM to the host is out of band for UMA; it is the
-        Authorizing Party's responsibility to check that it has been
-        redirected to an acceptable AM before the AM successfully issues the
-        PAT. The Authorizing Party can remove this obligation by revoking the
-        PAT.</t>
+          <t>Comments: Once the Authorization Server Operator becomes the
+          Authorizing Party&rsquo;s authorization proxy, the Resource Server
+          Operator begins relying on it in other, more specific ways. How the
+          Authorizing Party indicated the desired Authorization Server to the
+          host is out of band for UMA; it is the Authorizing Party's
+          responsibility to check that it has been redirected to an acceptable
+          Authorization Server before the Authorization Server successfully
+          issues the PAT. This obligation can be removed through PAT
+          revocation.</t>
+        </section>
       </section>
     </section>
 
@@ -625,6 +702,8 @@
           <t>Sal D'Agostino, IDmachines</t>
 
           <t>Susan Morrow, Avoco Secure</t>
+
+          <t>Dazza Greenwood, Civics.com</t>
         </list></t>
 
       <t>Additional contributors to this document include the Kantara UMA Work
@@ -646,7 +725,7 @@
 
           <t>Removed "constellation" language as not adding value.</t>
 
-          <t>Removed the single Requester Operator clause since it's already
+          <t>Removed the single Client Operator clause since it's already
           covered in the out-of-scope obligations section.</t>
 
           <t>Added clause-specific issues.</t>
@@ -670,6 +749,16 @@
       <t>The following changes were made from 00c to 00d:<list style="symbols">
           <t>Removed R1b based on the conclusion in UMA telecon
           2012-09-27.</t>
+        </list></t>
+
+      <t>The following changes were made from 00d to 01:<list style="symbols">
+          <t>Changed all the terminology as suggested by recent UMA WG
+          decisions about the core protocol specification.</t>
+
+          <t>Refactored the Requesting Party's obligations.</t>
+
+          <t>Changed the clause numbers into more fully identifying
+          strings.</t>
         </list></t>
     </section>
   </middle>
@@ -731,6 +820,20 @@
           </author>
 
           <date day="15" month="April" year="2011" />
+        </front>
+      </reference>
+
+      <reference anchor="UMAFAQ-swim"
+                 target="http://kantarainitiative.org/confluence/display/uma/UMA+FAQ#UMAFAQ-WhatistheUMAprotocolflow">
+        <front>
+          <title>UMA Frequently Asked Questions: What is the UMA protocol
+          flow?</title>
+
+          <author initials="" surname="">
+            <organization>US Federal Government</organization>
+          </author>
+
+          <date day="" month="January" year="2013" />
         </front>
       </reference>
     </references>
