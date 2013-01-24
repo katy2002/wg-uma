@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-maler-uma-trust-01" ipr="trust200902">
+<rfc category="std" docName="draft-maler-uma-trust-00" ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -35,7 +35,7 @@
       </address>
     </author>
 
-    <date day="13" month="January" year="2013" />
+    <date day="23" month="January" year="2013" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -400,7 +400,7 @@
         </section>
 
         <section title="Abbreviations">
-          <t> This framework uses the following abbreviations.<list
+          <t>This framework uses the following abbreviations.<list
               style="hanging">
               <t anchor="UMA" hangText="UMA">User-Managed Access, the
               interoperability protocol defined by in <xref
@@ -430,7 +430,7 @@
       </section>
 
       <section title="Obligations of the Requesting Party">
-        <section title="RqP-AzP-promises">
+        <section title="Requesting Party-Authorizing Party: Adhere-to-Terms">
           <t>When the Client successfully gains access from a Resource Server
           to a protected resource by wielding a valid "bearer" RPT associated
           with at least one currently valid permission for the type of access
@@ -458,12 +458,13 @@
           potential ambiguity.</t>
         </section>
 
-        <section title="RqP-AzP-facts">
+        <section title="Requesting Party-Authorizing Party: Make-Factual-Representations">
           <t>When the Requesting Party provides, or facilitates the sourcing
           of, claims to an Authorization Server in a claims-gathering flow,
           the Requesting Party gains an obligation to the Authorizing Party to
           stand behind any factual representations it makes in order to gain
-          the permission.</t>
+          the permission, to the best of its knowledge at the time it makes
+          them.</t>
 
           <t>Comments: This obligation is gained during the providing of
           actual claims, rather than at the time of AAT issuance or protected
@@ -475,12 +476,13 @@
           trusted claims from third-party claim providers.</t>
         </section>
 
-        <section title="RqP-ASO-claims">
+        <section title="Requesting Party-Authorization Server Operator: Supply-Truthful-Claims">
           <t>When the Authorization Server issues an AAT to a Client and for
           as long as the AAT is valid, the Requesting Party using that Client
-          gains an obligation to the Authorization Server Operator to
-          truthfully supply any claims required for access authorization at
-          this AM that it chooses to supply.</t>
+          gains an obligation to the Authorization Server Operator to supply
+          or facilitate access to truthful claims required for access
+          authorization at this AM, when it chooses to supply them, to the
+          best of its knowledge at the time it supplies them.</t>
 
           <t>Comments: At a later stage, the Requesting Party might be asked
           to provide claims to support authorization processes at this
@@ -493,7 +495,7 @@
           obligation can be removed through AAT revocation.</t>
         </section>
 
-        <section title="RqP-RSO-bearer">
+        <section title="Requesting Party-Resource Server Operator: Is-Legitimate-Bearer">
           <t>When the Authorization Server issues an RPT to a Client and for
           as long as the RPT is valid, the Requesting Party using that Client
           gains an obligation to the Resource Server Operator to represent the
@@ -511,7 +513,7 @@
       </section>
 
       <section title="Obligations of the Resource Server Operator">
-        <section title="RSO-AzP-protection">
+        <section title="Resource Server Operator-Authorizing Party: Delegate-Protection">
           <t>When the Authorization Server issues a PAT to a Resource Server
           and as long as the PAT is valid, the Resource Server Operator gains
           an obligation to the Authorizing Party to delegate protection
@@ -534,7 +536,7 @@
           through PAT revocation.</t>
         </section>
 
-        <section title="RSO-ASO-registration">
+        <section title="Resource Server Operator-Authorization Server Operator: Register-Accurately-and-Timely">
           <t>When the Authorization Server issues a PAT to the Resource Server
           and as long as the PAT is valid, the Resource Server Operator gains
           an obligation to the Authorization Server Operator to register
@@ -549,7 +551,7 @@
           This obligation can be removed through PAT revocation.</t>
         </section>
 
-        <section title="RSO-ASO-permissions">
+        <section title="Resource Server Operator-Authorization Server Operator: Respect-Permissions">
           <t>When the Resource Server successfully introspects a "bearer" RPT,
           the Resource Server Operator gains an obligation to the
           Authorization Server Operator to respect the permissions that the
@@ -570,7 +572,7 @@
           Operator's part.</t>
         </section>
 
-        <section title="RSO-RqP-access">
+        <section title="Resource Server Operator-Requesting Party: Give-Accurate-Access">
           <t>When the Resource Server responds in any fashion to a Client's
           access request, the Resource Server Operator gains an obligation to
           the Requesting Party to give accurate access to the protected
@@ -597,10 +599,10 @@
       </section>
 
       <section title="Obligations of the Authorization Server Operator">
-        <section title="ASO-AzP-policies">
+        <section title="Authorization Server Operator-Authorizing Party: Follow-Policies-Accurately-and-Timely">
           <t>When the Authorization Server issues a PAT to the Resource Server
           and as long as the PAT is valid, the Authorization Server Operator
-          gains an obligation to the Authorizing Party to represent the
+          gains an obligation to the Authorizing Party to adhere to the
           Authorizing Party's policies accurately and timely in granting
           permissions.</t>
 
@@ -613,10 +615,10 @@
           obligation can be removed through PAT revocation.</t>
         </section>
 
-        <section title="ASO-RSO-policies">
+        <section title="Authorization Server Operator-Resource Server Operator: Follow-Policies-Accurately-and-Timely">
           <t>When the Resource Server registers a requested permission at the
           Authorization Server, the Authorization Server Operator gains an
-          obligation to the Resource Server Operator to represent the
+          obligation to the Resource Server Operator to adhere to the
           Authorizing Party&rsquo;s authorization policies accurately and
           timely in associating authorization data with RPTs presented with
           the registered permission's ticket.</t>
@@ -629,7 +631,7 @@
           task begins now.</t>
         </section>
 
-        <section title="ASO-RqP-limits">
+        <section title="Authorization Server Operator-Requesting Party: Request-Limited-Claims">
           <t>When the Authorization Server issues an AAT to a Client and as
           long as the AAT is valid, the Authorization Server Operator gains an
           obligation to the Requesting Party to request only claims that
@@ -644,20 +646,20 @@
       </section>
 
       <section title="Obligations of the Authorizing Party">
-        <section title="AzP-RqP-promises">
+        <section title="Authorizing Party-Requesting Party: Adhere-to-Terms">
           <t>When the Authorization Server responds positively to a Client's
           request for authorization, the Authorizing Party gains an obligation
-          to the Requesting Party using that Client to respect the boundaries
-          of data usage constraints placed on the Requesting Party in the form
-          of requests for claims driven by the Authorizing Party's policy at
-          the Authorization Server.</t>
+          to the Requesting Party using that Client to adhere to the terms
+          offered to and accepted by the Requesting Party in the form of
+          requests for claims driven by the Authorizing Party's policy at the
+          Authorization Server.</t>
 
           <t>Comments: For example, the Authorizing User cannot subsequently
           protest or sue the Requesting Party for resale of the user&rsquo;s
           data if this was allowed by the terms of access authorization.</t>
         </section>
 
-        <section title="AzP-ASO-introduction">
+        <section title="Authorizing Party-Authorization Server Operator: Introduce-Resource-Server">
           <t>When the Authorization Server issues a PAT to a Resource Server
           and as long as the PAT is valid, the Authorizing Party gains an
           obligation to the Authorization Server Operator to introduce the
@@ -672,7 +674,7 @@
           PAT revocation.</t>
         </section>
 
-        <section title="AzP-RSO-introduction">
+        <section title="Authorizing Party-Resource Server Operator: Introduce-Authorization-Server">
           <t>When the Authorization Server issues a PAT to a Resource Server
           and as long as the PAT is valid, the Authorizing Party gains an
           obligation to the Resource Server Operator to introduce the desired
@@ -712,55 +714,6 @@
       Scott David, Dazza Greenwood, and Tom Smedinghoff for offering their
       legal expertise and insight in the preparation of this document.</t>
     </section>
-
-    <section title="Change History">
-      <t>The following changes were made from 00a to 00b:<list style="symbols">
-          <t>Terminology went from Entity to Individual, Non-Person Entity
-          (NPE), and Subject. NSTIC document referenced as part of this
-          change.</t>
-
-          <t>Doc now consistently refers to itself as a "document" (not a
-          specification) with a "contractual framework" embedded within
-          it.</t>
-
-          <t>Removed "constellation" language as not adding value.</t>
-
-          <t>Removed the single Client Operator clause since it's already
-          covered in the out-of-scope obligations section.</t>
-
-          <t>Added clause-specific issues.</t>
-
-          <t>Removed stray mentions of "duties" (vs. "obligations").</t>
-
-          <t>Removed mentions of autonomous token revocation. When OAuth
-          standardizes this, we can account for it.</t>
-
-          <t>Clauses generally cleaned up and made more consistent.</t>
-        </list></t>
-
-      <t>The following changes were made from 00b to 00c:<list style="symbols">
-          <t>Cleaned up some items identified by Dazza.</t>
-
-          <t>Ensconced mentions of the "UMA bearer token profile" more
-          cleanly, and removed clause-specific issues having to do with token
-          profile specificity.</t>
-        </list></t>
-
-      <t>The following changes were made from 00c to 00d:<list style="symbols">
-          <t>Removed R1b based on the conclusion in UMA telecon
-          2012-09-27.</t>
-        </list></t>
-
-      <t>The following changes were made from 00d to 01:<list style="symbols">
-          <t>Changed all the terminology as suggested by recent UMA WG
-          decisions about the core protocol specification.</t>
-
-          <t>Refactored the Requesting Party's obligations.</t>
-
-          <t>Changed the clause numbers into more fully identifying
-          strings.</t>
-        </list></t>
-    </section>
   </middle>
 
   <back>
@@ -768,15 +721,15 @@
       <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
 
       <reference anchor="UMAcore"
-                 target="http://docs.kantarainitiative.org/uma/draft-uma-core.html">
+                 target="http://tools.ietf.org/html/draft-hardjono-oauth-umacore">
         <front>
-          <title>User-Managed Access (UMA) Core Protocol</title>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
 
           <author initials="T." surname="Hardjono">
             <organization>MIT</organization>
           </author>
 
-          <date day="30" month="April" year="2012" />
+          <date day="27" month="December" year="2012" />
         </front>
       </reference>
     </references>
