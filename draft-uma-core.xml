@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-07b"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-07c"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="6" month="January" year="2013" />
+    <date day="24" month="April" year="2013" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -470,9 +470,10 @@
             target="token-introspection"></xref>. A valid PAT MUST accompany
             requests to this protected endpoint.</t>
 
-            <t hangText="resource_set_registration"><vspace />REQUIRED. The
-            endpoint URI at which the resource server registers resource sets
-            to put them under authorization manager protection. Usage is
+            <t
+            hangText="resource_set_registration_endpoint"><vspace />REQUIRED.
+            The endpoint URI at which the resource server registers resource
+            sets to put them under authorization manager protection. Usage is
             defined by <xref target="OAuth-resource-reg"></xref> and <xref
             target="protecting-a-resource"></xref>. A valid PAT MUST accompany
             requests to this protected endpoint.</t>
@@ -1486,12 +1487,50 @@ Cache-Control: no-store
       JavaScript interpreter rather than the built-in JavaScript eval()
       function.</t>
 
-      <t>(More threat model and security considerations information to
-      come.)</t>
+      <t>The issue of impersonation is a crucial aspect in UMA, particularly
+      when entities are wielding bearer tokens that preclude
+      proof-of-possession (of a secret or a cryptographic key). As such, one
+      way to mitigate this risk is for the resource owner to require stronger
+      claims to accompany any access request. For example, consider the case
+      where Alice sets policies at the authorization server governing access
+      to her resources by Bob. When Bob first seeks access and must obtain an
+      RPT (for which the default RPT profile specifies a bearer token), Alice
+      could set policies demanding that Bob prove his identity by providing a
+      set of strong claims issued by a trusted attrribute provider in order to
+      get authorization data associated with that token.</t>
 
-      <t>For information about the technical, operational, and legal elements
-      of trust establishment between UMA entities and parties, which affects
-      security considerations, see <xref target="UMA-obligations"></xref>.</t>
+      <t>Another issue concerns the use of the <xref target="OAuth2"></xref>
+      implicit flow. In this case, Bob will have exposure to the token, and
+      may maliciously pass the token to an unauthorized party. To mitigate
+      this weakness and others, we recommend the following steps:</t>
+
+      <t><list style="symbols">
+          <t>Require that the Requesting Party (as defined in <xref
+          target="UMA-obligations"></xref>) legitimately represent the wielder
+          of the bearer token. This solution is based on a legal or
+          contractual approach, and therefore does not reduce the risk from
+          the technical perspective.</t>
+
+          <t>The authorization server, possibly with input from the resource
+          owner, can implement tighter time-to-live (TTL) strategies around
+          the authorization data in RPTs. This is a classic approach with
+          bearer tokens that helps to limit a malicious party's ability to
+          intercept and use the bearer token. In the same vein, the
+          authorization server could require claims to have a reasonable
+          degree of freshness (which would require a custom claims
+          profile).</t>
+
+          <t>The strongest strategy is to disallow bearer-type RPTs within the
+          UMA profile being deployed, by providing and requiring a different
+          RPT profile that requires use of a holder-of-key (HOK) approach. In
+          this way, the wielder of the token must engage in a live session for
+          proof-of-possession.</t>
+        </list></t>
+
+      <t>For information about the additional technical, operational, and
+      legal elements of trust establishment between UMA entities and parties,
+      which affects security considerations, see <xref
+      target="UMA-obligations"></xref>.</t>
     </section>
 
     <section title="Privacy Considerations">
@@ -1608,7 +1647,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="27" month="November" year="2012" />
+          <date day="21" month="February" year="2013" />
         </front>
       </reference>
 
@@ -1635,7 +1674,7 @@ Cache-Control: no-store
             <organization>Campbell</organization>
           </author>
 
-          <date day="7" month="November" year="2012" />
+          <date day="29" month="March" year="2013" />
         </front>
       </reference>
 
@@ -1662,7 +1701,7 @@ Cache-Control: no-store
             <organization>IETF</organization>
           </author>
 
-          <date day="27" month="November" year="2012" />
+          <date day="29" month="March" year="2013" />
         </front>
       </reference>
 
@@ -1675,7 +1714,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="30" month="September" year="2011" />
+          <date day="26" month="March" year="2013" />
         </front>
       </reference>
 
@@ -1688,7 +1727,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="30" month="September" year="2011" />
+          <date day="26" month="March" year="2013" />
         </front>
       </reference>
 
@@ -1701,7 +1740,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="20" month="April" year="2012" />
+          <date day="25" month="January" year="2013" />
         </front>
       </reference>
 
@@ -1742,7 +1781,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date month="December" year="2012" />
+          <date day="30" month="March" year="2013" />
         </front>
       </reference>
 
@@ -1755,7 +1794,7 @@ Cache-Control: no-store
             <organization>Maler</organization>
           </author>
 
-          <date year="2012" />
+          <date day="1" month="April" year="2013" />
         </front>
       </reference>
 
@@ -1768,7 +1807,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="17" month="October" year="2012" />
+          <date day="5" month="February" year="2013" />
         </front>
       </reference>
 
@@ -1781,7 +1820,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="18" month="December" year="2012" />
+          <date day="12" month="February" year="2013" />
         </front>
       </reference>
     </references>
