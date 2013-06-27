@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-07c"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-07d"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="24" month="April" year="2013" />
+    <date day="26" month="June" year="2013" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -57,7 +57,8 @@
       and where a centralized authorization server governs access based on
       resource owner policy. Resource owners configure authorization servers
       with access policies that serve as implicit authorization grants. Thus,
-      the UMA profile of OAuth includes an authorization grant flow.</t>
+      the UMA profile of OAuth can be considered to encompass an authorization
+      grant flow.</t>
 
       <t>UMA serves numerous use cases where a resource owner outsources
       authorization for access to their resources, potentially even without
@@ -586,13 +587,13 @@
       or other website, listed it in a discovery service, or emailed a link to
       a particular intended requesting party.</t>
 
-      <t>The resource server responds to the client's access request in one of
-      several ways depending on the circumstances of the request, either
-      immediately or having first performed one or more embedded interactions
-      with the authorization server. Depending on the nature of the resource
-      server's response to an failed access attempt, the client and its
-      requesting party engage in embedded interactions with the authorization
-      server before re-attempting access.</t>
+      <t>The resource server responds to the client's access request with
+      whatever its application-specific interface defines as a success
+      response, either immediately or having first performed one or more
+      embedded interactions with the authorization server. Depending on the
+      nature of the resource server's response to an failed access attempt,
+      the client and its requesting party engage in embedded interactions with
+      the authorization server before re-attempting access.</t>
 
       <t>The interactions are as follows. Each interaction MAY be the last, if
       the client chooses not to continue pursuing the access attempt or the
@@ -620,8 +621,8 @@
 
                   <t>If the RPT is valid, and if the authorization data
                   associated with the token is sufficient for allowing access,
-                  the resource server responds with an HTTP 200 (OK) response
-                  and a representation of the resource.</t>
+                  the resource server responds with an HTTP 2xx (Success)
+                  response and a representation of the resource.</t>
                 </list></t>
             </list></t>
 
@@ -689,7 +690,7 @@ Host: photoz.example.com
 HTTP/1.1 401 Unauthorized
    WWW-Authenticate: UMA realm="example",
     host_id="photoz.example.com",
-    as_uri="http://as.example.com"
+    as_uri="https://as.example.com"
    ...
 ]]></artwork>
           </figure>
@@ -735,7 +736,7 @@ Host: photoz.example.com
 HTTP/1.1 403 Forbidden
 WWW-Authenticate: UMA realm="example",
   host_id="photoz.example.com",
-  as_uri="http://as.example.com"
+  as_uri="https://as.example.com"
   error="insufficient_scope"
 
 {
@@ -779,6 +780,10 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         sufficient for the type of access sought. The authorization server
         returns a permission ticket for the resource server to give to the
         client in its response.</t>
+
+        <t>The resource server MUST provide its valid PAT in order to get
+        access to this endpoint. Note that this PAT implicitly identifies the
+        resource owner ("subject") to which the permission applies.</t>
 
         <t>The permission ticket is a short-lived opaque structure whose form
         is determined by the authorization server. The ticket value MUST be
@@ -1502,7 +1507,8 @@ Cache-Control: no-store
       <t>Another issue concerns the use of the <xref target="OAuth2"></xref>
       implicit flow. In this case, Bob will have exposure to the token, and
       may maliciously pass the token to an unauthorized party. To mitigate
-      this weakness and others, we recommend the following steps:</t>
+      this weakness and others, we recommend considering the following
+      steps:</t>
 
       <t><list style="symbols">
           <t>Require that the Requesting Party (as defined in <xref
@@ -1521,9 +1527,9 @@ Cache-Control: no-store
           profile).</t>
 
           <t>The strongest strategy is to disallow bearer-type RPTs within the
-          UMA profile being deployed, by providing and requiring a different
-          RPT profile that requires use of a holder-of-key (HOK) approach. In
-          this way, the wielder of the token must engage in a live session for
+          UMA profile being deployed, by providing or requiring an RPT profile
+          that requires use of a holder-of-key (HOK) approach. In this way,
+          the wielder of the token must engage in a live session for
           proof-of-possession.</t>
         </list></t>
 
@@ -1745,7 +1751,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="OAuth-threat"
-                 target="http://tools.ietf.org/html/draft-ietf-oauth-v2-threatmodel">
+                 target="http://tools.ietf.org/html/rfc6819">
         <front>
           <title>OAuth 2.0 Threat Model and Security Considerations</title>
 
@@ -1753,7 +1759,7 @@ Cache-Control: no-store
             <organization></organization>
           </author>
 
-          <date day="6" month="October" year="2012" />
+          <date day="" month="January" year="2013" />
         </front>
       </reference>
     </references>
