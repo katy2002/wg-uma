@@ -805,7 +805,7 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         target="OAuth-resource-reg"></xref>, as follows. The object has the
         following properties:<list style="hanging">
             <t hangText="resource_set_id">REQUIRED. The identifier for a
-            resource set, access to which this client is seeking access. The
+            resource set to which this client is seeking access. The
             identifier MUST correspond to a resource set that was previously
             registered.</t>
 
