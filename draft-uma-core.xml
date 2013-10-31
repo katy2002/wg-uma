@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-07d"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-08a"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="26" month="June" year="2013" />
+    <date day="31" month="October" year="2013" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -264,6 +264,11 @@
         policy. These options are all outside the scope of this
         specification.</t>
 
+        <t>Where this specification indicates a need for TLS transport-layer
+        security, it is governed by Section 1.6 of <xref
+        target="OAuth2"></xref>, which discusses deployment and adoption
+        characteristics of different TLS versions.</t>
+
         <section title="Protection and Authorization APIs at the Authorization Server">
           <t>The authorization server presents a protection API to the
           resource server and an authorization API to the client. These APIs
@@ -282,9 +287,9 @@
           <t>The authorization API consists of an RPT issuance endpoint and an
           authorization request endpoint.</t>
 
-          <t>All endpoint URIs SHOULD require the use of a transport-layer
-          security mechanism such as TLS. The authorization server MUST
-          declare all of its endpoints in its configuration data (see <xref
+          <t>The authorization server MUST require the use of TLS for requests
+          to its endpoints. The authorization server MUST declare all of its
+          endpoints in its configuration data (see <xref
           target="am-endpoints"></xref>).</t>
 
           <t>An entity seeking protection API access MUST request the scope
@@ -446,7 +451,7 @@
             endpoint to use for performing dynamic client registration. Usage
             is defined by <xref target="DynClientReg"></xref>. The presence of
             this property indicates authorization server support for the
-            dynamic client registration feature and its absent indicates a
+            dynamic client registration feature and its absence indicates a
             lack of support.</t>
 
             <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
@@ -798,10 +803,9 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
 
         <t>The resource server registers the requested permission using the
         POST method at the authorization server's permission registration
-        endpoint. The resource server MUST provide its valid PAT in order to
-        get access to this endpoint. The body of the HTTP request message
-        contains a JSON object providing the requested permission, using a
-        format derived from the scope description format specified in <xref
+        endpoint. The body of the HTTP request message contains a JSON object
+        providing the requested permission, using a format derived from the
+        scope description format specified in <xref
         target="OAuth-resource-reg"></xref>, as follows. The object has the
         following properties:<list style="hanging">
             <t hangText="resource_set_id">REQUIRED. The identifier for a
@@ -1266,11 +1270,11 @@ Cache-Control: no-store
 
             <t>To conform to this option, the authorization server MUST do the
             following:<list style="symbols">
-                <t>Serve as a conforming OpenID Relying Party and Claims
-                Client according to <xref target="OCStandard"></xref></t>
+                <t>Serve as a conforming OpenID Relying Party according to
+                <xref target="OIDCCore"></xref></t>
 
                 <t>Be able to utilize at least all of the reserved claims
-                defined in <xref target="OCMessages"></xref> in evaluating
+                defined in <xref target="OIDCCore"></xref> in evaluating
                 policy and adding authorization data to RPTs</t>
 
                 <t>Use the OpenID Connect "redirect_uri" and "state" request
@@ -1564,9 +1568,8 @@ Cache-Control: no-store
       <t>This specification has dependencies on other specifications, as
       referenced under the normative references listed in this specification.
       Its dependencies on some specifications, such as OpenID Connect (<xref
-      target="OCStandard"></xref> and <xref target="OCMessages"></xref>), are
-      optional depending on whether the feature in question is used in the
-      implementation.</t>
+      target="OIDCCore"></xref>), are optional depending on whether the
+      feature in question is used in the implementation.</t>
 
       <t>The authorization server's configuration data provides a
       machine-readable method for it to indicate certain of the conformance
@@ -1711,21 +1714,8 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      <reference anchor="OCMessages"
-                 target="http://openid.net/specs/openid-connect-messages-1_0.html">
-        <front>
-          <title>OpenID Connect Messages 1.0</title>
-
-          <author initials="N." surname="Sakimura">
-            <organization></organization>
-          </author>
-
-          <date day="26" month="March" year="2013" />
-        </front>
-      </reference>
-
-      <reference anchor="OCStandard"
-                 target="http://openid.net/specs/openid-connect-standard-1_0.html">
+      <reference anchor="OIDCCore"
+                 target="http://openid.net/specs/openid-connect-core-1_0.html">
         <front>
           <title>OpenID Connect Standard 1.0</title>
 
