@@ -537,7 +537,7 @@
           style="numbers">
           <t>The authorization server issues client credentials to the
           resource server. It is OPTIONAL for the client credentials to be
-          provided dynamically through <xref target="DynClientReg"></xref>);
+          provided dynamically through <xref target="DynClientReg"></xref>;
           alternatively, they MAY use a static process.</t>
 
           <t>The resource server acquires a PAT from the authorization server
@@ -805,7 +805,7 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         target="OAuth-resource-reg"></xref>, as follows. The object has the
         following properties:<list style="hanging">
             <t hangText="resource_set_id">REQUIRED. The identifier for a
-            resource set, access to which this client is seeking access. The
+            resource set to which this client is seeking access. The
             identifier MUST correspond to a resource set that was previously
             registered.</t>
 
@@ -1012,7 +1012,7 @@ HTTP/1.1 200 OK
         successful steps:<list style="numbers">
             <t>The authorization server issues client credentials to the
             client. It is OPTIONAL for the client credentials to be provided
-            dynamically through <xref target="DynClientReg"></xref>);
+            dynamically through <xref target="DynClientReg"></xref>;
             alternatively, they MAY use a static process.</t>
 
             <t>The client acquires an AAT. This enables it to use
