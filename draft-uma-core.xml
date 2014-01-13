@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-08a"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-09a"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="31" month="October" year="2013" />
+    <date day="12" month="January" year="2014" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -267,7 +267,10 @@
         <t>Where this specification indicates a need for TLS transport-layer
         security, it is governed by Section 1.6 of <xref
         target="OAuth2"></xref>, which discusses deployment and adoption
-        characteristics of different TLS versions.</t>
+        characteristics of different TLS versions. In optimization profiles in
+        which multiple UMA roles are performed by the same system entity, some
+        communication requirements MAY change. The conditions for which this
+        applies are described in <xref target="optprofiles"></xref>.</t>
 
         <section title="Protection and Authorization APIs at the Authorization Server">
           <t>The authorization server presents a protection API to the
@@ -1292,6 +1295,90 @@ Cache-Control: no-store
       </section>
     </section>
 
+    <section anchor="optprofiles" title="Optimization Profiles">
+      <t>In some circumstances, it is desirable to combine different UMA roles
+      in one system entity, for example when an authorization server also
+      presents to resource owners a dashboard-like user interface that
+      requires actual access to protected resources in order to accurately
+      guide the user in setting policy. In this case, the authorization server
+      would also act as a client. While the specification of the roles is
+      unchanged, particular optimization profiles may have impact on
+      requirements for communication between these roles. This section defines
+      optimization profiles that change these communication requirements in
+      various ways.</t>
+
+      <section anchor="optprofile-as-c"
+               title="Authorization Server = Client Optimization Profile">
+        <t>This section defines an optimization profile for UMA where the
+        authorhization server role and the client role are both performed by
+        the same system entity. Following is a summary:<list style="symbols">
+            <t>Identifying URI:
+            http://docs.kantarainitiative.org/uma/profiles/optim-as=c</t>
+
+            <t>Profile author and contact information: Mark Dobrinic
+            (mdobrinic@cozmanova.com)</t>
+
+            <t>Updates or obsoletes: None; this profile is new.</t>
+
+            <t>Affects communication between roles: Authorization server and
+            client.</t>
+
+            <t>Security and privacy considerations: None additional.</t>
+
+            <t>Error states: None additional.</t>
+
+            <t>Binding obligations: Binding obligations that apply to the use
+            of this optimization profile are documented in <xref
+            target="UMA-obligations"></xref>.</t>
+          </list></t>
+
+        <t>If an authorization server also acts as a client, the behavior for
+        the communication between these roles MAY be optimized from the
+        requirements specified in <xref
+        target="getting-authz-accessing-resource"></xref>.</t>
+
+        <t>To conform to this profile, the following conditions must be
+        met:<list style="symbols">
+            <t>The authorization server is also acting as client in the same
+            system entity.</t>
+
+            <t>The client role has a more direct means of access than using
+            public communication channels to access the authorization server
+            (for example, a common datastore).</t>
+          </list></t>
+
+        <t>When these conditions apply, the client MAY use alternate (more
+        optimized) means than the authorization API of its authorization
+        server (which requires HTTP over TLS at its endpoints). This ability
+        involves the following opportunities:<list style="symbols">
+            <t>When the system entity-as-client detects that it needs to
+            request an AAT from itself-as-authorization server, an AAT MAY be
+            issued directly without requiring an OAuth flow to establish
+            one.</t>
+
+            <t>When the system entity-as-client detects that it needs to
+            request an RPT from itself-as-authorization server, an RPT MAY be
+            issued directly without requiring explicit use of the RPT endpoint
+            or presentation of an AAT in any RPT request.</t>
+
+            <t>When the system entity-as-client detects that it needs to ask
+            itself-as-authorization server to add authorization data to an
+            RPT, a response MAY be issued directly without requiring explicit
+            use of the authorization request endpoint or presentation of an
+            AAT, RPT, or ticket in any request, and the client MAY use
+            non-HTTP means of redirecting the requesting party over to the
+            authorization server.</t>
+          </list></t>
+
+        <t>It is still REQUIRED to create an AAT and RPT prior to issuance and
+        to associate authorization data with the RPT, because while these
+        tokens may not appear on the wire, they represent binding obligations
+        that might involve additional parties that cannot take part in these
+        optimization opportunities (see <xref
+        target="UMA-obligations"></xref>).</t>
+      </section>
+    </section>
+
     <section anchor="errors" title="Error Messages">
       <t>Ultimately the resource server is responsible for either granting the
       access the client attempted, or returning an error response to the
@@ -1364,7 +1451,7 @@ Cache-Control: no-store
       </section>
     </section>
 
-    <section anchor="profiles" title="Specificying Additional Profiles">
+    <section anchor="profiles" title="Specifying Additional Profiles">
       <t>This specification defines a protocol that has optional features. For
       interoperability and to serve particular deployment scenarios, including
       sector-specific ones such as healthcare or e-government, third parties
@@ -1412,6 +1499,8 @@ Cache-Control: no-store
             including analysis of threats and description of
             countermeasures.</t>
           </list></t>
+
+        <t>See <xref target="optprofile-as-c"></xref> for an example.</t>
       </section>
 
       <section title="Specifying RPT Profiles">
@@ -1594,6 +1683,8 @@ Cache-Control: no-store
 
           <t>Domenico Catalano, Oracle Corp.</t>
 
+          <t>Mark Dobrinic, Kennisnet</t>
+
           <t>George Fletcher, AOL</t>
 
           <t>Maciej Machulak, Newcastle University</t>
@@ -1683,7 +1774,7 @@ Cache-Control: no-store
             <organization>Campbell</organization>
           </author>
 
-          <date day="29" month="March" year="2013" />
+          <date day="9" month="December" year="2013" />
         </front>
       </reference>
 
