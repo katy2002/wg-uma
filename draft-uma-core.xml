@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-09b"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-09c"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="20" month="January" year="2014" />
+    <date day="27" month="January" year="2014" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -161,7 +161,7 @@
           identity claims needed in order for the server to associate
           sufficient authorization data with that RPT. The API is
           OAuth-protected and requires an authorization API token (AAT) for
-          access. </t>
+          access.</t>
 
           <t hangText="Access a resource">(Described along with Phase 2 in
           <xref target="getting-authz-accessing-resource"></xref>.) The client
@@ -252,18 +252,18 @@
         this reason, UMA specifies communications channels that the
         authorization server MUST implement as HTTP-based APIs that MUST use
         TLS and OAuth protection, and that the resource server MUST implement
-        as HTTP-based mechanisms. UMA's use of TLS transport-layer security is
-        governed by Section 1.6 of <xref target="OAuth2"></xref>, which
+        as an HTTP-based interface. UMA's use of TLS transport-layer security
+        is governed by Section 1.6 of <xref target="OAuth2"></xref>, which
         discusses deployment and adoption characteristics of different TLS
         versions. Three different types of access tokens are issued and used
         for a variety of purposes as part of these inter-role
         interactions.</t>
 
         <t>It is also REQUIRED, in turn, for resource servers and clients on
-        the requesting side of UMA interactions to use these communication
-        channels, unless a profile is being used that provides an alternate
-        communications channel. Profiles that enable such alternatives are
-        described in <xref target="comms-profiles"></xref>.</t>
+        the requesting side of UMA interactions to use these channels, unless
+        a profile is being used that enables API extensibility. Profiles that
+        enable such alternatives are described in <xref
+        target="comms-profiles"></xref>.</t>
 
         <section anchor="protection-api" title="Protection API">
           <t>The authorization server MUST present an TLS- and
@@ -369,7 +369,7 @@
           specification.</t>
         </section>
 
-        <section anchor="resource-api" title="Protected Resource">
+        <section anchor="resource-api" title="Protected Resource Interface">
           <t>The resource server MAY present to clients whatever HTTP-based
           APIs or endpoints it wishes. To protect any of its resources
           available in this fashion using UMA, it MUST require a requesting
@@ -482,17 +482,16 @@
             or a URI identifying a claim profile defined elsewhere. The
             reserved keyword "openid" as a value for this property stands for
             the UMA OpenID Connect claim profile defined in <xref
-            target="trusted-claims"></xref>.</t>
+            target="claims-as-rp-oidc"></xref>.</t>
 
             <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
             profiles supported by this authorization server. The property
             value is an array of string values, which each string value is
             either a reserved keyword defined in this specification or a URI
             identifying an UMA profile defined elsewhere. The reserved
-            keywords "protchannel", "authzchannel", and "rsrcchannel" as
-            values for this property stand for the alternate communications
-            channel profiles defined, respectively, in <xref
-            target="comms-profiles"></xref>.</t>
+            keywords "prot-ext", "authz-ext", and "rsrc-ext" as values for
+            this property stand for the extensibility profiles defined,
+            respectively, in <xref target="comms-profiles"></xref>.</t>
 
             <t hangText="dynamic_client_endpoint"><vspace />OPTIONAL. The
             endpoint to use for performing dynamic client registration. Usage
@@ -1219,121 +1218,188 @@ Cache-Control: no-store
       </section>
 
       <section anchor="authz-flows" title="Claims-Gathering Flows">
-        <t>The process for requesting and providing claims is extensible and
-        may have a variety of dependencies on the type of requesting party
-        (for example, natural person or legal person) and the type of client
-        (for example, browser, native app, or autonomously running web
-        service). This specification provides a framework for handling
-        end-user-driven clients and an optional "openid" claim profile, based
-        on OpenID Connect, for gathering standardized claims from such an
-        end-user. It also allows for the definition of additional claim
-        profiles. The authorization server MAY support any number of claim
-        profiles, and SHOULD document the claim profiles it supports its
-        configuration data. For the business-level and legal implications of
-        different claim profiles, see <xref
-        target="UMA-obligations"></xref>.</t>
+        <t>The authorization server has a variety of options for coming into
+        possession of claims in order to satisfy the resource owner's policy;
+        this specification does not dictate a single answer. For example, the
+        authorization server could interact with the requesting party to
+        gather claims, or could accept claims delivered by a client, or could
+        perform a lookup in some external system. The process for requesting
+        and providing claims is extensible and can have a variety of
+        dependencies on the type of requesting party (for example, natural
+        person or legal person) and the type of client (for example, browser,
+        native app, or autonomously running web service).</t>
 
-        <section anchor="trusted-claims-human-driven"
-                 title="Claims-Gathering Flow for Clients Operated by End-Users">
-          <t>A client, whether web-based or native, is operated by an end-user
-          in one of two typical situations:<list style="symbols">
-              <t>The requesting party is a natural person (for example, a
-              friend of the resource owner); the requesting party may even be
-              the resource owner herself.</t>
+        <t>This specification provides a required framework for extensibility
+        through profiling, and also defines two optional claim profiles. The
+        authorization server MAY support any number of claim profiles, and
+        SHOULD document the claim profiles it supports in its configuration
+        data. For the business-level and legal implications of different claim
+        profiles, see <xref target="UMA-obligations"></xref>.</t>
 
-              <t>The requesting party is a legal person such as a corporation,
-              and the end-user operating the client is acting as an agent of
-              that legal person (for example, a customer support specialist
-              representing a credit card company).</t>
+        <t>A client is operated by an end-user in one of two typical
+        situations:<list style="symbols">
+            <t>The requesting party is a natural person (for example, a friend
+            or family member of the resource owner); the requesting party may
+            even be the resource owner herself.</t>
+
+            <t>The requesting party is a legal person such as a corporation,
+            and the end-user operating the client is acting as an agent of
+            that legal person (for example, a customer support specialist
+            representing a credit card company).</t>
+          </list></t>
+
+        <t>Where a claim profile dictates end-user interaction, a further
+        variety of options is possible. The end-user could be required to
+        register for and/or log in to an account or personal profile, or fill
+        in a questionnaire, or complete a purchase. Several of these
+        operations could even be required, where the order is treated as
+        significant for evaluating resource owner policies.</t>
+
+        <t>If a claim profile defines a process whereby the client redirects
+        an end-user to the authorization server in order to continue the
+        process of claims-gathering, the profile MUST define a way for the
+        redirect message to include a URI query parameter with the name
+        "ticket" whose value conveys the permission ticket for which the
+        need_claims error was received; for example,
+        "ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de". The profile MUST also
+        provide the following capabilities:<list style="hanging">
+            <t hangText="redirect URI">A means by which the client MUST supply
+            the URI to which the authorization server MUST redirect the
+            end-user requesting party at the end of the claims-gathering
+            process.</t>
+
+            <t hangText="callback URI">A means by which the client OPTIONALLY
+            supplies a callback URI for the authorization server to use.</t>
+
+            <t hangText="state">A means by which the client SHOULD supply an
+            opaque value used to maintain state between the request and the
+            callback; this serves as a protection against XSRF attacks.</t>
+          </list></t>
+
+        <section anchor="claims-as-rp-oidc"
+                 title="Claim Profile: Authorization Server Acts as OpenID Connect Relying Party">
+          <t>In this claim profile, the client redirects the end-user
+          requesting party to the authorization server, and the authorization
+          server gathers claims from the requesting party by serving as a
+          relying party to one or more OpenID Connect identity providers
+          before redirecting the end-user back. Following is a summary:<list
+              style="symbols">
+              <t>Identifying URI:
+              http://docs.kantarainitiative.org/uma/profiles/claim-as-rp-oidc-1.0</t>
+
+              <t>Profile author and contact information: Thomas Hardjono
+              (hardjono@mit.edu)</t>
+
+              <t>Updates or obsoletes: None; this profile is new.</t>
+
+              <t>Syntax and semantics of claim data: As defined below. The
+              claim data format leverages the OpenID Connect protocol and the
+              reserved claims defined in that specification.</t>
+
+              <t>Claims gathering method: As defined below.</t>
+
+              <t>Error states: None additional.</t>
+
+              <t>Security and privacy considerations: None additional.</t>
+
+              <t>Binding obligations: Binding obligations that apply to the
+              use of this claim profile are documented in <xref
+              target="UMA-obligations"></xref>.</t>
             </list></t>
 
-          <t>For convenience, this specification refers to the end-user as an
-          "end-user requesting party" to cover both cases, which differ only
-          at the level of business agreements (and potentially law), rather
-          than technology. The authorization server has a variety of options
-          at this point for satisfying the resource owner's policy; this
-          specification does not dictate a single answer. For example, the
-          authorization server could require the end-user requesting party to
-          register for and/or log in to a local authorization server account,
-          or fill in a questionnaire, or complete a purchase. It could even
-          require several of these operations, where the order is treated as
-          significant for evaluating resource owner policies. A variety of
-          claim profiling can be defined to achieve these effects.</t>
+          <t>If an authorization server supports this claim profile, it MUST
+          declare use of it by supplying the "as-rp-oidc-1.0" value for one of
+          its "claim_profiles_supported" values in its configuration data.</t>
 
-          <t>An end-user-driven client MUST redirect the end-user requesting
-          party to the authorization server in order to continue the process
-          of seeking authorization, including a URI query parameter with the
-          name "ticket" whose value conveys the permission ticket for which
-          the need_claims error was received; for example,
-          "ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de".</t>
+          <t>The authorization server MUST do the following:<list
+              style="symbols">
+              <t>Serve as a conforming OpenID Relying Party according to <xref
+              target="OIDCCore"></xref></t>
 
-          <t>Each claim profile MUST provide the following capabilities:<list
-              style="hanging">
-              <t hangText="redirect URI">A means by which the client MUST
-              supply the URI to which the authorization server MUST redirect
-              the end-user requesting party at the end of the claims-gathering
-              process.</t>
+              <t>Be able to utilize at least all of the reserved claims
+              defined in <xref target="OIDCCore"></xref> in evaluating policy
+              and adding authorization data to RPTs</t>
 
-              <t hangText="callback URI">A means by which the client
-              OPTIONALLY supplies a callback URI for the authorization server
-              to use.</t>
-
-              <t hangText="state">A means by which the client SHOULD supply an
-              opaque value used to maintain state between the request and the
-              callback; this serves as a protection against XSRF attacks.</t>
+              <t>Use the OpenID Connect "redirect_uri" and "state" request
+              parameters as appropriate</t>
             </list></t>
 
-          <section anchor="trusted-claims"
-                   title="OpenID Connect Claim Profile">
-            <t>This section defines the OpenID Connect claim profile for UMA.
-            Following is a summary:<list style="symbols">
-                <t>Identifying URI:
-                http://docs.kantarainitiative.org/uma/profiles/uma-claim-openid-1.0</t>
+          <t>The authorization server then uses any conforming OpenID Connect
+          mechanisms and typical user interfaces for engaging with the
+          UserInfo endpoints of OpenID Providers and Claims Providers,
+          potentially allowing for the delivery of "trusted claims" (such as a
+          verified email address or a date or birth) on which authorization
+          policy for access may depend.</t>
+        </section>
 
-                <t>Profile author and contact information: Thomas Hardjono
-                (hardjono@mit.edu)</t>
+        <section anchor="claims-client-sends-oidc"
+                 title="Claim Profile: Client Acts as OpenID Connect ID Token Conveyor">
+          <t>In this claim profile, the client, already in possession of an
+          OpenID Connect ID token data structure for the requesting party,
+          sends the ID token to the authorization server. Following is a
+          summary:<list style="symbols">
+              <t>Identifying URI:
+              http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-oidc-1.0</t>
 
-                <t>Updates or obsoletes: None; this profile is new.</t>
+              <t>Profile author and contact information: Mike Schwartz
+              (mike@gluu.org)</t>
 
-                <t>Syntax and semantics of claim data: As defined below. The
-                claim data format leverages the OpenID Connect protocol and
-                the reserved claims defined in that specification.</t>
+              <t>Updates or obsoletes: None; this profile is new.</t>
 
-                <t>Claims gathering method: As defined below.</t>
+              <t>Syntax and semantics of claim data: As defined below. The
+              claim data format leverages the OpenID Connect ID token syntax
+              and the reserved claims defined in that specification.</t>
 
-                <t>Error states: None additional.</t>
+              <t>Claims gathering method: As defined below.</t>
 
-                <t>Security and privacy considerations: None additional.</t>
+              <t>Error states: None additional.</t>
 
-                <t>Binding obligations: Binding obligations that apply to the
-                use of this claim profile are documented in <xref
-                target="UMA-obligations"></xref>.</t>
-              </list></t>
+              <t>Security and privacy considerations: The authorization server
+              and client are assumed to operate in an ecosystem where a
+              relationship between them that enables trust in the conveyed
+              claims has been established out of band.</t>
 
-            <t>If an authorization server supports the OpenID Connect claim
-            profile, it MUST supply the "openid" value for one of its
-            "claim_profiles_supported" values in its configuration data.</t>
+              <t>Binding obligations: Binding obligations that apply to the
+              use of this claim profile are documented in <xref
+              target="UMA-obligations"></xref>.</t>
+            </list></t>
 
-            <t>To conform to this option, the authorization server MUST do the
-            following:<list style="symbols">
-                <t>Serve as a conforming OpenID Relying Party according to
-                <xref target="OIDCCore"></xref></t>
+          <t>If an authorization server supports this claim profile, it MUST
+          declare use of it by supplying the "client-idtoken-oidc-1.0" value
+          for one of its "claim_profiles_supported" values in its
+          configuration data.</t>
 
-                <t>Be able to utilize at least all of the reserved claims
-                defined in <xref target="OIDCCore"></xref> in evaluating
-                policy and adding authorization data to RPTs</t>
+          <t>This profile involves an extension to the authorization API, and
+          a corresponding extension to the configuration data. The API is
+          extended to include a claims conveyance endpoint, which, like other
+          authorization API endpoints, MUST be TLS- and OAuth-protected and
+          require a valid AAT. The authorization server MAY declare the
+          endpoint URI in the value of a claims_endpoint property in the
+          configuration data.</t>
 
-                <t>Use the OpenID Connect "redirect_uri" and "state" request
-                parameters as appropriate</t>
-              </list></t>
+          <t>The client MUST send the ID token by using POST at the claims
+          conveyance endpoint, accompanied by an AAT in the header and
+          JSON-encoded "rpt" and "ticket" properties in the body. The
+          authorization server MUST be able to utilize at least all of the
+          reserved claims that might appear in an ID token, as defined in
+          <xref target="OIDCCore"></xref>, in evaluating policy and adding
+          authorization data to RPTs.</t>
 
-            <t>The authorization server can then use any conforming OpenID
-            Connect mechanisms and typical user interfaces for engaging with
-            the UserInfo endpoints of OpenID Providers and Claims Providers,
-            potentially allowing for the delivery of "trusted claims" (such as
-            a verified email address or a date or birth) on which
-            authorization policy for access may depend.</t>
-          </section>
+          <figure>
+            <preamble>For example:</preamble>
+
+            <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: as.example.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+
+{
+   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
+}
+]]></artwork>
+          </figure>
         </section>
       </section>
     </section>
@@ -1410,76 +1476,58 @@ Cache-Control: no-store
       </section>
     </section>
 
-    <section anchor="comms-profiles"
-             title="Profiles for Alternate Communications Channels">
-      <t>In some circumstances, it is desirable to couple UMA roles more
-      tightly. For example, an authorization server application might also
-      need to act as a client application in order to retrieve protected
-      resources so that it can present to resource owners a dashboard-like
-      user interface that accurately guides the setting of policy; it might
-      need to access itself-as-authorization server for that purpose. For
-      another example, the same organization might operate both an
-      authorization server and a resource server that communicate only with
-      each other behind a firewall, and it might seek more efficient
-      communication methods between them.</t>
+    <section anchor="comms-profiles" title="Profiles for API Extensibility">
+      <t>In some circumstances, it is desirable to couple UMA roles tightly.
+      For example, an authorization server application might also need to act
+      as a client application in order to retrieve protected resources so that
+      it can present to resource owners a dashboard-like user interface that
+      accurately guides the setting of policy; it might need to access
+      itself-as-authorization server for that purpose. For another example,
+      the same organization might operate both an authorization server and a
+      resource server that communicate only with each other behind a firewall,
+      and it might seek more efficient communication methods between them.</t>
 
-      <t>This section defines profiles that allow inter-role communication
-      channels and methods to vary in these specific circumstances. These
-      profiles still REQUIRE authorization servers to issue PATs, AATs, and
-      RPTs and associate authorization data with RPTs, and they still REQUIRE
+      <t>This section defines profiles that allow inter-role communications
+      channels and methods to vary in these specific circumstances. This
+      specification still REQUIRES authorization servers to issue PATs, AATs,
+      and RPTs and associate authorization data with RPTs, and REQUIRES
       resource servers to give clients access only when RPTs are associated
       with sufficient authorization data. This is because, although tokens
       might not always appear on the wire in the normal fashion in these
-      cases, they represent binding obligations involving additional parties
-      that might not be able to take part in these optimization opportunities
-      (see <xref target="UMA-obligations"></xref>).</t>
-
-      <t>An authorization server using any of the opportunities afforded by
-      the alternate protection profile or authorization channel profile MUST
-      declare use of the relevant profile in its configuration data (see <xref
-      target="am-endpoints"></xref>) to assist in tracking any applicable
-      binding obligations, by supplying the "protchannel" or "authzchannel"
-      keyword respectively. An authorization server involved in deployments
-      where resource servers and clients are known to be using opportunities
-      afforded by the alternate resource channel profile MAY declare use of
-      that profile in its configuration data by supplying the "rsrcchannel"
-      keyword.</t>
+      cases, they represent binding obligations that might involve additional
+      parties unable to take part in these optimization opportunities (see
+      <xref target="UMA-obligations"></xref>).</t>
 
       <t>In circumstances where alternate communications channels are being
-      used among independently implemented system entities, it is RECOMMENDED,
-      for reasons of implementation interoperability, to define profiles that
-      build on the profiles below to specify the exact nature of the
-      communications channels being used (see <xref
-      target="uma-profiles"></xref>).</t>
+      used between independently implemented system entities, it is
+      RECOMMENDED, for reasons of implementation interoperability, to define
+      concrete extension profiles that build on these extensibility profiles
+      (see <xref target="uma-profiles"></xref>).</t>
 
       <section anchor="alt-prot-profile"
-               title="Alternate Protection Channel Profile">
+               title="Protection API Extensibility Profile">
         <t>This section defines a profile for UMA where the authorization
         server and resource server roles either reside in the same system
         entity or otherwise have a privileged communications channel between
         them. Following is a summary:<list style="symbols">
             <t>Identifying URI:
-            http://docs.kantarainitiative.org/uma/profiles/prot-channel</t>
+            http://docs.kantarainitiative.org/uma/profiles/prot-ext-1.0</t>
 
             <t>Profile author and contact information: Mark Dobrinic
             (mdobrinic@cozmanova.com)</t>
 
             <t>Updates or obsoletes: None; this profile is new.</t>
 
-            <t>Affects communication between roles: Authorization server and
-            resource server.</t>
-
             <t>Security considerations: If the entities do not use TLS but
             communicate across a transport layer as opposed to using internal
             same-entity communication, it is STRONGLY RECOMMENDED to use an
             alternate means of transport-layer security.</t>
 
-            <t>Privacy considerations: The relationship between the
-            authorization server and resource server may be established in a
-            manner that does not involve the resource owner at all, as would
-            normally be the case, so they each may maliciously leverage this
-            relationship to observe the resource owner's personally
-            identifiable information held in each system.</t>
+            <t>Privacy considerations: If the relationship between the roles
+            is established in a manner that does not involve the resource
+            owner at all, they each may maliciously leverage this relationship
+            to observe the resource owner's personally identifiable
+            information held in each system.</t>
 
             <t>Error states: See below.</t>
 
@@ -1510,36 +1558,37 @@ Cache-Control: no-store
             from any HTTP-, OAuth-, and UMA-defined errors related to the
             protection API.</t>
           </list></t>
+
+        <t>An authorization server using any of the opportunities afforded by
+        this profile MUST declare use of this profile by supplying the
+        "prot-ext-1.0" value for one of its "uma_profiles_supported" values in
+        its configuration data (see <xref target="am-endpoints"></xref>).</t>
       </section>
 
       <section anchor="alt-authz-profile"
-               title="Alternate Authorization Channel Profile">
+               title="Authorization API Extensibility Profile">
         <t>This section defines a profile for UMA where the authorization
         server and client roles either reside in the same system entity or
         otherwise have a privileged communications channel between them.
         Following is a summary:<list style="symbols">
             <t>Identifying URI:
-            http://docs.kantarainitiative.org/uma/profiles/authz-channel</t>
+            http://docs.kantarainitiative.org/uma/profiles/authz-ext-1.0</t>
 
             <t>Profile author and contact information: Mark Dobrinic
             (mdobrinic@cozmanova.com)</t>
 
             <t>Updates or obsoletes: None; this profile is new.</t>
 
-            <t>Affects communication between roles: Authorization server and
-            client.</t>
-
             <t>Security considerations: If the entities do not use TLS but
             communicate across a transport layer as opposed to using internal
             same-entity communication, it is STRONGLY RECOMMENDED to use an
             alternate means of transport-layer security.</t>
 
-            <t>Privacy considerations: The relationship between the
-            authorization server and client may be established in a manner
-            that does not involve the requesting party at all, as would
-            normally be the case, so they each may maliciously leverage this
-            relationship to observe the requesting party's personally
-            identifiable information held in each system.</t>
+            <t>Privacy considerations: If the relationship between the roles
+            is established in a manner that does not involve the requesting
+            party at all, they each may maliciously leverage this relationship
+            to observe the requesting party's personally identifiable
+            information held in each system.</t>
 
             <t>Error states: See below.</t>
 
@@ -1570,36 +1619,38 @@ Cache-Control: no-store
             from any HTTP-, OAuth-, and UMA-defined errors related to the
             authorization API.</t>
           </list></t>
+
+        <t>An authorization server using any of the opportunities afforded by
+        this profile MUST declare use of this profile by supplying the
+        "authz-ext-1.0" value for one of its "uma_profiles_supported" values
+        in its configuration data (see <xref
+        target="am-endpoints"></xref>).</t>
       </section>
 
       <section anchor="alt-resource-profile"
-               title="Alternate Resource Channel Profile">
+               title="Resource Interface Extensibility Profile">
         <t>This section defines a profile for UMA where the resource server
         and client roles either reside in the same system entity or otherwise
         have a privileged communications channel between them. Following is a
         summary:<list style="symbols">
             <t>Identifying URI:
-            http://docs.kantarainitiative.org/uma/profiles/rsrc-channel</t>
+            http://docs.kantarainitiative.org/uma/profiles/rsrc-ext-1.0</t>
 
             <t>Profile author and contact information: Mark Dobrinic
             (mdobrinic@cozmanova.com)</t>
 
             <t>Updates or obsoletes: None; this profile is new.</t>
 
-            <t>Affects communication between roles: Resource server and
-            client.</t>
-
             <t>Security considerations: If the entities do not use TLS but
             communicate across a transport layer as opposed to using internal
             same-entity communication, it is STRONGLY RECOMMENDED to use an
             alternate means of transport-layer security.</t>
 
-            <t>Privacy considerations: The relationship between the resource
-            server and client may be established in a manner that does not
-            involve the auhorization server at all, as would normally be the
-            case, so they each may maliciously leverage this relationship to
-            observe the resource owner's or requesting party's personally
-            identifiable information held in each system.</t>
+            <t>Privacy considerations: If the relationship between the roles
+            is established in a manner that does not involve the authorization
+            server at all, they each may maliciously leverage this
+            relationship to observe the resource owner's or requesting party's
+            personally identifiable information held in each system.</t>
 
             <t>Error states: See below.</t>
 
@@ -1607,9 +1658,9 @@ Cache-Control: no-store
             documented in <xref target="UMA-obligations"></xref>.</t>
           </list></t>
 
-        <t>Using this profile, the resource server MAY use means other than
-        HTTP-based protected resource endpoints to communicate with the
-        authorization server. This involves the following opportunities:<list
+        <t>Using this profile, the resource server MAY use means other than an
+        HTTP-based resource interface to communicate with the authorization
+        server. This involves the following opportunities:<list
             style="symbols">
             <t>Resource access attempts MAY be accomplished without requiring
             explicit use of the HTTP-based endpoint or presentation of an
@@ -1619,6 +1670,13 @@ Cache-Control: no-store
             from any HTTP-, OAuth-, and UMA-defined errors related to the
             protected resource's interface.</t>
           </list></t>
+
+        <t>An authorization server involved in deployments where resource
+        servers and clients are known to be using opportunities afforded by
+        the resource interface extensibility profile MAY declare use of this
+        profile by supplying the "rsrc-ext-1.0" value for one of its
+        "uma_profiles_supported" values in its configuration data (see <xref
+        target="am-endpoints"></xref>).</t>
       </section>
     </section>
 
@@ -1672,7 +1730,7 @@ Cache-Control: no-store
             countermeasures.</t>
           </list></t>
 
-        <t>See <xref target="comms-profiles"></xref> for several examples.</t>
+        <t>See <xref target="comms-profiles"></xref> for examples.</t>
       </section>
 
       <section anchor="rpt-profiles" title="Specifying RPT Profiles">
@@ -1716,8 +1774,9 @@ Cache-Control: no-store
       </section>
 
       <section anchor="claim-profiles" title="Specifying Claim Profiles">
-        <t>It is RECOMMENDED that claim profiles document the following
-        information:<list style="numbers">
+        <t>In addition to the requirements listed in <xref
+        target="authz-flows"></xref>, it is RECOMMENDED that claim profiles
+        document the following information:<list style="numbers">
             <t>Specify a URI that uniquely identifies the claim profile.</t>
 
             <t>Identify the responsible author and provide postal or
@@ -1739,7 +1798,7 @@ Cache-Control: no-store
             fashion of <xref target="UMA-obligations"></xref>.</t>
           </list></t>
 
-        <t>See <xref target="trusted-claims"></xref> for an example.</t>
+        <t>See <xref target="claims-as-rp-oidc"></xref> for an example.</t>
       </section>
     </section>
 
@@ -1766,7 +1825,7 @@ Cache-Control: no-store
       to her resources by Bob. When Bob first seeks access and must obtain an
       RPT (for which the default RPT profile specifies a bearer token), Alice
       could set policies demanding that Bob prove his identity by providing a
-      set of strong claims issued by a trusted attrribute provider in order to
+      set of strong claims issued by a trusted attribute provider in order to
       get authorization data associated with that token.</t>
 
       <t>Another issue concerns the use of the <xref target="OAuth2"></xref>
@@ -1866,6 +1925,8 @@ Cache-Control: no-store
           <t>Lukasz Moren, Newcastle University</t>
 
           <t>Christian Scholz, COMlounge GmbH (former editor)</t>
+
+          <t>Mike Schwartz, Gluu</t>
 
           <t>Jacek Szpot, Newcastle University</t>
         </list></t>
