@@ -396,8 +396,6 @@
 <link href="#rfc.section.3.4.1" rel="Chapter" title="3.4.1 Client Obtains RPT"/>
 <link href="#rfc.section.3.4.2" rel="Chapter" title="3.4.2 Client Asks for Authorization Data"/>
 <link href="#rfc.section.3.5" rel="Chapter" title="3.5 Claims-Gathering Flows"/>
-<link href="#rfc.section.3.5.1" rel="Chapter" title="3.5.1 Claim Profile: Authorization Server Acts as OpenID Connect Relying Party"/>
-<link href="#rfc.section.3.5.2" rel="Chapter" title="3.5.2 Claim Profile: Client Acts as OpenID Connect ID Token Conveyor"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 Error Messages"/>
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 OAuth Error Responses"/>
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 UMA Error Responses"/>
@@ -426,8 +424,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Hardjono, T., Ed." />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-hardjono-oauth-umacore-09c" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-1-27" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-hardjono-oauth-umacore-09d" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-2-1" />
   <meta name="dct.abstract" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy." />
   <meta name="description" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy." />
 
@@ -448,10 +446,10 @@
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">January 27, 2014</td>
+  <td class="right">February 1, 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: July 31, 2014</td>
+  <td class="left">Expires: August 5, 2014</td>
   <td class="right"></td>
 </tr>
 
@@ -460,7 +458,7 @@
   </table>
 
   <p class="title">User-Managed Access (UMA) Profile of OAuth 2.0<br />
-  <span class="filename">draft-hardjono-oauth-umacore-09c</span></p>
+  <span class="filename">draft-hardjono-oauth-umacore-09d</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -472,7 +470,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on July 31, 2014.</p>
+<p>This Internet-Draft will expire on August 5, 2014.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -506,8 +504,6 @@
 <li>3.4.1.   <a href="#rfc.section.3.4.1">Client Obtains RPT</a></li>
 <li>3.4.2.   <a href="#rfc.section.3.4.2">Client Asks for Authorization Data</a></li>
 <li>3.5.   <a href="#rfc.section.3.5">Claims-Gathering Flows</a></li>
-<li>3.5.1.   <a href="#rfc.section.3.5.1">Claim Profile: Authorization Server Acts as OpenID Connect Relying Party</a></li>
-<li>3.5.2.   <a href="#rfc.section.3.5.2">Claim Profile: Client Acts as OpenID Connect ID Token Conveyor</a></li>
 <li>4.   <a href="#rfc.section.4">Error Messages</a></li>
 <li>4.1.   <a href="#rfc.section.4.1">OAuth Error Responses</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">UMA Error Responses</a></li>
@@ -662,7 +658,7 @@
   <dt>aat_grant_types_supported</dt>
   <dd style="margin-left: 6"><br/>REQUIRED. OAuth grant types supported by this authorization server in issuing AATs. The property value is an array of string values. Each string value MUST be one of the grant_type values defined in <a href="#OAuth2">[OAuth2]</a>, or alternatively a URI identifying a grant type defined elsewhere.</dd>
   <dt>claim_profiles_supported</dt>
-  <dd style="margin-left: 6"><br/>OPTIONAL. Claim formats and associated sub-protocols for gathering claims from requesting parties, as supported by this authorization server. The property value is an array of string values, which each string value is either a reserved keyword defined in this specification or a URI identifying a claim profile defined elsewhere. The reserved keyword "openid" as a value for this property stands for the UMA OpenID Connect claim profile defined in <a href="#claims-as-rp-oidc">Section 3.5.1</a>.</dd>
+  <dd style="margin-left: 6"><br/>OPTIONAL. Claim formats and associated sub-protocols for gathering claims from requesting parties, as supported by this authorization server. The property value is an array of string values, which each string value is either a reserved keyword defined in this specification or a URI identifying a claim profile defined elsewhere.</dd>
   <dt>uma_profiles_supported</dt>
   <dd style="margin-left: 6"><br/>OPTIONAL. UMA profiles supported by this authorization server. The property value is an array of string values, which each string value is either a reserved keyword defined in this specification or a URI identifying an UMA profile defined elsewhere. The reserved keywords "prot-ext", "authz-ext", and "rsrc-ext" as values for this property stand for the extensibility profiles defined, respectively, in <a href="#comms-profiles">Section 5</a>.</dd>
   <dt>dynamic_client_endpoint</dt>
@@ -721,7 +717,7 @@
 <ul>
   <li>The client attempts to access a protected resource.<ul><li>If the access attempt is unaccompanied by an RPT, the resource server responds immediately with an HTTP 401 (Unauthorized) response and instructions on where to go to obtain one.</li><li>If the access attempt was accompanied by an RPT, the resource server checks the RPT's status.<ul><li>If the RPT is invalid, the resource server responds with an HTTP 401 (Unauthorized) response and instructions on where to go to obtain a token.</li><li>If the RPT is valid but has insufficient authorization data, the resource server registers a suitable requested permission on the client's behalf at the authorization server, and then responds to the client with an HTTP 403 (Forbidden) response and instructions on where to go to ask for authorization.</li><li>If the RPT is valid, and if the authorization data associated with the token is sufficient for allowing access, the resource server responds with an HTTP 2xx (Success) response and a representation of the resource.</li></ul></li></ul></li>
   <li>If the client (possessing no RPT or an invalid RPT) received a 401 response and an authorization server's location, after looking up its configuration data and endpoints as necessary, it requests an RPT from the RPT endpoint of the authorization API.</li>
-  <li>If the client (posessing a valid RPT) received a 403 response and a permission ticket, it asks the authorization server for authorization data that matches the ticket using the authorization request endpoint of the authorization API. If the authorization server needs requesting party claims in order to assess this client's authorization, it engages in a claims-gathering flow with the requesting party.<ul><li>If the client does not already have an AAT at the appropriate authorization server to be able to use its authorization API, it first obtains one.</li></ul></li>
+  <li>If the client (posessing a valid RPT) received a 403 response and a permission ticket, it asks the authorization server for authorization data that matches the ticket using the authorization request endpoint of the authorization API. If the authorization server needs requesting party claims in order to assess this client's authorization, it engages in a claims-gathering flow.<ul><li>If the client does not already have an AAT at the appropriate authorization server to be able to use its authorization API, it first obtains one.</li></ul></li>
 </ul>
 <p id="rfc.section.3.p.5">The interactions are described in detail in the following sections.</p>
 <h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#r-h-attempt-access" id="r-h-attempt-access">Client Attempts to Access Protected Resource</a></h1>
@@ -888,7 +884,7 @@ HTTP/1.1 200 OK
   <li>The authorization server issues client credentials to the client. It is OPTIONAL for the client credentials to be provided dynamically through <a href="#DynClientReg">[DynClientReg]</a>; alternatively, they MAY use a static process.</li>
   <li>The client uses the authorization API to acquire an AAT.</li>
   <li>The client uses the authorization API to acquire an RPT. See <a href="#authz-permission-token">Section 3.4.1</a> for more detail.</li>
-  <li>The client uses the authorization API to ask for authorization, providing the permission ticket it got from the resource server. The authorization server associates authorization data with the client's RPT based on the permission ticket, the resource owner's operative policies, and the results of any claims-gathering flows with the requesting party. See <a href="#r-am-authz-scope">Section 3.4.2</a> for more detail.</li>
+  <li>The client uses the authorization API to ask for authorization, providing the permission ticket it got from the resource server. The authorization server associates authorization data with the client's RPT based on the permission ticket, the resource owner's operative policies, and the results of any claims-gathering flows. See <a href="#r-am-authz-scope">Section 3.4.2</a> for more detail.</li>
 </ol>
 <h1 id="rfc.section.3.4.1"><a href="#rfc.section.3.4.1">3.4.1.</a> <a href="#authz-permission-token" id="authz-permission-token">Client Obtains RPT</a></h1>
 <p id="rfc.section.3.4.1.p.1">The client might need an RPT if it has never before requested an RPT for this combination of requesting party, resource server, and authorization server, or if it has lost control of a previously issued RPT and needs a refreshed one. It obtains an RPT by using the authorization API, performing a POST on the RPT endpoint and supplying its AAT in the header.</p>
@@ -949,7 +945,7 @@ Cache-Control: no-store
 </pre>
 <h1 id="rfc.section.3.5"><a href="#rfc.section.3.5">3.5.</a> <a href="#authz-flows" id="authz-flows">Claims-Gathering Flows</a></h1>
 <p id="rfc.section.3.5.p.1">The authorization server has a variety of options for coming into possession of claims in order to satisfy the resource owner's policy; this specification does not dictate a single answer. For example, the authorization server could interact with the requesting party to gather claims, or could accept claims delivered by a client, or could perform a lookup in some external system. The process for requesting and providing claims is extensible and can have a variety of dependencies on the type of requesting party (for example, natural person or legal person) and the type of client (for example, browser, native app, or autonomously running web service).</p>
-<p id="rfc.section.3.5.p.2">This specification provides a required framework for extensibility through profiling, and also defines two optional claim profiles. The authorization server MAY support any number of claim profiles, and SHOULD document the claim profiles it supports in its configuration data. For the business-level and legal implications of different claim profiles, see <a href="#UMA-obligations">[UMA-obligations]</a>.</p>
+<p id="rfc.section.3.5.p.2">This specification provides a required framework for extensibility through profiling. The authorization server MAY support any number of claim profiles, and SHOULD document the claim profiles it supports in its configuration data. For the business-level and legal implications of different claim profiles, see <a href="#UMA-obligations">[UMA-obligations]</a>. Optional claim profiles are defined in <a href="#UMAclaims">[UMAclaims]</a>.</p>
 <p id="rfc.section.3.5.p.3">A client is operated by an end-user in one of two typical situations:</p>
 
 <ul>
@@ -967,56 +963,6 @@ Cache-Control: no-store
   <dt>state</dt>
   <dd style="margin-left: 8">A means by which the client SHOULD supply an opaque value used to maintain state between the request and the callback; this serves as a protection against XSRF attacks.</dd>
 </dl>
-<h1 id="rfc.section.3.5.1"><a href="#rfc.section.3.5.1">3.5.1.</a> <a href="#claims-as-rp-oidc" id="claims-as-rp-oidc">Claim Profile: Authorization Server Acts as OpenID Connect Relying Party</a></h1>
-<p id="rfc.section.3.5.1.p.1">In this claim profile, the client redirects the end-user requesting party to the authorization server, and the authorization server gathers claims from the requesting party by serving as a relying party to one or more OpenID Connect identity providers before redirecting the end-user back. Following is a summary:</p>
-
-<ul>
-  <li>Identifying URI: http://docs.kantarainitiative.org/uma/profiles/claim-as-rp-oidc-1.0</li>
-  <li>Profile author and contact information: Thomas Hardjono (hardjono@mit.edu)</li>
-  <li>Updates or obsoletes: None; this profile is new.</li>
-  <li>Syntax and semantics of claim data: As defined below. The claim data format leverages the OpenID Connect protocol and the reserved claims defined in that specification.</li>
-  <li>Claims gathering method: As defined below.</li>
-  <li>Error states: None additional.</li>
-  <li>Security and privacy considerations: None additional.</li>
-  <li>Binding obligations: Binding obligations that apply to the use of this claim profile are documented in <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
-</ul>
-<p id="rfc.section.3.5.1.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the "as-rp-oidc-1.0" value for one of its "claim_profiles_supported" values in its configuration data.</p>
-<p id="rfc.section.3.5.1.p.3">The authorization server MUST do the following:</p>
-
-<ul>
-  <li>Serve as a conforming OpenID Relying Party according to <a href="#OIDCCore">[OIDCCore]</a></li>
-  <li>Be able to utilize at least all of the reserved claims defined in <a href="#OIDCCore">[OIDCCore]</a> in evaluating policy and adding authorization data to RPTs</li>
-  <li>Use the OpenID Connect "redirect_uri" and "state" request parameters as appropriate</li>
-</ul>
-<p id="rfc.section.3.5.1.p.4">The authorization server then uses any conforming OpenID Connect mechanisms and typical user interfaces for engaging with the UserInfo endpoints of OpenID Providers and Claims Providers, potentially allowing for the delivery of "trusted claims" (such as a verified email address or a date or birth) on which authorization policy for access may depend.</p>
-<h1 id="rfc.section.3.5.2"><a href="#rfc.section.3.5.2">3.5.2.</a> <a href="#claims-client-sends-oidc" id="claims-client-sends-oidc">Claim Profile: Client Acts as OpenID Connect ID Token Conveyor</a></h1>
-<p id="rfc.section.3.5.2.p.1">In this claim profile, the client, already in possession of an OpenID Connect ID token data structure for the requesting party, sends the ID token to the authorization server. Following is a summary:</p>
-
-<ul>
-  <li>Identifying URI: http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-oidc-1.0</li>
-  <li>Profile author and contact information: Mike Schwartz (mike@gluu.org)</li>
-  <li>Updates or obsoletes: None; this profile is new.</li>
-  <li>Syntax and semantics of claim data: As defined below. The claim data format leverages the OpenID Connect ID token syntax and the reserved claims defined in that specification.</li>
-  <li>Claims gathering method: As defined below.</li>
-  <li>Error states: None additional.</li>
-  <li>Security and privacy considerations: The authorization server and client are assumed to operate in an ecosystem where a relationship between them that enables trust in the conveyed claims has been established out of band.</li>
-  <li>Binding obligations: Binding obligations that apply to the use of this claim profile are documented in <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
-</ul>
-<p id="rfc.section.3.5.2.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the "client-idtoken-oidc-1.0" value for one of its "claim_profiles_supported" values in its configuration data.</p>
-<p id="rfc.section.3.5.2.p.3">This profile involves an extension to the authorization API, and a corresponding extension to the configuration data. The API is extended to include a claims conveyance endpoint, which, like other authorization API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT. The authorization server MAY declare the endpoint URI in the value of a claims_endpoint property in the configuration data.</p>
-<p id="rfc.section.3.5.2.p.4">The client MUST send the ID token by using POST at the claims conveyance endpoint, accompanied by an AAT in the header and JSON-encoded "rpt" and "ticket" properties in the body. The authorization server MUST be able to utilize at least all of the reserved claims that might appear in an ID token, as defined in <a href="#OIDCCore">[OIDCCore]</a>, in evaluating policy and adding authorization data to RPTs.</p>
-<p>For example:</p>
-<pre>POST /rpt_authorization HTTP/1.1
-Host: as.example.com
-Authorization: Bearer jwfLG53^sad$#f
-...
-
-{
-   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
-   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
-   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
-}
-</pre>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#errors" id="errors">Error Messages</a></h1>
 <p id="rfc.section.4.p.1">Ultimately the resource server is responsible for either granting the access the client attempted, or returning an error response to the client with a reason for the failure. <a href="#OAuth2">[OAuth2]</a> defines several error responses for a resource server to return. UMA makes use of these error responses, but requires the resource server to "outsource" the determination of some error conditions to the authorization server. This specification defines additional UMA-specific error responses that the authorization server may give to the resource server and client as they interact with it, and that the resource server may give to the client.</p>
 <h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#oauth-error-response" id="oauth-error-response">OAuth Error Responses</a></h1>
@@ -1136,6 +1082,7 @@ Cache-Control: no-store
   <li>Identify the legally responsible parties involved in each interaction and any new obligations imposed, in the fashion of <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
   <li>Define any additional or changed error states.</li>
   <li>Supply any additional security and privacy considerations, including analysis of threats and description of countermeasures.</li>
+  <li>Specify any conformance considerations.</li>
 </ol>
 <p id="rfc.section.6.1.p.3">See <a href="#comms-profiles">Section 5</a> for examples.</p>
 <h1 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> <a href="#rpt-profiles" id="rpt-profiles">Specifying RPT Profiles</a></h1>
@@ -1154,6 +1101,7 @@ Cache-Control: no-store
   <li>Define any additional or changed error states.</li>
   <li>Supply any additional security and privacy considerations.</li>
   <li>Specify any obligations specific to the token profile, in the fashion of <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
+  <li>Specify any conformance considerations.</li>
 </ol>
 <p id="rfc.section.6.2.p.3">See <a href="#uma-bearer-token-profile">Section 3.3.2</a> for an example.</p>
 <h1 id="rfc.section.6.3"><a href="#rfc.section.6.3">6.3.</a> <a href="#claim-profiles" id="claim-profiles">Specifying Claim Profiles</a></h1>
@@ -1168,8 +1116,9 @@ Cache-Control: no-store
   <li>Define any additional or changed error states.</li>
   <li>Supply any additional security and privacy considerations.</li>
   <li>Specify any obligations specific to the claim profile, in the fashion of <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
+  <li>Specify any conformance considerations.</li>
 </ol>
-<p id="rfc.section.6.3.p.2">See <a href="#claims-as-rp-oidc">Section 3.5.1</a> for an example.</p>
+<p id="rfc.section.6.3.p.2">See <a href="#UMAclaims">[UMAclaims]</a> for examples.</p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#sec-consid" id="sec-consid">Security Considerations</a></h1>
 <p id="rfc.section.7.p.1">This specification relies mainly on OAuth security mechanisms as well as transport-level encryption for protecting the protection and authorization API endpoints. Most PATs and AATs are likely to use OAuth bearer tokens. See <a href="#OAuth-threat">[OAuth-threat]</a> for more information.</p>
 <p id="rfc.section.7.p.2">This specification defines a number of JSON-based data formats. As a subset of the JavaScript scripting language, JSON data SHOULD be consumed through a process that does not dynamically execute it as code, to avoid malicious code execution. One way to achieve this is to use a JavaScript interpreter rather than the built-in JavaScript eval() function.</p>
@@ -1269,6 +1218,12 @@ Cache-Control: no-store
         <b id="UMA-obligations">[UMA-obligations]</b>
       </td>
       <td class="top"><a>Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/UMA+Trust+Model">Binding Obligations on UMA Participants</a>", January 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="UMAclaims">[UMAclaims]</b>
+      </td>
+      <td class="top"><a title="Oracle">Catalano, D.</a>, "<a>Claim Profiles for User-Managed Access (UMA)</a>", February 2012.</td>
     </tr>
     <tr>
       <td class="reference">

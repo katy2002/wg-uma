@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-09c"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-09d"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="27" month="January" year="2014" />
+    <date day="1" month="February" year="2014" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -479,10 +479,7 @@
             requesting parties, as supported by this authorization server. The
             property value is an array of string values, which each string
             value is either a reserved keyword defined in this specification
-            or a URI identifying a claim profile defined elsewhere. The
-            reserved keyword "openid" as a value for this property stands for
-            the UMA OpenID Connect claim profile defined in <xref
-            target="claims-as-rp-oidc"></xref>.</t>
+            or a URI identifying a claim profile defined elsewhere.</t>
 
             <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
             profiles supported by this authorization server. The property
@@ -692,8 +689,8 @@
           authorization data that matches the ticket using the authorization
           request endpoint of the authorization API. If the authorization
           server needs requesting party claims in order to assess this
-          client's authorization, it engages in a claims-gathering flow with
-          the requesting party.<list style="symbols">
+          client's authorization, it engages in a claims-gathering flow.<list
+              style="symbols">
               <t>If the client does not already have an AAT at the appropriate
               authorization server to be able to use its authorization API, it
               first obtains one.</t>
@@ -1074,9 +1071,8 @@ HTTP/1.1 200 OK
             providing the permission ticket it got from the resource server.
             The authorization server associates authorization data with the
             client's RPT based on the permission ticket, the resource owner's
-            operative policies, and the results of any claims-gathering flows
-            with the requesting party. See <xref
-            target="r-am-authz-scope"></xref> for more detail.</t>
+            operative policies, and the results of any claims-gathering flows.
+            See <xref target="r-am-authz-scope"></xref> for more detail.</t>
           </list></t>
 
         <section anchor="authz-permission-token" title="Client Obtains RPT">
@@ -1230,11 +1226,12 @@ Cache-Control: no-store
         native app, or autonomously running web service).</t>
 
         <t>This specification provides a required framework for extensibility
-        through profiling, and also defines two optional claim profiles. The
-        authorization server MAY support any number of claim profiles, and
-        SHOULD document the claim profiles it supports in its configuration
-        data. For the business-level and legal implications of different claim
-        profiles, see <xref target="UMA-obligations"></xref>.</t>
+        through profiling. The authorization server MAY support any number of
+        claim profiles, and SHOULD document the claim profiles it supports in
+        its configuration data. For the business-level and legal implications
+        of different claim profiles, see <xref
+        target="UMA-obligations"></xref>. Optional claim profiles are defined
+        in <xref target="UMAclaims"></xref>.</t>
 
         <t>A client is operated by an end-user in one of two typical
         situations:<list style="symbols">
@@ -1275,132 +1272,6 @@ Cache-Control: no-store
             opaque value used to maintain state between the request and the
             callback; this serves as a protection against XSRF attacks.</t>
           </list></t>
-
-        <section anchor="claims-as-rp-oidc"
-                 title="Claim Profile: Authorization Server Acts as OpenID Connect Relying Party">
-          <t>In this claim profile, the client redirects the end-user
-          requesting party to the authorization server, and the authorization
-          server gathers claims from the requesting party by serving as a
-          relying party to one or more OpenID Connect identity providers
-          before redirecting the end-user back. Following is a summary:<list
-              style="symbols">
-              <t>Identifying URI:
-              http://docs.kantarainitiative.org/uma/profiles/claim-as-rp-oidc-1.0</t>
-
-              <t>Profile author and contact information: Thomas Hardjono
-              (hardjono@mit.edu)</t>
-
-              <t>Updates or obsoletes: None; this profile is new.</t>
-
-              <t>Syntax and semantics of claim data: As defined below. The
-              claim data format leverages the OpenID Connect protocol and the
-              reserved claims defined in that specification.</t>
-
-              <t>Claims gathering method: As defined below.</t>
-
-              <t>Error states: None additional.</t>
-
-              <t>Security and privacy considerations: None additional.</t>
-
-              <t>Binding obligations: Binding obligations that apply to the
-              use of this claim profile are documented in <xref
-              target="UMA-obligations"></xref>.</t>
-            </list></t>
-
-          <t>If an authorization server supports this claim profile, it MUST
-          declare use of it by supplying the "as-rp-oidc-1.0" value for one of
-          its "claim_profiles_supported" values in its configuration data.</t>
-
-          <t>The authorization server MUST do the following:<list
-              style="symbols">
-              <t>Serve as a conforming OpenID Relying Party according to <xref
-              target="OIDCCore"></xref></t>
-
-              <t>Be able to utilize at least all of the reserved claims
-              defined in <xref target="OIDCCore"></xref> in evaluating policy
-              and adding authorization data to RPTs</t>
-
-              <t>Use the OpenID Connect "redirect_uri" and "state" request
-              parameters as appropriate</t>
-            </list></t>
-
-          <t>The authorization server then uses any conforming OpenID Connect
-          mechanisms and typical user interfaces for engaging with the
-          UserInfo endpoints of OpenID Providers and Claims Providers,
-          potentially allowing for the delivery of "trusted claims" (such as a
-          verified email address or a date or birth) on which authorization
-          policy for access may depend.</t>
-        </section>
-
-        <section anchor="claims-client-sends-oidc"
-                 title="Claim Profile: Client Acts as OpenID Connect ID Token Conveyor">
-          <t>In this claim profile, the client, already in possession of an
-          OpenID Connect ID token data structure for the requesting party,
-          sends the ID token to the authorization server. Following is a
-          summary:<list style="symbols">
-              <t>Identifying URI:
-              http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-oidc-1.0</t>
-
-              <t>Profile author and contact information: Mike Schwartz
-              (mike@gluu.org)</t>
-
-              <t>Updates or obsoletes: None; this profile is new.</t>
-
-              <t>Syntax and semantics of claim data: As defined below. The
-              claim data format leverages the OpenID Connect ID token syntax
-              and the reserved claims defined in that specification.</t>
-
-              <t>Claims gathering method: As defined below.</t>
-
-              <t>Error states: None additional.</t>
-
-              <t>Security and privacy considerations: The authorization server
-              and client are assumed to operate in an ecosystem where a
-              relationship between them that enables trust in the conveyed
-              claims has been established out of band.</t>
-
-              <t>Binding obligations: Binding obligations that apply to the
-              use of this claim profile are documented in <xref
-              target="UMA-obligations"></xref>.</t>
-            </list></t>
-
-          <t>If an authorization server supports this claim profile, it MUST
-          declare use of it by supplying the "client-idtoken-oidc-1.0" value
-          for one of its "claim_profiles_supported" values in its
-          configuration data.</t>
-
-          <t>This profile involves an extension to the authorization API, and
-          a corresponding extension to the configuration data. The API is
-          extended to include a claims conveyance endpoint, which, like other
-          authorization API endpoints, MUST be TLS- and OAuth-protected and
-          require a valid AAT. The authorization server MAY declare the
-          endpoint URI in the value of a claims_endpoint property in the
-          configuration data.</t>
-
-          <t>The client MUST send the ID token by using POST at the claims
-          conveyance endpoint, accompanied by an AAT in the header and
-          JSON-encoded "rpt" and "ticket" properties in the body. The
-          authorization server MUST be able to utilize at least all of the
-          reserved claims that might appear in an ID token, as defined in
-          <xref target="OIDCCore"></xref>, in evaluating policy and adding
-          authorization data to RPTs.</t>
-
-          <figure>
-            <preamble>For example:</preamble>
-
-            <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
-Host: as.example.com
-Authorization: Bearer jwfLG53^sad$#f
-...
-
-{
-   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
-   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
-   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
-}
-]]></artwork>
-          </figure>
-        </section>
       </section>
     </section>
 
@@ -1728,6 +1599,8 @@ Cache-Control: no-store
             <t>Supply any additional security and privacy considerations,
             including analysis of threats and description of
             countermeasures.</t>
+
+            <t>Specify any conformance considerations.</t>
           </list></t>
 
         <t>See <xref target="comms-profiles"></xref> for examples.</t>
@@ -1767,6 +1640,8 @@ Cache-Control: no-store
 
             <t>Specify any obligations specific to the token profile, in the
             fashion of <xref target="UMA-obligations"></xref>.</t>
+
+            <t>Specify any conformance considerations.</t>
           </list></t>
 
         <t>See <xref target="uma-bearer-token-profile"></xref> for an
@@ -1796,9 +1671,11 @@ Cache-Control: no-store
 
             <t>Specify any obligations specific to the claim profile, in the
             fashion of <xref target="UMA-obligations"></xref>.</t>
+
+            <t>Specify any conformance considerations.</t>
           </list></t>
 
-        <t>See <xref target="claims-as-rp-oidc"></xref> for an example.</t>
+        <t>See <xref target="UMAclaims"></xref> for examples.</t>
       </section>
     </section>
 
@@ -1955,6 +1832,18 @@ Cache-Control: no-store
           </author>
 
           <date day="" month="October" year="2012" />
+        </front>
+      </reference>
+
+      <reference anchor="UMAclaims" target="">
+        <front>
+          <title>Claim Profiles for User-Managed Access (UMA)</title>
+
+          <author initials="D." surname="Catalano">
+            <organization>Oracle</organization>
+          </author>
+
+          <date day="" month="February" year="2012" />
         </front>
       </reference>
 
