@@ -1,0 +1,721 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Claim Profiles for User-Managed Access (UMA)</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Notational Conventions"/>
+<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Terminology"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Claim Profile: Client Acts as OpenID Connect ID Token Conveyor"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Claim Profile: Client Acts as SAML Assertion Conveyor"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Claim Profile: Authorization Server Acts as OpenID Connect Relying Party"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Acknowledgments"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Issues"/>
+<link href="#rfc.references" rel="Chapter" title="8 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
+<link href="#rfc.appendix.A" rel="Chapter" title="A Document History"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.4.5 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Catalano, D., Ed." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-catalano-uma-claim-profiles-00" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-2-1" />
+  <meta name="dct.abstract" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This specification defines xxx..." />
+  <meta name="description" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This specification defines xxx..." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">Network Working Group</td>
+  <td class="right">D. Catalano, Ed.</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right">MIT</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Standards Track</td>
+  <td class="right">February 1, 2014</td>
+</tr>
+<tr>
+  <td class="left">Expires: August 5, 2014</td>
+  <td class="right"></td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Claim Profiles for User-Managed Access (UMA)<br />
+  <span class="filename">draft-catalano-uma-claim-profiles-00</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This specification defines xxx...</p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on August 5, 2014.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2014 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
+<li>1.1.   <a href="#rfc.section.1.1">Notational Conventions</a></li>
+<li>1.2.   <a href="#rfc.section.1.2">Terminology</a></li>
+<li>2.   <a href="#rfc.section.2">Claim Profile: Client Acts as OpenID Connect ID Token Conveyor</a></li>
+<li>3.   <a href="#rfc.section.3">Claim Profile: Client Acts as SAML Assertion Conveyor</a></li>
+<li>4.   <a href="#rfc.section.4">Claim Profile: Authorization Server Acts as OpenID Connect Relying Party</a></li>
+<li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">Acknowledgments</a></li>
+<li>7.   <a href="#rfc.section.7">Issues</a></li>
+<li>8.   <a href="#rfc.references">References</a></li>
+<li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>Appendix A.   <a href="#rfc.appendix.A">Document History</a></li>
+<li><a href="#rfc.authors">Author's Address</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
+<p id="rfc.section.1.p.1">xxx (point to UMA normatively)</p>
+<h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> Notational Conventions</h1>
+<p id="rfc.section.1.1.p.1">The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
+<p id="rfc.section.1.1.p.2">Unless otherwise noted, all the protocol properties and values are case sensitive.</p>
+<h1 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
+<p id="rfc.section.1.2.p.1">This specification introduces the following new terms and enhancements of OAuth term definitions.</p>
+
+<dl>
+  <dt>xxx</dt>
+  <dd style="margin-left: 6"><br/>xxx</dd>
+</dl>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#claims-client-sends-oidc" id="claims-client-sends-oidc">Claim Profile: Client Acts as OpenID Connect ID Token Conveyor</a></h1>
+<p id="rfc.section.2.p.1">In this claim profile, the client, already in possession of an OpenID Connect ID token data structure for the requesting party, sends the ID token to the authorization server. Following is a summary:</p>
+
+<ul>
+  <li>Identifying URI: http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-oidc-1.0</li>
+  <li>Profile author and contact information: Mike Schwartz (mike@gluu.org)</li>
+  <li>Updates or obsoletes: None; this profile is new.</li>
+  <li>Syntax and semantics of claim data: As defined below. The claim data format leverages the OpenID Connect ID token syntax and the reserved claims defined in that specification.</li>
+  <li>Claims gathering method: As defined below.</li>
+  <li>Error states: None additional.</li>
+  <li>Security and privacy considerations: The authorization server and client are assumed to operate in an ecosystem where a relationship between them that enables trust in the conveyed claims has been established out of band.</li>
+  <li>Binding obligations: Binding obligations that apply to the use of this claim profile are documented in <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
+  <li>Conformance considerations: ???</li>
+</ul>
+<p id="rfc.section.2.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the "client-idtoken-oidc-1.0" value for one of its "claim_profiles_supported" values in its configuration data.</p>
+<p id="rfc.section.2.p.3">This profile involves an extension to the authorization API, and a corresponding extension to the configuration data. The API is extended to include a claims conveyance endpoint, which, like other authorization API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT. The authorization server MAY declare the endpoint URI in the value of a claims_endpoint property in the configuration data.</p>
+<p id="rfc.section.2.p.4">The client MUST send the ID token by using POST at the claims conveyance endpoint, accompanied by an AAT in the header and JSON-encoded "rpt" and "ticket" properties in the body. The authorization server MUST be able to utilize at least all of the reserved claims that might appear in an ID token, as defined in <a href="#OIDCCore">[OIDCCore]</a>, in evaluating policy and adding authorization data to RPTs.</p>
+<p>For example:</p>
+<pre>POST /rpt_authorization HTTP/1.1
+Host: as.example.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+
+{
+   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
+}
+</pre>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#claims-client-sends-saml" id="claims-client-sends-saml">Claim Profile: Client Acts as SAML Assertion Conveyor</a></h1>
+<p id="rfc.section.3.p.1">In this claim profile, the client, already in possession of a SAML assertion data structure for the requesting party, sends the assertion to the authorization server. Following is a summary:</p>
+
+<ul>
+  <li>Identifying URI: http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-saml-1.0</li>
+  <li>Profile author and contact information: Domenico Catalano (email...)</li>
+  <li>Updates or obsoletes: None; this profile is new.</li>
+  <li>Syntax and semantics of claim data: As defined below. The claim data format leverages the OpenID Connect ID token syntax and the reserved claims defined in that specification.</li>
+  <li>Claims gathering method: As defined below.</li>
+  <li>Error states: None additional.</li>
+  <li>Security and privacy considerations: The authorization server and client are assumed to operate in an ecosystem where a relationship between them that enables trust in the conveyed claims has been established out of band.</li>
+  <li>Binding obligations: Binding obligations that apply to the use of this claim profile are documented in <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
+  <li>Conformance considerations: ???</li>
+</ul>
+<p id="rfc.section.3.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the "client-idtoken-oidc-1.0" value for one of its "claim_profiles_supported" values in its configuration data.</p>
+<p id="rfc.section.3.p.3">This profile involves an extension to the authorization API, and a corresponding extension to the configuration data. The API is extended to include a claims conveyance endpoint, which, like other authorization API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT. The authorization server MAY declare the endpoint URI in the value of a claims_endpoint property in the configuration data.</p>
+<p id="rfc.section.3.p.4">The client MUST send the ID token by using POST at the claims conveyance endpoint, accompanied by an AAT in the header and JSON-encoded "rpt" and "ticket" properties in the body. The authorization server MUST be able to utilize at least all of the reserved claims that might appear in an ID token, as defined in <a href="#OIDCCore">[OIDCCore]</a>, in evaluating policy and adding authorization data to RPTs.</p>
+<p>For example:</p>
+<pre>POST /rpt_authorization HTTP/1.1
+Host: as.example.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+
+{
+   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
+}
+</pre>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#claims-as-rp-oidc" id="claims-as-rp-oidc">Claim Profile: Authorization Server Acts as OpenID Connect Relying Party</a></h1>
+<p id="rfc.section.4.p.1">In this claim profile, the client redirects the end-user requesting party to the authorization server, and the authorization server gathers claims from the requesting party by serving as a relying party to one or more OpenID Connect identity providers before redirecting the end-user back. Following is a summary:</p>
+
+<ul>
+  <li>Identifying URI: http://docs.kantarainitiative.org/uma/profiles/claim-as-rp-oidc-1.0</li>
+  <li>Profile author and contact information: Thomas Hardjono (hardjono@mit.edu)</li>
+  <li>Updates or obsoletes: None; this profile is new.</li>
+  <li>Syntax and semantics of claim data: As defined below. The claim data format leverages the OpenID Connect protocol and the reserved claims defined in that specification.</li>
+  <li>Claims gathering method: As defined below.</li>
+  <li>Error states: None additional.</li>
+  <li>Security and privacy considerations: None additional.</li>
+  <li>Binding obligations: Binding obligations that apply to the use of this claim profile are documented in <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
+  <li>Conformance considerations: ???</li>
+</ul>
+<p id="rfc.section.4.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the "as-rp-oidc-1.0" value for one of its "claim_profiles_supported" values in its configuration data.</p>
+<p id="rfc.section.4.p.3">The authorization server MUST do the following:</p>
+
+<ul>
+  <li>Serve as a conforming OpenID Relying Party according to <a href="#OIDCCore">[OIDCCore]</a></li>
+  <li>Be able to utilize at least all of the reserved claims defined in <a href="#OIDCCore">[OIDCCore]</a> in evaluating policy and adding authorization data to RPTs</li>
+  <li>Use the OpenID Connect "redirect_uri" and "state" request parameters as appropriate</li>
+</ul>
+<p id="rfc.section.4.p.4">The authorization server then uses any conforming OpenID Connect mechanisms and typical user interfaces for engaging with the UserInfo endpoints of OpenID Providers and Claims Providers, potentially allowing for the delivery of "trusted claims" (such as a verified email address or a date or birth) on which authorization policy for access may depend.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
+<p id="rfc.section.5.p.1">This document makes no request of IANA.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#Acknowledgments" id="Acknowledgments">Acknowledgments</a></h1>
+<p id="rfc.section.6.p.1">The current editor of this specification is Domenico Catalano of Oracle. The following people are co-authors:</p>
+
+<ul>
+  <li>???</li>
+</ul>
+<p id="rfc.section.6.p.2">Additional contributors to this specification include the Kantara UMA Work Group participants, a list of whom can be found at <a href="#UMAnitarians">[UMAnitarians]</a>.</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Issues</h1>
+<p id="rfc.section.7.p.1">Issues are captured at the project's GitHub site (<a href="https://github.com/xmlgrrl/UMA-Specifications/issues">https://github.com/xmlgrrl/UMA-Specifications/issues</a>).</p>
+<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="DynClientReg">[DynClientReg]</b>
+      </td>
+      <td class="top"><a title="IETF">Richer, J.</a>, "<a href="http://tools.ietf.org/html/draft-richer-oauth-dyn-reg-core">OAuth 2.0 Core Dynamic Client Registration</a>", August 2013.</td>
+    </tr>
+    <tr><td class="reference"><b id="OAuth-bearer">[OAuth-bearer]</b></td><td class="top"><a href="http://tools.ietf.org/html/rfc6750">The OAuth 2.0 Authorization Framework: Bearer Token Usage</a>", October 2012.</td>, "</tr>
+    <tr>
+      <td class="reference">
+        <b id="OAuth-introspection">[OAuth-introspection]</b>
+      </td>
+      <td class="top"><a>Richer, J.</a>, <a href="http://tools.ietf.org/html/draft-richer-oauth-introspection">OAuth Token Introspection</a>", May 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OAuth-resource-reg">[OAuth-resource-reg]</b>
+      </td>
+      <td class="top"><a title="IETF">Hardjono, T.</a>, "<a href="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">OAuth 2.0 Resource Set Registration</a>", December 2012.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OAuth-threat">[OAuth-threat]</b>
+      </td>
+      <td class="top"><a>Lodderstedt, T.</a>, "<a href="http://tools.ietf.org/html/rfc6819">OAuth 2.0 Threat Model and Security Considerations</a>", January 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OAuth2">[OAuth2]</b>
+      </td>
+      <td class="top"><a title="IETF">Hardt, D.</a>, "<a href="http://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</a>", October 2012.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OIDCCore">[OIDCCore]</b>
+      </td>
+      <td class="top"><a>Sakimura, N.</a>, "<a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>", December 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2119">[RFC2119]</b>
+      </td>
+      <td class="top"><a href="mailto:sob@harvard.edu" title="Harvard University">Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, March 1997.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC4627">[RFC4627]</b>
+      </td>
+      <td class="top"><a>Crockford, D.</a>, "<a href="http://tools.ietf.org/html/rfc4627">The application/json Media Type for JavaScript Object Notation (JSON)</a>", RFC 4627, July 2006.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="UMA-obligations">[UMA-obligations]</b>
+      </td>
+      <td class="top"><a>Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/UMA+Trust+Model">Binding Obligations on UMA Participants</a>", January 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="hostmeta">[hostmeta]</b>
+      </td>
+      <td class="top"><a title="Yahoo!">Hammer-Lahav, E.</a>, "<a href="http://tools.ietf.org/html/rfc6415">Web Host Metadata</a>", October 2011.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="OAuth-SAML">[OAuth-SAML]</b>
+      </td>
+      <td class="top"><a title="Campbell">Campbell, B.</a>, "<a href="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">SAML 2.0 Bearer Assertion Profiles for OAuth 2.0</a>", December 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OAuth-linktypes">[OAuth-linktypes]</b>
+      </td>
+      <td class="top"><a>Mills, W.</a>, "<a href="http://tools.ietf.org/html/draft-wmills-oauth-lrdd">Link Type Registrations for OAuth 2</a>", February 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OAuth-meta">[OAuth-meta]</b>
+      </td>
+      <td class="top"><a>Sakimura, N.</a>, "<a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">JSON Metadata for OAuth Responses</a>", February 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="UMA-PbD">[UMA-PbD]</b>
+      </td>
+      <td class="top"><a>Maler, B.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/Privacy+by+Design+Implications+of+UMA">Privacy by Design Implications of UMA</a>", December 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="UMA-casestudies">[UMA-casestudies]</b>
+      </td>
+      <td class="top"><a>Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/Case+Studies">UMA Case Studies</a>", March 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="UMA-usecases">[UMA-usecases]</b>
+      </td>
+      <td class="top"><a title="Kantara">Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">UMA Scenarios and Use Cases</a>", October 2010.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="UMAnitarians">[UMAnitarians]</b>
+      </td>
+      <td class="top"><a title="Maler">Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">UMA Participant Roster</a>", April 2013.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#History" id="History">Document History</a></h1>
+<p id="rfc.section.A.p.1">NOTE: To be removed by RFC editor before publication as an RFC.</p>
+<p id="rfc.section.A.p.2">See <a href="http://kantarainitiative.org/confluence/display/uma/UMA+1.0+Core+Protocol">http://kantarainitiative.org/confluence/display/uma/UMA+1.0+Core+Protocol</a> for a list of code-breaking and other major changes made to this specification at various revision points.</p>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Author's Address</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Domenico Catalano</span> (editor)
+	  <span class="n hidden">
+		<span class="family-name">Catalano</span>
+	  </span>
+	</span>
+	<span class="org vcardline">MIT</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:hardjono@mit.edu">hardjono@mit.edu</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>

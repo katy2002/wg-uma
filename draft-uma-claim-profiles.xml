@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
+"http://xml.resource.org/authoring/rfc2629.dtd" [
+<!ENTITY RFC2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2617 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2617.xml">
+<!ENTITY UMA PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/Home">
+<!ENTITY UMAreqs PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/UMA+Requirements">
+<!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
+<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+]>
+<rfc category="std" docName="draft-catalano-uma-claim-profiles-00"
+     ipr="trust200902">
+  <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
+  <?rfc toc='yes' ?>
+
+  <?rfc tocdepth='4' ?>
+
+  <?rfc symrefs='yes' ?>
+
+  <?rfc sortrefs='yes' ?>
+
+  <?rfc compact='yes' ?>
+
+  <?rfc subcompact='no' ?>
+
+  <front>
+    <title abbrev="UMA Core">Claim Profiles for User-Managed Access
+    (UMA)</title>
+
+    <author fullname="Domenico Catalano" initials="D" role="editor"
+            surname="Catalano">
+      <organization>MIT</organization>
+
+      <address>
+        <email>hardjono@mit.edu</email>
+      </address>
+    </author>
+
+    <date day="1" month="February" year="2014" />
+
+    <abstract>
+      <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
+      resource owners can control protected-resource access by clients
+      operated by arbitrary requesting parties, where the resources reside on
+      any number of resource servers, and where a centralized authorization
+      server governs access based on resource owner policy. This specification
+      defines xxx...</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="introduction" title="Introduction">
+      <t>xxx (point to UMA normatively)</t>
+
+      <section title="Notational Conventions">
+        <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
+        'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this
+        document are to be interpreted as described in <xref
+        target="RFC2119"></xref>.</t>
+
+        <t>Unless otherwise noted, all the protocol properties and values are
+        case sensitive.</t>
+      </section>
+
+      <section anchor="terminology" title="Terminology">
+        <t>This specification introduces the following new terms and
+        enhancements of OAuth term definitions.<list hangIndent="6"
+            style="hanging">
+            <t hangText="xxx"><vspace />xxx</t>
+          </list></t>
+      </section>
+    </section>
+
+    <section anchor="claims-client-sends-oidc"
+             title="Claim Profile: Client Acts as OpenID Connect ID Token Conveyor">
+      <t>In this claim profile, the client, already in possession of an OpenID
+      Connect ID token data structure for the requesting party, sends the ID
+      token to the authorization server. Following is a summary:<list
+          style="symbols">
+          <t>Identifying URI:
+          http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-oidc-1.0</t>
+
+          <t>Profile author and contact information: Mike Schwartz
+          (mike@gluu.org)</t>
+
+          <t>Updates or obsoletes: None; this profile is new.</t>
+
+          <t>Syntax and semantics of claim data: As defined below. The claim
+          data format leverages the OpenID Connect ID token syntax and the
+          reserved claims defined in that specification.</t>
+
+          <t>Claims gathering method: As defined below.</t>
+
+          <t>Error states: None additional.</t>
+
+          <t>Security and privacy considerations: The authorization server and
+          client are assumed to operate in an ecosystem where a relationship
+          between them that enables trust in the conveyed claims has been
+          established out of band.</t>
+
+          <t>Binding obligations: Binding obligations that apply to the use of
+          this claim profile are documented in <xref
+          target="UMA-obligations"></xref>.</t>
+
+          <t>Conformance considerations: ???</t>
+        </list></t>
+
+      <t>If an authorization server supports this claim profile, it MUST
+      declare use of it by supplying the "client-idtoken-oidc-1.0" value for
+      one of its "claim_profiles_supported" values in its configuration
+      data.</t>
+
+      <t>This profile involves an extension to the authorization API, and a
+      corresponding extension to the configuration data. The API is extended
+      to include a claims conveyance endpoint, which, like other authorization
+      API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT.
+      The authorization server MAY declare the endpoint URI in the value of a
+      claims_endpoint property in the configuration data.</t>
+
+      <t>The client MUST send the ID token by using POST at the claims
+      conveyance endpoint, accompanied by an AAT in the header and
+      JSON-encoded "rpt" and "ticket" properties in the body. The
+      authorization server MUST be able to utilize at least all of the
+      reserved claims that might appear in an ID token, as defined in <xref
+      target="OIDCCore"></xref>, in evaluating policy and adding authorization
+      data to RPTs.</t>
+
+      <figure>
+        <preamble>For example:</preamble>
+
+        <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: as.example.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+
+{
+   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
+}
+]]></artwork>
+      </figure>
+    </section>
+
+    <section anchor="claims-client-sends-saml"
+             title="Claim Profile: Client Acts as SAML Assertion Conveyor">
+      <t>In this claim profile, the client, already in possession of a SAML
+      assertion data structure for the requesting party, sends the assertion
+      to the authorization server. Following is a summary:<list
+          style="symbols">
+          <t>Identifying URI:
+          http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-saml-1.0</t>
+
+          <t>Profile author and contact information: Domenico Catalano
+          (email...)</t>
+
+          <t>Updates or obsoletes: None; this profile is new.</t>
+
+          <t>Syntax and semantics of claim data: As defined below. The claim
+          data format leverages the OpenID Connect ID token syntax and the
+          reserved claims defined in that specification.</t>
+
+          <t>Claims gathering method: As defined below.</t>
+
+          <t>Error states: None additional.</t>
+
+          <t>Security and privacy considerations: The authorization server and
+          client are assumed to operate in an ecosystem where a relationship
+          between them that enables trust in the conveyed claims has been
+          established out of band.</t>
+
+          <t>Binding obligations: Binding obligations that apply to the use of
+          this claim profile are documented in <xref
+          target="UMA-obligations"></xref>.</t>
+
+          <t>Conformance considerations: ???</t>
+        </list></t>
+
+      <t>If an authorization server supports this claim profile, it MUST
+      declare use of it by supplying the "client-idtoken-oidc-1.0" value for
+      one of its "claim_profiles_supported" values in its configuration
+      data.</t>
+
+      <t>This profile involves an extension to the authorization API, and a
+      corresponding extension to the configuration data. The API is extended
+      to include a claims conveyance endpoint, which, like other authorization
+      API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT.
+      The authorization server MAY declare the endpoint URI in the value of a
+      claims_endpoint property in the configuration data.</t>
+
+      <t>The client MUST send the ID token by using POST at the claims
+      conveyance endpoint, accompanied by an AAT in the header and
+      JSON-encoded "rpt" and "ticket" properties in the body. The
+      authorization server MUST be able to utilize at least all of the
+      reserved claims that might appear in an ID token, as defined in <xref
+      target="OIDCCore"></xref>, in evaluating policy and adding authorization
+      data to RPTs.</t>
+
+      <figure>
+        <preamble>For example:</preamble>
+
+        <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: as.example.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+
+{
+   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
+}
+]]></artwork>
+      </figure>
+    </section>
+
+    <section anchor="claims-as-rp-oidc"
+             title="Claim Profile: Authorization Server Acts as OpenID Connect Relying Party">
+      <t>In this claim profile, the client redirects the end-user requesting
+      party to the authorization server, and the authorization server gathers
+      claims from the requesting party by serving as a relying party to one or
+      more OpenID Connect identity providers before redirecting the end-user
+      back. Following is a summary:<list style="symbols">
+          <t>Identifying URI:
+          http://docs.kantarainitiative.org/uma/profiles/claim-as-rp-oidc-1.0</t>
+
+          <t>Profile author and contact information: Thomas Hardjono
+          (hardjono@mit.edu)</t>
+
+          <t>Updates or obsoletes: None; this profile is new.</t>
+
+          <t>Syntax and semantics of claim data: As defined below. The claim
+          data format leverages the OpenID Connect protocol and the reserved
+          claims defined in that specification.</t>
+
+          <t>Claims gathering method: As defined below.</t>
+
+          <t>Error states: None additional.</t>
+
+          <t>Security and privacy considerations: None additional.</t>
+
+          <t>Binding obligations: Binding obligations that apply to the use of
+          this claim profile are documented in <xref
+          target="UMA-obligations"></xref>.</t>
+
+          <t>Conformance considerations: ???</t>
+        </list></t>
+
+      <t>If an authorization server supports this claim profile, it MUST
+      declare use of it by supplying the "as-rp-oidc-1.0" value for one of its
+      "claim_profiles_supported" values in its configuration data.</t>
+
+      <t>The authorization server MUST do the following:<list style="symbols">
+          <t>Serve as a conforming OpenID Relying Party according to <xref
+          target="OIDCCore"></xref></t>
+
+          <t>Be able to utilize at least all of the reserved claims defined in
+          <xref target="OIDCCore"></xref> in evaluating policy and adding
+          authorization data to RPTs</t>
+
+          <t>Use the OpenID Connect "redirect_uri" and "state" request
+          parameters as appropriate</t>
+        </list></t>
+
+      <t>The authorization server then uses any conforming OpenID Connect
+      mechanisms and typical user interfaces for engaging with the UserInfo
+      endpoints of OpenID Providers and Claims Providers, potentially allowing
+      for the delivery of "trusted claims" (such as a verified email address
+      or a date or birth) on which authorization policy for access may
+      depend.</t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This document makes no request of IANA.</t>
+    </section>
+
+    <section anchor="Acknowledgments" title="Acknowledgments">
+      <t>The current editor of this specification is Domenico Catalano of
+      Oracle. The following people are co-authors:<list style="symbols">
+          <t>???</t>
+        </list></t>
+
+      <t>Additional contributors to this specification include the Kantara UMA
+      Work Group participants, a list of whom can be found at <xref
+      target="UMAnitarians"></xref>.</t>
+    </section>
+
+    <section title="Issues">
+      <t>Issues are captured at the project's GitHub site (<eref
+      target="https://github.com/xmlgrrl/UMA-Specifications/issues"></eref>).</t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
+
+      <reference anchor="OAuth2" target="http://tools.ietf.org/html/rfc6749">
+        <front>
+          <title>The OAuth 2.0 Authorization Framework</title>
+
+          <author initials="D." surname="Hardt">
+            <organization>IETF</organization>
+          </author>
+
+          <date day="" month="October" year="2012" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-resource-reg"
+                 target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
+        <front>
+          <title>OAuth 2.0 Resource Set Registration</title>
+
+          <author initials="T." surname="Hardjono">
+            <organization>IETF</organization>
+          </author>
+
+          <date day="27" month="December" year="2012" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-introspection"
+                 target="http://tools.ietf.org/html/draft-richer-oauth-introspection">
+        <front>
+          <title>OAuth Token Introspection</title>
+
+          <author initials="J." surname="Richer">
+            <organization></organization>
+          </author>
+
+          <date day="1" month="May" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-bearer"
+                 target="http://tools.ietf.org/html/rfc6750">
+        <front>
+          <title>The OAuth 2.0 Authorization Framework: Bearer Token
+          Usage</title>
+
+          <author fullname="M. Jones">
+            <organization></organization>
+          </author>
+
+          <date day="" month="October" year="2012" />
+        </front>
+      </reference>
+
+      <reference anchor="hostmeta" target="http://tools.ietf.org/html/rfc6415">
+        <front>
+          <title>Web Host Metadata</title>
+
+          <author initials="E." surname="Hammer-Lahav">
+            <organization>Yahoo!</organization>
+          </author>
+
+          <date day="" month="October" year="2011" />
+        </front>
+      </reference>
+
+      &RFC4627;
+
+      <reference anchor="DynClientReg"
+                 target="http://tools.ietf.org/html/draft-richer-oauth-dyn-reg-core">
+        <front>
+          <title>OAuth 2.0 Core Dynamic Client Registration</title>
+
+          <author initials="J." surname="Richer">
+            <organization>IETF</organization>
+          </author>
+
+          <date day="29" month="August" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="OIDCCore"
+                 target="http://openid.net/specs/openid-connect-core-1_0.html">
+        <front>
+          <title>OpenID Connect Core 1.0</title>
+
+          <author initials="N." surname="Sakimura">
+            <organization></organization>
+          </author>
+
+          <date day="19" month="December" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="UMA-obligations"
+                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Trust+Model">
+        <front>
+          <title>Binding Obligations on UMA Participants</title>
+
+          <author initials="E." surname="Maler">
+            <organization></organization>
+          </author>
+
+          <date day="25" month="January" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-threat"
+                 target="http://tools.ietf.org/html/rfc6819">
+        <front>
+          <title>OAuth 2.0 Threat Model and Security Considerations</title>
+
+          <author initials="T." surname="Lodderstedt">
+            <organization></organization>
+          </author>
+
+          <date day="" month="January" year="2013" />
+        </front>
+      </reference>
+    </references>
+
+    <references title="Informative References">
+      <reference anchor="UMA-usecases"
+                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">
+        <front>
+          <title>UMA Scenarios and Use Cases</title>
+
+          <author initials="E." surname="Maler">
+            <organization>Kantara</organization>
+          </author>
+
+          <date month="October" year="2010" />
+        </front>
+      </reference>
+
+      <reference anchor="UMA-casestudies"
+                 target="http://kantarainitiative.org/confluence/display/uma/Case+Studies">
+        <front>
+          <title>UMA Case Studies</title>
+
+          <author initials="E." surname="Maler">
+            <organization></organization>
+          </author>
+
+          <date day="30" month="March" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="UMAnitarians"
+                 target="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">
+        <front>
+          <title>UMA Participant Roster</title>
+
+          <author initials="E." surname="Maler">
+            <organization>Maler</organization>
+          </author>
+
+          <date day="1" month="April" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-linktypes"
+                 target="http://tools.ietf.org/html/draft-wmills-oauth-lrdd">
+        <front>
+          <title>Link Type Registrations for OAuth 2</title>
+
+          <author initials="W." surname="Mills">
+            <organization></organization>
+          </author>
+
+          <date day="5" month="February" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-meta"
+                 target="http://tools.ietf.org/html/draft-sakimura-oauth-meta">
+        <front>
+          <title>JSON Metadata for OAuth Responses</title>
+
+          <author initials="N." surname="Sakimura">
+            <organization></organization>
+          </author>
+
+          <date day="12" month="February" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="OAuth-SAML"
+                 target="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">
+        <front>
+          <title>SAML 2.0 Bearer Assertion Profiles for OAuth 2.0</title>
+
+          <author initials="B." surname="Campbell">
+            <organization>Campbell</organization>
+          </author>
+
+          <date day="9" month="December" year="2013" />
+        </front>
+      </reference>
+
+      <reference anchor="UMA-PbD"
+                 target="http://kantarainitiative.org/confluence/display/uma/Privacy+by+Design+Implications+of+UMA">
+        <front>
+          <title>Privacy by Design Implications of UMA</title>
+
+          <author initials="B." surname="Maler"></author>
+
+          <date day="9" month="December" year="2013" />
+        </front>
+      </reference>
+    </references>
+
+    <section anchor="History" title="Document History">
+      <t>NOTE: To be removed by RFC editor before publication as an RFC.</t>
+
+      <t>See <eref
+      target="http://kantarainitiative.org/confluence/display/uma/UMA+1.0+Core+Protocol"></eref>
+      for a list of code-breaking and other major changes made to this
+      specification at various revision points.</t>
+    </section>
+  </back>
+</rfc>
