@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-09d"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-09e"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="1" month="February" year="2014" />
+    <date day="12" month="February" year="2014" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -1062,7 +1062,7 @@ HTTP/1.1 200 OK
             dynamically through <xref target="DynClientReg"></xref>;
             alternatively, they MAY use a static process.</t>
 
-            <t>The client uses the authorization API to acquire an AAT.</t>
+            <t>The client acquires an AAT.</t>
 
             <t>The client uses the authorization API to acquire an RPT. See
             <xref target="authz-permission-token"></xref> for more detail.</t>
@@ -1081,7 +1081,8 @@ HTTP/1.1 200 OK
           authorization server, or if it has lost control of a previously
           issued RPT and needs a refreshed one. It obtains an RPT by using the
           authorization API, performing a POST on the RPT endpoint and
-          supplying its AAT in the header.</t>
+          supplying its AAT in the header. No body is expected; if a body is
+          present, the authorization server MAY ignore it.</t>
 
           <figure>
             <preamble>Example of a request message containing an
@@ -1168,9 +1169,29 @@ Authorization: Bearer jwfLG53^sad$#f
           or dependent on requesting-party features (for example, dictating
           access based on whether they are over 18 or present a certain
           identifier). Such requesting-party features can potentially be
-          collected in a claims-gathering flow. If the authorization server
-          does not add the requested authorization data, it responds using the
-          appropriate HTTP status code and UMA error code (see <xref
+          collected in a claims-gathering flow.</t>
+
+          <t>Once the authorization server associates authorization data with
+          the RPT, it responds with an HTTP 201 (Created) status code and the
+          relevant RPT.</t>
+
+          <figure>
+            <preamble>Example when the authorization data has been
+            added:</preamble>
+
+            <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv"
+}
+]]></artwork>
+          </figure>
+
+          <t>If the authorization server does not add the requested
+          authorization data, it responds using the appropriate HTTP status
+          code and UMA error code (see <xref
           target="uma-error-response"></xref>): <list style="hanging">
               <t hangText="invalid_ticket">The provided ticket was not found
               at the authorization server. The authorization server SHOULD
@@ -1196,7 +1217,7 @@ Authorization: Bearer jwfLG53^sad$#f
             </list></t>
 
           <figure>
-            <preamble>For example:</preamble>
+            <preamble>Example when the ticket has expired:</preamble>
 
             <artwork><![CDATA[
 HTTP/1.1 400 Bad Request
@@ -1251,27 +1272,6 @@ Cache-Control: no-store
         in a questionnaire, or complete a purchase. Several of these
         operations could even be required, where the order is treated as
         significant for evaluating resource owner policies.</t>
-
-        <t>If a claim profile defines a process whereby the client redirects
-        an end-user to the authorization server in order to continue the
-        process of claims-gathering, the profile MUST define a way for the
-        redirect message to include a URI query parameter with the name
-        "ticket" whose value conveys the permission ticket for which the
-        need_claims error was received; for example,
-        "ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de". The profile MUST also
-        provide the following capabilities:<list style="hanging">
-            <t hangText="redirect URI">A means by which the client MUST supply
-            the URI to which the authorization server MUST redirect the
-            end-user requesting party at the end of the claims-gathering
-            process.</t>
-
-            <t hangText="callback URI">A means by which the client OPTIONALLY
-            supplies a callback URI for the authorization server to use.</t>
-
-            <t hangText="state">A means by which the client SHOULD supply an
-            opaque value used to maintain state between the request and the
-            callback; this serves as a protection against XSRF attacks.</t>
-          </list></t>
       </section>
     </section>
 
@@ -1337,7 +1337,6 @@ Cache-Control: no-store
 ...
 
 {
-  "status": "error",
   "error": "invalid_request",
   "error_description": "There is already a resource with this identifier.",
   "error_uri": "http://as.example.com/errors/resource_exists"
