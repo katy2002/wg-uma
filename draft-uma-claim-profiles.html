@@ -412,7 +412,7 @@
 </tr>
 <tr>
   <td class="left">Internet-Draft</td>
-  <td class="right">MIT</td>
+  <td class="right">Oracle</td>
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
@@ -497,7 +497,7 @@
   <li>Conformance considerations: ???</li>
 </ul>
 <p id="rfc.section.2.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the "client-idtoken-oidc-1.0" value for one of its "claim_profiles_supported" values in its configuration data.</p>
-<p id="rfc.section.2.p.3">This profile involves an extension to the authorization API, and a corresponding extension to the configuration data. The API is extended to include a claims conveyance endpoint, which, like other authorization API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT. The authorization server MAY declare the endpoint URI in the value of a claims_endpoint property in the configuration data.</p>
+<p id="rfc.section.2.p.3">This profile involves an extension to the authorization API, and a corresponding extension to the configuration data. The API is extended to include a claims conveyance endpoint, which, like other authorization API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT.  The authorization server MAY declare the endpoint URI in the value of a claims_endpoint property in the configuration data.</p>
 <p id="rfc.section.2.p.4">The client MUST send the ID token by using POST at the claims conveyance endpoint, accompanied by an AAT in the header and JSON-encoded "rpt" and "ticket" properties in the body. The authorization server MUST be able to utilize at least all of the reserved claims that might appear in an ID token, as defined in <a href="#OIDCCore">[OIDCCore]</a>, in evaluating policy and adding authorization data to RPTs.</p>
 <p>For example:</p>
 <pre>POST /rpt_authorization HTTP/1.1
@@ -516,18 +516,18 @@ Authorization: Bearer jwfLG53^sad$#f
 
 <ul>
   <li>Identifying URI: http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-saml-1.0</li>
-  <li>Profile author and contact information: Domenico Catalano (email...)</li>
+  <li>Profile author and contact information: Domenico Catalano (domenico.catalano@oracle.com)</li>
   <li>Updates or obsoletes: None; this profile is new.</li>
-  <li>Syntax and semantics of claim data: As defined below. The claim data format leverages the OpenID Connect ID token syntax and the reserved claims defined in that specification.</li>
+  <li>Syntax and semantics of claim data: As defined below. The claim data format leverages the SAML token syntax and the reserved claims defined in that specification.</li>
   <li>Claims gathering method: As defined below.</li>
   <li>Error states: None additional.</li>
   <li>Security and privacy considerations: The authorization server and client are assumed to operate in an ecosystem where a relationship between them that enables trust in the conveyed claims has been established out of band.</li>
   <li>Binding obligations: Binding obligations that apply to the use of this claim profile are documented in <a href="#UMA-obligations">[UMA-obligations]</a>.</li>
   <li>Conformance considerations: ???</li>
 </ul>
-<p id="rfc.section.3.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the "client-idtoken-oidc-1.0" value for one of its "claim_profiles_supported" values in its configuration data.</p>
-<p id="rfc.section.3.p.3">This profile involves an extension to the authorization API, and a corresponding extension to the configuration data. The API is extended to include a claims conveyance endpoint, which, like other authorization API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT. The authorization server MAY declare the endpoint URI in the value of a claims_endpoint property in the configuration data.</p>
-<p id="rfc.section.3.p.4">The client MUST send the ID token by using POST at the claims conveyance endpoint, accompanied by an AAT in the header and JSON-encoded "rpt" and "ticket" properties in the body. The authorization server MUST be able to utilize at least all of the reserved claims that might appear in an ID token, as defined in <a href="#OIDCCore">[OIDCCore]</a>, in evaluating policy and adding authorization data to RPTs.</p>
+<p id="rfc.section.3.p.2">If an authorization server supports this claim profile, it MUST declare use of it by supplying the client-idtoken-saml-1.0 value for one of its "claim_profiles_supported" values in its configuration data.</p>
+<p id="rfc.section.3.p.3">This profile involves an extension to the authorization API, and a corresponding extension to the configuration data. The API is extended to include a claims conveyance endpoint, which, like other authorization API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT.  The authorization server MAY declare the endpoint URI in the value of a claims_endpoint property in the configuration data.</p>
+<p id="rfc.section.3.p.4">The client MUST send the ID token by using POST at the claims conveyance endpoint, accompanied by an AAT in the header and SAML assertion and "ticket" properties in the body. The authorization server MUST be able to utilize at least all of the reserved claims that might appear in an ID token, as defined in <a href="#OASIS.saml-core-2.0-os">[OASIS.saml-core-2.0-os]</a>, in evaluating policy and adding authorization data to RPTs.</p>
 <p>For example:</p>
 <pre>POST /rpt_authorization HTTP/1.1
 Host: as.example.com
@@ -535,10 +535,86 @@ Authorization: Bearer jwfLG53^sad$#f
 ...
 
 {
-   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
    "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
-   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
 }
+&lt;saml:Assertion
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    ID="_33776a319493ad607b7ab3e689482e45"
+    Version="2.0"
+    IssueInstant="2006-07-17T20:31:41"&gt;
+    &lt;saml:Issuer&gt;https://idp.example.org/SAML2&lt;/saml:Issuer&gt;
+    &lt;ds:Signature&gt;...&lt;/ds:Signature&gt;
+    &lt;saml:Subject&gt;
+      &lt;saml:NameID
+        Format="urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName"&gt;
+        CN=trscavo@uiuc.edu,OU=User,O=NCSA-TEST,C=US
+      &lt;/saml:NameID&gt;
+      &lt;saml:SubjectConfirmation
+        Method="urn:oasis:names:tc:SAML:2.0:cm:holder-of-key"&gt;
+        &lt;saml:SubjectConfirmationData&gt;
+          &lt;ds:KeyInfo&gt;
+            &lt;ds:X509Data&gt;
+              &lt;!-- principal's X.509 cert --&gt;
+              &lt;ds:X509Certificate&gt;
+  MIICiDCCAXACCQDE+9eiWrm62jANBgkqhkiG9w0BAQQFADBFMQswCQYDVQQGEwJV
+  UzESMBAGA1UEChMJTkNTQS1URVNUMQ0wCwYDVQQLEwRVc2VyMRMwEQYDVQQDEwpT
+  UC1TZXJ2aWNlMB4XDTA2MDcxNzIwMjE0MVoXDTA2MDcxODIwMjE0MVowSzELMAkG
+  A1UEBhMCVVMxEjAQBgNVBAoTCU5DU0EtVEVTVDENMAsGA1UECxMEVXNlcjEZMBcG
+  A1UEAwwQdHJzY2F2b0B1aXVjLmVkdTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkC
+  gYEAv9QMe4lRl3XbWPcflbCjGK9gty6zBJmp+tsaJINM0VaBaZ3t+tSXknelYife
+  nCc2O3yaX76aq53QMXy+5wKQYe8Rzdw28Nv3a73wfjXJXoUhGkvERcscs9EfIWcC
+  g2bHOg8uSh+Fbv3lHih4lBJ5MCS2buJfsR7dlr/xsadU2RcCAwEAATANBgkqhkiG
+  9w0BAQQFAAOCAQEAdyIcMTob7TVkelfJ7+I1j0LO24UlKvbLzd2OPvcFTCv6fVHx
+  Ejk0QxaZXJhreZ6+rIdiMXrEzlRdJEsNMxtDW8++sVp6avoB5EX1y3ez+CEAIL4g
+  cjvKZUR4dMryWshWIBHKFFul+r7urUgvWI12KbMeE9KP+kiiiiTskLcKgFzngw1J
+  selmHhTcTCrcDocn5yO2+d3dog52vSOtVFDBsBuvDixO2hv679JR6Hlqjtk4GExp
+  E9iVI0wdPE038uQIJJTXlhsMMLvUGVh/c0ReJBn92Vj4dI/yy6PtY/8ncYLYNkjg
+  oVN0J/ymOktn9lTlFyTiuY4OuJsZRO1+zWLy9g==
+              &lt;/ds:X509Certificate&gt;
+            &lt;/ds:X509Data&gt;
+          &lt;/ds:KeyInfo&gt;
+        &lt;/saml:SubjectConfirmationData&gt;
+      &lt;/saml:SubjectConfirmation&gt;
+    &lt;/saml:Subject&gt;
+    &lt;!-- assertion lifetime constrained by principal's X.509 cert --&gt;
+    &lt;saml:Conditions
+      NotBefore="2006-07-17T20:31:41"
+      NotOnOrAfter="2006-07-18T20:21:41"&gt;
+    &lt;/saml:Conditions&gt;
+    &lt;saml:AuthnStatement
+      AuthnInstant="2006-07-17T20:31:41"&gt;
+      &lt;saml:AuthnContext&gt;
+        &lt;saml:AuthnContextClassRef&gt;
+            urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient
+        &lt;/saml:AuthnContextClassRef&gt;
+      &lt;/saml:AuthnContext&gt;
+    &lt;/saml:AuthnStatement&gt;
+    &lt;saml:AttributeStatement&gt;
+      &lt;saml:Attribute
+        xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500"
+        x500:Encoding="LDAP"
+        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+        Name="urn:oid:2.5.4.42"
+        FriendlyName="givenName"&gt;
+        &lt;saml:AttributeValue
+          xsi:type="xs:string"&gt;Bob&lt;/saml:AttributeValue&gt;
+      &lt;/saml:Attribute&gt;
+      &lt;saml:Attribute
+        xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500"
+        x500:Encoding="LDAP"
+        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+        Name="urn:oid:1.3.6.1.4.1.1466.115.121.1.26"
+        FriendlyName="mail"&gt;
+        &lt;saml:AttributeValue
+          xsi:type="xs:string"&gt;bob@gmail.com&lt;/saml:AttributeValue&gt;
+      &lt;/saml:Attribute&gt;
+    &lt;/saml:AttributeStatement&gt;
+  &lt;/saml:Assertion&gt;
+
+
 </pre>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#claims-as-rp-oidc" id="claims-as-rp-oidc">Claim Profile: Authorization Server Acts as OpenID Connect Relying Party</a></h1>
 <p id="rfc.section.4.p.1">In this claim profile, the client redirects the end-user requesting party to the authorization server, and the authorization server gathers claims from the requesting party by serving as a relying party to one or more OpenID Connect identity providers before redirecting the end-user back. Following is a summary:</p>
@@ -583,6 +659,12 @@ Authorization: Bearer jwfLG53^sad$#f
         <b id="DynClientReg">[DynClientReg]</b>
       </td>
       <td class="top"><a title="IETF">Richer, J.</a>, "<a href="http://tools.ietf.org/html/draft-richer-oauth-dyn-reg-core">OAuth 2.0 Core Dynamic Client Registration</a>", August 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OASIS.saml-core-2.0-os">[OASIS.saml-core-2.0-os]</b>
+      </td>
+      <td class="top"><a>Cantor, S.</a>, <a>Kemp, J.</a>, <a>Philpott, R.</a> and <a>E. Maler</a>, "<a href="http://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf">Assertions and Protocols for the OASIS Security Assertion Markup Language (SAML) V2.0</a>", March 2005.</td>
     </tr>
     <tr><td class="reference"><b id="OAuth-bearer">[OAuth-bearer]</b></td><td class="top"><a href="http://tools.ietf.org/html/rfc6750">The OAuth 2.0 Authorization Framework: Bearer Token Usage</a>", October 2012.</td>, "</tr>
     <tr>
@@ -702,7 +784,7 @@ Authorization: Bearer jwfLG53^sad$#f
 		<span class="family-name">Catalano</span>
 	  </span>
 	</span>
-	<span class="org vcardline">MIT</span>
+	<span class="org vcardline">Oracle</span>
 	<span class="adr">
 	  
 	  <span class="vcardline">
@@ -712,7 +794,7 @@ Authorization: Bearer jwfLG53^sad$#f
 	  </span>
 	  <span class="country-name vcardline"></span>
 	</span>
-	<span class="vcardline">EMail: <a href="mailto:hardjono@mit.edu">hardjono@mit.edu</a></span>
+	<span class="vcardline">EMail: <a href="mailto:domenico.catalano@oracle.com">domenico.catalano@oracle.com</a></span>
 
   </address>
 </div>
