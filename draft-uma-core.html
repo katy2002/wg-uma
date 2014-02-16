@@ -424,8 +424,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Hardjono, T., Ed." />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-hardjono-oauth-umacore-09e" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-2-12" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-hardjono-oauth-umacore-09f" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-2-16" />
   <meta name="dct.abstract" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy." />
   <meta name="description" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy." />
 
@@ -446,10 +446,10 @@
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">February 12, 2014</td>
+  <td class="right">February 16, 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: August 16, 2014</td>
+  <td class="left">Expires: August 20, 2014</td>
   <td class="right"></td>
 </tr>
 
@@ -458,7 +458,7 @@
   </table>
 
   <p class="title">User-Managed Access (UMA) Profile of OAuth 2.0<br />
-  <span class="filename">draft-hardjono-oauth-umacore-09e</span></p>
+  <span class="filename">draft-hardjono-oauth-umacore-09f</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -470,7 +470,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on August 16, 2014.</p>
+<p>This Internet-Draft will expire on August 20, 2014.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -907,9 +907,9 @@ Content-Type: application/json
 <p id="rfc.section.3.4.1.p.3">If the AAT provided in the header is the same as one provided for a previously issued still-valid RPT by this authorization server, the authorization server invalidates the old RPT and issues a new one.</p>
 <p id="rfc.section.3.4.1.p.4">On first issuance, the RPT is associated with no authorization data and thus does not convey any authorizations for access.</p>
 <h1 id="rfc.section.3.4.2"><a href="#rfc.section.3.4.2">3.4.2.</a> <a href="#r-am-authz-scope" id="r-am-authz-scope">Client Asks for Authorization Data</a></h1>
-<p id="rfc.section.3.4.2.p.1">Once in possession of an AAT for this authorization server, an RPT that applies to this requesting party for this resource server and this authorization server, and a permission ticket, the client uses the authorization API to ask the authorization server to give it suitable authorization data for the sought-for access. It performs a POST on the authorization request endpoint, supplying its own AAT in the header and its RPT and the permission ticket in a JSON object with properties "rpt" and ticket", respectively.</p>
+<p id="rfc.section.3.4.2.p.1">Once in possession of an AAT for this authorization server, an RPT that applies to this requesting party for this resource server and this authorization server, and a permission ticket, the client uses the authorization API to ask the authorization server to give it suitable authorization data for the sought-for access. It performs a POST on the authorization request endpoint, supplying its own AAT in the header and its RPT and the permission ticket in a JSON object with properties "rpt" and "ticket", respectively.</p>
 <p>Example of a request message containing an AAT, an RPT, and a permission ticket:</p>
-<pre>POST /token_status HTTP/1.1
+<pre>POST /authz_request HTTP/1.1
 Host: as.example.com
 Authorization: Bearer jwfLG53^sad$#f
 ...
@@ -920,8 +920,8 @@ Authorization: Bearer jwfLG53^sad$#f
 }</pre>
 <p id="rfc.section.3.4.2.p.2">The authorization server uses the ticket to look up the details of the previously registered requested permission, maps the requested permission to operative resource owner policies based on the resource set identifier and scopes in it, undergoes any claims-gathering flows required (see <a href="#authz-flows">Section 3.5</a>), and ultimately responds to the request. The resource owner's policies at the authorization server amount to an implicit authorization grant in governing the issuance of authorization data. (The authorization server is also free to enable the resource owner to set policies that require the owner to provide a run-time authorization grant in the form of a consent interaction, mediated by the authorization server. This setting of policies and gathering of consent is outside the scope of this specification.)</p>
 <p id="rfc.section.3.4.2.p.3">The authorization server MUST base the addition of authorization data to RPTs on user policies. The nature of these policies is outside the scope of UMA, but generally speaking, they can be thought of as either independent of requesting-party features (for example, dictating access based on time of day or client identity) or dependent on requesting-party features (for example, dictating access based on whether they are over 18 or present a certain identifier). Such requesting-party features can potentially be collected in a claims-gathering flow.</p>
-<p id="rfc.section.3.4.2.p.4">Once the authorization server associates authorization data with the RPT, it responds with an HTTP 201 (Created) status code and the relevant RPT.</p>
-<p>Example when the authorization data has been added:</p>
+<p id="rfc.section.3.4.2.p.4">Once the authorization server associates authorization data with the RPT, it responds with an HTTP 201 (Created) status code. If the authorization server chooses to invalidate the original RPT in response to the request and to issue a new one to be associated with the resulting authorization data, it MUST provide that refreshed RPT in the body.</p>
+<p>Example when the authorization data has been added and the RPT has been refreshed:</p>
 <pre>
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -929,6 +929,7 @@ Content-Type: application/json
 {
   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv"
 }
+
 </pre>
 <p id="rfc.section.3.4.2.p.5">If the authorization server does not add the requested authorization data, it responds using the appropriate HTTP status code and UMA error code (see <a href="#uma-error-response">Section 4.2</a>): </p>
 
@@ -1223,7 +1224,7 @@ Cache-Control: no-store
       <td class="reference">
         <b id="UMAclaims">[UMAclaims]</b>
       </td>
-      <td class="top"><a title="Oracle">Catalano, D.</a>, "<a>Claim Profiles for User-Managed Access (UMA)</a>", February 2012.</td>
+      <td class="top"><a title="Oracle">Catalano, D.</a>, "<a href="http://docs.kantarainitiative.org/uma/draft-uma-claim-profiles.html">Claim Profiles for User-Managed Access (UMA)</a>", February 2014.</td>
     </tr>
     <tr>
       <td class="reference">
