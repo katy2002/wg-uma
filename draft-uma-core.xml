@@ -44,7 +44,8 @@
       resource owners can control protected-resource access by clients
       operated by arbitrary requesting parties, where the resources reside on
       any number of resource servers, and where a centralized authorization
-      server governs access based on resource owner policy.</t>
+      server governs access based on resource owner policy.Met at advisory in
+      Feb 2014.</t>
     </abstract>
   </front>
 
