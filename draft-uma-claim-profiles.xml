@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-catalano-uma-claim-profiles-00"
+<rfc category="std" docName="draft-catalano-uma-claim-framework-00a"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -25,19 +25,26 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="UMA Core">Claim Profiles for User-Managed Access
-    (UMA)</title>
+    <title abbrev="UMA Core">Generic Framework for UMA Claim Profiles</title>
 
     <author fullname="Domenico Catalano" initials="D" role="editor"
             surname="Catalano">
-      <organization>MIT</organization>
+      <organization>Oracle</organization>
 
       <address>
-        <email>hardjono@mit.edu</email>
+        <email>domenico.catalano@oracle.com</email>
       </address>
     </author>
 
-    <date day="1" month="February" year="2014" />
+    <author fullname="Maciej Machulak" initials="M" surname="Machulak">
+      <organization>Cloud Identity</organization>
+
+      <address>
+        <email>maciej.machulak@cloudidentity.co.uk</email>
+      </address>
+    </author>
+
+    <date day="4" month="March" year="2014" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -45,13 +52,89 @@
       operated by arbitrary requesting parties, where the resources reside on
       any number of resource servers, and where a centralized authorization
       server governs access based on resource owner policy. This specification
-      defines xxx...</t>
+      defines a generic framework for building UMA claim profiles that can be
+      used by client applications to obtain the necessary authorization from
+      authorization servers to access protected resources on resource
+      servers.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>xxx (point to UMA normatively)</t>
+      <t>User-Managed Access <xref target="UMA"></xref> is a profile of OAuth
+      2.0. UMA defines how resource owners can control protected-resource
+      access by clients operated by arbitrary requesting parties, where the
+      resources reside on any number of resource servers, and where a
+      centralized authorization server governs access based on resource owner
+      policy. This specification defines a generic framework for building UMA
+      claim profiles that can be used by client applications to obtain the
+      necessary authorization from authorization servers to access protected
+      resources on resource servers.</t>
+
+      <t>Using this framework, new profiles can be easily added to meet
+      requirements of particular deployments of UMA. Profiles built on this
+      framework will share certain interoperability and ease of development
+      properties (of both authorization servers and clients). This
+      specification also provides some profiles that build on the framework.
+      Third-party profiles can build on the framework directly or on these
+      sample profiles, as they wish.</t>
+
+      <t>The framework introduces different interaction patterns that the
+      client and authorization server can use, and different roles they can
+      play, in order to gather claims about the requesting party:<list
+          style="symbols">
+          <t>The <spanx style="bold">delivery</spanx> interaction pattern
+          leverages a <spanx style="bold">claims-aware client</spanx> that is
+          able to deliver claims about the requesting party (or information
+          about how to get claims) directly to the authorization server. The
+          information delivered can be an identity or claims token, data that
+          aids in discovery of a claims endpoint, etc. The authorization
+          server then plays the role of a <spanx style="bold">claims receiver</spanx>
+          (and/or activates a <spanx style="bold">claims connector</spanx>
+          based on the information, for gathering claims itself without
+          requesting party involvement).</t>
+
+          <t>The <spanx style="bold">redirect</spanx> pattern assumes a <spanx
+          style="bold">claims-unaware client</spanx> whose only option (other
+          than failing entirely) is to redirect the end-user requesting party
+          to the authorization server. On receiving the end user, the
+          authorization server activates a <spanx style="bold">claims connector</spanx>
+          for gathering the necessary claims with the user's involvement,
+          using any method or combination of methods. In this role, the
+          authorization server may be a relying party in a federated identity
+          interaction, or it may connect to a directory or other user
+          repository. After the claims-gathering process, the authorization
+          server redirects the user back to the client.</t>
+        </list></t>
+
+      <t>The profiles defined on these interaction patterns are as
+      follows:<list style="symbols">
+          <t>Delivery:<list style="symbols">
+              <t>Client delivers a SAML assertion to the authorization
+              server</t>
+
+              <t>Client delivers OpenID Connect user claims to the
+              authorization server</t>
+            </list></t>
+
+          <t>Redirect:<list style="symbols">
+              <t>Client redirects end-user requesting party to the
+              authorization server (ISSUE: We think this shouldn't specify
+              that the AS is (say) an OpenID Connect RP, because it might want
+              to be "all of the above" simultaneously: allow options for local
+              user login, user form-fill, social sign-in, other IdP sign-in,
+              etc. Does this make sense? It would change the original single
+              profile quite a bit, making it more general.)</t>
+            </list></t>
+        </list></t>
+
+      <t>In all cases, it is assumed that the authorization server evaluates
+      the resource owner's policy for a particular resource set based, at
+      least in part, on the supplied claims. Third parties have the
+      opportunity to further profile the profiles for greater interoperability
+      in particular deployments. An authorization server MAY support any claim
+      profiles, and SHOULD advertise its conformance to those profiles in its
+      configuration data. </t>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
@@ -62,212 +145,456 @@
         <t>Unless otherwise noted, all the protocol properties and values are
         case sensitive.</t>
       </section>
+    </section>
 
-      <section anchor="terminology" title="Terminology">
-        <t>This specification introduces the following new terms and
-        enhancements of OAuth term definitions.<list hangIndent="6"
-            style="hanging">
-            <t hangText="xxx"><vspace />xxx</t>
-          </list></t>
+    <section title="Generic Framework for Claim Profiling">
+      <t>(ISSUE: Put stuff about how need_claims returns significant hints
+      here.)</t>
+
+      <t>An authorization server has an opportunity, when it returns a
+      "need_claims" response to a client asking for authorization, to provide
+      further instructions and hints to the client in this response. </t>
+    </section>
+
+    <section anchor="delivery-framework"
+             title="Delivery Framework for Claim Profiling">
+      <t>In order to support delivery-pattern claim profiles, the
+      authorization request endpoint in the authorization API presented by the
+      authorization server is extended to accept JSON-encoded claims-related
+      data in the body of the request. Along with the "rpt" and "ticket"
+      properties that already need to be provided, a "claims" property appears
+      in addition.</t>
+
+      <t>Common message flow:</t>
+
+      <figure>
+        <preamble>1. The client sends the claims type and its claims directly
+        to the AS</preamble>
+
+        <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+        Host: www.nuveam.com
+        Authorization: Bearer jwfLG53^sad$#f
+        ...
+            
+{
+    "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+    "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+    "claims": [
+        {
+            "type": "CLAIM_TYPE_AS_STRING",
+            "value": {SPECIFIC_SET_OF_CLAIMS_AS_JSON_OBJECT}
+        }
+    ]
+}
+        ]]></artwork>
+      </figure>
+
+      <t>Importantly, the claims MUST be an array of JSON objects. The type
+      field MUST have a String value indicating the type of claims-related
+      data, while the value field MUST be a JSON object specific to that type
+      of claims-related data.</t>
+
+      <figure>
+        <preamble>2. The authorization server informs the client that
+        authorization data has been added</preamble>
+
+        <artwork><![CDATA[HTTP/1.1 201 Created
+    Content-Type: application/json;charset=UTF-8
+        
+    {
+        "rpt":"e6b09a4f434a6a47a65a198652df381a"
+    }
+    ]]></artwork>
+      </figure>
+
+      <figure>
+        <preamble>3. The authorization server informs the client that further
+        claims should be provided to the authorization request
+        endpoint:</preamble>
+
+        <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+        
+{
+    "need_claims":[
+    {
+        "type":"redirect_required",
+        "name":"",
+        "value":""
+    }]
+}
+    ]]></artwork>
+      </figure>
+
+      <figure>
+        <preamble>4. The authorization server informs the client that further
+        claims should be provided (the example below is for SAML
+        assertion)</preamble>
+
+        <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+        
+{
+    "need_claims":[
+    {
+        "type":"claim-client-assertion-saml-1.0",
+        "name":"",
+        "value":""
+    }
+    ]
+}
+    ]]></artwork>
+      </figure>
+
+      <figure>
+        <preamble>5. The authorization server informs the client that the
+        authorization data cannot be added.</preamble>
+
+        <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+        
+{
+    "error":"not_authorized_permission",
+    "error_description":"Authorization data cannot be added"
+}
+    ]]></artwork>
+      </figure>
+
+      <section anchor="client-pull-custom-attr"
+               title="Client provides custom user attributes">
+        <t>TYPE = "custom"</t>
+
+        <t>VALUE = {custom defined}</t>
+
+        <t>In the most trivial setting where the AS and the Client are
+        collocated and have an established trust relationship (in particular,
+        the AS trusts information obtained from the client), then the client
+        can be preconfigured to provide the required information to the AS
+        based on a custom schema. We provide the most trivial example below,
+        where the client application provides a user's identifier (in this
+        case email) to the AS and such identifier is used for policy
+        evaluation.</t>
+
+        <figure>
+          <preamble>Example:</preamble>
+
+          <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: www.nuveam.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+           
+{
+    "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+    "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+    "claims": [
+    {
+        "type": "ci-nuveam-claims",
+        "value": { "email": "bob@company.examle.com" }
+    }
+    ]
+}
+       ]]></artwork>
+        </figure>
+
+        <t>Another example is where the client provides a richer set of
+        attributes directly to the AS and these attributes may be used for
+        policy evaluation. Importantly, it is the AS that decides which
+        attributes are used for policy evaluation and which are not.</t>
+
+        <figure>
+          <preamble>Example:</preamble>
+
+          <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: www.nuveam.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+        
+{
+    "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+    "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+    "claims": [
+        {
+        "type": "ci-nuveam-claims",
+        "value": { "email": "bob@gmail.com", "roles": [ "manager", "admin" ] }
+        }
+    ]
+    
+}
+    ]]></artwork>
+        </figure>
+
+        <t>We provide an example of a reply below (standard UMA reply):</t>
+
+        <figure>
+          <preamble>Example:</preamble>
+
+          <artwork><![CDATA[HTTP/1.1 201 Created
+Content-Type: application/json
+        
+{
+    "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv2"
+}
+    ]]></artwork>
+        </figure>
+
+        <t>In case of custom attributes, the client does not necessarily uses
+        any specific protocol for obtaining user attributes. It can use a
+        pre-established relationship with the AS to provide the required set
+        of these attributes.</t>
+      </section>
+
+      <section anchor="claims-as-saml-conveyor"
+               title="Client Acts as SAML Assertion Conveyor">
+        <t>TYPE = "claim-client-assertion-saml-1.0"</t>
+
+        <t>VALUE = {base64-encoded SAML assertion}</t>
+
+        <t>In this setting the AS and the Client have a pre-established trust
+        relationship. The client may provide the AS with a SAML assertion that
+        can be used for policy evaluation. We provide an example of the
+        request below.</t>
+
+        <figure>
+          <preamble>Example:</preamble>
+
+          <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: www.nuveam.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+            
+{
+    "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+    "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+    "claims": [
+    {
+        "type": "claim-client-assertion-saml-1.0",
+        "value": {
+        "saml_assertion": "PHNhbWxwOl...[omitted for brevity]...ZT"
+        }
+    }
+    ]
+    
+}
+        ]]></artwork>
+        </figure>
+      </section>
+
+      <section anchor="claims-as-oidc-conveyor"
+               title="Client Acts as OpenID Connect ID Token Conveyor">
+        <t>TYPE = "claim-client-idtoken-oidc-1.0"</t>
+
+        <t>VALUE = {set of oidc reserved claims}</t>
+
+        <t>In this setting the AS and the Client have a pre-established trust
+        relationship. The client may provide the AS with a OpenID Connect
+        claims that can be used for policy evaluation. We provide an example
+        of the request made by the client to the Authorization Server
+        below.</t>
+
+        <figure>
+          <preamble>Example:</preamble>
+
+          <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: www.nuveam.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+            
+{
+    "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+    "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+    "claims": [
+    {
+        "type": "claim-client-idtoken-oidc-1.0",
+        "value": {
+        "sub": "248289761001"
+        "name": "Jane Doe",
+        "given_name": "Jane",
+        "family_name": "Doe",
+        "email": "joedoe@example.com"
+        "email_verified": true,
+        }
+    }
+    ]
+    
+}
+        ]]></artwork>
+        </figure>
+      </section>
+
+      <section anchor="claims-as-custom-conveyor"
+               title="Hybrid Approach: Client Acts as Custom Claims Conveyor and OpenID Connect ID Token Conveyor">
+        <t>TYPE = "custom"</t>
+
+        <t>VALUE = {custom defined}</t>
+
+        <t>TYPE = "claim-client-idtoken-oidc-1.0"</t>
+
+        <t>VALUE = {set of oidc reserved claims}</t>
+
+        <t>In this setting the AS and the Client have a pre-established trust
+        relationship. The client may provide the AS with custom claims as well
+        as with OpenID Connect claims that can be used for policy evaluation.
+        We provide an example of the request below.</t>
+
+        <figure>
+          <preamble>Example:</preamble>
+
+          <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+Host: www.nuveam.com
+Authorization: Bearer jwfLG53^sad$#f
+...
+{
+    "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+    "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
+    "claims": [
+    {
+        "type": "ci-nuveam-claims",
+        "value": { "roles": ["manager", "admin" }
+            },
+    {
+        "type": "claim-client-idtoken-oidc-1.0",
+        "value": { "email": "bob@gmail.com" }
+            }
+    ]
+}
+    ]]></artwork>
+        </figure>
       </section>
     </section>
 
-    <section anchor="claims-client-sends-oidc"
-             title="Claim Profile: Client Acts as OpenID Connect ID Token Conveyor">
-      <t>In this claim profile, the client, already in possession of an OpenID
-      Connect ID token data structure for the requesting party, sends the ID
-      token to the authorization server. Following is a summary:<list
-          style="symbols">
-          <t>Identifying URI:
-          http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-oidc-1.0</t>
+    <section anchor="redirect-framework"
+             title="Redirect Framework for Claim Profiling">
+      <t>In order to support redirect type UMA profiles, the Authorization
+      Server has to be extended to provide a User Claims Endpoint. The user
+      claims endpoint is used by the Authorization Server to interact with the
+      requesting party and not with the client. The authorization server can
+      first verify the identity of the requesting party or it may engage the
+      requesting party in claims gathering flow. For example, the AS may
+      decide based on the authentication process that it has enough
+      information to evaluate a policy or it may require the user to provide
+      further claims using an existing identity federation protocol. For
+      example, after landing at this endpoint the requesting party may be
+      further redirected to the source of claims (e.g. SAML IDP or the OpenID
+      Connect Identity Provider). In this document, we discuss three
+      examples:<list style="numbers">
+          <t>User's authentication is sufficient for policy evalutation;</t>
 
-          <t>Profile author and contact information: Mike Schwartz
-          (mike@gluu.org)</t>
+          <t>User is redirected to an OIDC Provider</t>
 
-          <t>Updates or obsoletes: None; this profile is new.</t>
-
-          <t>Syntax and semantics of claim data: As defined below. The claim
-          data format leverages the OpenID Connect ID token syntax and the
-          reserved claims defined in that specification.</t>
-
-          <t>Claims gathering method: As defined below.</t>
-
-          <t>Error states: None additional.</t>
-
-          <t>Security and privacy considerations: The authorization server and
-          client are assumed to operate in an ecosystem where a relationship
-          between them that enables trust in the conveyed claims has been
-          established out of band.</t>
-
-          <t>Binding obligations: Binding obligations that apply to the use of
-          this claim profile are documented in <xref
-          target="UMA-obligations"></xref>.</t>
-
-          <t>Conformance considerations: ???</t>
+          <t>User is redirected to a SAML IDP</t>
         </list></t>
 
-      <t>If an authorization server supports this claim profile, it MUST
-      declare use of it by supplying the "client-idtoken-oidc-1.0" value for
-      one of its "claim_profiles_supported" values in its configuration
-      data.</t>
-
-      <t>This profile involves an extension to the authorization API, and a
-      corresponding extension to the configuration data. The API is extended
-      to include a claims conveyance endpoint, which, like other authorization
-      API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT.
-      The authorization server MAY declare the endpoint URI in the value of a
-      claims_endpoint property in the configuration data.</t>
-
-      <t>The client MUST send the ID token by using POST at the claims
-      conveyance endpoint, accompanied by an AAT in the header and
-      JSON-encoded "rpt" and "ticket" properties in the body. The
-      authorization server MUST be able to utilize at least all of the
-      reserved claims that might appear in an ID token, as defined in <xref
-      target="OIDCCore"></xref>, in evaluating policy and adding authorization
-      data to RPTs.</t>
+      <t>Message flow:</t>
 
       <figure>
-        <preamble>For example:</preamble>
+        <preamble>1. Client asks for new authorization data to be added to an
+        existing RPT</preamble>
 
         <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
-Host: as.example.com
-Authorization: Bearer jwfLG53^sad$#f
-...
-
-{
-   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
-   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
-   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
-}
-]]></artwork>
+        Host: www.nuveam.com
+        Authorization: Bearer jwfLG53^sad$#f
+        ...
+                
+        {
+        "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+        "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
+        }
+            ]]></artwork>
       </figure>
-    </section>
-
-    <section anchor="claims-client-sends-saml"
-             title="Claim Profile: Client Acts as SAML Assertion Conveyor">
-      <t>In this claim profile, the client, already in possession of a SAML
-      assertion data structure for the requesting party, sends the assertion
-      to the authorization server. Following is a summary:<list
-          style="symbols">
-          <t>Identifying URI:
-          http://docs.kantarainitiative.org/uma/profiles/claim-client-idtoken-saml-1.0</t>
-
-          <t>Profile author and contact information: Domenico Catalano
-          (email...)</t>
-
-          <t>Updates or obsoletes: None; this profile is new.</t>
-
-          <t>Syntax and semantics of claim data: As defined below. The claim
-          data format leverages the OpenID Connect ID token syntax and the
-          reserved claims defined in that specification.</t>
-
-          <t>Claims gathering method: As defined below.</t>
-
-          <t>Error states: None additional.</t>
-
-          <t>Security and privacy considerations: The authorization server and
-          client are assumed to operate in an ecosystem where a relationship
-          between them that enables trust in the conveyed claims has been
-          established out of band.</t>
-
-          <t>Binding obligations: Binding obligations that apply to the use of
-          this claim profile are documented in <xref
-          target="UMA-obligations"></xref>.</t>
-
-          <t>Conformance considerations: ???</t>
-        </list></t>
-
-      <t>If an authorization server supports this claim profile, it MUST
-      declare use of it by supplying the "client-idtoken-oidc-1.0" value for
-      one of its "claim_profiles_supported" values in its configuration
-      data.</t>
-
-      <t>This profile involves an extension to the authorization API, and a
-      corresponding extension to the configuration data. The API is extended
-      to include a claims conveyance endpoint, which, like other authorization
-      API endpoints, MUST be TLS- and OAuth-protected and require a valid AAT.
-      The authorization server MAY declare the endpoint URI in the value of a
-      claims_endpoint property in the configuration data.</t>
-
-      <t>The client MUST send the ID token by using POST at the claims
-      conveyance endpoint, accompanied by an AAT in the header and
-      JSON-encoded "rpt" and "ticket" properties in the body. The
-      authorization server MUST be able to utilize at least all of the
-      reserved claims that might appear in an ID token, as defined in <xref
-      target="OIDCCore"></xref>, in evaluating policy and adding authorization
-      data to RPTs.</t>
 
       <figure>
-        <preamble>For example:</preamble>
+        <preamble>2. AS tells the client to redirect the user to the User
+        Claims Endpoint</preamble>
 
-        <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
-Host: as.example.com
-Authorization: Bearer jwfLG53^sad$#f
-...
-
-{
-   "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
-   "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
-   "claims":{"uid":["bob"],"email":["bob@example.org","bob@gmail.com"]}
-}
-]]></artwork>
+        <artwork><![CDATA[HTTP/1.1 403 Forbidden
+    Content-Type: application/json
+            
+    {
+    "need_claims":[
+    {
+    "claim_type":"redirect_required",
+    "claim_name":"Redirect Required",
+    "claim_value":"https://www.nuveam.com/uma/user_claims?scope=699faf5bf28698
+            38e992d57756bc6f&redirect_uri=http%3A%2F%2Fwww.umahostapp.com
+            %2Fg%2Foauth%2Fredirect&client_id=ca4453936fa5fda2110b9e589d61ab37"
+            }
+        ]
+    }
+        ]]></artwork>
       </figure>
-    </section>
 
-    <section anchor="claims-as-rp-oidc"
-             title="Claim Profile: Authorization Server Acts as OpenID Connect Relying Party">
-      <t>In this claim profile, the client redirects the end-user requesting
-      party to the authorization server, and the authorization server gathers
-      claims from the requesting party by serving as a relying party to one or
-      more OpenID Connect identity providers before redirecting the end-user
-      back. Following is a summary:<list style="symbols">
-          <t>Identifying URI:
-          http://docs.kantarainitiative.org/uma/profiles/claim-as-rp-oidc-1.0</t>
+      <figure>
+        <preamble>3. Client redirects the user to the User Claims
+        Endpoint</preamble>
 
-          <t>Profile author and contact information: Thomas Hardjono
-          (hardjono@mit.edu)</t>
+        <artwork><![CDATA[HTTP/1.1 302 Found
+    Location: https://www.nuveam.com/uma/user_claims?scope=699faf5bf2869838e992
+    d57756bc6f& redirect_uri=http%3A%2F%2Fwww.umaapp.com%%2Fredirect&client_id=
+    ca4453936fa5fda2110b9e589d61ab37&state=32455ddsafas
+    ]]></artwork>
+      </figure>
 
-          <t>Updates or obsoletes: None; this profile is new.</t>
+      <t>After the user is redirected to the AS, the claims for the user are
+      gathered according to one of the defined protocols, such as SAML, OpenID
+      Connect or any other protocol implemented by an UMA-compliant
+      Authorisation Server. Furthermore, the AS is free to obtain the
+      information from a local or remote LDAP, Active Directory or any other
+      user datastore (e.g. SQL or NoSQL-based datastore).</t>
 
-          <t>Syntax and semantics of claim data: As defined below. The claim
-          data format leverages the OpenID Connect protocol and the reserved
-          claims defined in that specification.</t>
+      <figure>
+        <preamble>4. AS informs the client that new authorization can be added
+        and the client is free to request a new RPT</preamble>
 
-          <t>Claims gathering method: As defined below.</t>
+        <artwork><![CDATA[HTTP/1.1 302 Found
+    Location: https://www.umaapp.com/redirect?access=granted&state=32455ddsafas
+          ]]></artwork>
+      </figure>
 
-          <t>Error states: None additional.</t>
+      <figure>
+        <preamble>5. AS informs the client that authorization data cannot be
+        added</preamble>
 
-          <t>Security and privacy considerations: None additional.</t>
+        <artwork><![CDATA[HTTP/1.1 302 Found
+    Location: https://www.umaapp.com/redirect?access=denied&state=32455ddsafas
+          ]]></artwork>
+      </figure>
 
-          <t>Binding obligations: Binding obligations that apply to the use of
-          this claim profile are documented in <xref
-          target="UMA-obligations"></xref>.</t>
+      <t>The message flow presented above can be provided for the following
+      set of profiles.</t>
 
-          <t>Conformance considerations: ???</t>
-        </list></t>
+      <section anchor="claims-as-rp-oidc"
+               title="Authorization Server Acts as OpenID Connect Relying Party">
+        <t>In this claim profile, During this flow, the Authorisation Server
+        acts as an OIDC compliant RP. This flow is used in case the policies
+        for a particular resource set use any of the existing reserved OIDC
+        claims. Importantly, it is the AS that determines if OIDC claims
+        should be used for policy evaluation. This information is not shared
+        with the client application.</t>
 
-      <t>If an authorization server supports this claim profile, it MUST
-      declare use of it by supplying the "as-rp-oidc-1.0" value for one of its
-      "claim_profiles_supported" values in its configuration data.</t>
+        <t>During this flow the AS acts according to the OpenID Connect
+        protocol and this is outside of the UMA specification.</t>
+      </section>
 
-      <t>The authorization server MUST do the following:<list style="symbols">
-          <t>Serve as a conforming OpenID Relying Party according to <xref
-          target="OIDCCore"></xref></t>
+      <section anchor="claims-as-rp-saml"
+               title="Authorization Server Acts as SAML Relying Party">
+        <t>During this flow, the Authorisation Server acts as an SAML
+        compliant Service Provider. This flow is used in case the policies for
+        a particular resource set require the use of the SAML protocol.
+        Importantly, it is the AS that determines if the SAML protocol should
+        be used for policy evaluation. This information is not shared with the
+        client application.</t>
 
-          <t>Be able to utilize at least all of the reserved claims defined in
-          <xref target="OIDCCore"></xref> in evaluating policy and adding
-          authorization data to RPTs</t>
+        <t>During this flow the AS acts according to the SAML protocol and
+        this is outside of the UMA specification.</t>
+      </section>
 
-          <t>Use the OpenID Connect "redirect_uri" and "state" request
-          parameters as appropriate</t>
-        </list></t>
-
-      <t>The authorization server then uses any conforming OpenID Connect
-      mechanisms and typical user interfaces for engaging with the UserInfo
-      endpoints of OpenID Providers and Claims Providers, potentially allowing
-      for the delivery of "trusted claims" (such as a verified email address
-      or a date or birth) on which authorization policy for access may
-      depend.</t>
+      <section anchor="claims-from-local-datastore"
+               title="Authorization Server pulls Claim from local user store">
+        <t>During this flow and after successful authentication of the RP, the
+        AS can pull the required user attributes from a local user datastore
+        (e.g. LDAP, Active Directory, and other SQL and NoSQL-datastores).
+        This information can be used for policy evaluation.</t>
+      </section>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -277,7 +604,11 @@ Authorization: Bearer jwfLG53^sad$#f
     <section anchor="Acknowledgments" title="Acknowledgments">
       <t>The current editor of this specification is Domenico Catalano of
       Oracle. The following people are co-authors:<list style="symbols">
-          <t>???</t>
+          <t>Maciej Machulak</t>
+
+          <t>Thomas Hardjono</t>
+
+          <t>Eve Maler</t>
         </list></t>
 
       <t>Additional contributors to this specification include the Kantara UMA
@@ -293,7 +624,7 @@ Authorization: Bearer jwfLG53^sad$#f
 
   <back>
     <references title="Normative References">
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
+      &RFC2119;
 
       <reference anchor="OAuth2" target="http://tools.ietf.org/html/rfc6749">
         <front>
@@ -307,70 +638,16 @@ Authorization: Bearer jwfLG53^sad$#f
         </front>
       </reference>
 
-      <reference anchor="OAuth-resource-reg"
-                 target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
+      <reference anchor="UMA"
+                 target="http://tools.ietf.org/html/draft-hardjono-oauth-umacore">
         <front>
-          <title>OAuth 2.0 Resource Set Registration</title>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
 
-          <author initials="T." surname="Hardjono">
+          <author initials="T." role="editor" surname="Hardjono">
             <organization>IETF</organization>
           </author>
 
-          <date day="27" month="December" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-introspection"
-                 target="http://tools.ietf.org/html/draft-richer-oauth-introspection">
-        <front>
-          <title>OAuth Token Introspection</title>
-
-          <author initials="J." surname="Richer">
-            <organization></organization>
-          </author>
-
-          <date day="1" month="May" year="2013" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-bearer"
-                 target="http://tools.ietf.org/html/rfc6750">
-        <front>
-          <title>The OAuth 2.0 Authorization Framework: Bearer Token
-          Usage</title>
-
-          <author fullname="M. Jones">
-            <organization></organization>
-          </author>
-
-          <date day="" month="October" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="hostmeta" target="http://tools.ietf.org/html/rfc6415">
-        <front>
-          <title>Web Host Metadata</title>
-
-          <author initials="E." surname="Hammer-Lahav">
-            <organization>Yahoo!</organization>
-          </author>
-
-          <date day="" month="October" year="2011" />
-        </front>
-      </reference>
-
-      &RFC4627;
-
-      <reference anchor="DynClientReg"
-                 target="http://tools.ietf.org/html/draft-richer-oauth-dyn-reg-core">
-        <front>
-          <title>OAuth 2.0 Core Dynamic Client Registration</title>
-
-          <author initials="J." surname="Richer">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="29" month="August" year="2013" />
+          <date day="11" month="December" year="2013" />
         </front>
       </reference>
 
@@ -415,32 +692,6 @@ Authorization: Bearer jwfLG53^sad$#f
     </references>
 
     <references title="Informative References">
-      <reference anchor="UMA-usecases"
-                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">
-        <front>
-          <title>UMA Scenarios and Use Cases</title>
-
-          <author initials="E." surname="Maler">
-            <organization>Kantara</organization>
-          </author>
-
-          <date month="October" year="2010" />
-        </front>
-      </reference>
-
-      <reference anchor="UMA-casestudies"
-                 target="http://kantarainitiative.org/confluence/display/uma/Case+Studies">
-        <front>
-          <title>UMA Case Studies</title>
-
-          <author initials="E." surname="Maler">
-            <organization></organization>
-          </author>
-
-          <date day="30" month="March" year="2013" />
-        </front>
-      </reference>
-
       <reference anchor="UMAnitarians"
                  target="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">
         <front>
@@ -451,56 +702,6 @@ Authorization: Bearer jwfLG53^sad$#f
           </author>
 
           <date day="1" month="April" year="2013" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-linktypes"
-                 target="http://tools.ietf.org/html/draft-wmills-oauth-lrdd">
-        <front>
-          <title>Link Type Registrations for OAuth 2</title>
-
-          <author initials="W." surname="Mills">
-            <organization></organization>
-          </author>
-
-          <date day="5" month="February" year="2013" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-meta"
-                 target="http://tools.ietf.org/html/draft-sakimura-oauth-meta">
-        <front>
-          <title>JSON Metadata for OAuth Responses</title>
-
-          <author initials="N." surname="Sakimura">
-            <organization></organization>
-          </author>
-
-          <date day="12" month="February" year="2013" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-SAML"
-                 target="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">
-        <front>
-          <title>SAML 2.0 Bearer Assertion Profiles for OAuth 2.0</title>
-
-          <author initials="B." surname="Campbell">
-            <organization>Campbell</organization>
-          </author>
-
-          <date day="9" month="December" year="2013" />
-        </front>
-      </reference>
-
-      <reference anchor="UMA-PbD"
-                 target="http://kantarainitiative.org/confluence/display/uma/Privacy+by+Design+Implications+of+UMA">
-        <front>
-          <title>Privacy by Design Implications of UMA</title>
-
-          <author initials="B." surname="Maler"></author>
-
-          <date day="9" month="December" year="2013" />
         </front>
       </reference>
     </references>

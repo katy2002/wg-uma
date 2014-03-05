@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-09f"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-09g"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="16" month="February" year="2014" />
+    <date day="4" month="March" year="2014" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -453,13 +453,13 @@
             profiles supported by this authorization server for RPT issuance.
             The property value is an array of string values, where each string
             value is either a reserved keyword defined in this specification
-            or a URI identifying an access token profile defined elsewhere.
-            The reserved keyword "bearer" as a value for this property stands
-            for the UMA bearer RPT profile defined in <xref
+            or a URI identifying an RPT profile defined elsewhere. The
+            reserved keyword "bearer" as a value for this property stands for
+            the UMA bearer RPT profile defined in <xref
             target="OAuth-bearer"></xref>. The authorization server is
             REQUIRED to support this profile, and to supply this string value
             explicitly. The authorization server MAY declare its support for
-            additional access token profiles for RPTs.</t>
+            additional RPT profiles.</t>
 
             <t hangText="pat_grant_types_supported"><vspace />REQUIRED. OAuth
             grant types supported by this authorization server in issuing
@@ -783,8 +783,9 @@ Host: photoz.example.com
           JSON-encoded "ticket" property.</t>
 
           <figure>
-            <preamble>Example of the host's response after having registered a
-            requested permission and received a ticket:</preamble>
+            <preamble>Example of the resource server's response after having
+            registered a requested permission and received a
+            ticket:</preamble>
 
             <artwork><![CDATA[
 HTTP/1.1 403 Forbidden
@@ -805,7 +806,7 @@ WWW-Authenticate: UMA realm="example",
 
           <figure>
             <preamble>Example of the resource server's response after having
-            determineed that the RPT is valid and associated with sufficient
+            determined that the RPT is valid and associated with sufficient
             authorization data:</preamble>
 
             <artwork><![CDATA[
@@ -993,9 +994,9 @@ Location: https://as.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 
           <t>On receiving an RPT of the "Bearer" type in an authorization
           header from a client making an access attempt, the resource server
-          MUST introspect the token by using the authorization server's token
-          introspection endpoint. The PAT used by the resource server to make
-          the introspection request provides resource-owner context to the
+          introspects the token by using the token introspection endpoint of
+          the protection API. The PAT used by the resource server to make the
+          introspection request provides resource-owner context to the
           authorization server.</t>
 
           <t>The authorization server responds with a JSON object with the
@@ -1013,7 +1014,7 @@ Location: https://as.example.com/permreg/host/photoz.example.com/5454345rdsaa454
               <t hangText="scopes">REQUIRED. An array referencing one or more
               URIs of scopes to which access was granted for this resource
               set. Each scope MUST correspond to a scope that was registered
-              by this host for the referenced resource set.</t>
+              by this resource server for the referenced resource set.</t>
 
               <t hangText="expires_at">REQUIRED. Integer timestamp, measured
               in the number of seconds since January 1 1970 UTC, indicating
@@ -1199,24 +1200,24 @@ Content-Type: application/json
           code and UMA error code (see <xref
           target="uma-error-response"></xref>): <list style="hanging">
               <t hangText="invalid_ticket">The provided ticket was not found
-              at the authorization server. The authorization server SHOULD
-              respond with the HTTP 400 (Bad Request) status code.</t>
+              at the authorization server. The authorization server responds
+              with the HTTP 400 (Bad Request) status code.</t>
 
               <t hangText="expired_ticket">The provided ticket has expired.
-              The authorization server SHOULD respond with the HTTP 400 (Bad
+              The authorization server responds with the HTTP 400 (Bad
               Request) status code.</t>
 
               <t hangText="not_authorized_permission">The client is
               definitively not authorized for this authorization according to
-              user policy. The authorization server SHOULD respond with the
-              HTTP 403 (Forbidden) status code.</t>
+              user policy. The authorization server responds with the HTTP 403
+              (Forbidden) status code.</t>
 
               <t hangText="need_claims">The authorization server is unable to
               determine whether the client is authorized for this permission
               without gathering requesting party claims. The authorization
-              server SHOULD respond with the HTTP 403 (Forbidden) status code.
-              The client is therefore not authorized, but has the opportunity
-              to engage in a requesting party claims-gathering flow (see <xref
+              server responds with the HTTP 403 (Forbidden) status code. The
+              client is therefore not authorized, but has the opportunity to
+              engage in a requesting party claims-gathering flow (see <xref
               target="authz-flows"></xref>) to continue seeking
               authorization.</t>
             </list></t>
@@ -1378,6 +1379,12 @@ Cache-Control: no-store
       RECOMMENDED, for reasons of implementation interoperability, to define
       concrete extension profiles that build on these extensibility profiles
       (see <xref target="uma-profiles"></xref>).</t>
+
+      <t>An authorization server using any of the opportunities afforded by
+      the protection and/or authorization API extensibility profile MUST
+      declare use of each profile by supplying the relevant
+      "uma_profiles_supported" values in its configuration data (see <xref
+      target="am-endpoints"></xref>).</t>
 
       <section anchor="alt-prot-profile"
                title="Protection API Extensibility Profile">
@@ -1653,7 +1660,7 @@ Cache-Control: no-store
       </section>
 
       <section anchor="claim-profiles" title="Specifying Claim Profiles">
-        <t>In addition to the requirements listed in <xref
+        <t>In addition to any requirements listed in <xref
         target="authz-flows"></xref>, it is RECOMMENDED that claim profiles
         document the following information:<list style="numbers">
             <t>Specify a URI that uniquely identifies the claim profile.</t>
