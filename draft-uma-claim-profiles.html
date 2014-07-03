@@ -377,21 +377,23 @@
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Notational Conventions"/>
 <link href="#rfc.section.2" rel="Chapter" title="2 Generic Framework for Claim Profiling"/>
-<link href="#rfc.section.3" rel="Chapter" title="3 Delivery Framework for Claim Profiling"/>
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Client provides custom user attributes"/>
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Client Acts as SAML Assertion Conveyor"/>
-<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Client Acts as OpenID Connect ID Token Conveyor"/>
-<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Hybrid Approach: Client Acts as Custom Claims Conveyor and OpenID Connect ID Token Conveyor"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 Redirect Framework for Claim Profiling"/>
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Authorization Server Acts as OpenID Connect Relying Party"/>
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Authorization Server Acts as SAML Relying Party"/>
-<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Authorization Server pulls Claim from local user store"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 Acknowledgments"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 Issues"/>
-<link href="#rfc.references" rel="Chapter" title="8 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Client provides custom user attributes"/>
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Client Acts as SAML Assertion Conveyor"/>
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Client Acts as OpenID Connect Claims Conveyor"/>
+<link href="#rfc.section.2.4" rel="Chapter" title="2.4 Hybrid Approach: Client Acts as Custom Claims Conveyor and OpenID Connect Claims Conveyor"/>
+<link href="#rfc.section.2.5" rel="Chapter" title="2.5 Client Redirects Requesting Party to AS"/>
+<link href="#rfc.section.2.5.1" rel="Chapter" title="2.5.1 Requesting Party Claims Endpoint"/>
+<link href="#rfc.section.2.5.2" rel="Chapter" title="2.5.2 Message Flow"/>
+<link href="#rfc.section.2.5.3" rel="Chapter" title="2.5.3 Examples"/>
+<link href="#rfc.section.2.5.3.1" rel="Chapter" title="2.5.3.1 Authorization Server Acts as OpenID Connect Relying Party"/>
+<link href="#rfc.section.2.5.3.2" rel="Chapter" title="2.5.3.2 Authorization Server Acts as SAML Relying Party"/>
+<link href="#rfc.section.2.5.3.3" rel="Chapter" title="2.5.3.3 Authorization Server pulls Claim from local user store"/>
+<link href="#rfc.section.2.6" rel="Chapter" title="2.6 IANA Considerations"/>
+<link href="#rfc.section.2.7" rel="Chapter" title="2.7 Acknowledgments"/>
+<link href="#rfc.section.2.8" rel="Chapter" title="2.8 Issues"/>
+<link href="#rfc.references" rel="Chapter" title="3 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="3.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="3.2 Informative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Document History"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
@@ -400,8 +402,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Catalano, D., Ed. and M. Machulak" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-catalano-uma-claim-framework-00a" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-3-4" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-catalano-uma-claim-framework-00b" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-4-24" />
   <meta name="dct.abstract" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This specification defines a generic framework for building UMA claim profiles that can be used by client applications to obtain the necessary authorization from authorization servers to access protected resources on resource servers." />
   <meta name="description" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This specification defines a generic framework for building UMA claim profiles that can be used by client applications to obtain the necessary authorization from authorization servers to access protected resources on resource servers." />
 
@@ -425,12 +427,12 @@
   <td class="right">M. Machulak</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 5, 2014</td>
+  <td class="left">Expires: October 26, 2014</td>
   <td class="right">Cloud Identity</td>
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 4, 2014</td>
+  <td class="right">April 24, 2014</td>
 </tr>
 
     	
@@ -438,7 +440,7 @@
   </table>
 
   <p class="title">Generic Framework for UMA Claim Profiles<br />
-  <span class="filename">draft-catalano-uma-claim-framework-00a</span></p>
+  <span class="filename">draft-catalano-uma-claim-framework-00b</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -450,7 +452,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 5, 2014.</p>
+<p>This Internet-Draft will expire on October 26, 2014.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -465,21 +467,23 @@
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
 <li>1.1.   <a href="#rfc.section.1.1">Notational Conventions</a></li>
 <li>2.   <a href="#rfc.section.2">Generic Framework for Claim Profiling</a></li>
-<li>3.   <a href="#rfc.section.3">Delivery Framework for Claim Profiling</a></li>
-<li>3.1.   <a href="#rfc.section.3.1">Client provides custom user attributes</a></li>
-<li>3.2.   <a href="#rfc.section.3.2">Client Acts as SAML Assertion Conveyor</a></li>
-<li>3.3.   <a href="#rfc.section.3.3">Client Acts as OpenID Connect ID Token Conveyor</a></li>
-<li>3.4.   <a href="#rfc.section.3.4">Hybrid Approach: Client Acts as Custom Claims Conveyor and OpenID Connect ID Token Conveyor</a></li>
-<li>4.   <a href="#rfc.section.4">Redirect Framework for Claim Profiling</a></li>
-<li>4.1.   <a href="#rfc.section.4.1">Authorization Server Acts as OpenID Connect Relying Party</a></li>
-<li>4.2.   <a href="#rfc.section.4.2">Authorization Server Acts as SAML Relying Party</a></li>
-<li>4.3.   <a href="#rfc.section.4.3">Authorization Server pulls Claim from local user store</a></li>
-<li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
-<li>6.   <a href="#rfc.section.6">Acknowledgments</a></li>
-<li>7.   <a href="#rfc.section.7">Issues</a></li>
-<li>8.   <a href="#rfc.references">References</a></li>
-<li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>2.1.   <a href="#rfc.section.2.1">Client provides custom user attributes</a></li>
+<li>2.2.   <a href="#rfc.section.2.2">Client Acts as SAML Assertion Conveyor</a></li>
+<li>2.3.   <a href="#rfc.section.2.3">Client Acts as OpenID Connect Claims Conveyor</a></li>
+<li>2.4.   <a href="#rfc.section.2.4">Hybrid Approach: Client Acts as Custom Claims Conveyor and OpenID Connect Claims Conveyor</a></li>
+<li>2.5.   <a href="#rfc.section.2.5">Client Redirects Requesting Party to AS</a></li>
+<li>2.5.1.   <a href="#rfc.section.2.5.1">Requesting Party Claims Endpoint</a></li>
+<li>2.5.2.   <a href="#rfc.section.2.5.2">Message Flow</a></li>
+<li>2.5.3.   <a href="#rfc.section.2.5.3">Examples</a></li>
+<li>2.5.3.1.   <a href="#rfc.section.2.5.3.1">Authorization Server Acts as OpenID Connect Relying Party</a></li>
+<li>2.5.3.2.   <a href="#rfc.section.2.5.3.2">Authorization Server Acts as SAML Relying Party</a></li>
+<li>2.5.3.3.   <a href="#rfc.section.2.5.3.3">Authorization Server pulls Claim from local user store</a></li>
+<li>2.6.   <a href="#rfc.section.2.6">IANA Considerations</a></li>
+<li>2.7.   <a href="#rfc.section.2.7">Acknowledgments</a></li>
+<li>2.8.   <a href="#rfc.section.2.8">Issues</a></li>
+<li>3.   <a href="#rfc.references">References</a></li>
+<li>3.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>3.2.   <a href="#rfc.references.2">Informative References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Document History</a></li>
 <li><a href="#rfc.authors">Authors' Addresses</a></li>
 
@@ -488,29 +492,28 @@
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
 <p id="rfc.section.1.p.1">User-Managed Access <a href="#UMA">[UMA]</a> is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This specification defines a generic framework for building UMA claim profiles that can be used by client applications to obtain the necessary authorization from authorization servers to access protected resources on resource servers.</p>
-<p id="rfc.section.1.p.2">Using this framework, new profiles can be easily added to meet requirements of particular deployments of UMA. Profiles built on this framework will share certain interoperability and ease of development properties (of both authorization servers and clients). This specification also provides some profiles that build on the framework. Third-party profiles can build on the framework directly or on these sample profiles, as they wish.</p>
+<p id="rfc.section.1.p.2">Using this framework, new profiles can be easily added to meet requirements of particular deployments of UMA. Profiles built on this framework will share certain interoperability and ease of development properties (of both authorization servers and clients). This specification also provides some profiles that build on the framework.  Third-party profiles can build on the framework directly or on these sample profiles, as they wish.</p>
 <p id="rfc.section.1.p.3">The framework introduces different interaction patterns that the client and authorization server can use, and different roles they can play, in order to gather claims about the requesting party:</p>
 
 <ul>
   <li>The <em>delivery</em> interaction pattern leverages a <em>claims-aware client</em> that is able to deliver claims about the requesting party (or information about how to get claims) directly to the authorization server. The information delivered can be an identity or claims token, data that aids in discovery of a claims endpoint, etc. The authorization server then plays the role of a <em>claims receiver</em> (and/or activates a <em>claims connector</em> based on the information, for gathering claims itself without requesting party involvement).</li>
   <li>The <em>redirect</em> pattern assumes a <em>claims-unaware client</em> whose only option (other than failing entirely) is to redirect the end-user requesting party to the authorization server. On receiving the end user, the authorization server activates a <em>claims connector</em> for gathering the necessary claims with the user's involvement, using any method or combination of methods. In this role, the authorization server may be a relying party in a federated identity interaction, or it may connect to a directory or other user repository. After the claims-gathering process, the authorization server redirects the user back to the client.</li>
 </ul>
-<p id="rfc.section.1.p.4">The profiles defined on these interaction patterns are as follows:</p>
+<p id="rfc.section.1.p.4">The profiles defined based on both interaction patterns are as follows:</p>
 
 <ul>
-  <li>Delivery:<ul><li>Client delivers a SAML assertion to the authorization server</li><li>Client delivers OpenID Connect user claims to the authorization server</li></ul></li>
-  <li>Redirect:<ul><li>Client redirects end-user requesting party to the authorization server (ISSUE: We think this shouldn't specify that the AS is (say) an OpenID Connect RP, because it might want to be "all of the above" simultaneously: allow options for local user login, user form-fill, social sign-in, other IdP sign-in, etc. Does this make sense? It would change the original single profile quite a bit, making it more general.)</li></ul></li>
+  <li>Delivery:<ul><li>Client delivers a SAML assertion to the authorization server</li><li>Client delivers OpenID Connect user claims to the authorization server</li><li>Client delivers custom user claims to the authorization server</li><li>Client delivers custom and OpenID Connect user claims to the authorization server</li></ul></li>
+  <li>Redirect:<ul><li>Client redirects end-user requesting party to the authorization server</li></ul></li>
 </ul>
 <p id="rfc.section.1.p.5">In all cases, it is assumed that the authorization server evaluates the resource owner's policy for a particular resource set based, at least in part, on the supplied claims. Third parties have the opportunity to further profile the profiles for greater interoperability in particular deployments. An authorization server MAY support any claim profiles, and SHOULD advertise its conformance to those profiles in its configuration data. </p>
 <h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> Notational Conventions</h1>
 <p id="rfc.section.1.1.p.1">The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <p id="rfc.section.1.1.p.2">Unless otherwise noted, all the protocol properties and values are case sensitive.</p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> Generic Framework for Claim Profiling</h1>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#framework" id="framework">Generic Framework for Claim Profiling</a></h1>
 <p id="rfc.section.2.p.1">(ISSUE: Put stuff about how need_claims returns significant hints here.)</p>
 <p id="rfc.section.2.p.2">An authorization server has an opportunity, when it returns a "need_claims" response to a client asking for authorization, to provide further instructions and hints to the client in this response. </p>
-<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#delivery-framework" id="delivery-framework">Delivery Framework for Claim Profiling</a></h1>
-<p id="rfc.section.3.p.1">In order to support delivery-pattern claim profiles, the authorization request endpoint in the authorization API presented by the authorization server is extended to accept JSON-encoded claims-related data in the body of the request. Along with the "rpt" and "ticket" properties that already need to be provided, a "claims" property appears in addition.</p>
-<p id="rfc.section.3.p.2">Common message flow:</p>
+<p id="rfc.section.2.p.3">In order to support delivery-pattern claim profiles, the authorization request endpoint in the authorization API presented by the authorization server is extended to accept JSON-encoded claims-related data in the body of the request. Along with the "rpt" and "ticket" properties that already need to be provided, a "claims" property appears in addition.</p>
+<p id="rfc.section.2.p.4">Common message flow:</p>
 <p>1. The client sends the claims type and its claims directly to the AS</p>
 <pre>POST /rpt_authorization HTTP/1.1
         Host: www.nuveam.com
@@ -528,7 +531,7 @@
     ]
 }
         </pre>
-<p id="rfc.section.3.p.3">Importantly, the claims MUST be an array of JSON objects. The type field MUST have a String value indicating the type of claims-related data, while the value field MUST be a JSON object specific to that type of claims-related data.</p>
+<p id="rfc.section.2.p.5">Importantly, the claims MUST be an array of JSON objects. The type field MUST have a String value indicating the type of claims-related data, while the value field MUST be a JSON object specific to that type of claims-related data.</p>
 <p>2. The authorization server informs the client that authorization data has been added</p>
 <pre>HTTP/1.1 201 Created
     Content-Type: application/json;charset=UTF-8
@@ -544,7 +547,7 @@ Content-Type: application/json
 {
     "need_claims":[
     {
-        "type":"redirect_required",
+        "type":"CLAIM_TYPE_AS_STRING",
         "name":"",
         "value":""
     }]
@@ -570,13 +573,13 @@ Content-Type: application/json;charset=UTF-8
         
 {
     "error":"not_authorized_permission",
-    "error_description":"Authorization data cannot be added"
+    "error_description":"Authorization data cannot be added."
 }
     </pre>
-<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#client-pull-custom-attr" id="client-pull-custom-attr">Client provides custom user attributes</a></h1>
-<p id="rfc.section.3.1.p.1">TYPE = "custom"</p>
-<p id="rfc.section.3.1.p.2">VALUE = {custom defined}</p>
-<p id="rfc.section.3.1.p.3">In the most trivial setting where the AS and the Client are collocated and have an established trust relationship (in particular, the AS trusts information obtained from the client), then the client can be preconfigured to provide the required information to the AS based on a custom schema. We provide the most trivial example below, where the client application provides a user's identifier (in this case email) to the AS and such identifier is used for policy evaluation.</p>
+<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#client-pull-custom-attr" id="client-pull-custom-attr">Client provides custom user attributes</a></h1>
+<p id="rfc.section.2.1.p.1">TYPE = "custom"</p>
+<p id="rfc.section.2.1.p.2">VALUE = {custom defined}</p>
+<p id="rfc.section.2.1.p.3">In the most trivial setting where the AS and the Client are collocated and have an established trust relationship (in particular, the AS trusts information that it receives from the client), then the client can be preconfigured to provide the required information to the AS based on a custom schema. We provide the most trivial example below, where the client application provides a user's identifier (in this case email) to the AS and such identifier is used for policy evaluation.</p>
 <p>Example:</p>
 <pre>POST /rpt_authorization HTTP/1.1
 Host: www.nuveam.com
@@ -589,12 +592,12 @@ Authorization: Bearer jwfLG53^sad$#f
     "claims": [
     {
         "type": "ci-nuveam-claims",
-        "value": { "email": "bob@company.examle.com" }
+        "value": { "email": "bob@company.example.com" }
     }
     ]
 }
        </pre>
-<p id="rfc.section.3.1.p.4">Another example is where the client provides a richer set of attributes directly to the AS and these attributes may be used for policy evaluation. Importantly, it is the AS that decides which attributes are used for policy evaluation and which are not.</p>
+<p id="rfc.section.2.1.p.4">Another example is where the client provides a richer set of attributes directly to the AS and these attributes are used for policy evaluation. Importantly, it is the AS that decides which attributes are used for policy evaluation and which are not.</p>
 <p>Example:</p>
 <pre>POST /rpt_authorization HTTP/1.1
 Host: www.nuveam.com
@@ -613,7 +616,7 @@ Authorization: Bearer jwfLG53^sad$#f
     
 }
     </pre>
-<p id="rfc.section.3.1.p.5">We provide an example of a reply below (standard UMA reply):</p>
+<p id="rfc.section.2.1.p.5">We provide an example of a reply below (standard UMA reply):</p>
 <p>Example:</p>
 <pre>HTTP/1.1 201 Created
 Content-Type: application/json
@@ -622,11 +625,11 @@ Content-Type: application/json
     "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv2"
 }
     </pre>
-<p id="rfc.section.3.1.p.6">In case of custom attributes, the client does not necessarily uses any specific protocol for obtaining user attributes. It can use a pre-established relationship with the AS to provide the required set of these attributes.</p>
-<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#claims-as-saml-conveyor" id="claims-as-saml-conveyor">Client Acts as SAML Assertion Conveyor</a></h1>
-<p id="rfc.section.3.2.p.1">TYPE = "claim-client-assertion-saml-1.0"</p>
-<p id="rfc.section.3.2.p.2">VALUE = {base64-encoded SAML assertion}</p>
-<p id="rfc.section.3.2.p.3">In this setting the AS and the Client have a pre-established trust relationship. The client may provide the AS with a SAML assertion that can be used for policy evaluation. We provide an example of the request below.</p>
+<p id="rfc.section.2.1.p.6">In case of custom attributes, the client does not necessarily use any specific protocol for obtaining user attributes. It can use a pre-established relationship with the AS to provide the required set of attributes.</p>
+<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#claims-as-saml-conveyor" id="claims-as-saml-conveyor">Client Acts as SAML Assertion Conveyor</a></h1>
+<p id="rfc.section.2.2.p.1">TYPE = "claim-client-assertion-saml-1.0"</p>
+<p id="rfc.section.2.2.p.2">VALUE = {base64-encoded SAML assertion}</p>
+<p id="rfc.section.2.2.p.3">In this setting the AS and the Client have a pre-established trust relationship. The client may provide the AS with a SAML assertion that can be used for policy evaluation. We provide an example of the request below.</p>
 <p>Example:</p>
 <pre>POST /rpt_authorization HTTP/1.1
 Host: www.nuveam.com
@@ -647,10 +650,10 @@ Authorization: Bearer jwfLG53^sad$#f
     
 }
         </pre>
-<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#claims-as-oidc-conveyor" id="claims-as-oidc-conveyor">Client Acts as OpenID Connect ID Token Conveyor</a></h1>
-<p id="rfc.section.3.3.p.1">TYPE = "claim-client-idtoken-oidc-1.0"</p>
-<p id="rfc.section.3.3.p.2">VALUE = {set of oidc reserved claims}</p>
-<p id="rfc.section.3.3.p.3">In this setting the AS and the Client have a pre-established trust relationship. The client may provide the AS with a OpenID Connect claims that can be used for policy evaluation. We provide an example of the request made by the client to the Authorization Server below.</p>
+<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> <a href="#claims-as-oidc-conveyor" id="claims-as-oidc-conveyor">Client Acts as OpenID Connect Claims Conveyor</a></h1>
+<p id="rfc.section.2.3.p.1">TYPE = "claim-client-claims-oidc-1.0"</p>
+<p id="rfc.section.2.3.p.2">VALUE = {set of oidc reserved claims}</p>
+<p id="rfc.section.2.3.p.3">In this setting the AS and the Client have a pre-established trust relationship. The client may provide the AS with a OpenID Connect user claims that can be used for policy evaluation. We provide an example of the request made by the client to the Authorization Server below.</p>
 <p>Example:</p>
 <pre>POST /rpt_authorization HTTP/1.1
 Host: www.nuveam.com
@@ -662,7 +665,7 @@ Authorization: Bearer jwfLG53^sad$#f
     "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de",
     "claims": [
     {
-        "type": "claim-client-idtoken-oidc-1.0",
+        "type": "claim-client-claims-oidc-1.0",
         "value": {
         "sub": "248289761001"
         "name": "Jane Doe",
@@ -672,16 +675,15 @@ Authorization: Bearer jwfLG53^sad$#f
         "email_verified": true,
         }
     }
-    ]
-    
+    ]    
 }
         </pre>
-<h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#claims-as-custom-conveyor" id="claims-as-custom-conveyor">Hybrid Approach: Client Acts as Custom Claims Conveyor and OpenID Connect ID Token Conveyor</a></h1>
-<p id="rfc.section.3.4.p.1">TYPE = "custom"</p>
-<p id="rfc.section.3.4.p.2">VALUE = {custom defined}</p>
-<p id="rfc.section.3.4.p.3">TYPE = "claim-client-idtoken-oidc-1.0"</p>
-<p id="rfc.section.3.4.p.4">VALUE = {set of oidc reserved claims}</p>
-<p id="rfc.section.3.4.p.5">In this setting the AS and the Client have a pre-established trust relationship. The client may provide the AS with custom claims as well as with OpenID Connect claims that can be used for policy evaluation. We provide an example of the request below.</p>
+<h1 id="rfc.section.2.4"><a href="#rfc.section.2.4">2.4.</a> <a href="#claims-as-custom-conveyor" id="claims-as-custom-conveyor">Hybrid Approach: Client Acts as Custom Claims Conveyor and OpenID Connect Claims Conveyor</a></h1>
+<p id="rfc.section.2.4.p.1">TYPE = "custom"</p>
+<p id="rfc.section.2.4.p.2">VALUE = {custom defined}</p>
+<p id="rfc.section.2.4.p.3">TYPE = "claim-client-claims-oidc-1.0"</p>
+<p id="rfc.section.2.4.p.4">VALUE = {set of oidc reserved claims}</p>
+<p id="rfc.section.2.4.p.5">In this setting the AS and the Client have a pre-established trust relationship. The client may provide the AS with custom claims as well as with OpenID Connect user claims that can be used for policy evaluation.  We provide an example of the request below.</p>
 <p>Example:</p>
 <pre>POST /rpt_authorization HTTP/1.1
 Host: www.nuveam.com
@@ -696,21 +698,45 @@ Authorization: Bearer jwfLG53^sad$#f
         "value": { "roles": ["manager", "admin" }
             },
     {
-        "type": "claim-client-idtoken-oidc-1.0",
+        "type": "claim-client-claims-oidc-1.0",
         "value": { "email": "bob@gmail.com" }
             }
     ]
 }
     </pre>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#redirect-framework" id="redirect-framework">Redirect Framework for Claim Profiling</a></h1>
-<p id="rfc.section.4.p.1">In order to support redirect type UMA profiles, the Authorization Server has to be extended to provide a User Claims Endpoint. The user claims endpoint is used by the Authorization Server to interact with the requesting party and not with the client. The authorization server can first verify the identity of the requesting party or it may engage the requesting party in claims gathering flow. For example, the AS may decide based on the authentication process that it has enough information to evaluate a policy or it may require the user to provide further claims using an existing identity federation protocol. For example, after landing at this endpoint the requesting party may be further redirected to the source of claims (e.g. SAML IDP or the OpenID Connect Identity Provider). In this document, we discuss three examples:</p>
+<h1 id="rfc.section.2.5"><a href="#rfc.section.2.5">2.5.</a> <a href="#claims-as-redirect" id="claims-as-redirect">Client Redirects Requesting Party to AS</a></h1>
+<p id="rfc.section.2.5.p.1">TYPE = "claim-client-redirect-1.0"</p>
+<p id="rfc.section.2.5.p.2">VALUE = {value of the scope at AS}</p>
+<p id="rfc.section.2.5.p.3">The redirect UMA profile defines a Requesting Party Claims Endpoint that the Authorization Server has to support. This endpoint is advertised in the Authorisation Server Configuration Data as defined by the UMA specification <a href="#UMA">[UMA]</a>.  The requesting party claims endpoint is used by the Authorization Server to interact with the requesting party and not with the client application. The authorization server can first verify the identity of the requesting party or it may engage the requesting party in claims gathering flow. For example, the AS may decide based on the authentication process that it has enough information to evaluate a policy or it may require the requesting party to provide further claims, e.g. using an existing identity federation protocol. For example, after landing at this endpoint the requesting party may be further redirected to the source of claims (e.g. SAML IDP or the OpenID Connect Identity Provider).</p>
+<h1 id="rfc.section.2.5.1"><a href="#rfc.section.2.5.1">2.5.1.</a> <a href="#claims-as-redirect-endpoint" id="claims-as-redirect-endpoint">Requesting Party Claims Endpoint</a></h1>
+<p id="rfc.section.2.5.1.p.1">In redirect UMA profile, the configuration data has to be extended with the following property.</p>
 
-<ol>
-  <li>User's authentication is sufficient for policy evalutation;</li>
-  <li>User is redirected to an OIDC Provider</li>
-  <li>User is redirected to a SAML IDP</li>
-</ol>
-<p id="rfc.section.4.p.2">Message flow:</p>
+<dl>
+  <dt>requesting_party_claims_endpoint</dt>
+  <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the authorization server interacts with the end-user requesting party to obtain the necessary user-claims that will be used during policy evaluation process.</dd>
+</dl>
+<p>Example of authorization server configuration extended with requesting party claims endpoint:</p>
+<pre>{
+"version":"1.0",
+"issuer":"https://example.com",
+"pat_profiles_supported":["bearer"],
+"aat_profiles_supported":["bearer"],
+"rpt_profiles_supported":["bearer"],
+"pat_grant_types_supported":["authorization_code"],
+"aat_grant_types_supported":["authorization_code"],
+"claim_profiles_supported":["openid"],
+"dynamic_client_endpoint":"https://as.example.com/dyn_client_reg_uri",
+"token_endpoint":"https://as.example.com/token_uri",
+"user_endpoint":"https://as.example.com/user_uri",
+"resource_set_registration_endpoint":"https://as.example.com/rs/rsrc_uri",
+"introspection_endpoint":"https://as.example.com/rs/status_uri",
+"permission_registration_endpoint":"https://as.example.com/rs/perm_uri",
+"rpt_endpoint":"https://as.example.com/client/rpt_uri",
+"authorization_request_endpoint":"https://as.example.com/client/authz_uri",
+"requesting_party_claims_endpoint":"https://as.example.com/rp/claims_uri"
+}</pre>
+<h1 id="rfc.section.2.5.2"><a href="#rfc.section.2.5.2">2.5.2.</a> <a href="#claims-as-redirect-flow" id="claims-as-redirect-flow">Message Flow</a></h1>
+<p id="rfc.section.2.5.2.p.1">Message flow:</p>
 <p>1. Client asks for new authorization data to be added to an existing RPT</p>
 <pre>POST /rpt_authorization HTTP/1.1
         Host: www.nuveam.com
@@ -722,29 +748,27 @@ Authorization: Bearer jwfLG53^sad$#f
         "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
         }
             </pre>
-<p>2. AS tells the client to redirect the user to the User Claims Endpoint</p>
+<p>2. AS tells the client to redirect the user to the Requesting Party Claims Endpoint and includes the scope parameter in the value of the response</p>
 <pre>HTTP/1.1 403 Forbidden
     Content-Type: application/json
             
     {
-    "need_claims":[
-    {
-    "claim_type":"redirect_required",
-    "claim_name":"Redirect Required",
-    "claim_value":"https://www.nuveam.com/uma/user_claims?scope=699faf5bf28698
-            38e992d57756bc6f&amp;redirect_uri=http%3A%2F%2Fwww.umahostapp.com
-            %2Fg%2Foauth%2Fredirect&amp;client_id=ca4453936fa5fda2110b9e589d61ab37"
-            }
-        ]
+      "need_claims":[
+        {
+          "type":"redirect_required",
+          "name":"Redirect Required",
+          "value":"699faf5bf2869838e992d57756bc6f"
+        }
+      ]
     }
         </pre>
-<p>3. Client redirects the user to the User Claims Endpoint</p>
+<p>3. Client redirects the user to the Requesting Party Claims Endpoint and includes the scope parameter in the request</p>
 <pre>HTTP/1.1 302 Found
-    Location: https://www.nuveam.com/uma/user_claims?scope=699faf5bf2869838e992
-    d57756bc6f&amp; redirect_uri=http%3A%2F%2Fwww.umaapp.com%%2Fredirect&amp;client_id=
+    Location: https://www.nuveam.com/uma/rp_claims?scope=699faf5bf2869838e992
+    d57756bc6f&amp;redirect_uri=http%3A%2F%2Fwww.umaapp.com%%2Fredirect&amp;client_id=
     ca4453936fa5fda2110b9e589d61ab37&amp;state=32455ddsafas
     </pre>
-<p id="rfc.section.4.p.3">After the user is redirected to the AS, the claims for the user are gathered according to one of the defined protocols, such as SAML, OpenID Connect or any other protocol implemented by an UMA-compliant Authorisation Server. Furthermore, the AS is free to obtain the information from a local or remote LDAP, Active Directory or any other user datastore (e.g. SQL or NoSQL-based datastore).</p>
+<p id="rfc.section.2.5.2.p.2">After the user is redirected to the AS, the claims for the user are gathered according to one of the defined protocols, such as SAML, OpenID Connect or any other protocol implemented by an UMA-compliant Authorisation Server. Furthermore, the AS is free to obtain the information from a local or remote LDAP, Active Directory or any other user datastore (e.g. SQL or NoSQL-based datastore).</p>
 <p>4. AS informs the client that new authorization can be added and the client is free to request a new RPT</p>
 <pre>HTTP/1.1 302 Found
     Location: https://www.umaapp.com/redirect?access=granted&amp;state=32455ddsafas
@@ -753,30 +777,39 @@ Authorization: Bearer jwfLG53^sad$#f
 <pre>HTTP/1.1 302 Found
     Location: https://www.umaapp.com/redirect?access=denied&amp;state=32455ddsafas
           </pre>
-<p id="rfc.section.4.p.4">The message flow presented above can be provided for the following set of profiles.</p>
-<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#claims-as-rp-oidc" id="claims-as-rp-oidc">Authorization Server Acts as OpenID Connect Relying Party</a></h1>
-<p id="rfc.section.4.1.p.1">In this claim profile, During this flow, the Authorisation Server acts as an OIDC compliant RP. This flow is used in case the policies for a particular resource set use any of the existing reserved OIDC claims. Importantly, it is the AS that determines if OIDC claims should be used for policy evaluation. This information is not shared with the client application.</p>
-<p id="rfc.section.4.1.p.2">During this flow the AS acts according to the OpenID Connect protocol and this is outside of the UMA specification.</p>
-<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#claims-as-rp-saml" id="claims-as-rp-saml">Authorization Server Acts as SAML Relying Party</a></h1>
-<p id="rfc.section.4.2.p.1">During this flow, the Authorisation Server acts as an SAML compliant Service Provider. This flow is used in case the policies for a particular resource set require the use of the SAML protocol. Importantly, it is the AS that determines if the SAML protocol should be used for policy evaluation. This information is not shared with the client application.</p>
-<p id="rfc.section.4.2.p.2">During this flow the AS acts according to the SAML protocol and this is outside of the UMA specification.</p>
-<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#claims-from-local-datastore" id="claims-from-local-datastore">Authorization Server pulls Claim from local user store</a></h1>
-<p id="rfc.section.4.3.p.1">During this flow and after successful authentication of the RP, the AS can pull the required user attributes from a local user datastore (e.g. LDAP, Active Directory, and other SQL and NoSQL-datastores). This information can be used for policy evaluation.</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
-<p id="rfc.section.5.p.1">This document makes no request of IANA.</p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#Acknowledgments" id="Acknowledgments">Acknowledgments</a></h1>
-<p id="rfc.section.6.p.1">The current editor of this specification is Domenico Catalano of Oracle. The following people are co-authors:</p>
+<h1 id="rfc.section.2.5.3"><a href="#rfc.section.2.5.3">2.5.3.</a> <a href="#claims-as-redirect-examples" id="claims-as-redirect-examples">Examples</a></h1>
+<p id="rfc.section.2.5.3.p.1">In this section, we discuss three examples:</p>
+
+<ol>
+  <li>User is redirected to an OIDC Provider;</li>
+  <li>User is redirected to a SAML IDP;</li>
+  <li>User's authentication is sufficient for policy evalutation.</li>
+</ol>
+
+<p> </p>
+<h1 id="rfc.section.2.5.3.1"><a href="#rfc.section.2.5.3.1">2.5.3.1.</a> <a href="#claims-as-rp-oidc" id="claims-as-rp-oidc">Authorization Server Acts as OpenID Connect Relying Party</a></h1>
+<p id="rfc.section.2.5.3.1.p.1">In this claim profile example, the Authorisation Server acts as an OIDC compliant RP. This flow is used in case the policies for a particular resource set use any of the existing reserved OIDC claims. Importantly, it is the AS that determines if OIDC claims should be used for policy evaluation. This information is not shared with the client application.</p>
+<p id="rfc.section.2.5.3.1.p.2">During this flow the AS acts according to the OpenID Connect protocol and this is outside of the UMA specification.</p>
+<h1 id="rfc.section.2.5.3.2"><a href="#rfc.section.2.5.3.2">2.5.3.2.</a> <a href="#claims-as-rp-saml" id="claims-as-rp-saml">Authorization Server Acts as SAML Relying Party</a></h1>
+<p id="rfc.section.2.5.3.2.p.1">In this claim profile example, the Authorisation Server acts as an SAML compliant Service Provider. This flow is used in case the policies for a particular resource set require the use of the SAML protocol.  Importantly, it is the AS that determines if the SAML protocol should be used for policy evaluation. This information is not shared with the client application.</p>
+<p id="rfc.section.2.5.3.2.p.2">During this flow the AS acts according to the SAML protocol and this is outside of the UMA specification.</p>
+<h1 id="rfc.section.2.5.3.3"><a href="#rfc.section.2.5.3.3">2.5.3.3.</a> <a href="#claims-from-local-datastore" id="claims-from-local-datastore">Authorization Server pulls Claim from local user store</a></h1>
+<p id="rfc.section.2.5.3.3.p.1">In this claim profile example and after successful authentication of the RP, the AS can pull the required user attributes from a local user datastore (e.g. LDAP, Active Directory, and other SQL and NoSQL-datastores).  This information can be used for policy evaluation.</p>
+<h1 id="rfc.section.2.6"><a href="#rfc.section.2.6">2.6.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
+<p id="rfc.section.2.6.p.1">This document makes no request of IANA.</p>
+<h1 id="rfc.section.2.7"><a href="#rfc.section.2.7">2.7.</a> <a href="#Acknowledgments" id="Acknowledgments">Acknowledgments</a></h1>
+<p id="rfc.section.2.7.p.1">The current editor of this specification is Domenico Catalano of Oracle. The following people are co-authors:</p>
 
 <ul>
   <li>Maciej Machulak</li>
   <li>Thomas Hardjono</li>
   <li>Eve Maler</li>
 </ul>
-<p id="rfc.section.6.p.2">Additional contributors to this specification include the Kantara UMA Work Group participants, a list of whom can be found at <a href="#UMAnitarians">[UMAnitarians]</a>.</p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Issues</h1>
-<p id="rfc.section.7.p.1">Issues are captured at the project's GitHub site (<a href="https://github.com/xmlgrrl/UMA-Specifications/issues">https://github.com/xmlgrrl/UMA-Specifications/issues</a>).</p>
-<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<p id="rfc.section.2.7.p.2">Additional contributors to this specification include the Kantara UMA Work Group participants, a list of whom can be found at <a href="#UMAnitarians">[UMAnitarians]</a>.</p>
+<h1 id="rfc.section.2.8"><a href="#rfc.section.2.8">2.8.</a> Issues</h1>
+<p id="rfc.section.2.8.p.1">Issues are captured at the project's GitHub site (<a href="https://github.com/xmlgrrl/UMA-Specifications/issues">https://github.com/xmlgrrl/UMA-Specifications/issues</a>).</p>
+<h1 id="rfc.references"><a href="#rfc.references">3.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">3.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -817,7 +850,7 @@ Authorization: Bearer jwfLG53^sad$#f
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">3.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>
