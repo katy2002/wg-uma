@@ -420,14 +420,14 @@
 <link href="#rfc.authors" rel="Chapter"/>
 
 
-  <meta name="generator" content="xml2rfc version 2.4.5 - http://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.4.9dev0 - http://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Hardjono, T., Ed." />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-hardjono-oauth-umacore-09g" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-3-4" />
-  <meta name="dct.abstract" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy.Met at advisory in Feb 2014." />
-  <meta name="description" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy.Met at advisory in Feb 2014." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-hardjono-oauth-umacore-10" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-7-20" />
+  <meta name="dct.abstract" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This revision of the specification is part of UMA V0.9." />
+  <meta name="description" content="User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This revision of the specification is part of UMA V0.9." />
 
 </head>
 
@@ -446,10 +446,10 @@
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">March 4, 2014</td>
+  <td class="right">July 20, 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 5, 2014</td>
+  <td class="left">Expires: January 21, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -458,19 +458,19 @@
   </table>
 
   <p class="title">User-Managed Access (UMA) Profile of OAuth 2.0<br />
-  <span class="filename">draft-hardjono-oauth-umacore-09g</span></p>
+  <span class="filename">draft-hardjono-oauth-umacore-10</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy.Met at advisory in Feb 2014.</p>
+<p>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. This revision of the specification is part of UMA V0.9.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 5, 2014.</p>
+<p>This Internet-Draft will expire on January 21, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -483,55 +483,55 @@
   <ul class="toc">
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
-<li>1.1.   <a href="#rfc.section.1.1">Notational Conventions</a></li>
+<ul><li>1.1.   <a href="#rfc.section.1.1">Notational Conventions</a></li>
 <li>1.2.   <a href="#rfc.section.1.2">Terminology</a></li>
 <li>1.3.   <a href="#rfc.section.1.3">Achieving Distributed Protection Through APIs and Tokens</a></li>
-<li>1.3.1.   <a href="#rfc.section.1.3.1">Protection API</a></li>
+<ul><li>1.3.1.   <a href="#rfc.section.1.3.1">Protection API</a></li>
 <li>1.3.2.   <a href="#rfc.section.1.3.2">Authorization API</a></li>
 <li>1.3.3.   <a href="#rfc.section.1.3.3">Protected Resource Interface</a></li>
 <li>1.3.4.   <a href="#rfc.section.1.3.4">Time-to-Live Considerations</a></li>
-<li>1.4.   <a href="#rfc.section.1.4">Authorization Server Configuration Data</a></li>
-<li>2.   <a href="#rfc.section.2">Protecting a Resource</a></li>
+</ul><li>1.4.   <a href="#rfc.section.1.4">Authorization Server Configuration Data</a></li>
+</ul><li>2.   <a href="#rfc.section.2">Protecting a Resource</a></li>
 <li>3.   <a href="#rfc.section.3">Getting Authorization and Accessing a Resource</a></li>
-<li>3.1.   <a href="#rfc.section.3.1">Client Attempts to Access Protected Resource</a></li>
-<li>3.1.1.   <a href="#rfc.section.3.1.1">Client Presents No RPT</a></li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Client Attempts to Access Protected Resource</a></li>
+<ul><li>3.1.1.   <a href="#rfc.section.3.1.1">Client Presents No RPT</a></li>
 <li>3.1.2.   <a href="#rfc.section.3.1.2">Client Presents RPT</a></li>
-<li>3.2.   <a href="#rfc.section.3.2">Resource Server Registers Requested Permission With Authorization Server</a></li>
+</ul><li>3.2.   <a href="#rfc.section.3.2">Resource Server Registers Requested Permission With Authorization Server</a></li>
 <li>3.3.   <a href="#rfc.section.3.3">Resource Server Determines RPT's Status</a></li>
-<li>3.3.1.   <a href="#rfc.section.3.3.1">Token Introspection</a></li>
+<ul><li>3.3.1.   <a href="#rfc.section.3.3.1">Token Introspection</a></li>
 <li>3.3.2.   <a href="#rfc.section.3.3.2">RPT Profile: Bearer</a></li>
-<li>3.4.   <a href="#rfc.section.3.4">Client Seeks Authorization for Access</a></li>
-<li>3.4.1.   <a href="#rfc.section.3.4.1">Client Obtains RPT</a></li>
+</ul><li>3.4.   <a href="#rfc.section.3.4">Client Seeks Authorization for Access</a></li>
+<ul><li>3.4.1.   <a href="#rfc.section.3.4.1">Client Obtains RPT</a></li>
 <li>3.4.2.   <a href="#rfc.section.3.4.2">Client Asks for Authorization Data</a></li>
-<li>3.5.   <a href="#rfc.section.3.5">Claims-Gathering Flows</a></li>
-<li>4.   <a href="#rfc.section.4">Error Messages</a></li>
-<li>4.1.   <a href="#rfc.section.4.1">OAuth Error Responses</a></li>
+</ul><li>3.5.   <a href="#rfc.section.3.5">Claims-Gathering Flows</a></li>
+</ul><li>4.   <a href="#rfc.section.4">Error Messages</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">OAuth Error Responses</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">UMA Error Responses</a></li>
-<li>5.   <a href="#rfc.section.5">Profiles for API Extensibility</a></li>
-<li>5.1.   <a href="#rfc.section.5.1">Protection API Extensibility Profile</a></li>
+</ul><li>5.   <a href="#rfc.section.5">Profiles for API Extensibility</a></li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Protection API Extensibility Profile</a></li>
 <li>5.2.   <a href="#rfc.section.5.2">Authorization API Extensibility Profile</a></li>
 <li>5.3.   <a href="#rfc.section.5.3">Resource Interface Extensibility Profile</a></li>
-<li>6.   <a href="#rfc.section.6">Specifying Additional Profiles</a></li>
-<li>6.1.   <a href="#rfc.section.6.1">Specifying Profiles of UMA</a></li>
+</ul><li>6.   <a href="#rfc.section.6">Specifying Additional Profiles</a></li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Specifying Profiles of UMA</a></li>
 <li>6.2.   <a href="#rfc.section.6.2">Specifying RPT Profiles</a></li>
 <li>6.3.   <a href="#rfc.section.6.3">Specifying Claim Profiles</a></li>
-<li>7.   <a href="#rfc.section.7">Security Considerations</a></li>
+</ul><li>7.   <a href="#rfc.section.7">Security Considerations</a></li>
 <li>8.   <a href="#rfc.section.8">Privacy Considerations</a></li>
 <li>9.   <a href="#rfc.section.9">Conformance</a></li>
 <li>10.   <a href="#rfc.section.10">IANA Considerations</a></li>
 <li>11.   <a href="#rfc.section.11">Acknowledgments</a></li>
 <li>12.   <a href="#rfc.section.12">Issues</a></li>
 <li>13.   <a href="#rfc.references">References</a></li>
-<li>13.1.   <a href="#rfc.references.1">Normative References</a></li>
+<ul><li>13.1.   <a href="#rfc.references.1">Normative References</a></li>
 <li>13.2.   <a href="#rfc.references.2">Informative References</a></li>
-<li>Appendix A.   <a href="#rfc.appendix.A">Document History</a></li>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Document History</a></li>
 <li><a href="#rfc.authors">Author's Address</a></li>
 
 
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">User-Managed Access (UMA) is a profile of OAuth 2.0 <a href="#OAuth2">[OAuth2]</a>. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. Resource owners configure authorization servers with access policies that serve as implicit authorization grants. Thus, the UMA profile of OAuth can be considered to encompass an authorization grant flow.</p>
+<p id="rfc.section.1.p.1">User-Managed Access (UMA) V0.9 is a profile of OAuth 2.0 <a href="#OAuth2">[OAuth2]</a>. UMA defines how resource owners can control protected-resource access by clients operated by arbitrary requesting parties, where the resources reside on any number of resource servers, and where a centralized authorization server governs access based on resource owner policy. Resource owners configure authorization servers with access policies that serve as implicit authorization grants. Thus, the UMA profile of OAuth can be considered to encompass an authorization grant flow.</p>
 <p id="rfc.section.1.p.2">UMA serves numerous use cases where a resource owner outsources authorization for access to their resources, potentially even without the run-time presence of the resource owner. A typical example is the following: a web user (an end-user resource owner) can authorize a web app (client) to gain one-time or ongoing access to a protected resource containing his home address stored at a "personal data store" service (resource server), by telling the resource server to respect access entitlements issued by his chosen cloud-based authorization service (authorization server). The requesting party operating the client might be the resource owner himself, using a web or native app run by an e-commerce company that needs to know where to ship a purchased item, or it might be his friend who is using an online address book service to collect contact information, or it might be a survey company that uses an autonomous web service to compile population demographics. A variety of scenarios and use cases can be found in <a href="#UMA-usecases">[UMA-usecases]</a> and <a href="#UMA-casestudies">[UMA-casestudies]</a>.</p>
 <p id="rfc.section.1.p.3">Practical control of access among loosely coupled parties requires more than just messaging protocols. This specification defines only the technical "contract" between UMA-conforming entities; its companion Binding Obligations specification <a href="#UMA-obligations">[UMA-obligations]</a> defines the expected behaviors of parties operating and using these entities. Parties operating entities that claim to be UMA-conforming MUST provide documentation affirmatively stating their acceptance of the binding obligations contractual framework defined in the Binding Obligations specification.</p>
 <p id="rfc.section.1.p.4">In enterprise settings, application access management sometimes involves letting back-office applications serve only as policy enforcement points (PEPs), depending entirely on access decisions coming from a central policy decision point (PDP) to govern the access they give to requesters. This separation eases auditing and allows policy administration to scale in several dimensions. UMA makes use of a separation similar to this, letting the resource owner serve as a policy administrator crafting authorization strategies for resources under their control.</p>
@@ -607,10 +607,10 @@
   <dd style="margin-left: 6">A correlation handle that is conveyed from an authorization server to a resource server, from a resource server to a client, and ultimately from a client to an authorization server, to enable the authorization server to assess the correct resource owner policies to apply to a request for an authorization grant.</dd>
 </dl>
 <h1 id="rfc.section.1.3"><a href="#rfc.section.1.3">1.3.</a> <a href="#endpoint-discussion" id="endpoint-discussion">Achieving Distributed Protection Through APIs and Tokens</a></h1>
-<p id="rfc.section.1.3.p.1">UMA's authorization server, resource server, and client roles are designed to work in an interoperable fashion when each is operated by an entirely separate party (for example, different organizations). For this reason, UMA specifies communications channels that the authorization server MUST implement as HTTP-based APIs that MUST use TLS and OAuth protection, and that the resource server MUST implement as an HTTP-based interface. UMA's use of TLS transport-layer security is governed by Section 1.6 of <a href="#OAuth2">[OAuth2]</a>, which discusses deployment and adoption characteristics of different TLS versions. Three different types of access tokens are issued and used for a variety of purposes as part of these inter-role interactions.</p>
+<p id="rfc.section.1.3.p.1">The software components that fill the roles of UMA authorization servers, resource servers, and clients respectively are intended to work in an interoperable fashion when each is operated by an entirely separate party (for example, different organizations). For this reason, UMA specifies communications channels that the authorization server MUST implement as HTTP-based APIs that MUST use TLS and OAuth protection, and that the resource server MUST implement as an HTTP-based interface. UMA's use of TLS transport-layer security is governed by Section 1.6 of <a href="#OAuth2">[OAuth2]</a>, which discusses deployment and adoption characteristics of different TLS versions. Three different types of access tokens are issued and used for a variety of purposes as part of these inter-role interactions.</p>
 <p id="rfc.section.1.3.p.2">It is also REQUIRED, in turn, for resource servers and clients on the requesting side of UMA interactions to use these channels, unless a profile is being used that enables API extensibility. Profiles that enable such alternatives are described in <a href="#comms-profiles">Section 5</a>.</p>
 <h1 id="rfc.section.1.3.1"><a href="#rfc.section.1.3.1">1.3.1.</a> <a href="#protection-api" id="protection-api">Protection API</a></h1>
-<p id="rfc.section.1.3.1.p.1">The authorization server MUST present an TLS- and OAuth-protected, HTTP-based protection API for use by resource servers. The authorization server thus has an OAuth token endpoint and user authorization endpoint, and has the option to issue an OAuth refresh token along with any access tokens issued for these APIs. The authorization server MUST declare all of its protection API endpoints in its configuration data (see <a href="#am-endpoints">Section 1.4</a>).</p>
+<p id="rfc.section.1.3.1.p.1">The authorization server MUST present a TLS- and OAuth-protected, HTTP-based protection API for use by resource servers. The authorization server thus has an OAuth token endpoint and user authorization endpoint, and has the option to issue an OAuth refresh token along with any access tokens issued for these APIs. The authorization server MUST declare all of its protection API endpoints in its configuration data (see <a href="#am-endpoints">Section 1.4</a>).</p>
 <p id="rfc.section.1.3.1.p.2">The protection API consists of three endpoints:</p>
 
 <ul>
@@ -622,7 +622,7 @@
 <p id="rfc.section.1.3.1.p.4">The authorization server MUST support the OAuth bearer token profile for PAT issuance, and MAY support other OAuth token profiles (for example, the SAML bearer token grant type <a href="#OAuth-SAML">[OAuth-SAML]</a>). It MUST declare all supported token profiles and grant types for PAT issuance in its configuration data.</p>
 <p id="rfc.section.1.3.1.p.5">A PAT binds a resource owner, a resource server the owner uses for resource management, and an authorization server the owner uses for protection of resources at this resource server. It is not specific to any client or requesting party. The issuance of a PAT represents the approval of the resource owner for this resource server to trust this authorization server for protecting its resources belonging to this resource owner.</p>
 <h1 id="rfc.section.1.3.2"><a href="#rfc.section.1.3.2">1.3.2.</a> <a href="#authorization-api" id="authorization-api">Authorization API</a></h1>
-<p id="rfc.section.1.3.2.p.1">The authorization server MUST present an TLS- and OAuth-protected, HTTP-based authorization API for use by clients. The authorization server thus has an OAuth token endpoint and user authorization endpoint, and has the option to issue an OAuth refresh token along with any access tokens issued for these APIs. The authorization server MUST declare all of its authorization API endpoints in its configuration data (see <a href="#am-endpoints">Section 1.4</a>).</p>
+<p id="rfc.section.1.3.2.p.1">The authorization server MUST present a TLS- and OAuth-protected, HTTP-based authorization API for use by clients. The authorization server thus has an OAuth token endpoint and user authorization endpoint, and has the option to issue an OAuth refresh token along with any access tokens issued for these APIs. The authorization server MUST declare all of its authorization API endpoints in its configuration data (see <a href="#am-endpoints">Section 1.4</a>).</p>
 <p id="rfc.section.1.3.2.p.2">The authorization API consists of two endpoints:</p>
 
 <ul>
@@ -635,11 +635,11 @@
 <h1 id="rfc.section.1.3.3"><a href="#rfc.section.1.3.3">1.3.3.</a> <a href="#resource-api" id="resource-api">Protected Resource Interface</a></h1>
 <p id="rfc.section.1.3.3.p.1">The resource server MAY present to clients whatever HTTP-based APIs or endpoints it wishes. To protect any of its resources available in this fashion using UMA, it MUST require a requesting party token (RPT) with sufficient authorization data for access.</p>
 <p id="rfc.section.1.3.3.p.2">This specification defines one RPT profile, call "bearer" (see <a href="#uma-bearer-token-profile">Section 3.3.2</a>), which the authorization server MUST support. It MAY support additional RPT profiles, and MUST declare all supported RPT profiles in its configuration data (see <a href="#am-endpoints">Section 1.4</a>).</p>
-<p id="rfc.section.1.3.3.p.3">An RPT binds a requesting party, the client being used by that party, the resource server at which protected resources of interest reside, and the authorization server that protects those resources. It is not specific to a single resource owner, though its internal components are likely to be bound to individual resource owners, depending on the RPT profile in use.</p>
+<p id="rfc.section.1.3.3.p.3">An RPT binds a requesting party, the client being used by that party, the resource server at which protected resources of interest reside, and the authorization server that protects those resources.  It is not specific to a single resource owner, though its internal components are likely to be bound to individual resource owners, depending on the RPT profile in use.</p>
 <h1 id="rfc.section.1.3.4"><a href="#rfc.section.1.3.4">1.3.4.</a> Time-to-Live Considerations</h1>
 <p id="rfc.section.1.3.4.p.1">The authorization server has the opportunity to manage the validity periods of access tokens that it issues, their corresponding refresh tokens where applicable, the individual data components associated with RPTs where applicable, and even the client credentials that it issues. Different time-to-live strategies may be suitable for different resources and scopes of access, and the authorization server has the opportunity to give the resource owner control over lifetimes of tokens and authorization data issued on their behalf through policy. These options are all outside the scope of this specification.</p>
 <h1 id="rfc.section.1.4"><a href="#rfc.section.1.4">1.4.</a> <a href="#am-endpoints" id="am-endpoints">Authorization Server Configuration Data</a></h1>
-<p id="rfc.section.1.4.p.1">The authorization server MUST provide configuration data in a JSON <a href="#RFC4627">[RFC4627]</a> document that resides in an /uma-configuration directory at at its hostmeta <a href="#hostmeta">[hostmeta]</a> location. The configuration data documents conformance options and endpoints supported by the authorization server. (At the appropriate time, this section will instead profile whatever self-describing metadata specification OAuth adopts, for example, <a href="#OAuth-linktypes">[OAuth-linktypes]</a> or <a href="#OAuth-meta">[OAuth-meta]</a>.)</p>
+<p id="rfc.section.1.4.p.1">The authorization server MUST provide configuration data in a JSON <a href="#RFC4627">[RFC4627]</a> document that resides in an /uma-configuration directory at its hostmeta <a href="#hostmeta">[hostmeta]</a> location. The configuration data documents conformance options and endpoints supported by the authorization server. (At the appropriate time, this section will instead profile whatever self-describing metadata specification OAuth adopts, for example, <a href="#OAuth-linktypes">[OAuth-linktypes]</a> or <a href="#OAuth-meta">[OAuth-meta]</a>.)</p>
 <p id="rfc.section.1.4.p.2">The configuration data has the following properties.</p>
 
 <dl>
@@ -652,7 +652,7 @@
   <dt>aat_profiles_supported</dt>
   <dd style="margin-left: 6"><br/>REQUIRED. OAuth access token profiles supported by this authorization server for AAT issuance. The property value is an array of string values, where each string value is either a reserved keyword defined in this specification or a URI identifying an access token profile defined elsewhere. The reserved keyword "bearer" as a value for this property stands for the OAuth bearer token profile <a href="#OAuth-bearer">[OAuth-bearer]</a>. The authorization server is REQUIRED to support this profile, and to supply this string value explicitly. The authorization server MAY declare its support for additional access token profiles for AATs.</dd>
   <dt>rpt_profiles_supported</dt>
-  <dd style="margin-left: 6"><br/>REQUIRED. UMA RPT profiles supported by this authorization server for RPT issuance. The property value is an array of string values, where each string value is either a reserved keyword defined in this specification or a URI identifying an RPT profile defined elsewhere. The reserved keyword "bearer" as a value for this property stands for the UMA bearer RPT profile defined in <a href="#OAuth-bearer">[OAuth-bearer]</a>. The authorization server is REQUIRED to support this profile, and to supply this string value explicitly. The authorization server MAY declare its support for additional RPT profiles.</dd>
+  <dd style="margin-left: 6"><br/>REQUIRED. UMA RPT profiles supported by this authorization server for RPT issuance.  The property value is an array of string values, where each string value is either a reserved keyword defined in this specification or a URI identifying an RPT profile defined elsewhere. The reserved keyword "bearer" as a value for this property stands for the UMA bearer RPT profile defined in <a href="#uma-bearer-token-profile">Section 3.3.2</a>. The authorization server is REQUIRED to support this profile, and to supply this string value explicitly. The authorization server MAY declare its support for additional RPT profiles.</dd>
   <dt>pat_grant_types_supported</dt>
   <dd style="margin-left: 6"><br/>REQUIRED. OAuth grant types supported by this authorization server in issuing PATs. The property value is an array of string values. Each string value MUST be one of the grant_type values defined in <a href="#OAuth2">[OAuth2]</a>, or alternatively a URI identifying a grant type defined elsewhere.</dd>
   <dt>aat_grant_types_supported</dt>
@@ -666,17 +666,17 @@
   <dt>token_endpoint</dt>
   <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the resource server or client asks the authorization server for a PAT or AAT, respectively. A requested scope of "http://docs.kantarainitiative.org/uma/scopes/prot.json" results in a PAT. A requested scope of "http://docs.kantarainitiative.org/uma/scopes/authz.json" results in an AAT. Usage of this endpoint is defined by <a href="#OAuth2">[OAuth2]</a>.</dd>
   <dt>user_endpoint</dt>
-  <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the resource server gathers the consent of the end-user resource owner or the client gathers the consent of the end-user requesting party, if the "authorization_code" grant type is used. Usage of this endpoint is defined by <a href="#OAuth2">[OAuth2]</a>.</dd>
+  <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the resource server gathers the consent of the end-user resource owner or the client gathers the consent of the end-user requesting party, if the "authorization_code" grant type is used.  Usage of this endpoint is defined by <a href="#OAuth2">[OAuth2]</a>.</dd>
   <dt>introspection_endpoint</dt>
   <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the resource server introspects an RPT presented to it by a client. Usage of this endpoint is defined by <a href="#OAuth-introspection">[OAuth-introspection]</a> and <a href="#token-introspection">Section 3.3.1</a>. A valid PAT MUST accompany requests to this protected endpoint.</dd>
   <dt>resource_set_registration_endpoint</dt>
-  <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the resource server registers resource sets to put them under authorization manager protection. Usage of this endpoint is defined by <a href="#OAuth-resource-reg">[OAuth-resource-reg]</a> and <a href="#protecting-a-resource">Section 2</a>. A valid PAT MUST accompany requests to this protected endpoint.</dd>
+  <dd style="margin-left: 6"><br/>REQUIRED.  The endpoint URI at which the resource server registers resource sets to put them under authorization manager protection. Usage of this endpoint is defined by <a href="#OAuth-resource-reg">[OAuth-resource-reg]</a> and <a href="#protecting-a-resource">Section 2</a>. A valid PAT MUST accompany requests to this protected endpoint.</dd>
   <dt>permission_registration_endpoint</dt>
-  <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the resource server registers a client-requested permission with the authorization server. Usage of this endpoint is defined by <a href="#h-am-register-permission">Section 3.2</a>. A valid PAT MUST accompany requests to this protected endpoint.</dd>
+  <dd style="margin-left: 6"><br/>REQUIRED.  The endpoint URI at which the resource server registers a client-requested permission with the authorization server. Usage of this endpoint is defined by <a href="#h-am-register-permission">Section 3.2</a>. A valid PAT MUST accompany requests to this protected endpoint.</dd>
   <dt>rpt_endpoint</dt>
   <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the client asks the authorization server for an RPT. Usage of this endpoint is defined by <a href="#authz-permission-token">Section 3.4.1</a>. A valid AAT MUST accompany requests to this protected endpoint.</dd>
   <dt>authorization_request_endpoint</dt>
-  <dd style="margin-left: 6"><br/>REQUIRED. The endpoint URI at which the client asks to have authorization data associated with its RPT. Usage of this endpoint is defined in <a href="#r-am-authz-scope">Section 3.4.2</a>. A valid AAT MUST accompany requests to this protected endpoint.</dd>
+  <dd style="margin-left: 6"><br/>REQUIRED.  The endpoint URI at which the client asks to have authorization data associated with its RPT. Usage of this endpoint is defined in <a href="#r-am-authz-scope">Section 3.4.2</a>. A valid AAT MUST accompany requests to this protected endpoint.</dd>
 </dl>
 <p>Example of authorization server configuration data that resides at https://example.com/.well-known/uma-configuration (note the use of https: for endpoints throughout):</p>
 <pre>{
@@ -703,10 +703,10 @@
 
 <ol>
   <li>The authorization server issues client credentials to the resource server. It is OPTIONAL for the client credentials to be provided dynamically through <a href="#DynClientReg">[DynClientReg]</a>; alternatively, they MAY use a static process.</li>
-  <li>The resource server acquires a PAT from the authorization server. It is OPTIONAL for the resource owner to introduce the resource server to the authorization server dynamically (for example, through a "NASCAR"-style user interface where the resource owner selects a chosen authorization server); alternatively, they MAY use a static process that may or may not directly involve the resource owner at introduction time.</li>
+  <li>The resource server acquires a PAT from the authorization server.  It is OPTIONAL for the resource owner to introduce the resource server to the authorization server dynamically (for example, through a "NASCAR"-style user interface where the resource owner selects a chosen authorization server); alternatively, they MAY use a static process that may or may not directly involve the resource owner at introduction time.</li>
   <li>In an ongoing fashion, the resource server registers any resource sets with the authorization server for which it intends to outsource protection, using the resource set registration endpoint of the protection API (see <a href="#OAuth-resource-reg">[OAuth-resource-reg]</a>).</li>
 </ol>
-<p id="rfc.section.2.p.2">Note: The resource server is free to offer the option to protect any subset of the resource owner's resources using different authorization servers or other means entirely, or to protect some resources and not others. Additionally, the choice of protection regimes can be made explicitly by the resource owner or implicitly by the resource server. Any such partitioning by the resource server or owner is outside the scope of this specification.</p>
+<p id="rfc.section.2.p.2">Note: The resource server is free to offer the option to protect any subset of the resource owner's resources using different authorization servers or other means entirely, or to protect some resources and not others. Additionally, the choice of protection regimes can be made explicitly by the resource owner or implicitly by the resource server.  Any such partitioning by the resource server or owner is outside the scope of this specification.</p>
 <p id="rfc.section.2.p.3">Once a resource set has been placed under authorization server protection through the registration of a resource set description for it, and until such a description's deletion by the resource server, the resource server MUST limit access to corresponding resources, requiring sufficient authorization data associated with client-presented RPTs by the authorization server (see <a href="#client-presents-rpt">Section 3.1.2</a>).</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#getting-authz-accessing-resource" id="getting-authz-accessing-resource">Getting Authorization and Accessing a Resource</a></h1>
 <p id="rfc.section.3.p.1">An authorization server orchestrates and controls clients' access (on their requesting parties' behalf) to a resource owner's protected resources at a resource server, under conditions dictated by that resource owner.</p>
@@ -823,7 +823,7 @@ Location: https://as.example.com/permreg/host/photoz.example.com/5454345rdsaa454
 </dl>
 <h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#h-am-rpt-status" id="h-am-rpt-status">Resource Server Determines RPT's Status</a></h1>
 <p id="rfc.section.3.3.p.1">The resource server MUST determine a received RPT's status, including both its validity and, if valid, its associated authorization data, before giving or refusing access to the client. An RPT is associated with a set of authorization data that governs whether the client is authorized for access. The token's nature and format are dictated by its profile; the profile might allow it to be self-contained, such that the resource server is able to determine its status locally, or might require or allow the resource server to make a run-time introspection request of the authorization server that issued the token.</p>
-<p id="rfc.section.3.3.p.2">This specification makes one type of RPT REQUIRED for the authorization server to support: the UMA bearer token profile, as defined in <a href="#uma-bearer-token-profile">Section 3.3.2</a>. Implementers MAY define and use other RPT profiles.</p>
+<p id="rfc.section.3.3.p.2">This specification makes one type of RPT REQUIRED for the authorization server to support: the UMA bearer token profile, as defined in <a href="#uma-bearer-token-profile">Section 3.3.2</a>.  Implementers MAY define and use other RPT profiles.</p>
 <h1 id="rfc.section.3.3.1"><a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#token-introspection" id="token-introspection">Token Introspection</a></h1>
 <p id="rfc.section.3.3.1.p.1">Within any RPT profile, when a resource server needs to introspect a token in a non-self-contained way to determine its status, it MAY require, allow, or prohibit use of the OAuth token introspection endpoint (defined by <a href="#OAuth-introspection">[OAuth-introspection]</a>) that is part of the protection API, and MAY profile its usage. The resource server MUST use the POST method in interacting with the endpoint, not the GET method also defined by <a href="#OAuth-introspection">[OAuth-introspection]</a>.</p>
 <h1 id="rfc.section.3.3.2"><a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#uma-bearer-token-profile" id="uma-bearer-token-profile">RPT Profile: Bearer</a></h1>
@@ -884,7 +884,7 @@ HTTP/1.1 200 OK
   <li>The authorization server issues client credentials to the client. It is OPTIONAL for the client credentials to be provided dynamically through <a href="#DynClientReg">[DynClientReg]</a>; alternatively, they MAY use a static process.</li>
   <li>The client acquires an AAT.</li>
   <li>The client uses the authorization API to acquire an RPT. See <a href="#authz-permission-token">Section 3.4.1</a> for more detail.</li>
-  <li>The client uses the authorization API to ask for authorization, providing the permission ticket it got from the resource server. The authorization server associates authorization data with the client's RPT based on the permission ticket, the resource owner's operative policies, and the results of any claims-gathering flows. See <a href="#r-am-authz-scope">Section 3.4.2</a> for more detail.</li>
+  <li>The client uses the authorization API to ask for authorization, providing the permission ticket it got from the resource server.  The authorization server associates authorization data with the client's RPT based on the permission ticket, the resource owner's operative policies, and the results of any claims-gathering flows.  See <a href="#r-am-authz-scope">Section 3.4.2</a> for more detail.</li>
 </ol>
 <h1 id="rfc.section.3.4.1"><a href="#rfc.section.3.4.1">3.4.1.</a> <a href="#authz-permission-token" id="authz-permission-token">Client Obtains RPT</a></h1>
 <p id="rfc.section.3.4.1.p.1">The client might need an RPT if it has never before requested an RPT for this combination of requesting party, resource server, and authorization server, or if it has lost control of a previously issued RPT and needs a refreshed one. It obtains an RPT by using the authorization API, performing a POST on the RPT endpoint and supplying its AAT in the header. No body is expected; if a body is present, the authorization server MAY ignore it.</p>
@@ -937,7 +937,7 @@ Content-Type: application/json
   <dt>invalid_ticket</dt>
   <dd style="margin-left: 8">The provided ticket was not found at the authorization server. The authorization server responds with the HTTP 400 (Bad Request) status code.</dd>
   <dt>expired_ticket</dt>
-  <dd style="margin-left: 8">The provided ticket has expired. The authorization server responds with the HTTP 400 (Bad Request) status code.</dd>
+  <dd style="margin-left: 8">The provided ticket has expired.  The authorization server responds with the HTTP 400 (Bad Request) status code.</dd>
   <dt>not_authorized_permission</dt>
   <dd style="margin-left: 8">The client is definitively not authorized for this authorization according to user policy. The authorization server responds with the HTTP 403 (Forbidden) status code.</dd>
   <dt>need_claims</dt>
@@ -951,7 +951,6 @@ Cache-Control: no-store
 ...
 
 {
-  "status": "error",
   "error": "expired_ticket"
 }
 </pre>
@@ -1001,7 +1000,7 @@ Cache-Control: no-store
 }
 </pre>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#comms-profiles" id="comms-profiles">Profiles for API Extensibility</a></h1>
-<p id="rfc.section.5.p.1">In some circumstances, it is desirable to couple UMA roles tightly. For example, an authorization server application might also need to act as a client application in order to retrieve protected resources so that it can present to resource owners a dashboard-like user interface that accurately guides the setting of policy; it might need to access itself-as-authorization server for that purpose. For another example, the same organization might operate both an authorization server and a resource server that communicate only with each other behind a firewall, and it might seek more efficient communication methods between them.</p>
+<p id="rfc.section.5.p.1">In some circumstances, it is desirable to couple UMA roles tightly.  For example, an authorization server application might also need to act as a client application in order to retrieve protected resources so that it can present to resource owners a dashboard-like user interface that accurately guides the setting of policy; it might need to access itself-as-authorization server for that purpose. For another example, the same organization might operate both an authorization server and a resource server that communicate only with each other behind a firewall, and it might seek more efficient communication methods between them.</p>
 <p id="rfc.section.5.p.2">This section defines profiles that allow inter-role communications channels and methods to vary in these specific circumstances. This specification still REQUIRES authorization servers to issue PATs, AATs, and RPTs and associate authorization data with RPTs, and REQUIRES resource servers to give clients access only when RPTs are associated with sufficient authorization data. This is because, although tokens might not always appear on the wire in the normal fashion in these cases, they represent binding obligations that might involve additional parties unable to take part in these optimization opportunities (see <a href="#UMA-obligations">[UMA-obligations]</a>).</p>
 <p id="rfc.section.5.p.3">In circumstances where alternate communications channels are being used between independently implemented system entities, it is RECOMMENDED, for reasons of implementation interoperability, to define concrete extension profiles that build on these extensibility profiles (see <a href="#uma-profiles">Section 6.1</a>).</p>
 <p id="rfc.section.5.p.4">An authorization server using any of the opportunities afforded by the protection and/or authorization API extensibility profile MUST declare use of each profile by supplying the relevant "uma_profiles_supported" values in its configuration data (see <a href="#am-endpoints">Section 1.4</a>).</p>
@@ -1028,7 +1027,7 @@ Cache-Control: no-store
 </ul>
 <p id="rfc.section.5.1.p.3">An authorization server using any of the opportunities afforded by this profile MUST declare use of this profile by supplying the "prot-ext-1.0" value for one of its "uma_profiles_supported" values in its configuration data (see <a href="#am-endpoints">Section 1.4</a>).</p>
 <h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#alt-authz-profile" id="alt-authz-profile">Authorization API Extensibility Profile</a></h1>
-<p id="rfc.section.5.2.p.1">This section defines a profile for UMA where the authorization server and client roles either reside in the same system entity or otherwise have a privileged communications channel between them. Following is a summary:</p>
+<p id="rfc.section.5.2.p.1">This section defines a profile for UMA where the authorization server and client roles either reside in the same system entity or otherwise have a privileged communications channel between them.  Following is a summary:</p>
 
 <ul>
   <li>Identifying URI: http://docs.kantarainitiative.org/uma/profiles/authz-ext-1.0</li>
@@ -1140,21 +1139,21 @@ Cache-Control: no-store
 <p id="rfc.section.8.p.3">Additional considerations related to Privacy by Design concepts are discussed in <a href="#UMA-PbD">[UMA-PbD]</a>.</p>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#conformance" id="conformance">Conformance</a></h1>
 <p id="rfc.section.9.p.1">This section outlines conformance requirements for various entities implementing UMA endpoints.</p>
-<p id="rfc.section.9.p.2">This specification has dependencies on other specifications, as referenced under the normative references listed in this specification. Its dependencies on some specifications, such as OpenID Connect (<a href="#OIDCCore">[OIDCCore]</a>), are optional depending on whether the feature in question is used in the implementation.</p>
+<p id="rfc.section.9.p.2">This specification has dependencies on other specifications, as referenced under the normative references listed in this specification.  Its dependencies on some specifications, such as OpenID Connect (<a href="#OIDCCore">[OIDCCore]</a>), are optional depending on whether the feature in question is used in the implementation.</p>
 <p id="rfc.section.9.p.3">The authorization server's configuration data provides a machine-readable method for it to indicate certain of the conformance options it supports. Several of the configuration data properties allow for indicating extension features. Where this specification does not already require optional features to be documented, it is RECOMMENDED that authorization server developers and deployers document any profiled or extended features explicitly and use configuration data to indicate their usage. See <a href="#am-endpoints">Section 1.4</a> for information about providing and extending the configuration data.</p>
 <h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
 <p id="rfc.section.10.p.1">This document makes no request of IANA.</p>
 <h1 id="rfc.section.11"><a href="#rfc.section.11">11.</a> <a href="#Acknowledgments" id="Acknowledgments">Acknowledgments</a></h1>
-<p id="rfc.section.11.p.1">The current editor of this specification is Thomas Hardjono of MIT. The following people are co-authors:</p>
+<p id="rfc.section.11.p.1">The current editor of this specification is Thomas Hardjono of MIT.  The following people are co-authors:</p>
 
 <ul>
   <li>Paul C. Bryan, ForgeRock US, Inc. (former editor)</li>
   <li>Domenico Catalano, Oracle Corp.</li>
   <li>Mark Dobrinic, Cozmanova</li>
   <li>George Fletcher, AOL</li>
-  <li>Maciej Machulak, Newcastle University</li>
-  <li>Eve Maler, XMLgrrl.com</li>
-  <li>Lukasz Moren, Newcastle University</li>
+  <li>Maciej Machulak, Cloud Identity Ltd</li>
+  <li>Eve Maler, ForgeRock</li>
+  <li>Lukasz Moren, Cloud Identity Ltd</li>
   <li>Christian Scholz, COMlounge GmbH (former editor)</li>
   <li>Mike Schwartz, Gluu</li>
   <li>Jacek Szpot, Newcastle University</li>
@@ -1170,20 +1169,20 @@ Cache-Control: no-store
       <td class="reference">
         <b id="DynClientReg">[DynClientReg]</b>
       </td>
-      <td class="top"><a title="IETF">Richer, J.</a>, "<a href="http://tools.ietf.org/html/draft-richer-oauth-dyn-reg-core">OAuth 2.0 Core Dynamic Client Registration</a>", August 2013.</td>
+      <td class="top"><a title="IETF">Richer, J.</a>, "<a href="http://tools.ietf.org/html/draft-ietf-oauth-dyn-reg">OAuth 2.0 Core Dynamic Client Registration</a>", July 2014.</td>
     </tr>
     <tr><td class="reference"><b id="OAuth-bearer">[OAuth-bearer]</b></td><td class="top"><a href="http://tools.ietf.org/html/rfc6750">The OAuth 2.0 Authorization Framework: Bearer Token Usage</a>", October 2012.</td>, "</tr>
     <tr>
       <td class="reference">
         <b id="OAuth-introspection">[OAuth-introspection]</b>
       </td>
-      <td class="top"><a>Richer, J.</a>, <a href="http://tools.ietf.org/html/draft-richer-oauth-introspection">OAuth Token Introspection</a>", May 2013.</td>
+      <td class="top"><a>Richer, J.</a>, <a href="http://tools.ietf.org/html/draft-richer-oauth-introspection">OAuth Token Introspection</a>", July 2014.</td>
     </tr>
     <tr>
       <td class="reference">
         <b id="OAuth-resource-reg">[OAuth-resource-reg]</b>
       </td>
-      <td class="top"><a title="IETF">Hardjono, T.</a>, "<a href="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">OAuth 2.0 Resource Set Registration</a>", December 2012.</td>
+      <td class="top"><a title="IETF">Hardjono, T.</a>, "<a href="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">OAuth 2.0 Resource Set Registration</a>", July 2014.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -1201,7 +1200,7 @@ Cache-Control: no-store
       <td class="reference">
         <b id="OIDCCore">[OIDCCore]</b>
       </td>
-      <td class="top"><a>Sakimura, N.</a>, "<a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>", December 2013.</td>
+      <td class="top"><a>Sakimura, N.</a>, "<a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>", February 2014.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -1219,13 +1218,13 @@ Cache-Control: no-store
       <td class="reference">
         <b id="UMA-obligations">[UMA-obligations]</b>
       </td>
-      <td class="top"><a>Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/UMA+Trust+Model">Binding Obligations on UMA Participants</a>", January 2013.</td>
+      <td class="top"><a>Maler, E.</a>, "<a href="http://docs.kantarainitiative.org/uma/draft-uma-trust.html">Binding Obligations on UMA Participants</a>", January 2013.</td>
     </tr>
     <tr>
       <td class="reference">
         <b id="UMAclaims">[UMAclaims]</b>
       </td>
-      <td class="top"><a title="Oracle">Catalano, D.</a>, "<a href="http://docs.kantarainitiative.org/uma/draft-uma-claim-profiles.html">Claim Profiles for User-Managed Access (UMA)</a>", February 2014.</td>
+      <td class="top"><a title="Oracle">Catalano, D.</a>, "<a href="http://docs.kantarainitiative.org/uma/draft-uma-claim-profiles.html">Claim Profiles for User-Managed Access (UMA)</a>", July 2014.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -1242,7 +1241,7 @@ Cache-Control: no-store
       <td class="reference">
         <b id="OAuth-SAML">[OAuth-SAML]</b>
       </td>
-      <td class="top"><a title="Campbell">Campbell, B.</a>, "<a href="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">SAML 2.0 Bearer Assertion Profiles for OAuth 2.0</a>", December 2013.</td>
+      <td class="top"><a title="Campbell">Campbell, B.</a>, "<a href="http://tools.ietf.org/html/draft-ietf-oauth-saml2-bearer">SAML 2.0 Bearer Assertion Profiles for OAuth 2.0</a>", April 2014.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -1254,7 +1253,7 @@ Cache-Control: no-store
       <td class="reference">
         <b id="OAuth-meta">[OAuth-meta]</b>
       </td>
-      <td class="top"><a>Sakimura, N.</a>, "<a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">JSON Metadata for OAuth Responses</a>", February 2013.</td>
+      <td class="top"><a>Sakimura, N.</a>, "<a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">JSON Metadata for OAuth Responses</a>", November 2013.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -1266,7 +1265,7 @@ Cache-Control: no-store
       <td class="reference">
         <b id="UMA-casestudies">[UMA-casestudies]</b>
       </td>
-      <td class="top"><a>Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/Case+Studies">UMA Case Studies</a>", March 2013.</td>
+      <td class="top"><a>Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/Case+Studies">UMA Case Studies</a>", April 2014.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -1278,7 +1277,7 @@ Cache-Control: no-store
       <td class="reference">
         <b id="UMAnitarians">[UMAnitarians]</b>
       </td>
-      <td class="top"><a title="Maler">Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">UMA Participant Roster</a>", April 2013.</td>
+      <td class="top"><a title="Maler">Maler, E.</a>, "<a href="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">UMA Participant Roster</a>", July 2014.</td>
     </tr>
   </tbody>
 </table>
