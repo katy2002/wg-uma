@@ -8,7 +8,7 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-10"
+<rfc category="std" docName="draft-hardjono-oauth-umacore-11"
      ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <date day="20" month="July" year="2014" />
+    <date day="23" month="October" year="2014" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -45,13 +45,13 @@
       operated by arbitrary requesting parties, where the resources reside on
       any number of resource servers, and where a centralized authorization
       server governs access based on resource owner policy. This revision of
-      the specification is part of UMA V0.9.</t>
+      the specification is part of the "candidate V1.0" process.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>User-Managed Access (UMA) V0.9 is a profile of OAuth 2.0 <xref
+      <t>User-Managed Access (UMA) is a profile of OAuth 2.0 <xref
       target="OAuth2"></xref>. UMA defines how resource owners can control
       protected-resource access by clients operated by arbitrary requesting
       parties, where the resources reside on any number of resource servers,
@@ -234,8 +234,8 @@
             policy terminology, a permission is an entitlement that includes a
             "subject" (requesting party), "verbs" (one or more scopes of
             access), and an "object" (resource set). A permission is one
-            example of authorization data that an authorization server may
-            issue.</t>
+            example of authorization data that an authorization server may add
+            to a requesting party token.</t>
 
             <t hangText="permission ticket">A correlation handle that is
             conveyed from an authorization server to a resource server, from a
@@ -539,17 +539,12 @@
             target="h-am-register-permission"></xref>. A valid PAT MUST
             accompany requests to this protected endpoint.</t>
 
-            <t hangText="rpt_endpoint"><vspace />REQUIRED. The endpoint URI at
-            which the client asks the authorization server for an RPT. Usage
-            of this endpoint is defined by <xref
-            target="authz-permission-token"></xref>. A valid AAT MUST
-            accompany requests to this protected endpoint.</t>
-
             <t hangText="authorization_request_endpoint"><vspace />REQUIRED.
-            The endpoint URI at which the client asks to have authorization
-            data associated with its RPT. Usage of this endpoint is defined in
-            <xref target="r-am-authz-scope"></xref>. A valid AAT MUST
-            accompany requests to this protected endpoint.</t>
+            The endpoint URI at which the client asks for authorization data.
+            Usage of this endpoint is defined in <xref
+            target="r-am-obtain-permission"></xref>. A valid AAT and a
+            permission ticket MUST, and an RPT MAY, accompany requests to this
+            protected endpoint.</t>
           </list></t>
 
         <figure>
@@ -572,7 +567,6 @@
 "resource_set_registration_endpoint":"https://as.example.com/rs/rsrc_uri",
 "introspection_endpoint":"https://as.example.com/rs/status_uri",
 "permission_registration_endpoint":"https://as.example.com/rs/perm_uri",
-"rpt_endpoint":"https://as.example.com/client/rpt_uri",
 "authorization_request_endpoint":"https://as.example.com/client/perm_uri"
 }]]></artwork>
         </figure>
@@ -650,49 +644,45 @@
       interactions with the authorization server before re-attempting
       access.</t>
 
-      <t>The interactions are as follows. Each interaction MAY be the last, if
-      the client chooses not to continue pursuing the access attempt or the
-      resource server chooses not to continue facilitating it.<list
-          style="symbols">
+      <t>The interactions are as follows. The recipient of each request
+      message SHOULD respond unless it detects a security concern, such as a
+      suspected denial of service attack that can be mitigated by rate
+      limiting.<list style="symbols">
           <t>The client attempts to access a protected resource.<list
               style="symbols">
               <t>If the access attempt is unaccompanied by an RPT, the
-              resource server responds immediately with an HTTP 401
-              (Unauthorized) response and instructions on where to go to
-              obtain one.</t>
+              resource server registers a suitable requested permission at the
+              authorization server, and then responds with an HTTP 403
+              (Forbidden) response, a permission ticket, and instructions on
+              where to go to obtain an RPT and authorization data.</t>
 
-              <t>If the access attempt was accompanied by an RPT, the resource
+              <t>If the access attempt is accompanied by an RPT, the resource
               server checks the RPT's status.<list style="symbols">
-                  <t>If the RPT is invalid, the resource server responds with
-                  an HTTP 401 (Unauthorized) response and instructions on
-                  where to go to obtain a token.</t>
-
-                  <t>If the RPT is valid but has insufficient authorization
-                  data, the resource server registers a suitable requested
-                  permission on the client's behalf at the authorization
-                  server, and then responds to the client with an HTTP 403
-                  (Forbidden) response and instructions on where to go to ask
-                  for authorization.</t>
+                  <t>If the RPT is invalid, or if the RPT is valid but has
+                  insufficient authorization data, the resource server
+                  registers a suitable requested permission at the
+                  authorization server, and then responds with an HTTP 403
+                  (Forbidden) response, a permission ticket, and instructions
+                  on where to go to obtain a valid RPT and authorization data
+                  for it.</t>
 
                   <t>If the RPT is valid, and if the authorization data
                   associated with the token is sufficient for allowing access,
                   the resource server responds with an HTTP 2xx (Success)
-                  response and a representation of the resource.</t>
+                  response.</t>
                 </list></t>
             </list></t>
 
-          <t>If the client (possessing no RPT or an invalid RPT) received a
-          401 response and an authorization server's location, after looking
-          up its configuration data and endpoints as necessary, it requests an
-          RPT from the RPT endpoint of the authorization API.</t>
+          <t>IIf the client received a 403 response and a permission ticket,
+          it asks the authorization server for authorization data that matches
+          the ticket using the authorization request endpoint of the
+          authorization API. If the authorization server needs requesting
+          party claims in order to assess this client's authorization, it
+          engages in a claims-gathering flow.</t>
 
-          <t>If the client (posessing a valid RPT) received a 403 response and
-          a permission ticket, it asks the authorization server for
-          authorization data that matches the ticket using the authorization
-          request endpoint of the authorization API. If the authorization
-          server needs requesting party claims in order to assess this
-          client's authorization, it engages in a claims-gathering flow.<list
-              style="symbols">
+          <t>If the client does not already have an AAT at the appropriate
+          authorization server to be able to use its authorization API, it
+          first obtains one.<list style="symbols">
               <t>If the client does not already have an AAT at the appropriate
               authorization server to be able to use its authorization API, it
               first obtains one.</t>
@@ -732,20 +722,26 @@ Host: photoz.example.com
           </figure>
 
           <t>If the client does not present an RPT with the request, the
-          resource server returns an HTTP 401 (Unauthorized) status code and
-          providing the authorization server's URI in an "as_uri" property to
-          facilitate authorization server configuration data discovery,
-          including discovery of the endpoint where the client can request an
-          RPT (<xref target="authz-permission-token"></xref>).</t>
+          resource server uses the protection API to register a requested
+          permission with the authorization server that would suffice for that
+          scope of access (see <xref
+          target="h-am-register-permission"></xref>). It then responds with
+          the HTTP 403 (Forbidden) status code, providing the authorization
+          server's URI in an "as_uri" property in the header and the
+          permission ticket it just received from the authorization server in
+          the body in a JSON-encoded "ticket" property.</t>
 
           <figure>
             <preamble>For example:</preamble>
 
             <artwork><![CDATA[
-HTTP/1.1 401 Unauthorized
-   WWW-Authenticate: UMA realm="example",
-    host_id="photoz.example.com",
-    as_uri="https://as.example.com"
+HTTP/1.1 403 Forbidden
+WWW-Authenticate: UMA realm="example",
+  as_uri="https://as.example.com"
+
+{
+"ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
+}
    ...
 ]]></artwork>
           </figure>
@@ -768,20 +764,16 @@ Host: photoz.example.com
           server MUST determine the RPT's status (see <xref
           target="h-am-rpt-status"></xref>) before responding.</t>
 
-          <t>If the RPT is invalid, the resource server applies UMA protection
-          by returning an HTTP 401 (Unauthorized) status code and providing
-          the authorization server's URI in an "as_uri" property in the
-          header, similarly to the case where no RPT was presented.</t>
-
-          <t>If the RPT is valid but has insufficient authorization data for
-          the type of access sought, the resource server uses the protection
-          API to register a requested permission with the authorization server
-          that would suffice for that scope of access (see <xref
+          <t>If the RPT is invalid, or if the RPT is valid but has
+          insufficient authorization data for the type of access sought, the
+          resource server uses the protection API to register a requested
+          permission with the authorization server that would suffice for that
+          scope of access (see <xref
           target="h-am-register-permission"></xref>). It then responds with
           the HTTP 403 (Forbidden) status code and providing the authorization
           server's URI in an "as_uri" property in the header and the
-          permission ticket it just received from the AM in the body in a
-          JSON-encoded "ticket" property.</t>
+          permission ticket it just received from the authorization server in
+          the body in a JSON-encoded "ticket" property.</t>
 
           <figure>
             <preamble>Example of the resource server's response after having
@@ -791,7 +783,6 @@ Host: photoz.example.com
             <artwork><![CDATA[
 HTTP/1.1 403 Forbidden
 WWW-Authenticate: UMA realm="example",
-  host_id="photoz.example.com",
   as_uri="https://as.example.com"
   error="insufficient_scope"
 
@@ -830,14 +821,20 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
 
       <section anchor="h-am-register-permission"
                title="Resource Server Registers Requested Permission With Authorization Server">
-        <t>In response to receiving an access request accompanied by an RPT
-        that has insufficient authorization data, the resource server uses the
-        protection API's permission registration endpoint to register a
-        permission with the authorization server that would be sufficient for
-        the type of access sought. The authorization server returns a
-        permission ticket for the resource server to give to the client in its
-        response. The PAT provided in the API request implicitly identifies
-        the resource owner ("subject") to which the permission applies.</t>
+        <t>The resource server uses the protection API's permission
+        registration endpoint to register a requested permission with the
+        authorization server that would be sufficient for the type of access
+        sought. The authorization server returns a permission ticket for the
+        resource server to give to the client in its response. The PAT
+        provided in the API request implicitly identifies the resource owner
+        ("subject") to which the permission applies.</t>
+
+        <t>Note: The resource server is free to choose the extent of the
+        requested permission that it registers, as long as it minimally
+        suffices for the type of access attempted by the client. For example,
+        it can choose to register a permission that covers several scopes or a
+        resource set that is greater in extent than the specific resource that
+        the client attempted to access.</t>
 
         <t>The resource server uses the POST method at the endpoint. The body
         of the HTTP request message contains a JSON object providing the
@@ -1067,72 +1064,24 @@ HTTP/1.1 200 OK
 
             <t>The client acquires an AAT.</t>
 
-            <t>The client uses the authorization API to acquire an RPT. See
-            <xref target="authz-permission-token"></xref> for more detail.</t>
-
-            <t>The client uses the authorization API to ask for authorization,
-            providing the permission ticket it got from the resource server.
-            The authorization server associates authorization data with the
-            client's RPT based on the permission ticket, the resource owner's
-            operative policies, and the results of any claims-gathering flows.
-            See <xref target="r-am-authz-scope"></xref> for more detail.</t>
+            <t>The client uses the authorization API to acquire an RPT and to
+            ask for authorization data, providing the permission ticket it got
+            from the resource server. The authorization server associates
+            authorization data with the RPT based on the permission ticket,
+            the resource owner's operative policies, and the results of any
+            claims-gathering flows.</t>
           </list></t>
 
         <section anchor="authz-permission-token" title="Client Obtains RPT">
-          <t>The client might need an RPT if it has never before requested an
-          RPT for this combination of requesting party, resource server, and
-          authorization server, or if it has lost control of a previously
-          issued RPT and needs a refreshed one. It obtains an RPT by using the
-          authorization API, performing a POST on the RPT endpoint and
-          supplying its AAT in the header. No body is expected; if a body is
-          present, the authorization server MAY ignore it.</t>
-
-          <figure>
-            <preamble>Example of a request message containing an
-            AAT:</preamble>
-
-            <artwork><![CDATA[POST /rpt HTTP/1.1
-Host: as.example.com
-Authorization: Bearer jwfLG53^sad$#f
-...
-]]></artwork>
-          </figure>
-
-          <t>The authorization server responds with an HTTP 201 (Created)
-          status code and provides a new RPT.</t>
-
-          <figure>
-            <preamble>For example:</preamble>
-
-            <artwork><![CDATA[
-HTTP/1.1 201 Created
-Content-Type: application/json
-
-{
-  "rpt": "sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv"
-}
-]]></artwork>
-          </figure>
-
-          <t>If the AAT provided in the header is the same as one provided for
-          a previously issued still-valid RPT by this authorization server,
-          the authorization server invalidates the old RPT and issues a new
-          one.</t>
-
-          <t>On first issuance, the RPT is associated with no authorization
-          data and thus does not convey any authorizations for access.</t>
-        </section>
-
-        <section anchor="r-am-authz-scope"
-                 title="Client Asks for Authorization Data">
-          <t>Once in possession of an AAT for this authorization server, an
-          RPT that applies to this requesting party for this resource server
-          and this authorization server, and a permission ticket, the client
-          uses the authorization API to ask the authorization server to give
-          it suitable authorization data for the sought-for access. It
-          performs a POST on the authorization request endpoint, supplying its
-          own AAT in the header and its RPT and the permission ticket in a
-          JSON object with properties "rpt" and "ticket", respectively.</t>
+          <t>Once in possession of a permission ticket and an AAT for this
+          authorization server, the client asks the authorization server to
+          give it authorization data corresponding to that permission ticket.
+          It performs a POST on the authorization request endpoint, supplying
+          its own AAT in the header and with a JSON object in the body with
+          the property &ldquo;ticket&rdquo; containing the ticket as its
+          value. If the client had included an RPT in its failed access
+          attempt, It MAY also provide that RPT in an "rpt" property in its
+          request to the authorization server.</t>
 
           <figure>
             <preamble>Example of a request message containing an AAT, an RPT,
@@ -1155,8 +1104,20 @@ Authorization: Bearer jwfLG53^sad$#f
           the resource set identifier and scopes in it, undergoes any
           claims-gathering flows required (see <xref
           target="authz-flows"></xref>), and ultimately responds to the
-          request. The resource owner's policies at the authorization server
-          amount to an implicit authorization grant in governing the issuance
+          request.</t>
+
+          <t>The authorization server bases the issuing of authorization data
+          on resource owner policies. The nature of these policies is outside
+          the scope of UMA, but generally speaking, they can be thought of as
+          either independent of requesting-party features (for example,
+          dictating access based on time of day or client identity) or
+          dependent on requesting-party features (for example, dictating
+          access based on whether they are over 18 or present a certain
+          identifier). Such requesting-party features can potentially be
+          collected in a claims-gathering flow.</t>
+
+          <t>The resource owner's policies at the authorization server amount
+          to an implicit OAuth authorization grant in governing the issuance
           of authorization data. (The authorization server is also free to
           enable the resource owner to set policies that require the owner to
           provide a run-time authorization grant in the form of a consent
@@ -1164,29 +1125,28 @@ Authorization: Bearer jwfLG53^sad$#f
           policies and gathering of consent is outside the scope of this
           specification.)</t>
 
-          <t>The authorization server MUST base the addition of authorization
-          data to RPTs on user policies. The nature of these policies is
-          outside the scope of UMA, but generally speaking, they can be
-          thought of as either independent of requesting-party features (for
-          example, dictating access based on time of day or client identity)
-          or dependent on requesting-party features (for example, dictating
-          access based on whether they are over 18 or present a certain
-          identifier). Such requesting-party features can potentially be
-          collected in a claims-gathering flow.</t>
-
-          <t>Once the authorization server associates authorization data with
-          the RPT, it responds with an HTTP 201 (Created) status code. If the
-          authorization server chooses to invalidate the original RPT in
-          response to the request and to issue a new one to be associated with
-          the resulting authorization data, it MUST provide that refreshed RPT
-          in the body.</t>
+          <t>Once the authorization server adds the requested authorization
+          data, it returns an HTTP 200 status code with a response body
+          containing the RPT with which it associates the requested
+          authorization data. If the client did not present an RPT in the
+          request for authorization data, the authorization server creates and
+          returns a new RPT. If the client did present an RPT in the request,
+          the authorization server returns the RPT with which it associated
+          the requested authorization data, which may be either the RPT that
+          was in the request or a new one. Note: It is entirely an
+          implementation issue whether the returned RPT is the same one that
+          appeared in the request or a new RPT, and it is also an
+          implementation issue whether the AS chooses to invalidate or retain
+          the validity of the original RPT or any authorization data that was
+          previously added to that RPT; to assist in client interoperablity
+          and token caching expectations, it is RECOMMENDED for authorization
+          servers to document their practices.</t>
 
           <figure>
-            <preamble>Example when the authorization data has been added and
-            the RPT has been refreshed:</preamble>
+            <preamble>Example:</preamble>
 
             <artwork><![CDATA[
-HTTP/1.1 201 Created
+HTTP/1.1 200 Success
 Content-Type: application/json
 
 {
@@ -1208,10 +1168,9 @@ Content-Type: application/json
               The authorization server responds with the HTTP 400 (Bad
               Request) status code.</t>
 
-              <t hangText="not_authorized_permission">The client is
-              definitively not authorized for this authorization according to
-              user policy. The authorization server responds with the HTTP 403
-              (Forbidden) status code.</t>
+              <t hangText="not_authorized">The client is definitively not
+              authorized for access. The authorization server responds with
+              the HTTP 403 (Forbidden) status code.</t>
 
               <t hangText="need_claims">The authorization server is unable to
               determine whether the client is authorized for this permission
@@ -1485,8 +1444,8 @@ Cache-Control: no-store
             <t>An AAT MAY be issued without requiring an OAuth flow to
             establish one.</t>
 
-            <t>An RPT MAY be issued without requiring explicit use of the RPT
-            endpoint or presentation of an AAT in any RPT request.</t>
+            <t>An RPT MAY be issued without requiring explicit use of
+            presentation of an AAT in any RPT request.</t>
 
             <t>Authorization data MAY be associated with the RPT without
             requiring explicit use of the authorization request endpoint or
