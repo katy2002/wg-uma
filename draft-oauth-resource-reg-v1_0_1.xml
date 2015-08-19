@@ -708,7 +708,7 @@ HTTP/1.1 200 OK
 
       <figure>
         <artwork><![CDATA[
-PUT /rs/resource_set HTTP/1.1
+POST /rs/resource_set HTTP/1.1
 Content-Type: application/json
 ...
 
