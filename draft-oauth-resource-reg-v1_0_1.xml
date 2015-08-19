@@ -439,10 +439,11 @@ Content-Type: application/json
 
         <section anchor="update-resource-set"
                  title="Update Resource Set Description">
-          <t>Updates a previously registered resource set description using
-          the PUT method. If the request is successful, the authorization
-          server MUST respond with a status message that includes an "_id"
-          property.</t>
+          <t>Updates a previously registered resource set description, by
+          means of a complete replacement of the previous resource set
+          description, using the PUT method. If the request is successful, the
+          authorization server MUST respond with a status message that
+          includes an "_id" property.</t>
 
           <figure>
             <preamble>Form of an update request, with an access token in the
@@ -816,7 +817,8 @@ HTTP/1.1 200 OK
       Photoz from "Steve the puppy!" to "Steve on October 14, 2011", Photoz
       would use the Update method to ensure that Alice's experience of
       policy-setting at CopMonkey remains consistent with what she sees at
-      Photoz. Following is an example of this request.</t>
+      Photoz. Following is an example of this request. Note that the entire
+      resource set description has to be replaced.</t>
 
       <figure>
         <artwork><![CDATA[
