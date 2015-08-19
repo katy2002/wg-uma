@@ -918,7 +918,7 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
           endpoint, with a PAT in the header:</preamble>
 
           <artwork><![CDATA[
-POST /host/scope_reg_uri/photoz.example.com HTTP/1.1
+POST /host/rsrc_uri HTTP/1.1
 Content-Type: application/json
 Host: as.example.com
 Authorization: Bearer 204c69636b6c69
