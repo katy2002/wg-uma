@@ -722,7 +722,7 @@
 
                   <t>If the RPT is valid, and if the authorization data
                   associated with the token is sufficient for allowing access,
-                  the resource server responds with an HTTP 2xx (Success)
+                  the resource server responds with an HTTP 2xx (Successful)
                   response.</t>
                 </list></t>
             </list></t>
