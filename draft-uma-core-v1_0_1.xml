@@ -937,7 +937,8 @@ Authorization: Bearer 204c69636b6c69
         responds with an HTTP 201 (Created) status code and includes the
         "ticket" property in the JSON-formatted body.</t>
 
-        <t>The permission ticket is a short-lived opaque structure whose form
+        <t>The permission ticket is a short lived structure, opaque to resource
+        servers and clients, whose form
         is determined by the authorization server. The ticket value MUST be
         securely random (for example, not merely part of a predictable
         sequential series), to avoid denial-of-service attacks. Since the
@@ -948,6 +949,25 @@ Authorization: Bearer 204c69636b6c69
         authorization API to ask the authorization server for authorization
         data to be associated with its RPT, it will submit this ticket to the
         authorization server.</t>
+
+        <t>Permission tickets are used only by authenticated clients at
+        the authorization server. The permission ticket is bound to
+        the client identifier that first interacted with the authorization server
+        for this permission ticket. If the authorization server observes that
+        a permission ticket is used by multiple different clients, the
+        authorization server SHOULD attempt to revoke all requesting party
+        tokens already granted based on the compromised permission ticket.</t>
+
+        <t>Permission tickets must not be single-use to allow the client to
+        interact with the authorization server during the claims gathering
+        flow which may require multiple interactions, either direct or
+        through redirection of a requesting party, between the client and the
+        authorization server.</t>
+
+        <t>The authorization server MUST invalidate a permission ticket when
+        the access token is successfully granted to a client based on this
+        permission ticket or when the permission ticket expires (whichever
+        occurs first).</t>
 
         <figure>
           <preamble>For example:</preamble>
