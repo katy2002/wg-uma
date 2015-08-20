@@ -380,7 +380,15 @@ Content-Type: application/json
 Authorization: Bearer 204c69636b6c69
 ...
 
-(body contains JSON resource set description to be created)
+{
+  "name" : "Photo Album",
+  "icon_uri" : "http://www.example.com/icons/flower.png",
+  "scopes" : [
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
+  ],
+  "type" : "http://www.example.com/rsets/photoalbum"
+}
 ]]></artwork>
           </figure>
 
@@ -455,7 +463,14 @@ Content-Type: application/json
 Authorization: Bearer 204c69636b6c69
 ...
 
-(body contains JSON resource set description to be updated)
+{
+  "name" : "Photo Album",
+  "icon_uri" : "http://www.example.com/icons/sky.png",
+  "scopes" : [
+    "http://photoz.example.com/dev/scopes/view"
+  ],
+  "type" : "http://www.example.com/rsets/photoalbum"
+}
 ]]></artwork>
           </figure>
 
