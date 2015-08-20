@@ -247,14 +247,16 @@
             address", the value of this property could be an identifying URI
             for this claim.</t>
 
-            <t hangText="scopes">REQUIRED. An array of strings, any of which
-            MAY be a URI, indicating the available scopes for this resource
-            set. URIs MUST resolve to scope descriptions as defined in <xref
+            <t hangText="scopes">REQUIRED. An array of strings
+            indicating the available scopes for this resource
+            set. Any of the strings MAY BE either a plain string or a URI. 
+            If a scope is a URI then it
+            MUST resolve to a scope description as defined in <xref
             target="action-desc"></xref>. Published scope descriptions MAY
             reside anywhere on the web; a resource server is not required to
             self-host scope descriptions and may wish to point to standardized
             scope descriptions residing elsewhere. It is the resource server's
-            responsibility to ensure that scope description documents are
+            responsibility to ensure that scope descriptions are
             accessible to authorization servers through GET calls to support
             any user interface requirements. The resource server and
             authorization server are presumed to have separately negotiated
