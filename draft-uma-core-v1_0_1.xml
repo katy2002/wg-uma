@@ -1181,7 +1181,7 @@ HTTP/1.1 200 OK
             <preamble>Example of a request message containing an AAT, an RPT,
             and a permission ticket:</preamble>
 
-            <artwork><![CDATA[POST /authz_request HTTP/1.1
+            <artwork><![CDATA[POST /rpt_uri HTTP/1.1
 Host: as.example.com
 Authorization: Bearer jwfLG53^sad$#f
 ...
