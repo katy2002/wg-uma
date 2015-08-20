@@ -317,18 +317,17 @@
             style="symbols">
             <t>Create resource set description: POST .../resource_set</t>
 
-            <t>Read resource set description: GET .../resource_set/{rsid}</t>
+            <t>Read resource set description: GET .../resource_set/{_id}</t>
 
-            <t>Update resource set description: PUT
-            .../resource_set/{rsid}</t>
+            <t>Update resource set description: PUT .../resource_set/{_id}</t>
 
             <t>Delete resource set description: DELETE
-            .../resource_set/{rsid}</t>
+            .../resource_set/{_id}</t>
 
             <t>List resource set descriptions: GET .../resource_set</t>
           </list></t>
 
-        <t>The {rsid} is the authorization server-assigned identifier for the
+        <t>The {_id} is the authorization server-assigned identifier for the
         web resource corresponding to the resource set as returned in the
         Location header.</t>
 
@@ -336,9 +335,9 @@
         server includes common properties, possibly in addition to
         method-specific properties, as follows:<list style="hanging">
             <t hangText="_id">REQUIRED (except for the List method). A string
-            value repeating the {rsid} as appearing in the Location header.
-            Its appearance in both locations allows specialized header and
-            body client software to avoid extra parsing.</t>
+            value repeating the {_id} as appearing in the Location header. Its
+            appearance in both locations allows specialized header and body
+            client software to avoid extra parsing.</t>
 
             <t hangText="user_access_policy_uri">OPTIONAL. A URI that allows
             the resource server to redirect an end-user resource owner to a
@@ -526,7 +525,7 @@ HTTP/1.1 204 No content
                  title="List Resource Set Descriptions">
           <t>Lists all previously registered resource set identifiers for this
           user using the GET method. The authorization server MUST return the
-          list in the form of a JSON array of {rsid} string values.</t>
+          list in the form of a JSON array of {_id} string values.</t>
 
           <t>The resource server uses this method as a first step in checking
           whether its understanding of protected resources is in full
@@ -550,7 +549,7 @@ Authorization: Bearer 204c69636b6c69
 HTTP/1.1 200 OK
 ...
 
-(body contains JSON array of {rsid} values)
+(body contains JSON array of {_id} values)
 ]]></artwork>
           </figure>
         </section>
