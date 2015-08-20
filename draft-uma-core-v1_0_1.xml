@@ -367,6 +367,13 @@
           represents the approval of the resource owner for this resource
           server to use this authorization server for protecting some or all
           of the resources belonging to this resource owner.</t>
+
+          <t>Note: When a client attempts access to a presumptively protected
+          resource without an access token, the resource server needs to
+          ascertain the authorization server and resource set identifier
+          associated with that resource without any context to guide it. In
+          practice, this likely means that the URI reference used by the
+          client needs to be unique per resource set.</t>
         </section>
 
         <section anchor="authorization-api" title="Authorization API">
@@ -673,6 +680,13 @@
       sufficient authorization data associated with client-presented RPTs by
       the authorization server (see <xref
       target="client-presents-rpt"></xref>).</t>
+
+      <t>Note: When a client attempts access to a presumptively protected
+      resource without an access token, the resource server needs to ascertain
+      the authorization server and resource set identifier associated with
+      that resource without any context to guide it. In practice, this likely
+      means that the URI reference used by the client needs to be unique per
+      resource set.</t>
     </section>
 
     <section anchor="getting-authz-accessing-resource"
@@ -784,7 +798,7 @@ Host: photoz.example.com
           authorization server's URI in an "as_uri" property in the header,
           along with the just-received permission ticket in the body in a
           JSON-encoded "ticket" property. The success response uses a HTTP
-          200-class response along with the same header field. </t>
+          200-class response along with the same header field.</t>
 
           <figure>
             <preamble>For example:</preamble>

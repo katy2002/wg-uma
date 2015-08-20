@@ -186,6 +186,13 @@
       server needs to be aware of, the resource server MUST register these
       resource sets at the authorization server's registration endpoint.</t>
 
+      <t>Note: When a client attempts access to a presumptively protected
+      resource without an access token, the resource server needs to ascertain
+      the authorization server and resource set identifier associated with
+      that resource without any context to guide it. In practice, this likely
+      means that the URI reference used by the client needs to be unique per
+      resource set.</t>
+
       <section anchor="action-desc" title="Scope Descriptions">
         <t>A scope description is a JSON document with the following
         properties:<list style="hanging">
@@ -238,7 +245,13 @@
             property could be an HTTP-based URI identifying the location of
             the photo on the web. The authorization server can use this
             information in various ways to inform clients about a resource
-            set's location.</t>
+            set's location. Note: When a client attempts access to a
+            presumptively protected resource without an access token, the
+            resource server needs to ascertain the authorization server and
+            resource set identifier associated with that resource without any
+            context to guide it. In practice, this likely means that the URI
+            reference used by the client needs to be unique per resource
+            set.</t>
 
             <t hangText="type">OPTIONAL. A string uniquely identifying the
             semantics of the resource set. For example, if the resource set
@@ -247,21 +260,20 @@
             address", the value of this property could be an identifying URI
             for this claim.</t>
 
-            <t hangText="scopes">REQUIRED. An array of strings
-            indicating the available scopes for this resource
-            set. Any of the strings MAY BE either a plain string or a URI. 
-            If a scope is a URI then it
-            MUST resolve to a scope description as defined in <xref
+            <t hangText="scopes">REQUIRED. An array of strings indicating the
+            available scopes for this resource set. Any of the strings MAY BE
+            either a plain string or a URI. If a scope is a URI then it MUST
+            resolve to a scope description as defined in <xref
             target="action-desc"></xref>. Published scope descriptions MAY
             reside anywhere on the web; a resource server is not required to
             self-host scope descriptions and may wish to point to standardized
             scope descriptions residing elsewhere. It is the resource server's
-            responsibility to ensure that scope descriptions are
-            accessible to authorization servers through GET calls to support
-            any user interface requirements. The resource server and
-            authorization server are presumed to have separately negotiated
-            any required interpretation of scope handling not conveyed through
-            scope descriptions.</t>
+            responsibility to ensure that scope descriptions are accessible to
+            authorization servers through GET calls to support any user
+            interface requirements. The resource server and authorization
+            server are presumed to have separately negotiated any required
+            interpretation of scope handling not conveyed through scope
+            descriptions.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource set. The referenced icon MAY be used by
