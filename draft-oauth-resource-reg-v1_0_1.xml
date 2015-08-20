@@ -850,7 +850,8 @@ HTTP/1.1 200 OK
       would use the Update method to ensure that Alice's experience of
       policy-setting at CopMonkey remains consistent with what she sees at
       Photoz. Following is an example of this request. Note that the entire
-      resource set description has to be replaced.</t>
+      updated resource set description has to be included in the PUT
+      request.</t>
 
       <figure>
         <artwork><![CDATA[

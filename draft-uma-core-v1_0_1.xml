@@ -791,14 +791,12 @@ Host: photoz.example.com
           access attempt (see <xref
           target="h-am-register-permission"></xref>), and receives a
           permission ticket back in response. It then responds to the client.
-          It SHOULD respond to the client, with either an error response or a
-          success response. The error response uses the HTTP 403 (Forbidden)
-          status code and includes the "WWW-Authenticate" response header
-          field with the authentication scheme "UMA", providing the
-          authorization server's URI in an "as_uri" property in the header,
-          along with the just-received permission ticket in the body in a
-          JSON-encoded "ticket" property. The success response uses a HTTP
-          200-class response along with the same header field.</t>
+          It SHOULD respond to the client with a response that MUST include
+          the "WWW-Authenticate" response header field with the authentication
+          scheme "UMA", providing the authorization server's URI in an
+          "as_uri" property in the header, along with the just-received
+          permission ticket in the body in a JSON-encoded "ticket"
+          property.</t>
 
           <figure>
             <preamble>For example:</preamble>
