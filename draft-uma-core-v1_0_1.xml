@@ -545,7 +545,9 @@
             server's published OpenID Provider Configuration Information. The
             presence of this property indicates authorization server support
             for dynamic client registration feature; its absence indicates a
-            lack of support.</t>
+            lack of support. The authorisation server that supports dynamic
+            client registration MUST allow client applications to register a
+            a claims_redirect_uri metadata field.</t>
 
             <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
             at which the resource server or client asks the authorization
@@ -1133,6 +1135,13 @@ HTTP/1.1 200 OK
             target="OIDCDynClientReg"></xref>; alternatively, they MAY use a
             static process.</t>
 
+            <t>If the client is <spanx style="bold">claims-unaware</spanx>,
+            as discussed in <xref target="authz-permission-token"></xref>,
+            then it SHOULD register a claims_redirect_uri with the
+            authorisation server, either using a static process or
+            through <xref target="DynClientReg"></xref> or <xref
+            target="OIDCDynClientReg"></xref>.</t>
+
             <t>The client acquires an AAT.</t>
 
             <t>The client uses the authorization API to acquire an RPT and to
@@ -1504,7 +1513,7 @@ Authorization: Bearer jwfLG53^sad$#f
                   <t hangText="client_id">REQUIRED. The client's identifier
                   issued by the authorization server.</t>
 
-                  <t hangText="redirect_uri">OPTIONAL. The URI to which the
+                  <t hangText="claims_redirect_uri">OPTIONAL. The URI to which the
                   client wishes the authorization server to direct the
                   requesting party's user agent after completing its
                   interaction. The URI MUST be absolute, MAY contain an
@@ -1513,7 +1522,9 @@ Authorization: Bearer jwfLG53^sad$#f
                   addition parameters, and MUST NOT contain a fragment
                   component. The authorization server SHOULD require all
                   clients to register their redirection endpoint prior to
-                  utilizing the authorization endpoint. If the URI is
+                  utilizing the authorization endpoint (either using a static process or
+            	  through <xref target="DynClientReg"></xref> or
+            	  <xref target="OIDCDynClientReg"></xref>). If the URI is
                   pre-registered, this URI MUST exactly match one of the
                   pre-registered redirection URIs, with the matching performed
                   as described in Section 6.2.1 of <xref
@@ -1539,7 +1550,7 @@ Authorization: Bearer jwfLG53^sad$#f
                 convenience):</preamble>
 
                 <artwork><![CDATA[GET /rqp_claims?client_id=some_client_id&state=abc
-&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fredirect HTTP/1.1
+&claims_redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fredirect_claims HTTP/1.1
 Host: as.example.com]]></artwork>
               </figure>
 
@@ -1614,6 +1625,18 @@ Host: as.example.com]]></artwork>
                   Unavailable) status code cannot be returned to the client
                   via an HTTP redirect.)</t>
                 </list></t>
+
+              <figure>
+                <preamble>Example of a response issued by an authorisation server
+                (line breaks are shown only for display
+                convenience):</preamble>
+
+                <artwork><![CDATA[GET /redirect_claims?&state=abc
+&authorization_state=claims_submitted HTTP/1.1
+Host: client.example.com]]></artwork>
+              </figure>
+
+
             </section>
           </section>
         </section>
