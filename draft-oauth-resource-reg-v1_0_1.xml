@@ -162,7 +162,9 @@
             registers resource sets it wants the authorization server to know
             about. The operations available at this endpoint constitute a
             resource set registration API (see <xref
-            target="reg-api"></xref>).</t>
+            target="reg-api"></xref>). For purposes of illustration in this
+            specification, the resource set registration endpoint used in
+            examples is "/rs/".</t>
           </list></t>
       </section>
 
@@ -185,13 +187,6 @@
       <t>For any of the resource owner's sets of resources this authorization
       server needs to be aware of, the resource server MUST register these
       resource sets at the authorization server's registration endpoint.</t>
-
-      <t>Note: When a client attempts access to a presumptively protected
-      resource without an access token, the resource server needs to ascertain
-      the authorization server and resource set identifier associated with
-      that resource without any context to guide it. In practice, this likely
-      means that the URI reference used by the client needs to be unique per
-      resource set.</t>
 
       <section anchor="action-desc" title="Scope Descriptions">
         <t>A scope description is a JSON document with the following
@@ -245,13 +240,7 @@
             property could be an HTTP-based URI identifying the location of
             the photo on the web. The authorization server can use this
             information in various ways to inform clients about a resource
-            set's location. Note: When a client attempts access to a
-            presumptively protected resource without an access token, the
-            resource server needs to ascertain the authorization server and
-            resource set identifier associated with that resource without any
-            context to guide it. In practice, this likely means that the URI
-            reference used by the client needs to be unique per resource
-            set.</t>
+            set's location.</t>
 
             <t hangText="type">OPTIONAL. A string uniquely identifying the
             semantics of the resource set. For example, if the resource set
@@ -261,19 +250,19 @@
             for this claim.</t>
 
             <t hangText="scopes">REQUIRED. An array of strings indicating the
-            available scopes for this resource set. Any of the strings MAY be
+            available scopes for this resource set. Any of the strings MAY BE
             either a plain string or a URI. If a scope is a URI then it MUST
-            resolve to a scope description document as defined in <xref
-            target="action-desc"></xref>. The resource server and
-            authorization server are presumed to have separately negotiated
-            any required interpretation of scope handling not conveyed through
-            scope descriptions. Published scope descriptions MAY reside
-            anywhere on the web; a resource server is not required to
+            resolve to a scope description as defined in <xref
+            target="action-desc"></xref>. Published scope descriptions MAY
+            reside anywhere on the web; a resource server is not required to
             self-host scope descriptions and may wish to point to standardized
             scope descriptions residing elsewhere. It is the resource server's
             responsibility to ensure that scope descriptions are accessible to
             authorization servers through GET calls to support any user
-            interface requirements.</t>
+            interface requirements. The resource server and authorization
+            server are presumed to have separately negotiated any required
+            interpretation of scope handling not conveyed through scope
+            descriptions.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource set. The referenced icon MAY be used by
@@ -329,17 +318,18 @@
             style="symbols">
             <t>Create resource set description: POST .../resource_set</t>
 
-            <t>Read resource set description: GET .../resource_set/{_id}</t>
+            <t>Read resource set description: GET .../resource_set/{rsid}</t>
 
-            <t>Update resource set description: PUT .../resource_set/{_id}</t>
+            <t>Update resource set description: PUT
+            .../resource_set/{rsid}</t>
 
             <t>Delete resource set description: DELETE
-            .../resource_set/{_id}</t>
+            .../resource_set/{rsid}</t>
 
             <t>List resource set descriptions: GET .../resource_set</t>
           </list></t>
 
-        <t>The {_id} is the authorization server-assigned identifier for the
+        <t>The {rsid} is the authorization server-assigned identifier for the
         web resource corresponding to the resource set as returned in the
         Location header.</t>
 
@@ -347,9 +337,9 @@
         server includes common properties, possibly in addition to
         method-specific properties, as follows:<list style="hanging">
             <t hangText="_id">REQUIRED (except for the List method). A string
-            value repeating the {_id} as appearing in the Location header. Its
-            appearance in both locations allows specialized header and body
-            client software to avoid extra parsing.</t>
+            value repeating the {rsid} as appearing in the Location header.
+            Its appearance in both locations allows specialized header and
+            body client software to avoid extra parsing.</t>
 
             <t hangText="user_access_policy_uri">OPTIONAL. A URI that allows
             the resource server to redirect an end-user resource owner to a
@@ -390,18 +380,17 @@
             <artwork><![CDATA[
 POST /rs/resource_set HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer MHg3OUZEQkZBMjcx
+Authorization: Bearer 204c69636b6c69
 ...
 
 {
-  "name" : "Tweedl Social Service",
-  "icon_uri" : "http://www.example.com/icons/sharesocial.png",
+  "name" : "Photo Album",
+  "icon_uri" : "http://www.example.com/icons/flower.png",
   "scopes" : [
-    "read-public",
-    "post-updates",
-    "read-private"
+    "http://photoz.example.com/dev/scopes/view",
+    "http://photoz.example.com/dev/scopes/all"
   ],
-  "type" : "http://www.example.com/rsets/socialstream/140-compatible"
+  "type" : "http://www.example.com/rsets/photoalbum"
 }
 ]]></artwork>
           </figure>
@@ -538,7 +527,7 @@ HTTP/1.1 204 No content
                  title="List Resource Set Descriptions">
           <t>Lists all previously registered resource set identifiers for this
           user using the GET method. The authorization server MUST return the
-          list in the form of a JSON array of {_id} string values.</t>
+          list in the form of a JSON array of {rsid} string values.</t>
 
           <t>The resource server uses this method as a first step in checking
           whether its understanding of protected resources is in full
@@ -562,7 +551,7 @@ Authorization: Bearer 204c69636b6c69
 HTTP/1.1 200 OK
 ...
 
-(body contains JSON array of {_id} values)
+(body contains JSON array of {rsid} values)
 ]]></artwork>
           </figure>
         </section>
@@ -629,10 +618,7 @@ HTTP/1.1 200 OK
              title="Example of Registering Resource Sets">
       <t>The following example illustrates the intent and usage of resource
       set descriptions and scope descriptions as part of resource set
-      registration in the context of <xref target="UMA"></xref>. This example
-      shows the use of scope strings that are URIs. See <xref
-      target="create-resource-set"></xref> for an example of plain scope
-      strings.</t>
+      registration in the context of <xref target="UMA"></xref>.</t>
 
       <t>This example contains some steps that are exclusively in the realm of
       user experience rather than web protocol, to achieve realistic
@@ -850,8 +836,7 @@ HTTP/1.1 200 OK
       would use the Update method to ensure that Alice's experience of
       policy-setting at CopMonkey remains consistent with what she sees at
       Photoz. Following is an example of this request. Note that the entire
-      updated resource set description has to be included in the PUT
-      request.</t>
+      resource set description has to be replaced.</t>
 
       <figure>
         <artwork><![CDATA[
