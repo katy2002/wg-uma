@@ -367,13 +367,6 @@
           represents the approval of the resource owner for this resource
           server to use this authorization server for protecting some or all
           of the resources belonging to this resource owner.</t>
-
-          <t>Note: When a client attempts access to a presumptively protected
-          resource without an access token, the resource server needs to
-          ascertain the authorization server and resource set identifier
-          associated with that resource without any context to guide it. In
-          practice, this likely means that the URI reference used by the
-          client needs to be unique per resource set.</t>
         </section>
 
         <section anchor="authorization-api" title="Authorization API">
@@ -552,7 +545,9 @@
             server's published OpenID Provider Configuration Information. The
             presence of this property indicates authorization server support
             for dynamic client registration feature; its absence indicates a
-            lack of support.</t>
+            lack of support. The authorization server that supports dynamic
+            client registration MUST allow client applications to register a
+            claims_redirect_uri metadata field.</t>
 
             <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
             at which the resource server or client asks the authorization
@@ -680,13 +675,6 @@
       sufficient authorization data associated with client-presented RPTs by
       the authorization server (see <xref
       target="client-presents-rpt"></xref>).</t>
-
-      <t>Note: When a client attempts access to a presumptively protected
-      resource without an access token, the resource server needs to ascertain
-      the authorization server and resource set identifier associated with
-      that resource without any context to guide it. In practice, this likely
-      means that the URI reference used by the client needs to be unique per
-      resource set.</t>
     </section>
 
     <section anchor="getting-authz-accessing-resource"
@@ -736,7 +724,7 @@
 
                   <t>If the RPT is valid, and if the authorization data
                   associated with the token is sufficient for allowing access,
-                  the resource server responds with an HTTP 200-class
+                  the resource server responds with an HTTP 2xx (Successful)
                   response.</t>
                 </list></t>
             </list></t>
@@ -791,12 +779,13 @@ Host: photoz.example.com
           access attempt (see <xref
           target="h-am-register-permission"></xref>), and receives a
           permission ticket back in response. It then responds to the client.
-          It SHOULD respond to the client with a response that MUST include
-          the "WWW-Authenticate" response header field with the authentication
-          scheme "UMA", providing the authorization server's URI in an
-          "as_uri" property in the header, along with the just-received
-          permission ticket in the body in a JSON-encoded "ticket"
-          property.</t>
+          It SHOULD respond with the HTTP 403 (Forbidden) status code,
+          providing the authorization server's URI in an "as_uri" property in
+          the header, along with the just-received permission ticket in the
+          body in a JSON-encoded "ticket" property. Responses that use any
+          code other than 403 are undefined by this specification; any common
+          or best practices for returning other status codes will be
+          documented in the <xref target="UMA-Impl"></xref>.</t>
 
           <figure>
             <preamble>For example:</preamble>
@@ -838,12 +827,10 @@ Host: photoz.example.com
           access attempt (see <xref
           target="h-am-register-permission"></xref>), and receives a
           permission ticket back in response. It then responds to the client
-          with the HTTP 403 (Forbidden) status code and includes the
-          "WWW-Authenticate" response header field with the authentication
-          scheme "UMA", providing the authorization server's URI in an
-          "as_uri" property in the header, along with the just-received
-          permission ticket in the body in a JSON-encoded "ticket"
-          property.</t>
+          with the HTTP 403 (Forbidden) status code, providing the
+          authorization server's URI in an "as_uri" property in the header,
+          along with the just-received permission ticket in the body in a
+          JSON-encoded "ticket" property.</t>
 
           <figure>
             <preamble>Example of the resource server's response after having
@@ -895,17 +882,19 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         registration endpoint to register a requested permission with the
         authorization server that would suffice for the client's access
         attempt. The authorization server returns a permission ticket for the
-        resource server to give to the client in its response that represents
-        what the resource server registered. The PAT provided in the API
-        request implicitly identifies the resource owner ("subject") to which
-        the permission applies.</t>
+        resource server to give to the client in its response. The PAT
+        provided in the API request implicitly identifies the resource owner
+        ("subject") to which the permission applies.</t>
 
         <t>Note: The resource server is free to choose the extent of the
         requested permission that it registers, as long as it minimally
         suffices for the access attempted by the client. For example, it can
         choose to register a permission that covers several scopes or a
         resource set that is greater in extent than the specific resource that
-        the client attempted to access.</t>
+        the client attempted to access. Likewise, the authorization server is
+        ultimately free to choose to partially fulfill the elements of a
+        permission request based on incomplete satisfaction of policy
+        criteria, or not to fulfill the request.</t>
 
         <t>The resource server uses the POST method at the endpoint. The body
         of the HTTP request message contains a JSON object providing the
@@ -1082,10 +1071,9 @@ Content-Type: application/json
               as protected.</t>
 
               <t hangText="scopes">REQUIRED. An array referencing one or more
-              strings representing scopes to which access was granted for this
-              resource set. Each string MUST correspond to a scope that was
-              registered by this resource server for the referenced resource
-              set.</t>
+              URIs of scopes to which access was granted for this resource
+              set. Each scope MUST correspond to a scope that was registered
+              by this resource server for the referenced resource set.</t>
 
               <t hangText="exp">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
@@ -1147,6 +1135,13 @@ HTTP/1.1 200 OK
             target="OIDCDynClientReg"></xref>; alternatively, they MAY use a
             static process.</t>
 
+            <t>If the client is <spanx style="bold">claims-unaware</spanx>, as
+            discussed in <xref target="authz-permission-token"></xref>, then
+            it SHOULD register a claims_redirect_uri with the authorization
+            server, either using a static process or through <xref
+            target="DynClientReg"></xref> or <xref
+            target="OIDCDynClientReg"></xref>.</t>
+
             <t>The client acquires an AAT.</t>
 
             <t>The client uses the authorization API to acquire an RPT and to
@@ -1179,7 +1174,7 @@ HTTP/1.1 200 OK
             <preamble>Example of a request message containing an AAT, an RPT,
             and a permission ticket:</preamble>
 
-            <artwork><![CDATA[POST /rpt_uri HTTP/1.1
+            <artwork><![CDATA[POST /authz_request HTTP/1.1
 Host: as.example.com
 Authorization: Bearer jwfLG53^sad$#f
 ...
@@ -1196,10 +1191,6 @@ Authorization: Bearer jwfLG53^sad$#f
           the resource set identifier and scopes associated with it,
           potentially requests additional information, and ultimately responds
           positively or negatively to the request for authorization data.</t>
-
-          <t>Note: If the client incompletely satisfies any policy criteria,
-          the authorization server is free to choose to partially fulfill the
-          elements of that request or not to fulfill the request.</t>
 
           <t>The authorization server bases the issuing of authorization data
           on resource owner policies. These policies thus amount to an
@@ -1522,8 +1513,8 @@ Authorization: Bearer jwfLG53^sad$#f
                   <t hangText="client_id">REQUIRED. The client's identifier
                   issued by the authorization server.</t>
 
-                  <t hangText="redirect_uri">OPTIONAL. The URI to which the
-                  client wishes the authorization server to direct the
+                  <t hangText="claims_redirect_uri">OPTIONAL. The URI to which
+                  the client wishes the authorization server to direct the
                   requesting party's user agent after completing its
                   interaction. The URI MUST be absolute, MAY contain an
                   "application/x-www-form-urlencoded" formatted query
@@ -1531,7 +1522,9 @@ Authorization: Bearer jwfLG53^sad$#f
                   addition parameters, and MUST NOT contain a fragment
                   component. The authorization server SHOULD require all
                   clients to register their redirection endpoint prior to
-                  utilizing the authorization endpoint. If the URI is
+                  utilizing the authorization endpoint (either using a static
+                  process or through <xref target="DynClientReg"></xref> or
+                  <xref target="OIDCDynClientReg"></xref>). If the URI is
                   pre-registered, this URI MUST exactly match one of the
                   pre-registered redirection URIs, with the matching performed
                   as described in Section 6.2.1 of <xref
@@ -1557,7 +1550,7 @@ Authorization: Bearer jwfLG53^sad$#f
                 convenience):</preamble>
 
                 <artwork><![CDATA[GET /rqp_claims?client_id=some_client_id&state=abc
-&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fredirect HTTP/1.1
+&claims_redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fredirect_claims HTTP/1.1
 Host: as.example.com]]></artwork>
               </figure>
 
@@ -1632,6 +1625,16 @@ Host: as.example.com]]></artwork>
                   Unavailable) status code cannot be returned to the client
                   via an HTTP redirect.)</t>
                 </list></t>
+
+              <figure>
+                <preamble>Example of a response issued by an authorization
+                server (line breaks are shown only for display
+                convenience):</preamble>
+
+                <artwork><![CDATA[GET /redirect_claims?&state=abc
+&authorization_state=claims_submitted HTTP/1.1
+Host: client.example.com]]></artwork>
+              </figure>
             </section>
           </section>
         </section>
