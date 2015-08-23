@@ -897,8 +897,8 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         authorization server that would suffice for the client's access
         attempt. The authorization server returns a permission ticket for the
         resource server to give to the client in its response. The PAT
-        provided in the API request implicitly identifies the resource owner
-        ("subject") to which the permission applies.</t>
+        provided in the API request enables the authorization server to map
+        the requested permission to the appropriate resource owner.</t>
 
         <t>Note: The resource server is free to choose the extent of the
         requested permission that it registers, as long as it minimally
