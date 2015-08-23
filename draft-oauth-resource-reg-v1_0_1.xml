@@ -162,7 +162,9 @@
             registers resource sets it wants the authorization server to know
             about. The operations available at this endpoint constitute a
             resource set registration API (see <xref
-            target="reg-api"></xref>).</t>
+            target="reg-api"></xref>). For purposes of illustration in this
+            specification, the resource set registration endpoint used in
+            examples is "/rs/".</t>
           </list></t>
       </section>
 
