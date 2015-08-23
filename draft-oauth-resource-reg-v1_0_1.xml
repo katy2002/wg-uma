@@ -262,7 +262,10 @@
             interface requirements. The resource server and authorization
             server are presumed to have separately negotiated any required
             interpretation of scope handling not conveyed through scope
-            descriptions.</t>
+            descriptions. NOTE: A future version of this specification will
+            require at least one scope string. Specifications and
+            implementations referencing this version are advised to require a
+            minimum of one scope string.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource set. The referenced icon MAY be used by
