@@ -199,14 +199,14 @@
         <t>A scope description is a JSON document with the following
         properties:<list style="hanging">
             <t hangText="name">REQUIRED. A human-readable string describing
-            some scope (extent) of access. This name MAY be used by the
-            authorization server in any user interface it presents to the
-            resource owner.</t>
+            some scope (extent) of access. The authorization server MAY use
+            this name in any user interface it presents to the resource
+            owner.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
-            representing the scope. The referenced icon MAY be used by the
-            authorization server in any user interface it presents to the
-            resource owner.</t>
+            representing the scope. The authorization server MAY use the
+            referenced icon in any user interface it presents to the resource
+            owner.</t>
           </list></t>
 
         <figure>
@@ -237,15 +237,15 @@
         resource sets. A resource set description is a JSON document with the
         following properties:<list style="hanging">
             <t hangText="name">REQUIRED. A human-readable string describing a
-            set of one or more resources. This name MAY be used by the
-            authorization server in its resource owner user interface for the
-            resource owner.</t>
+            set of one or more resources. The authorization server MAY use
+            this name in any user interface it presents to the resource
+            owner.</t>
 
             <t hangText="uri">OPTIONAL. A URI that provides the network
             location for the resource set being registered. For example, if
             the resource set corresponds to a digital photo, the value of this
             property could be an HTTP-based URI identifying the location of
-            the photo on the web. The authorization server can use this
+            the photo on the web. The authorization server MAY use this
             information in various ways to inform clients about a resource
             set's location. Note: When a client attempts access to a
             presumptively protected resource without an access token, the
@@ -260,7 +260,10 @@
             consists of a single resource that is an identity claim that
             leverages standardized claim semantics for "verified email
             address", the value of this property could be an identifying URI
-            for this claim.</t>
+            for this claim. The authorization server MAY use this information
+            in processing information about the resource set or displaying
+            information about it in any user interface it presents to the
+            resource owner.</t>
 
             <t hangText="scopes">REQUIRED. An array of strings indicating the
             available scopes for this resource set. Any of the strings MAY be
@@ -278,9 +281,9 @@
             interface requirements.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
-            representing the resource set. The referenced icon MAY be used by
-            the authorization server in its resource owner user interface for
-            the resource owner.</t>
+            representing the resource set. The authorization server MAY use
+            the referenced icon in any user interface it presents to the
+            resource owner.</t>
           </list></t>
 
         <figure>
@@ -596,24 +599,52 @@ HTTP/1.1 200 OK
       <t>This specification largely relies on OAuth for API security and
       shares its security and vulnerability considerations.</t>
 
-      <t>The resource server itself is presumed to have a trust relationship
-      with the authorization server in question, and it registers resource
-      sets in the context of a particular resource owner. A malicious resource
-      server could register a bad icon URI at an authorization server,
-      "infecting" the authorization server either when the icon is retrieved
-      or by confusing a human resource owner about the nature of the resource
-      set being protected. To accomplish this, the resource server would
-      likely have to deceive a resource owner into authorizing it to, first,
-      dynamically registering for client credentials at the authorization
-      server, and second, outsourcing protection to the authorization
-      server.</t>
+      <t>Some form of trust relationship between the authorization server and
+      resource server is presumed. However, where the trust relationship is
+      weak or loosely coupled, for example, if dynamic client registration is
+      supported for resource servers as OAuth clients of the resource set
+      registration API, the authorization server must be extremely careful
+      with any information supplied during resource set registration that may
+      be displayed to the resource owner in a user interface or be used to
+      drive authorization server-based workflows.</t>
 
-      <t>An authorization server could mitigate this threat by not displaying
-      scope or resource set icons of a dynamically registered resource server
-      until such time as it establishes sufficient trust. A less-trusted
-      resource server could increase the likelihood of an authorization server
-      displaying its icons by choosing icons that are well-known and
-      standardized by third parties.</t>
+      <t>For example, a rogue resource server could register a resource set or
+      scope with a reference to a drive-by download in icons returned by the
+      "icon_uri", enticing the resource owner to click on the icon during the
+      policy setting process. The authorization server SHOULD check to see if
+      "icon_uri" has the same host and scheme as the those defined in the
+      array of "redirect_uris" and that all of these URIs resolve to valid web
+      pages. Since these are URI values that are intended to be displayed to
+      the resource owner in a policy-setting interface, the authorization
+      server SHOULD protect the resource owner from malicious content hosted
+      at the URIs where possible.</t>
+
+      <t>Additionally, a rogue resource server could supply misleading names
+      for a resource set or scope, or mislabel the type of a resource set,
+      leading a resource owner to set policy incorrectly.</t>
+
+      <t>One approach to mitigating the threat of bad URIs is that, before
+      presenting clickable icons, the authorization server could download the
+      content hosted at the linked URIs, check the content against a malware
+      scanner and blacklist filter, determine whether or not there is mixed
+      secure and non-secure content at the URL, and other possible server-side
+      mitigations. Note that the content in these URIs can change at any time
+      and the authorization server cannot provide complete confidence in the
+      safety of the URIs, but these practices could help. To further mitigate
+      this kind of threat, the authorization server can also warn the user
+      that the links have been provided by a third party, should be treated
+      with caution, and are not hosted by the authorization server itself. For
+      instance, instead of providing the links directly in an HTML anchor, the
+      authorization server can direct the user to an interstitial warning page
+      before allowing the user to continue to the target URI.</t>
+
+      <t>An alternative approach may be available in deployment ecosystems
+      where trust relationships with resource servers may be weak but APIs,
+      resource set semantics, and scopes have been standardized. A resource
+      server could potentially increase the likelihood of an authorization
+      server trusting the URIs it registers by using well-known and
+      third-party-standardized URIs. This may benefit resource set type values
+      as well, if these are represented as URIs.</t>
     </section>
 
     <section title="Privacy Considerations">
