@@ -708,9 +708,8 @@
               <t>If the access attempt is unaccompanied by an RPT, the
               resource server registers a requested permission at the
               authorization server that would suffice for the access attempt,
-              and then responds with an HTTP 403 (Forbidden) response, a
-              permission ticket, and instructions on where to go to obtain an
-              RPT and authorization data.</t>
+              and then responds with a permission ticket and instructions on
+              where to go to obtain an RPT and authorization data.</t>
 
               <t>If the access attempt is accompanied by an RPT, the resource
               server checks the RPT's status.<list style="symbols">
@@ -718,9 +717,8 @@
                   insufficient authorization data, the resource server
                   registers a requested permission at the authorization server
                   that would suffice for the access attempt, and then responds
-                  with an HTTP 403 (Forbidden) response, a permission ticket,
-                  and instructions on where to go to obtain a valid RPT and
-                  authorization data for it.</t>
+                  with a permission ticket and instructions on where to go to
+                  obtain a valid RPT and authorization data for it.</t>
 
                   <t>If the RPT is valid, and if the authorization data
                   associated with the token is sufficient for allowing access,
@@ -729,9 +727,9 @@
                 </list></t>
             </list></t>
 
-          <t>If the client received a 403 response and a permission ticket, it
-          asks the authorization server for authorization data that matches
-          the ticket using the RPT endpoint of the authorization API. If the
+          <t>If the client received a permission ticket, it asks the
+          authorization server for authorization data that matches the ticket
+          using the RPT endpoint of the authorization API. If the
           authorization server needs requesting party claims in order to
           assess this client's authorization, it engages in a claims-gathering
           flow.<list style="symbols">
@@ -773,19 +771,33 @@ Host: photoz.example.com
 ]]></artwork>
           </figure>
 
-          <t>If the client does not present an RPT with the request, the
-          resource server uses the protection API to register a requested
-          permission with the authorization server that would suffice for the
-          access attempt (see <xref
-          target="h-am-register-permission"></xref>), and receives a
-          permission ticket back in response. It then responds to the client.
-          It SHOULD respond with the HTTP 403 (Forbidden) status code,
-          providing the authorization server's URI in an "as_uri" property in
-          the header, along with the just-received permission ticket in the
-          body in a JSON-encoded "ticket" property. Responses that use any
-          code other than 403 are undefined by this specification; any common
-          or best practices for returning other status codes will be
-          documented in the <xref target="UMA-Impl"></xref>.</t>
+          <t>If the client does not present an RPT with the request, and the
+          resource server chooses to respond to the client, the resource
+          server uses the protection API to register a requested permission
+          with the authorization server that would suffice for the access
+          attempt (see <xref target="h-am-register-permission"></xref>), and
+          receives a permission ticket back in response.</t>
+
+          <t>It then MUST provide a WWW-Authenticate header with the
+          authentication scheme &ldquo;UMA", with the authorization server's
+          URI in an "as_uri" property and the just-received permission ticket
+          in a &ldquo;ticket" property. If it responds with the HTTP status
+          code 403 (Forbidden), it SHOULD also return the permission ticket in
+          the body in a JSON-encoded "ticket" property. Note: The appearance
+          of the permission ticket in a response body will be removed in a
+          future version. It is included here for backwards compatibility.</t>
+
+          <figure>
+            <preamble>For example:</preamble>
+
+            <artwork><![CDATA[
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: UMA realm="example",
+  as_uri="https://as.example.com",
+  ticket="016f84e8-f9b9-11e0-bd6f-0021cc6004de"
+   ...
+]]></artwork>
+          </figure>
 
           <figure>
             <preamble>For example:</preamble>
@@ -793,7 +805,8 @@ Host: photoz.example.com
             <artwork><![CDATA[
 HTTP/1.1 403 Forbidden
 WWW-Authenticate: UMA realm="example",
-  as_uri="https://as.example.com"
+  as_uri="https://as.example.com",
+  ticket="016f84e8-f9b9-11e0-bd6f-0021cc6004de"
 
 {
 "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
@@ -816,8 +829,9 @@ Host: photoz.example.com
 ]]></artwork>
           </figure>
 
-          <t>If the client presents an RPT with its request, the resource
-          server MUST determine the RPT's status (see <xref
+          <t>If the client presents an RPT with its request, and the resource
+          server chooses to respond to the client, the resource server MUST
+          determine the RPT's status (see <xref
           target="h-am-rpt-status"></xref>) before responding.</t>
 
           <t>If the RPT is invalid, or if the RPT is valid but has
