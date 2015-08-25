@@ -367,6 +367,13 @@
           represents the approval of the resource owner for this resource
           server to use this authorization server for protecting some or all
           of the resources belonging to this resource owner.</t>
+
+          <t>Note: When a client attempts access to a presumptively protected
+          resource without an access token, the resource server needs to
+          ascertain the authorization server and resource set identifier
+          associated with that resource without any context to guide it. In
+          practice, this likely means that the URI reference used by the
+          client needs to be unique per resource set.</t>
         </section>
 
         <section anchor="authorization-api" title="Authorization API">
@@ -675,6 +682,13 @@
       sufficient authorization data associated with client-presented RPTs by
       the authorization server (see <xref
       target="client-presents-rpt"></xref>).</t>
+
+      <t>Note: When a client attempts access to a presumptively protected
+      resource without an access token, the resource server needs to ascertain
+      the authorization server and resource set identifier associated with
+      that resource without any context to guide it. In practice, this likely
+      means that the URI reference used by the client needs to be unique per
+      resource set.</t>
     </section>
 
     <section anchor="getting-authz-accessing-resource"
@@ -777,6 +791,18 @@ Host: photoz.example.com
           with the authorization server that would suffice for the access
           attempt (see <xref target="h-am-register-permission"></xref>), and
           receives a permission ticket back in response.</t>
+          <t>If the client does not present an RPT with the request, the
+          resource server uses the protection API to register a requested
+          permission with the authorization server that would suffice for the
+          access attempt (see <xref
+          target="h-am-register-permission"></xref>), and receives a
+          permission ticket back in response. It then responds to the client.
+          It SHOULD respond to the client with a response that MUST include
+          the "WWW-Authenticate" response header field with the authentication
+          scheme "UMA", providing the authorization server's URI in an
+          "as_uri" property in the header, along with the just-received
+          permission ticket in the body in a JSON-encoded "ticket"
+          property.</t>
 
           <t>It then MUST provide a WWW-Authenticate header with the
           authentication scheme &ldquo;UMA", with the authorization server's
@@ -841,10 +867,12 @@ Host: photoz.example.com
           access attempt (see <xref
           target="h-am-register-permission"></xref>), and receives a
           permission ticket back in response. It then responds to the client
-          with the HTTP 403 (Forbidden) status code, providing the
-          authorization server's URI in an "as_uri" property in the header,
-          along with the just-received permission ticket in the body in a
-          JSON-encoded "ticket" property.</t>
+          with the HTTP 403 (Forbidden) status code and includes the
+          "WWW-Authenticate" response header field with the authentication
+          scheme "UMA", providing the authorization server's URI in an
+          "as_uri" property in the header, along with the just-received
+          permission ticket in the body in a JSON-encoded "ticket"
+          property.</t>
 
           <figure>
             <preamble>Example of the resource server's response after having
@@ -905,10 +933,7 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
         suffices for the access attempted by the client. For example, it can
         choose to register a permission that covers several scopes or a
         resource set that is greater in extent than the specific resource that
-        the client attempted to access. Likewise, the authorization server is
-        ultimately free to choose to partially fulfill the elements of a
-        permission request based on incomplete satisfaction of policy
-        criteria, or not to fulfill the request.</t>
+        the client attempted to access.</t>
 
         <t>The resource server uses the POST method at the endpoint. The body
         of the HTTP request message contains a JSON object providing the
@@ -1188,7 +1213,7 @@ HTTP/1.1 200 OK
             <preamble>Example of a request message containing an AAT, an RPT,
             and a permission ticket:</preamble>
 
-            <artwork><![CDATA[POST /authz_request HTTP/1.1
+            <artwork><![CDATA[POST /rpt_uri HTTP/1.1
 Host: as.example.com
 Authorization: Bearer jwfLG53^sad$#f
 ...
@@ -1205,6 +1230,10 @@ Authorization: Bearer jwfLG53^sad$#f
           the resource set identifier and scopes associated with it,
           potentially requests additional information, and ultimately responds
           positively or negatively to the request for authorization data.</t>
+
+          <t>Note: If the client incompletely satisfies any policy criteria,
+          the authorization server is free to choose to partially fulfill the
+          elements of that request or not to fulfill the request.</t>
 
           <t>The authorization server bases the issuing of authorization data
           on resource owner policies. These policies thus amount to an
