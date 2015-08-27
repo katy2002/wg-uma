@@ -628,9 +628,9 @@ HTTP/1.1 200 OK
       scope with a reference to a drive-by download in icons returned by the
       "icon_uri", enticing the resource owner to click on the icon during the
       policy setting process. The authorization server SHOULD check to see if
-      "icon_uri" has the same host and scheme as the those defined in the
-      array of "redirect_uris" and that all of these URIs resolve to valid web
-      pages. Since these are URI values that are intended to be displayed to
+      all URIs defined in the "icon_uri" and in the array of "redirect_uris"
+      resolve to valid web pages.
+      Since these are URI values that are intended to be displayed to
       the resource owner in a policy-setting interface, the authorization
       server SHOULD protect the resource owner from malicious content hosted
       at the URIs where possible.</t>
