@@ -545,7 +545,7 @@
             server's published OpenID Provider Configuration Information. The
             presence of this property indicates authorization server support
             for dynamic client registration feature; its absence indicates a
-            lack of support. The authorisation server that supports dynamic
+            lack of support. The authorization server that supports dynamic
             client registration MUST allow client applications to register a
             a claims_redirect_uri metadata field.</t>
 
@@ -1138,7 +1138,7 @@ HTTP/1.1 200 OK
             <t>If the client is <spanx style="bold">claims-unaware</spanx>,
             as discussed in <xref target="authz-permission-token"></xref>,
             then it SHOULD register a claims_redirect_uri with the
-            authorisation server, either using a static process or
+            authorization server, either using a static process or
             through <xref target="DynClientReg"></xref> or <xref
             target="OIDCDynClientReg"></xref>.</t>
 
@@ -1627,7 +1627,7 @@ Host: as.example.com]]></artwork>
                 </list></t>
 
               <figure>
-                <preamble>Example of a response issued by an authorisation server
+                <preamble>Example of a response issued by an authorization server
                 (line breaks are shown only for display
                 convenience):</preamble>
 
