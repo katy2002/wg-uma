@@ -937,6 +937,20 @@ Authorization: Bearer 204c69636b6c69
         responds with an HTTP 201 (Created) status code and includes the
         "ticket" property in the JSON-formatted body.</t>
 
+                <figure>
+          <preamble>For example:</preamble>
+
+          <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/json
+...
+
+{
+"ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
+}
+]]></artwork>
+        </figure>
+
         <t>The permission ticket is a short lived structure, opaque to resource
         servers and clients, whose form
         is determined by the authorization server. The ticket value MUST be
@@ -952,14 +966,13 @@ Authorization: Bearer 204c69636b6c69
 
         <t>Permission tickets are used only by clients which have are
         authorized by requesting parties to use the authorization API at
-        the authorization server. The permission ticket is bound to
-        the client and to the requesting party that first interacted with
-        the authorization server for this permission ticket. Binding of
-        the permission ticket is done based on the authorization API token
-        which is presented by the client when interacting with the rpt endpoint
-        at the authorization server. If the authorization server observes that
-        a permission ticket is used by multiple different clients or by the same
-        client on behalf of different requesting parties, the authorization
+        the authorization server. When the client
+        presents the permission ticket to the authorization server at the RPT
+        endpoint, the authorization server has an opportunity to bind the
+        permission ticket to the client and its requesting party, based on
+        the context of the AAT presented. If the authorization server observes
+        that a permission ticket is used by multiple different clients or by
+        the same client on behalf of different requesting parties, the authorization
         server SHOULD attempt to revoke all requesting party tokens already
         granted based on the compromised permission ticket.</t>
 
@@ -974,19 +987,8 @@ Authorization: Bearer 204c69636b6c69
         on this permission ticket or when the permission ticket expires
         (whichever occurs first).</t>
 
-        <figure>
-          <preamble>For example:</preamble>
-
-          <artwork><![CDATA[
-HTTP/1.1 201 Created
-Content-Type: application/json
-...
-
-{
-"ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
-}
-]]></artwork>
-        </figure>
+        <t>For more information about permission ticket lifecycle management,
+          see the <xref target="UMA-Impl"></xref>.</t>
 
         <t>If the registration request is authenticated properly but fails due
         to other reasons, the authorization server responds with an HTTP 400
