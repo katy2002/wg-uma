@@ -786,30 +786,12 @@ Host: photoz.example.com
           </figure>
 
           <t>If the client does not present an RPT with the request, and the
-          resource server chooses to respond to the client, the resource
-          server uses the protection API to register a requested permission
-          with the authorization server that would suffice for the access
-          attempt (see <xref target="h-am-register-permission"></xref>), and
-          receives a permission ticket back in response.</t>
-
-          <t>If the client does not present an RPT with the request, the
-          resource server uses the protection API to register a requested
-          permission with the authorization server that would suffice for the
-          access attempt (see <xref
-          target="h-am-register-permission"></xref>), and receives a
-          permission ticket back in response. It then responds to the client.
-          It SHOULD respond to the client with a response that MUST include
-          the "WWW-Authenticate" response header field with the authentication
-          scheme "UMA", providing the authorization server's URI in an
-          "as_uri" property in the header, along with the just-received
-          permission ticket in the body in a JSON-encoded "ticket"
-          property.</t>
-
-          <t>It then MUST provide a WWW-Authenticate header with the
-          authentication scheme &ldquo;UMA", with the authorization server's
-          URI in an "as_uri" property and the just-received permission ticket
-          in a &ldquo;ticket" property. If it responds with the HTTP status
-          code 403 (Forbidden), it SHOULD also return the permission ticket in
+          resource server chooses to respond to the client with an UMA response,
+          the resource server then MUST provide a WWW-Authenticate header with
+          the authentication scheme "UMA", with the authorization server's
+          URI in an "as_uri" parameter and the just-received permission ticket
+          in a "ticket" parameter. If it responds with the HTTP status
+          code 403 (Forbidden), it MAY also return the permission ticket in
           the body in a JSON-encoded "ticket" property. Note: The appearance
           of the permission ticket in a response body will be removed in a
           future version. It is included here for backwards compatibility.</t>
