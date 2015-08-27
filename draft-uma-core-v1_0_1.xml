@@ -2247,9 +2247,10 @@ Cache-Control: no-store
           parties will establish a trust relationship and communicate any
           required keying material in a claim token format profile, as
           described in <xref target="profiles"></xref> and <xref
-          target="claim-profiles"></xref>. It is STRONGLY RECOMMENDED not to
-          accept claim tokens pushed by untrusted clients, nor to ignore
-          audience restrictions found in claim tokens pushed by clients.</t>
+          target="claim-profiles"></xref>. Authorization servers are
+          STRONGLY RECOMMENDED not to accept claim tokens pushed by untrusted
+          clients and not to ignore audience restrictions found in claim tokens
+          pushed by clients.</t>
 
           <t>In the special circumstance when an authorization server is
           colocated with an OpenID Provider for the requesting parties within
