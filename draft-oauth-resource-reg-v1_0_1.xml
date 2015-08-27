@@ -278,7 +278,10 @@
             scope descriptions residing elsewhere. It is the resource server's
             responsibility to ensure that scope descriptions are accessible to
             authorization servers through GET calls to support any user
-            interface requirements.</t>
+            interface requirements. The resource server and authorization
+            server are presumed to have separately negotiated any required
+            interpretation of scope handling not conveyed through scope
+            descriptions.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource set. The authorization server MAY use
