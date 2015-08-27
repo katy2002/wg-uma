@@ -823,6 +823,24 @@ WWW-Authenticate: UMA realm="example",
    ...
 ]]></artwork>
           </figure>
+
+          <t>If the RS received an XXX error from the AS, and did not
+            receive a permission ticket, then is unable to create a
+            WWW-Authenticate: UMA header and MUST include a header of
+            the following form: "Warning: 199 UMA Authorization Server
+            Unreachable".</t>
+
+                    <figure>
+            <preamble>For example:</preamble>
+
+            <artwork><![CDATA[
+HTTP/1.1 403 Forbidden
+Warning: 199 UMA Authorization Server Unreachable
+
+...
+]]></artwork>
+          </figure>
+
         </section>
 
         <section anchor="client-presents-rpt" title="Client Presents RPT">
