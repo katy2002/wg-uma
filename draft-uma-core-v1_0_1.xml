@@ -8,8 +8,8 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-umacore-14"
-     ipr="trust200902">
+<rfc category="std" docName="draft-uma-core-v1_0_1"
+     ipr="kantara" id="kantara">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -28,7 +28,7 @@
     <title abbrev="UMA Core">User-Managed Access (UMA) Profile of OAuth
     2.0</title>
 
-    <author fullname="Thomas Hardjono" initials="T" role="editor"
+    <author fullname="Thomas Hardjono" initials="T." role="editor"
             surname="Hardjono">
       <organization>MIT</organization>
 
@@ -37,7 +37,7 @@
       </address>
     </author>
 
-    <author fullname="Eve Maler" initials="E" surname="Maler">
+    <author fullname="Eve Maler" initials="E." surname="Maler">
       <organization>ForgeRock</organization>
 
       <address>
@@ -45,7 +45,7 @@
       </address>
     </author>
 
-    <author fullname="Maciej Machulak" initials="M" surname="Machulak">
+    <author fullname="Maciej Machulak" initials="M." surname="Machulak">
       <organization>Cloud Identity</organization>
 
       <address>
@@ -53,7 +53,7 @@
       </address>
     </author>
 
-    <author fullname="Domenico Catalano" initials="D" surname="Catalano">
+    <author fullname="Domenico Catalano" initials="D." surname="Catalano">
       <organization>Oracle</organization>
 
       <address>
@@ -846,7 +846,7 @@ Warning: 199 UMA Authorization Server Unreachable
             to derive the authorization server and resource set identifier
             associated with that resource from some other aspect of the
             client's request. This effectively means that the resource
-            server’s API needs to be structured in such a way that the
+            server's API needs to be structured in such a way that the
             client's RPT-free request uniquely identifies the resource set.
             In practice, this information likely needs to be passed through
             the URI, headers, or body of the request.</t>
@@ -2360,7 +2360,8 @@ Cache-Control: no-store
 
   <back>
     <references title="Normative References">
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
+      
+      &RFC2119;
 
       <reference anchor="OAuth2" target="http://tools.ietf.org/html/rfc6749">
         <front>

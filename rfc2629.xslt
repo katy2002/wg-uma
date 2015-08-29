@@ -3,6 +3,7 @@
 
     Copyright (c) 2006-2015, Julian Reschke (julian.reschke@greenbytes.de)
     All rights reserved.
+    Portions Copyright (c) 2015. Kantara Initiative. All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
@@ -635,6 +636,9 @@
   </xsl:choose>
 </xsl:variable>
 
+<xsl:variable name="ipr-kantara" select="(/rfc/@ipr = 'kantara')"></xsl:variable>
+<xsl:variable name="id-kantara" select="(/rfc/@id = 'kantara')"></xsl:variable>
+
 <xsl:variable name="ipr-rfc4748" select="(
   $ipr-rfc3667 and
     ( $rfcno &gt;= 4715 and ( $rfcno != 4718 and $rfcno != 4735 and $rfcno != 4749 ))
@@ -1252,7 +1256,7 @@
 
 <xsl:template match="front">
   <xsl:call-template name="check-no-text-content"/>
-  <xsl:if test="$xml2rfc-topblock!='no'">
+  <xsl:if test="$xml2rfc-topblock!='no' and not($id-kantara)">
     <!-- collect information for left column -->
     <xsl:variable name="leftColumn">
       <xsl:call-template name="collectLeftHeaderColumn" />
@@ -1279,11 +1283,22 @@
     </table>
   </xsl:if>
 
+  <xsl:if test="$id-kantara">
+    <xsl:call-template name="kantaraLogo"/>
+  </xsl:if>
+
   <div id="{$anchor-prefix}.title">
     <!-- main title -->
+      <xsl:choose>
+        <xsl:when test="$id-kantara">
+          <h1 class="kantara"><xsl:apply-templates select="title"/></h1>
+        </xsl:when>
+        <xsl:otherwise>
+          <h1><xsl:apply-templates select="title"/></h1>
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <h1><xsl:apply-templates select="title"/></h1>
-    <xsl:if test="/rfc/@docName">
+    <xsl:if test="/rfc/@docName and not($id-kantara)">
     
       <xsl:variable name="docname" select="/rfc/@docName"/>
 
@@ -1356,6 +1371,10 @@
     </xsl:if>
   </div>
 
+  <xsl:if test="$id-kantara">
+    <xsl:call-template name="kantaraHeader"/>
+  </xsl:if>
+
   <!-- insert notice about update -->
   <xsl:variable name="published-as" select="/*/x:link[@rel='Alternate' and starts-with(@title,'RFC')]"/>
   <xsl:if test="$published-as">
@@ -1390,6 +1409,7 @@
     <xsl:when test="/rfc/@ipr = 'noModificationTrust200902'" />
     <xsl:when test="/rfc/@ipr = 'noDerivativesTrust200902'" />
     <xsl:when test="/rfc/@ipr = 'pre5378Trust200902'" />
+    <xsl:when test="/rfc/@ipr = 'kantara'" />
     <xsl:otherwise>
       <xsl:call-template name="error">
         <xsl:with-param name="msg" select="concat('Unknown value for /rfc/@ipr: ', /rfc/@ipr)"/>
@@ -3843,6 +3863,55 @@
   </tbody>
 </xsl:template>
 
+<xsl:template name="kantaraLogo">
+  <img class="kantara" src="https://kantarainitiative.org/wp-content/uploads/2014/07/img1.png" alt="Kantara Initiative"/>  
+</xsl:template>
+
+<xsl:template name="kantaraHeader">
+  <p>
+<table class="header kantara">
+<tbody>
+
+<tr>
+  <td class="left kantara">Version:</td>
+  <td class="left kantara">1.0.1</td>
+</tr>
+<tr>
+   <td class="kantara" colspan="2">&#160;</td>   
+</tr>
+<tr>
+  <td class="left kantara">Date:</td>
+  <td class="left kantara">2015-08-29</td>
+</tr>
+<tr>
+   <td class="kantara" colspan="2">&#160;</td>  
+</tr>
+
+<tr>
+  <td class="left kantara">Editor:</td>
+  <td class="left kantara">Thomas Hardjono, MIT</td>
+</tr>
+<tr>
+   <td class="kantara" colspan="2">&#160;</td>
+</tr>
+
+<tr>
+  <td class="left kantara">Contributors:</td>
+  <td class="left kantara">Eve Maler, ForgeRock</td>
+</tr>
+<tr>
+  <td class="left kantara"></td>
+  <td class="left kantara">Maciej Machulak, Cloud Identity Ltd</td>
+</tr>
+<tr>
+  <td class="left kantara"></td>
+  <td class="left kantara">Domenico Catalano, Oracle</td>
+</tr>
+</tbody>
+</table>
+</p>
+</xsl:template>
+
 <!-- convenience template that avoids copying namespace nodes we don't want -->
 <xsl:template name="copynodes">
   <xsl:param name="nodes" />
@@ -4033,7 +4102,7 @@
 
 <xsl:template name="insertCopyright" myns:namespaceless-elements="xml2rfc">
 
-  <xsl:if test="not($no-copylong)">
+  <xsl:if test="not($no-copylong) and not($ipr-kantara)">
     <section title="Full Copyright Statement" anchor="{$anchor-prefix}.copyright" myns:unnumbered="unnumbered" myns:notoclink="notoclink">
       <xsl:choose>
         <xsl:when test="$ipr-rfc3667">
@@ -4708,6 +4777,10 @@ h1 {
   margin-top: 36pt;
   margin-bottom: 0pt;
 }
+h1.kantara {
+  margin-top: 12pt;
+  margin-bottom: 12pt;  
+}
 h2 {
   font-size: 130%;
   line-height: 21pt;
@@ -4733,6 +4806,11 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 }
 img {
   margin-left: 3em;
+}
+img.kantara {
+  margin-left: 0;
+  max-width:250px;
+  max-height:100px;
 }
 li {
   margin-left: 2em;
@@ -4890,6 +4968,12 @@ table.header td {
 table.header a {
   color: white;
 }</xsl:if>
+table.kantara {
+  color: black;
+}
+table.header td.kantara {
+  background-color:white;
+}
 td.reference {
   vertical-align: top;
   white-space: nowrap;
@@ -5613,6 +5697,7 @@ dd, li, p {
   <xsl:attribute name="title">
     <xsl:choose>
       <xsl:when test="$xml2rfc-rfcedstyle='yes'">Status of This Memo</xsl:when>
+      <xsl:when test="/rfc/@id = 'kantara'">Status of This Document</xsl:when>
       <xsl:otherwise>Status of this Memo</xsl:otherwise>
     </xsl:choose>
   </xsl:attribute>
@@ -5728,6 +5813,9 @@ dd, li, p {
             This Internet-Draft is submitted to IETF in full conformance with
             the provisions of BCP 78 and BCP 79.
           </xsl:when>
+          <xsl:when test="/rfc/@ipr = 'kantara'">
+            This specification was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and approved by the <eref target="http://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Leadership Council</eref> as a Draft Recommendation according to the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref>.
+          </xsl:when>
           <xsl:otherwise>
             CONFORMANCE UNDEFINED.
           </xsl:otherwise>
@@ -5763,13 +5851,15 @@ dd, li, p {
         </xsl:choose>
       </t>
       <xsl:choose>
-        <xsl:when test="$id-boilerplate='2010'">
+        <xsl:when test="$id-boilerplate='2010' and not($id-kantara)">
           <t>
             Internet-Drafts are working documents of the Internet Engineering
             Task Force (IETF). Note that other groups may also distribute
             working documents as Internet-Drafts. The list of current
             Internet-Drafts is at <eref target='http://datatracker.ietf.org/drafts/current/'>http://datatracker.ietf.org/drafts/current/</eref>.
           </t>
+        </xsl:when>
+        <xsl:when test="$id-kantara">
         </xsl:when>
         <xsl:otherwise>
           <t>
@@ -5780,12 +5870,14 @@ dd, li, p {
           </t>
         </xsl:otherwise>
       </xsl:choose>
-      <t>
-        Internet-Drafts are draft documents valid for a maximum of six months
-        and may be updated, replaced, or obsoleted by other documents at any time.
-        It is inappropriate to use Internet-Drafts as reference material or to cite
-        them other than as &#8220;work in progress&#8221;.
-      </t>
+      <xsl:if test="not($id-kantara)">
+        <t>
+          Internet-Drafts are draft documents valid for a maximum of six months
+          and may be updated, replaced, or obsoleted by other documents at any time.           
+          It is inappropriate to use Internet-Drafts as reference material or to cite
+          them other than as &#8220;work in progress&#8221;.
+        </t>
+      </xsl:if>
       <xsl:if test="$id-boilerplate=''">
         <t>
           The list of current Internet-Drafts can be accessed at
@@ -5796,9 +5888,11 @@ dd, li, p {
           <eref target='http://www.ietf.org/shadow.html'>http://www.ietf.org/shadow.html</eref>.
         </t>
       </xsl:if>
-      <t>
-        This Internet-Draft will expire <xsl:call-template name="expirydate"><xsl:with-param name="in-prose" select="true()"/></xsl:call-template>.
-      </t>
+      <xsl:if test="not($id-kantara)">
+        <t>
+          This Internet-Draft will expire <xsl:call-template name="expirydate"><xsl:with-param name="in-prose" select="true()"/></xsl:call-template>.
+        </t>
+      </xsl:if>
     </xsl:when>
 
     <xsl:when test="/rfc/@category='bcp' and $rfc-boilerplate='2010'">
@@ -5995,12 +6089,22 @@ dd, li, p {
   <xsl:copy-of select="/rfc/front/note[@title='IESG Note']"/>
 
   <xsl:choose>
+    <xsl:when test="$ipr-kantara">
+      <section title="Copyright Notice" myns:unnumbered="unnumbered" myns:notoclink="notoclink" anchor="{$anchor-prefix}.copyrightnotice">
+        <t>
+          Copyright (c) 2015 Kantara Initiative and the persons identified as the document authors. All rights reserved.
+        </t>
+        <t>
+          This document is subject to the<eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies%20_V1.1_.pdf?version=1&amp;modificationDate=1244488630000&amp;api=v2">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>)
+        </t>
+      </section>
+    </xsl:when>
     <xsl:when test="$ipr-2008-11">
       <section title="Copyright Notice" myns:unnumbered="unnumbered" myns:notoclink="notoclink" anchor="{$anchor-prefix}.copyrightnotice">
         <t>
           Copyright &#169; <xsl:value-of select="$xml2rfc-ext-pub-year" /> IETF Trust and the persons identified
           as the document authors.  All rights reserved.
-        </t>
+        </t>      
         <xsl:choose>
           <xsl:when test="$ipr-2010-01">
             <t>
@@ -6037,6 +6141,21 @@ dd, li, p {
               (<eref target="http://trustee.ietf.org/license-info">http://trustee.ietf.org/license-info</eref>).
               Please review these documents carefully, as they describe your rights and restrictions with
               respect to this document.
+            </t>
+          </xsl:when>
+          <xsl:when test="$ipr-2010-01">
+            <t>
+              This document is subject to BCP 78 and the IETF Trust's Legal
+              Provisions Relating to IETF Documents (<eref target="http://trustee.ietf.org/license-info">http://trustee.ietf.org/license-info</eref>)
+              in effect on the date of publication of this document. Please
+              review these documents carefully, as they describe your rights
+              and restrictions with respect to this document.
+              <xsl:if test="$submissionType='IETF'">
+                Code Components extracted from this document must include
+                Simplified BSD License text as described in Section 4.e of the
+                Trust Legal Provisions and are provided without warranty as
+                described in the Simplified BSD License.
+              </xsl:if>
             </t>
           </xsl:when>
           <xsl:otherwise>

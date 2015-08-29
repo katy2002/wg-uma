@@ -9,7 +9,7 @@
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
 <rfc category="std" docName="draft-hardjono-oauth-resource-reg-07"
-     ipr="trust200902">
+     ipr="kantara" id="kantara">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -27,7 +27,7 @@
   <front>
     <title abbrev="OAuth RSR">OAuth 2.0 Resource Set Registration</title>
 
-    <author fullname="Thomas Hardjono" initials="T" role="editor"
+    <author fullname="Thomas Hardjono" initials="T." role="editor"
             surname="Hardjono">
       <organization>MIT</organization>
 
@@ -36,7 +36,7 @@
       </address>
     </author>
 
-    <author fullname="Eve Maler" initials="E" surname="Maler">
+    <author fullname="Eve Maler" initials="E." surname="Maler">
       <organization>ForgeRock</organization>
 
       <address>
@@ -44,7 +44,7 @@
       </address>
     </author>
 
-    <author fullname="Maciej Machulak" initials="M" surname="Machulak">
+    <author fullname="Maciej Machulak" initials="M." surname="Machulak">
       <organization>Cloud Identity</organization>
 
       <address>
@@ -52,7 +52,7 @@
       </address>
     </author>
 
-    <author fullname="Domenico Catalano" initials="D" surname="Catalano">
+    <author fullname="Domenico Catalano" initials="D." surname="Catalano">
       <organization>Oracle</organization>
 
       <address>
@@ -980,7 +980,8 @@ Host: as.example.com
 
   <back>
     <references title="Normative References">
-      <?rfc include='http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml' ?>
+      
+      &RFC2119;
 
       <reference anchor="OAuth2" target="http://tools.ietf.org/html/rfc6749">
         <front>
