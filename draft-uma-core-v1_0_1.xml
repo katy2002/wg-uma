@@ -2,11 +2,15 @@
 <!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
 "http://xml.resource.org/authoring/rfc2629.dtd" [
 <!ENTITY RFC2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY RFC2617 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2617.xml">
-<!ENTITY UMA PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/Home">
-<!ENTITY UMAreqs PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/UMA+Requirements">
-<!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
-<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
+<!ENTITY RFC6750 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6750.xml">
+<!ENTITY RFC6415 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6415.xml">
+<!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY RFC7519 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7519.xml">
+<!ENTITY RFC7591 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7591.xml">
+<!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC6819 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6819.xml">
+<!ENTITY RFC6711 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6711.xml">
 ]>
 <rfc category="std" docName="draft-uma-core-v1_0_1"
      ipr="kantara" id="kantara">
@@ -75,7 +79,7 @@
   <middle>
     <section anchor="introduction" title="Introduction">
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0 <xref
-      target="OAuth2"></xref>. UMA defines how resource owners can control
+      target="RFC6749"></xref>. UMA defines how resource owners can control
       protected-resource access by clients operated by arbitrary requesting
       parties, where the resources reside on any number of resource servers,
       and where a centralized authorization server governs access based on
@@ -207,7 +211,7 @@
         target="RFC2119"></xref>.</t>
 
         <t>Unless otherwise noted, all protocol properties and values are case
-        sensitive. JSON <xref target="JSON"></xref> data structures defined by
+        sensitive. JSON <xref target="RFC7159"></xref> data structures defined by
         this specification MAY contain extension properties that are not
         defined in this specification. Any entity receiving or retrieving a
         JSON data structure SHOULD ignore extension properties it is unable to
@@ -304,7 +308,7 @@
         server MUST implement as HTTP-based APIs that MUST use TLS and OAuth
         (or OAuth-based authentication protocol) protection, and that the
         resource server MUST implement as an HTTP-based interface. UMA's use
-        of TLS is governed by Section 1.6 of <xref target="OAuth2"></xref>,
+        of TLS is governed by Section 1.6 of <xref target="RFC6749"></xref>,
         which discusses deployment and adoption characteristics of different
         TLS versions.</t>
 
@@ -463,7 +467,7 @@
                title="Authorization Server Configuration Data">
         <t>The authorization server MUST provide configuration data in a JSON
         document that resides in an /uma-configuration directory at its
-        host-meta <xref target="hostmeta"></xref> location. The configuration
+        host-meta <xref target="RFC6415"></xref> location. The configuration
         data documents conformance options and endpoints supported by the
         authorization server.</t>
 
@@ -486,7 +490,7 @@
             token type strings defined by OAuth token-defining specifications
             are privileged. For example, the type "bearer" stands for the
             OAuth bearer token type defined in <xref
-            target="OAuth-bearer"></xref>. The authorization server is
+            target="RFC6750"></xref>. The authorization server is
             REQUIRED to support "bearer", and to supply this value explicitly.
             The authorization server MAY declare its support for additional
             PAT profiles.</t>
@@ -498,7 +502,7 @@
             token type strings defined by OAuth token-defining specifications
             are privileged. For example, the type "bearer" stands for the
             OAuth bearer token type defined in <xref
-            target="OAuth-bearer"></xref>. The authorization server is
+            target="RFC6750"></xref>. The authorization server is
             REQUIRED to support "bearer", and to supply this value explicitly.
             The authorization server MAY declare its support for additional
             AAT profiles.</t>
@@ -519,7 +523,7 @@
             type strings defined by OAuth grant type-defining specifications
             are privileged. For example, the type "authorization_code" stands
             for the OAuth authorization code grant type defined in <xref
-            target="OAuth2"></xref>.</t>
+            target="RFC6749"></xref>.</t>
 
             <t hangText="aat_grant_types_supported"><vspace />REQUIRED. OAuth
             grant types supported by this authorization server in issuing
@@ -528,7 +532,7 @@
             type strings defined by OAuth grant type-defining specifications
             are privileged. For example, the type "authorization_code" stands
             for the OAuth authorization code grant type defined in <xref
-            target="OAuth2"></xref>.</t>
+            target="RFC6749"></xref>.</t>
 
             <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
             Claim token format profiles supported by this authorization
@@ -544,7 +548,7 @@
 
             <t hangText="dynamic_client_endpoint"><vspace />OPTIONAL. The
             endpoint to use for performing dynamic client registration in the
-            case of the use of <xref target="DynClientReg"></xref>, or
+            case of the use of <xref target="RFC7591"></xref>, or
             alternatively the reserved string "openid" in the case of the use
             of <xref target="OIDCDynClientReg"></xref>. In the latter case, it
             is presumed that the resource server or client will discover the
@@ -561,7 +565,7 @@
             server for a PAT or AAT. A requested scope of "uma_protection"
             results in a PAT. A requested scope of "uma_authorization" results
             in an AAT. Usage of this endpoint is defined by <xref
-            target="OAuth2"></xref>.</t>
+            target="RFC6749"></xref>.</t>
 
             <t hangText="authorization_endpoint"><vspace />REQUIRED. The
             endpoint URI at which the resource server gathers the consent of
@@ -569,7 +573,7 @@
             the end-user requesting party for issuance of a PAT or AAT
             respectively, if the "authorization_code" grant type is used.
             Usage of this endpoint is defined by <xref
-            target="OAuth2"></xref>.</t>
+            target="RFC6749"></xref>.</t>
 
             <t hangText="requesting_party_claims_endpoint"><vspace />OPTIONAL.
             The endpoint URI at which the authorization server interacts with
@@ -649,7 +653,7 @@
           style="numbers">
           <t>The authorization server issues client credentials to the
           resource server. It is OPTIONAL for the client credentials to be
-          provided dynamically through <xref target="DynClientReg"></xref> or
+          provided dynamically through <xref target="RFC7591"></xref> or
           <xref target="OIDCDynClientReg"></xref>; alternatively, they MAY use
           a static process.</t>
 
@@ -1074,7 +1078,7 @@ Content-Type: application/json
 
               <t>Syntax and semantics of token data: As defined below; an
               opaque string value, resolving to an extended JSON Web Token
-              (JWT) <xref target="JWT"></xref> format on introspection at the
+              (JWT) <xref target="RFC7519"></xref> format on introspection at the
               authorization server.</t>
 
               <t>Token data association: The on-the-wire token is opaque; it
@@ -1183,7 +1187,7 @@ HTTP/1.1 200 OK
         successful steps:<list style="numbers">
             <t>The authorization server issues client credentials to the
             client. It is OPTIONAL for the client credentials to be provided
-            dynamically through <xref target="DynClientReg"></xref> or <xref
+            dynamically through <xref target="RFC7591"></xref> or <xref
             target="OIDCDynClientReg"></xref>; alternatively, they MAY use a
             static process.</t>
 
@@ -1191,7 +1195,7 @@ HTTP/1.1 200 OK
             discussed in <xref target="authz-permission-token"></xref>, then
             it SHOULD register a claims_redirect_uri with the authorization
             server, either using a static process or through <xref
-            target="DynClientReg"></xref> or <xref
+            target="RFC7591"></xref> or <xref
             target="OIDCDynClientReg"></xref>.</t>
 
             <t>The client acquires an AAT.</t>
@@ -1579,7 +1583,7 @@ Authorization: Bearer jwfLG53^sad$#f
                   component. The authorization server SHOULD require all
                   clients to register their redirection endpoint prior to
                   utilizing the authorization endpoint (either using a static
-                  process or through <xref target="DynClientReg"></xref> or
+                  process or through <xref target="RFC7591"></xref> or
                   <xref target="OIDCDynClientReg"></xref>). If the URI is
                   pre-registered, this URI MUST exactly match one of the
                   pre-registered redirection URIs, with the matching performed
@@ -1700,7 +1704,7 @@ Host: client.example.com]]></artwork>
     <section anchor="errors" title="Error Messages">
       <t>Ultimately the resource server is responsible for either granting the
       access the client attempted, or returning an error response to the
-      client with a reason for the failure. <xref target="OAuth2"></xref>
+      client with a reason for the failure. <xref target="RFC6749"></xref>
       defines several error responses for a resource server to return. UMA
       makes use of these error responses, but requires the resource server to
       "outsource" the determination of some error conditions to the
@@ -1714,7 +1718,7 @@ Host: client.example.com]]></artwork>
         authorization server endpoints or a client attempts to access a
         protected resource at the resource server, it has to make an
         authenticated request by including an OAuth access token in the HTTP
-        request as described in <xref target="OAuth2"></xref> Section 7.2.</t>
+        request as described in <xref target="RFC6749"></xref> Section 7.2.</t>
 
         <t>If the request failed authentication, the authorization server or
         the resource server responds with an OAuth error message as described
@@ -2072,10 +2076,10 @@ Cache-Control: no-store
       <t>As a profile of OAuth, this specification relies mainly on OAuth
       security mechanisms as well as transport-level encryption. Thus,
       implementers are strongly advised to read the security considerations in
-      <xref target="OAuth2"></xref> (Section 10) and <xref
-      target="OAuth-bearer"></xref> (Section 5) along with the security
+      <xref target="RFC6749"></xref> (Section 10) and <xref
+      target="RFC6750"></xref> (Section 5) along with the security
       considerations of any other OAuth token-defining specifications in use,
-      along with the entire <xref target="OAuth-threat"></xref> specification,
+      along with the entire <xref target="RFC6819"></xref> specification,
       and apply the countermeasures described therein. As well, since this
       specification builds on <xref target="OAuth-resource-reg"></xref>,
       implementers should also take into account the security considerations
@@ -2103,7 +2107,7 @@ Cache-Control: no-store
         the browser (MITB), by using the state parameter. (See the <xref
         target="UMA-Impl"></xref> for advice on ways to accomplish this.)
         Sections 4.4.1.8, 4.4.2.5, and 5.3.5 of <xref
-        target="OAuth-threat"></xref> are apropos for the UMA claims-gathering
+        target="RFC6819"></xref> are apropos for the UMA claims-gathering
         redirection flow as well.</t>
 
         <t>When a client redirects an end-user requesting party to the
@@ -2212,7 +2216,7 @@ Cache-Control: no-store
 
       <section title="JSON Usage">
         <t>This specification defines a number of data formats based on <xref
-        target="JSON"></xref>. As a subset of the JavaScript scripting
+        target="RFC7159"></xref>. As a subset of the JavaScript scripting
         language, JSON data SHOULD be consumed through a process that does not
         dynamically execute it as code, to avoid malicious code execution. One
         way to achieve this is to use a JavaScript interpreter rather than the
@@ -2362,18 +2366,7 @@ Cache-Control: no-store
     <references title="Normative References">
       
       &RFC2119;
-
-      <reference anchor="OAuth2" target="http://tools.ietf.org/html/rfc6749">
-        <front>
-          <title>The OAuth 2.0 Authorization Framework</title>
-
-          <author initials="D." surname="Hardt">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="" month="October" year="2012" />
-        </front>
-      </reference>
+      &RFC6749;
 
       <reference anchor="OAuth-resource-reg"
                  target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
@@ -2401,69 +2394,11 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      <reference anchor="OAuth-bearer"
-                 target="http://tools.ietf.org/html/rfc6750">
-        <front>
-          <title>The OAuth 2.0 Authorization Framework: Bearer Token
-          Usage</title>
-
-          <author fullname="M. Jones">
-            <organization></organization>
-          </author>
-
-          <date day="" month="October" year="2012" />
-        </front>
-      </reference>
-
-      <reference anchor="hostmeta" target="http://tools.ietf.org/html/rfc6415">
-        <front>
-          <title>Web Host Metadata</title>
-
-          <author initials="E." surname="Hammer-Lahav">
-            <organization>Yahoo!</organization>
-          </author>
-
-          <date day="" month="October" year="2011" />
-        </front>
-      </reference>
-
-      <reference anchor="JSON" target="https://tools.ietf.org/html/rfc7159">
-        <front>
-          <title>The JavaScript Object Notation (JSON) Data Interchange
-          Format</title>
-
-          <author initials="T." surname="Bray">
-            <organization>Google, Inc.</organization>
-          </author>
-
-          <date day="" month="March" year="2014" />
-        </front>
-      </reference>
-
-      <reference anchor="JWT" target="https://tools.ietf.org/html/rfc7519">
-        <front>
-          <title>JSON Web Token (JWT)</title>
-
-          <author initials="M." surname="Jones">
-            <organization>Microsoft</organization>
-          </author>
-
-          <date day="" month="May" year="2015" />
-        </front>
-      </reference>
-
-      <reference anchor="DynClientReg"
-                 target="https://tools.ietf.org/html/rfc7591">
-        <front>
-          <title>OAuth 2.0 Dynamic Client Registration Protocol</title>
-
-          <author initials="J." surname="Richer">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="" month="July" year="2015" />
-        </front>
-      </reference>
+      &RFC6750;
+      &RFC6415;
+      &RFC7159;
+      &RFC7519;
+      &RFC7591;
 
       <reference anchor="OIDCDynClientReg"
                  target="http://openid.net/specs/openid-connect-registration-1_0.html">
@@ -2491,44 +2426,11 @@ Cache-Control: no-store
           <date day="8" month="November" year="2014" />
         </front>
       </reference>
-
-      <reference anchor="RFC3986" target="http://www.ietf.org/rfc/rfc3986.txt">
-        <front>
-          <title>Uniform Resource Identifier (URI): Generic Syntax</title>
-
-          <author initials="T." surname="Berners-Lee">
-            <organization>W3C/MIT</organization>
-          </author>
-
-          <date day="" month="January" year="2005" />
-        </front>
-      </reference>
-
-      <reference anchor="OAuth-threat"
-                 target="http://tools.ietf.org/html/rfc6819">
-        <front>
-          <title>OAuth 2.0 Threat Model and Security Considerations</title>
-
-          <author initials="T." surname="Lodderstedt">
-            <organization></organization>
-          </author>
-
-          <date day="" month="January" year="2013" />
-        </front>
-      </reference>
-
-      <reference anchor="RFC6711" target="https://tools.ietf.org/html/rfc6711">
-        <front>
-          <title>An IANA Registry for Level of Assurance (LoA)
-          Profiles</title>
-
-          <author initials="L." surname="Johansson">
-            <organization></organization>
-          </author>
-
-          <date day="" month="August" year="2012" />
-        </front>
-      </reference>
+      
+      &RFC3986;
+      &RFC6819;
+      &RFC6711;
+      
     </references>
 
     <references title="Informative References">
