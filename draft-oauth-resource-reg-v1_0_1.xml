@@ -8,8 +8,8 @@
 <!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-resource-reg-07"
-     ipr="kantara" id="kantara">
+<rfc category="std" docName="draft-hardjono-oauth-resource-reg-07-2015-09-01"
+     id="kantara" ipr="kantara">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -73,9 +73,9 @@
   <middle>
     <section anchor="introduction" title="Introduction">
       <t>There are various circumstances under which an OAuth 2.0 <xref
-      target="OAuth2"></xref> resource server may need to communicate
-      information about its protected resources to its authorization
-      server:<list style="symbols">
+      target="OAuth2" /> resource server may need to communicate information
+      about its protected resources to its authorization server:<list
+          style="symbols">
           <t>In some OAuth 2.0 deployments, the resource server and
           authorization server are operated by the same organization and
           deployed in the same domain, but many resource servers share a
@@ -86,28 +86,27 @@
           the authorization server and each of the resource servers.</t>
 
           <t>In some deployments of OpenID Connect <xref
-          target="OpenIDConnect"></xref>, which has a dependency on OAuth 2.0,
-          the OpenID Provider (OP) component is a specialized version of an
-          OAuth authorization server that brokers availability of user
-          attributes by dealing with an ecosystem of attribute providers
-          (APs). These APs effectively function as third-party resource
-          servers. Thus, there is value in defining a mechanism by which all
-          of the third-party APs can communicate with a central OP, as well as
-          ensuring that trust between the authorization server and resource
-          servers is able to be established in a dynamic, loosely coupled
-          fashion.</t>
+          target="OpenIDConnect" />, which has a dependency on OAuth 2.0, the
+          OpenID Provider (OP) component is a specialized version of an OAuth
+          authorization server that brokers availability of user attributes by
+          dealing with an ecosystem of attribute providers (APs). These APs
+          effectively function as third-party resource servers. Thus, there is
+          value in defining a mechanism by which all of the third-party APs
+          can communicate with a central OP, as well as ensuring that trust
+          between the authorization server and resource servers is able to be
+          established in a dynamic, loosely coupled fashion.</t>
 
-          <t>In some deployments of User-Managed Access <xref
-          target="UMA"></xref>, which has a dependency on OAuth 2.0, an
-          end-user resource owner (the "user" in UMA) may choose their own
-          authorization server as an independent cloud-based service, along
-          with using any number of resource servers that make up their
-          "personal cloud". Thus, there is value in defining a mechanism by
-          which all of the third-party resource servers can outsource resource
-          protection (and potentially discovery) to a central authorization
-          server, as well as ensuring that trust between the authorization
-          server and resource servers is able to be established by the
-          resource owner in a dynamic, loosely coupled fashion.</t>
+          <t>In some deployments of User-Managed Access <xref target="UMA" />,
+          which has a dependency on OAuth 2.0, an end-user resource owner (the
+          "user" in UMA) may choose their own authorization server as an
+          independent cloud-based service, along with using any number of
+          resource servers that make up their "personal cloud". Thus, there is
+          value in defining a mechanism by which all of the third-party
+          resource servers can outsource resource protection (and potentially
+          discovery) to a central authorization server, as well as ensuring
+          that trust between the authorization server and resource servers is
+          able to be established by the resource owner in a dynamic, loosely
+          coupled fashion.</t>
         </list></t>
 
       <t>This specification defines an API through which the resource server
@@ -118,13 +117,13 @@
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
         'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this
         document are to be interpreted as described in <xref
-        target="RFC2119"></xref>.</t>
+        target="RFC2119" />.</t>
 
         <t>Unless otherwise noted, all protocol properties and values are case
-        sensitive. JSON <xref target="JSON"></xref> data structures defined by
-        this specification MAY contain extension properties that are not
-        defined in this specification. Any entity receiving or retrieving a
-        JSON data structure SHOULD ignore extension properties it is unable to
+        sensitive. JSON <xref target="JSON" /> data structures defined by this
+        specification MAY contain extension properties that are not defined in
+        this specification. Any entity receiving or retrieving a JSON data
+        structure SHOULD ignore extension properties it is unable to
         understand. Extension names that are unprotected from collisions are
         outside the scope of this specification.</t>
       </section>
@@ -161,10 +160,9 @@
             defined by this specification at which the resource server
             registers resource sets it wants the authorization server to know
             about. The operations available at this endpoint constitute a
-            resource set registration API (see <xref
-            target="reg-api"></xref>). For purposes of illustration in this
-            specification, the resource set registration endpoint used in
-            examples is "/rs/".</t>
+            resource set registration API (see <xref target="reg-api" />). For
+            purposes of illustration in this specification, the resource set
+            registration endpoint used in examples is "/rs/".</t>
           </list></t>
       </section>
 
@@ -180,20 +178,23 @@
       <t>This specification defines a resource set registration API. The
       endpoint for this API SHOULD also require some form of authentication to
       access this endpoint, such as Client Authentication as described in
-      <xref target="OAuth2"></xref> or a separate OAuth access token. The
-      methods of managing and validating these authentication credentials are
-      out of scope of this specification.</t>
+      <xref target="OAuth2" /> or a separate OAuth access token. The methods
+      of managing and validating these authentication credentials are out of
+      scope of this specification.</t>
 
       <t>For any of the resource owner's sets of resources this authorization
       server needs to be aware of, the resource server MUST register these
       resource sets at the authorization server's registration endpoint.</t>
 
       <t>Note: When a client attempts access to a presumptively protected
-      resource without an access token, the resource server needs to ascertain
-      the authorization server and resource set identifier associated with
-      that resource without any context to guide it. In practice, this likely
-      means that the URI reference used by the client needs to be unique per
-      resource set.</t>
+      resource without an access token, as occurs in <xref target="UMA" />,
+      the resource server needs to derive the authorization server and
+      resource set identifier associated with that resource from some other
+      aspect of the client's request. This effectively means that the resource
+      server&rsquo;s API needs to be structured in such a way that the
+      client's RPT-free request uniquely identifies the resource set. In
+      practice, this information likely needs to be passed through the URI,
+      headers, or body of the request.</t>
 
       <section anchor="action-desc" title="Scope Descriptions">
         <t>A scope description is a JSON document with the following
@@ -222,8 +223,8 @@
 ]]></artwork>
         </figure>
 
-        <t>See <xref target="resource-reg-example"></xref> for a long-form
-        example of scope descriptions used in resource set registration.</t>
+        <t>See <xref target="resource-reg-example" /> for a long-form example
+        of scope descriptions used in resource set registration.</t>
       </section>
 
       <section anchor="resource-set-desc" title="Resource Set Descriptions">
@@ -269,13 +270,13 @@
             available scopes for this resource set. Any of the strings MAY be
             either a plain string or a URI. If a scope is a URI then it MUST
             resolve to a scope description document as defined in <xref
-            target="action-desc"></xref>. The resource server and
-            authorization server are presumed to have separately negotiated
-            any required interpretation of scope handling not conveyed through
-            scope descriptions. Published scope descriptions MAY reside
-            anywhere on the web; a resource server is not required to
-            self-host scope descriptions and may wish to point to standardized
-            scope descriptions residing elsewhere. It is the resource server's
+            target="action-desc" />. The resource server and authorization
+            server are presumed to have separately negotiated any required
+            interpretation of scope handling not conveyed through scope
+            descriptions. Published scope descriptions MAY reside anywhere on
+            the web; a resource server is not required to self-host scope
+            descriptions and may wish to point to standardized scope
+            descriptions residing elsewhere. It is the resource server's
             responsibility to ensure that scope descriptions are accessible to
             authorization servers through GET calls to support any user
             interface requirements. The resource server and authorization
@@ -294,7 +295,7 @@
           (a photo album) that can potentially be only viewed, or
           alternatively to which full access can be granted; the URIs point to
           scope descriptions as defined in <xref
-          target="action-desc"></xref>:</preamble>
+          target="action-desc" />:</preamble>
 
           <artwork><![CDATA[
 {
@@ -329,8 +330,8 @@
 
         <t>The {rsreguri} component is the authorization server's resource set
         registration endpoint as advertised in its configuration data (see
-        <xref target="am-endpoints"></xref>). Following is a summary of the
-        five registration operations the authorization server is REQUIRED to
+        <xref target="am-endpoints" />). Following is a summary of the five
+        registration operations the authorization server is REQUIRED to
         support, where the ellipsis represents whatever path segments might
         appear before the required path structure. Each is defined in its own
         section below. All other methods are unsupported. <list
@@ -374,7 +375,7 @@
         <t>If the request to the resource set registration endpoint is
         incorrect, then the authorization server instead responds with an
         error message by including one of the following error codes with the
-        response (see <xref target="errors"></xref>):<list style="hanging">
+        response (see <xref target="errors" />):<list style="hanging">
             <t hangText="unsupported_method_type">The resource server request
             used an unsupported HTTP method. The authorization server MUST
             respond with the HTTP 405 (Method Not Allowed) status code and
@@ -474,9 +475,9 @@ Content-Type: application/json
 ]]></artwork>
           </figure>
 
-          <t>If the referenced resource does not exist, the authorization
+          <t>If the referenced resource set does not exist, the authorization
           server MUST produce an error response with an error property value
-          of "not_found", as defined in <xref target="reg-api"></xref>.</t>
+          of "not_found", as defined in <xref target="reg-api" />.</t>
         </section>
 
         <section anchor="update-resource-set"
@@ -550,9 +551,9 @@ HTTP/1.1 204 No content
 ]]></artwork>
           </figure>
 
-          <t>As defined in <xref target="reg-api"></xref>, if the referenced
-          resource does not exist the authorization server MUST produce an
-          error response with an error property value of "not_found".</t>
+          <t>If the referenced resource set does not exist, the authorization
+          server MUST produce an error response with an error property value
+          of "not_found", as defined in <xref target="reg-api" />.</t>
         </section>
 
         <section anchor="list-resource-sets"
@@ -629,11 +630,10 @@ HTTP/1.1 200 OK
       "icon_uri", enticing the resource owner to click on the icon during the
       policy setting process. The authorization server SHOULD check to see if
       all URIs defined in the "icon_uri" and in the array of "redirect_uris"
-      resolve to valid web pages.
-      Since these are URI values that are intended to be displayed to
-      the resource owner in a policy-setting interface, the authorization
-      server SHOULD protect the resource owner from malicious content hosted
-      at the URIs where possible.</t>
+      resolve to valid web pages. Since these are URI values that are intended
+      to be displayed to the resource owner in a policy-setting interface, the
+      authorization server SHOULD protect the resource owner from malicious
+      content hosted at the URIs where possible.</t>
 
       <t>Additionally, a rogue resource server could supply misleading names
       for a resource set or scope, or mislabel the type of a resource set,
@@ -676,12 +676,11 @@ HTTP/1.1 200 OK
 
     <section anchor="resource-reg-example"
              title="Example of Registering Resource Sets">
-      <t>The following non-normative example illustrates the intent and usage of
-      resource set descriptions and scope descriptions as part of resource set
-      registration in the context of <xref target="UMA"></xref>. This example
+      <t>The following non-normative example illustrates the intent and usage
+      of resource set descriptions and scope descriptions as part of resource
+      set registration in the context of <xref target="UMA" />. This example
       shows the use of scope strings that are URIs. See <xref
-      target="reg-api"></xref> for examples of plain scope
-      strings.</t>
+      target="reg-api" /> for some examples of plain scope strings.</t>
 
       <t>This example contains some steps that are exclusively in the realm of
       user experience rather than web protocol, to achieve realistic
@@ -974,13 +973,12 @@ Host: as.example.com
 
       <t>Additional contributors to this specification include the Kantara UMA
       Work Group participants, a list of whom can be found at <xref
-      target="UMAnitarians"></xref>.</t>
+      target="UMAnitarians" />.</t>
     </section>
   </middle>
 
   <back>
     <references title="Normative References">
-      
       &RFC2119;
 
       <reference anchor="OAuth2" target="http://tools.ietf.org/html/rfc6749">
@@ -1019,7 +1017,7 @@ Host: as.example.com
             <organization>MIT</organization>
           </author>
 
-          <date day="20" month="December" year="2014" />
+          <date day="" month="September" year="2015" />
         </front>
       </reference>
 
@@ -1029,7 +1027,7 @@ Host: as.example.com
           <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
 
           <author initials="N." surname="Sakimura">
-            <organization></organization>
+            <organization />
           </author>
 
           <date day="8" month="November" year="2014" />
@@ -1045,7 +1043,7 @@ Host: as.example.com
             <organization>Maler</organization>
           </author>
 
-          <date day="" month="December" year="2014" />
+          <date day="" month="" year="2015" />
         </front>
       </reference>
     </references>
