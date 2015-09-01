@@ -340,7 +340,7 @@
               target="OAuth-resource-reg" /></t>
 
               <t>Permission registration endpoint as defined by <xref
-              target="h-am-register-permission" /></t>
+              target="register-permission" /></t>
 
               <t>Token introspection endpoint as defined by <xref
               target="OAuth-introspection" /> and <xref
@@ -396,7 +396,7 @@
           <t>The authorization API consists of one endpoint:<list
               style="symbols">
               <t>RPT endpoint as defined in <xref
-              target="authz-permission-token" /></t>
+              target="permission-success-to-client" /></t>
             </list></t>
 
           <t>An entity seeking authorization API access MUST have the scope
@@ -603,12 +603,12 @@
             The endpoint URI at which the resource server registers a
             requested permission that would suffice for a client's access
             attempt. Usage of this endpoint is defined by <xref
-            target="h-am-register-permission" />. A valid PAT MUST accompany
+            target="register-permission" />. A valid PAT MUST accompany
             requests to this protected endpoint.</t>
 
             <t hangText="rpt_endpoint"><vspace />REQUIRED. The endpoint URI at
             which the client asks for authorization data. Usage of this
-            endpoint is defined in <xref target="r-am-obtain-permission" />. A
+            endpoint is defined in <xref target="seek-authorization" />. A
             valid AAT and a permission ticket MUST, and an RPT MAY, accompany
             requests to this protected endpoint.</t>
           </list></t>
@@ -1226,7 +1226,7 @@ HTTP/1.1 200 OK
             target="OIDCDynClientReg" />; alternatively, they MAY use a static
             process. If the client is <spanx
             style="bold">claims-unaware</spanx>, as discussed in <xref
-            target="authz-permission-token" />, then it SHOULD register a
+            target="permission-success-to-client" />, then it SHOULD register a
             claims_redirect_uri with the authorization server, either using a
             static process or through <xref target="RFC7591" /> or <xref
             target="OIDCDynClientReg" />.</t>
