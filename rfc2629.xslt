@@ -3881,7 +3881,7 @@
 </tr>
 <tr>
   <td class="left kantara">Date:</td>
-  <td class="left kantara">2015-09-01</td>
+  <td class="left kantara">2015-09-03</td>
 </tr>
 <tr>
    <td class="kantara" colspan="2">&#160;</td>  
@@ -6095,7 +6095,7 @@ dd, li, p {
           Copyright (c) 2015 Kantara Initiative and the persons identified as the document authors. All rights reserved.
         </t>
         <t>
-          This document is subject to the<eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies%20_V1.1_.pdf?version=1&amp;modificationDate=1244488630000&amp;api=v2">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>)
+          This document is subject to the <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies%20_V1.1_.pdf?version=1&amp;modificationDate=1244488630000&amp;api=v2">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>)
         </t>
       </section>
     </xsl:when>

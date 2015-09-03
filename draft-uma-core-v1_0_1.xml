@@ -138,7 +138,8 @@
       <figure align="center" anchor="UMA-phases">
         <preamble>The Three Phases of the UMA Profile of OAuth</preamble>
 
-        <artwork><![CDATA[                                          +--------------+
+        <artwork><![CDATA[
+                                           +--------------+
                                            |   resource   |
           +---------manage (A)------------ |     owner    |
           |                                +--------------+
