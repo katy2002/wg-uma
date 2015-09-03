@@ -1034,16 +1034,15 @@ Warning: 199 - "UMA Authorization Server Unreachable"
 
       <section anchor="give-access"
                title="Resource Server Response to Client on Sufficiency of Authorization">
-        <t>If the client's request at the protected resource has a valid RPT
-        associated with sufficient authorization data as determined through
-        RPT status checking (see <xref target="check-rpt-status" />), then
-        assuming the resource server chooses to respond to the client, it MUST
-        give access to the desired resource.</t>
+        <t>The client's presentation of a valid RPT associated with sufficient
+        authorization data as determined through RPT status checking (see
+        <xref target="check-rpt-status" />) indicates that the resource
+        owner's policies have been met. The resource server MAY apply
+        additional authorization controls when determining how to respond.</t>
 
         <figure>
-          <preamble>Example of the resource server's response to the client
-          after having determined that the RPT is valid and associated with
-          sufficient authorization data:</preamble>
+          <preamble>Example of the resource server's response to the
+          client:</preamble>
 
           <artwork><![CDATA[
 HTTP/1.1 200 OK
@@ -1057,9 +1056,13 @@ KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
 ]]></artwork>
         </figure>
 
-        <t>The resource server MUST NOT give access where the token's status
-        is not associated with sufficient authorization data for the attempted
-        scope of access.</t>
+        <t>The resource server must not give access in the case of an invalid
+        RPT or an RPT associated with insufficient authorization. To ensure
+        the integrity of the ecosystem in which the resource server,
+        authorization server, and resource owner are participating, it is
+        STRONGLY RECOMMENDED for the parties to establish agreements about
+        access rules in this case on a legal or contractual level. See <xref
+        target="trust-considerations" /> for more information.</t>
       </section>
 
       <section anchor="check-rpt-status"
@@ -1228,9 +1231,9 @@ HTTP/1.1 200 OK
             target="OIDCDynClientReg" />; alternatively, they MAY use a static
             process. If the client is <spanx
             style="bold">claims-unaware</spanx>, as discussed in <xref
-            target="permission-success-to-client" />, then it SHOULD register a
-            claims_redirect_uri with the authorization server, either using a
-            static process or through <xref target="RFC7591" /> or <xref
+            target="permission-success-to-client" />, then it SHOULD register
+            a claims_redirect_uri with the authorization server, either using
+            a static process or through <xref target="RFC7591" /> or <xref
             target="OIDCDynClientReg" />.</t>
 
             <t>The client has acquired an AAT.</t>
@@ -2256,7 +2259,8 @@ Cache-Control: no-store
         target="profiles" /> discusses profiling. <xref
         target="comms-profiles" /> discusses profiling for extensibility.</t>
 
-        <section title="Requirements for Trust When Clients Push Claim Tokens">
+        <section anchor="trust-push"
+                 title="Requirements for Trust When Clients Push Claim Tokens">
           <t>In contrast to the threats discussed in <xref
           target="redirect-threats" />, regarding the redirection model for
           claims-gathering (see <xref target="claim-redirect" />), this
