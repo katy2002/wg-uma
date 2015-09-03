@@ -5814,7 +5814,7 @@ dd, li, p {
             the provisions of BCP 78 and BCP 79.
           </xsl:when>
           <xsl:when test="/rfc/@ipr = 'kantara'">
-            This specification was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and approved by the <eref target="http://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Leadership Council</eref> as a Draft Recommendation according to the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref>.
+            This draft specification was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and is awaiting approval for Public Review. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
           <xsl:otherwise>
             CONFORMANCE UNDEFINED.
