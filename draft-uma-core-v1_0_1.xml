@@ -317,8 +317,8 @@
 
         <t>For those OAuth protection use cases where an identity token is
         desired in addition to an access token, it is RECOMMENDED that an
-        OAuth-based authentication protocol such as OpenID Connect be
-        used.</t>
+        OAuth-based authentication protocol such as OpenID Connect <xref
+        target="OIDCCore" /> be used.</t>
 
         <t>It is also REQUIRED, in turn, for resource servers and clients on
         the requesting side of UMA interactions to use these channels, unless
