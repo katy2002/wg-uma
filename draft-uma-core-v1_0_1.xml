@@ -1017,7 +1017,7 @@ WWW-Authenticate: UMA realm="example",
         permission ticket, then assuming the resource server chooses to
         respond to the client, it is unable to create a "WWW-Authenticate:
         UMA" header and MUST include a header of the following form in its
-        response to the client: 'Warning: 199 "UMA Authorization Server
+        response to the client: 'Warning: 199 - "UMA Authorization Server
         Unreachable"'.</t>
 
         <figure>
@@ -1025,7 +1025,7 @@ WWW-Authenticate: UMA realm="example",
 
           <artwork><![CDATA[
 HTTP/1.1 403 Forbidden
-Warning: 199 UMA "Authorization Server Unreachable"
+Warning: 199 - "UMA Authorization Server Unreachable"
 
 ...
 ]]></artwork>
