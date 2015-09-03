@@ -949,44 +949,48 @@ Content-Type: application/json
         </section>
       </section>
 
-      <section anchor="permission-success-to-client"
-               title="Resource Server Response to Client on Permission Registration Success">
-        <t>If the client's request at a protected resource has no RPT, an
-        invalid RPT, or insufficient authorization data associated with the
-        RPT as determined through RPT status checking (see <xref
-        target="check-rpt-status" />), and the resource server successfully
-        registered a requested permission and received a permission ticket
-        (see <xref target="register-permission" />), then assuming the
-        resource server chooses to respond to the client with an UMA response,
-        it MUST provide a "WWW-Authenticate" header with the authentication
-        scheme "UMA", with the authorization server's URI in an "as_uri"
-        parameter and the just-received permission ticket in a "ticket"
-        parameter.</t>
+      <section title="Resource Server Responds to Client">
+        <t>If the resource server chooses to respond to the client's access
+        attempt, it has three possible paths.</t>
 
-        <t>If it responds with the HTTP status code 403 (Forbidden), it MAY
-        also return the permission ticket in the body in a JSON-encoded
-        "ticket" property. Note: The appearance of the permission ticket in a
-        response body is deprecated and will be removed in a future UMA
-        version. It is included here for backwards compatibility.</t>
+        <section anchor="permission-success-to-client"
+                 title="Resource Server Response to Client on Permission Registration Success">
+          <t>If the client's request at a protected resource has no RPT, an
+          invalid RPT, or insufficient authorization data associated with the
+          RPT as determined through RPT status checking (see <xref
+          target="check-rpt-status" />), and the resource server successfully
+          registered a requested permission and received a permission ticket
+          (see <xref target="register-permission" />), then assuming the
+          resource server chooses to respond to the client with an UMA
+          response, it MUST provide a "WWW-Authenticate" header with the
+          authentication scheme "UMA", with the authorization server's URI in
+          an "as_uri" parameter and the just-received permission ticket in a
+          "ticket" parameter.</t>
 
-        <figure>
-          <preamble>Example of the resource server's response to a client
-          after having registered a requested permission and received a
-          ticket:</preamble>
+          <t>If it responds with the HTTP status code 403 (Forbidden), it MAY
+          also return the permission ticket in the body in a JSON-encoded
+          "ticket" property. Note: The appearance of the permission ticket in
+          a response body is deprecated and will be removed in a future UMA
+          version. It is included here for backwards compatibility.</t>
 
-          <artwork><![CDATA[
+          <figure>
+            <preamble>Example of the resource server's response to a client
+            after having registered a requested permission and received a
+            ticket:</preamble>
+
+            <artwork><![CDATA[
 HTTP/1.1 401 Unauthorized
 WWW-Authenticate: UMA realm="example",
   as_uri="https://as.example.com",
   ticket="016f84e8-f9b9-11e0-bd6f-0021cc6004de"
    ...
 ]]></artwork>
-        </figure>
+          </figure>
 
-        <figure>
-          <preamble>Alternate example:</preamble>
+          <figure>
+            <preamble>Alternate example:</preamble>
 
-          <artwork><![CDATA[
+            <artwork><![CDATA[
 HTTP/1.1 403 Forbidden
 WWW-Authenticate: UMA realm="example",
   as_uri="https://as.example.com",
@@ -997,52 +1001,54 @@ WWW-Authenticate: UMA realm="example",
 "ticket": "016f84e8-f9b9-11e0-bd6f-0021cc6004de"
 }
 ]]></artwork>
-        </figure>
+          </figure>
 
-        <t>On receiving a response from the resource server with permission
-        ticket and authorization server location information, the client next
-        seeks authorization (see <xref target="seek-authorization" />).</t>
-      </section>
+          <t>On receiving a response from the resource server with permission
+          ticket and authorization server location information, the client
+          next seeks authorization (see <xref
+          target="seek-authorization" />).</t>
+        </section>
 
-      <section anchor="permission-failure-to-client"
-               title="Resource Server Response to Client on Permission Registration Failure">
-        <t>If the client's request at the protected resource has no RPT, or an
-        invalid RPT or insufficient authorization data associated with the RPT
-        as determined through RPT status checking (see <xref
-        target="check-rpt-status" />), and the resource server received an
-        error of any kind from the authorization server when trying to
-        register a requested permission such that it did not receive a
-        permission ticket, then assuming the resource server chooses to
-        respond to the client, it is unable to create a "WWW-Authenticate:
-        UMA" header and MUST include a header of the following form in its
-        response to the client: 'Warning: 199 - "UMA Authorization Server
-        Unreachable"'.</t>
+        <section anchor="permission-failure-to-client"
+                 title="Resource Server Response to Client on Permission Registration Failure">
+          <t>If the client's request at the protected resource has no RPT, or
+          an invalid RPT or insufficient authorization data associated with
+          the RPT as determined through RPT status checking (see <xref
+          target="check-rpt-status" />), and the resource server received an
+          error of any kind from the authorization server when trying to
+          register a requested permission such that it did not receive a
+          permission ticket, then assuming the resource server chooses to
+          respond to the client, it is unable to create a "WWW-Authenticate:
+          UMA" header and MUST include a header of the following form in its
+          response to the client: 'Warning: 199 - "UMA Authorization Server
+          Unreachable"'.</t>
 
-        <figure>
-          <preamble>For example:</preamble>
+          <figure>
+            <preamble>For example:</preamble>
 
-          <artwork><![CDATA[
+            <artwork><![CDATA[
 HTTP/1.1 403 Forbidden
 Warning: 199 - "UMA Authorization Server Unreachable"
 
 ...
 ]]></artwork>
-        </figure>
-      </section>
+          </figure>
+        </section>
 
-      <section anchor="give-access"
-               title="Resource Server Response to Client on Sufficiency of Authorization">
-        <t>The client's presentation of a valid RPT associated with sufficient
-        authorization data as determined through RPT status checking (see
-        <xref target="check-rpt-status" />) indicates that the resource
-        owner's policies have been met. The resource server MAY apply
-        additional authorization controls when determining how to respond.</t>
+        <section anchor="give-access"
+                 title="Resource Server Response to Client on Sufficiency of Authorization">
+          <t>The client's presentation of a valid RPT associated with
+          sufficient authorization data as determined through RPT status
+          checking (see <xref target="check-rpt-status" />) indicates that the
+          resource owner's policies have been met. The resource server MAY
+          apply additional authorization controls when determining how to
+          respond.</t>
 
-        <figure>
-          <preamble>Example of the resource server's response to the
-          client:</preamble>
+          <figure>
+            <preamble>Example of the resource server's response to the
+            client:</preamble>
 
-          <artwork><![CDATA[
+            <artwork><![CDATA[
 HTTP/1.1 200 OK
 Content-Type: image/jpeg
 ...
@@ -1052,15 +1058,16 @@ Content-Type: image/jpeg
 /bAIQABgQEBAUEBgUFBgkGBQYJCwgGBggLDAo
 KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
 ]]></artwork>
-        </figure>
+          </figure>
 
-        <t>The resource server must not give access in the case of an invalid
-        RPT or an RPT associated with insufficient authorization. To ensure
-        the integrity of the ecosystem in which the resource server,
-        authorization server, and resource owner are participating, it is
-        STRONGLY RECOMMENDED for the parties to establish agreements about
-        access rules in this case on a legal or contractual level. See <xref
-        target="trust-considerations" /> for more information.</t>
+          <t>The resource server must not give access in the case of an
+          invalid RPT or an RPT associated with insufficient authorization. To
+          ensure the integrity of the ecosystem in which the resource server,
+          authorization server, and resource owner are participating, it is
+          STRONGLY RECOMMENDED for the parties to establish agreements about
+          access rules in this case on a legal or contractual level. See <xref
+          target="trust-considerations" /> for more information.</t>
+        </section>
       </section>
 
       <section anchor="check-rpt-status"
