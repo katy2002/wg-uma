@@ -311,9 +311,8 @@
         server MUST implement as HTTP-based APIs that MUST use TLS and OAuth
         (or OAuth-based authentication protocol) protection, and that the
         resource server MUST implement as an HTTP-based interface. UMA's use
-        of TLS is governed by Section 1.6 of <xref target="RFC6749" />, which
-        discusses deployment and adoption characteristics of different TLS
-        versions.</t>
+        of TLS is governed by <xref target="BCP195" />, which discusses
+        deployment and adoption characteristics of different TLS versions.</t>
 
         <t>For those OAuth protection use cases where an identity token is
         desired in addition to an access token, it is RECOMMENDED that an
@@ -2101,14 +2100,14 @@ Cache-Control: no-store
     <section anchor="sec-consid" title="Security Considerations">
       <t>As a profile of OAuth, this specification relies mainly on OAuth
       security mechanisms as well as transport-level encryption. Thus,
-      implementers are strongly advised to read the security considerations in
-      <xref target="RFC6749" /> (Section 10) and <xref target="RFC6750" />
-      (Section 5) along with the security considerations of any other OAuth
-      token-defining specifications in use, along with the entire <xref
-      target="RFC6819" /> specification, and apply the countermeasures
-      described therein. As well, since this specification builds on <xref
-      target="OAuth-resource-reg" />, implementers should also take into
-      account the security considerations in that specification.</t>
+      implementers are strongly advised to read <xref target="BCP195" /> and
+      the security considerations in <xref target="RFC6749" /> (Section 10)
+      and <xref target="RFC6750" /> (Section 5) along with the security
+      considerations of any other OAuth token-defining specifications in use,
+      along with the entire <xref target="RFC6819" /> specification, and apply
+      the countermeasures described therein. As well, since this specification
+      builds on <xref target="OAuth-resource-reg" />, implementers should also
+      take into account the security considerations in that specification.</t>
 
       <t>The following sections describe additional security
       considerations.</t>
@@ -2391,6 +2390,19 @@ Cache-Control: no-store
 
   <back>
     <references title="Normative References">
+      <reference anchor="BCP195" target="https://tools.ietf.org/html/bcp195">
+        <front>
+          <title>Recommendations for Secure Use of Transport Layer Security
+          (TLS) and Datagram Transport Layer Security (DTLS)</title>
+
+          <author initials="Y." surname="Sheffer">
+            <organization />
+          </author>
+
+          <date day="" month="May" year="2015" />
+        </front>
+      </reference>
+
       &RFC2119;
 
       &RFC6749;
