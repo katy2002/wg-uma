@@ -1,28 +1,15 @@
 # How to contribute
 
-We are really glad you're reading this, because UMA is an entirely volunteer initiative and depends on contributors like you!  
+We’re really glad you're reading this, because the [User-Managed Access Work Group](http://kantarainitiative.org/confluence/display/uma/Home) is an entirely volunteer initiative and depends on contributors like you!
 
-Please become familiar with the project before contributing content through the pull request or submitting an issue. Here are some important background links:
+Please become familiar with the project before making a pull request or submitting an issue. You may want to consider [becoming a Work Group participant](http://signup.kantarainitiative.org/?selectedGroup=11) if you plan to be active in these ways.
 
-**For UMA's GitHub Issues**:
+# Additional background
 
-* [Active Issues:](https://github.com/xmlgrrl/UMA-Specifications/issues)
+* [Issues](https://github.com/KantaraInitiative/wg-uma/issues)
+* Email archives: [Mailman](http://kantarainitiative.org/pipermail/wg-uma/) or [Google Group](https://groups.google.com/forum/#!forum/kantara-initiative-uma-wg)
 
-* [Closed Issues:](https://github.com/xmlgrrl/UMA-Specifications/issues?q=is%3Aissue+is%3Aclosed)
+# Kantara is an open standards organization
 
-**UMA Email Archives**: 
+The UMA Work Group is part of the [Kantara Initiative](http://kantarainitiative.org), a standards organization that a signatory of the [OpenStand Principles](http://open-stand.org/about-us/principles/) and embraces an open, transparent, multi-stakeholder community. Check out the Work Group’s [IP license terms](https://github.com/KantaraInitiative/wg-uma/blob/master/LICENSE.md) in our repository.
 
-* [Kantara Mailman Archives:](http://kantarainitiative.org/pipermail/wg-uma/)
-
-* [Google Group Email Archives:](https://groups.google.com/forum/#!forum/kantara-initiative-uma-wg)
-
-
-**Kantara's UMA Workgroup Pages**:
-
-* [UMA Workgroup Homepage:](https://kantarainitiative.org/confluence/display/uma/Home)
-
-* [Join the UMA Workgroup:](http://signup.kantarainitiative.org/?selectedGroup=11)
-
-# We Work in the Open and Use Open Licensing 
-
-Our UMA Workgroup is part of the [Kantara Initiative](http://kantarainitiative.org), an open standards organization.   All contributions that become part of the UMA specification are made freely available under open licenses through the Kantara Initiative.  Check out the IP license terms in our repository [LICENSE.md](LICENSE.md)(coming soon) file and also described in our [README.md](README.md) file.  
