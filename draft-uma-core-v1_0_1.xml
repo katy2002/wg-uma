@@ -1296,7 +1296,7 @@ HTTP/1.1 200 OK
           <t>The client performs a POST on the RPT endpoint, supplying its own
           AAT in the header and a JSON object in the body with a "ticket"
           property containing the permission ticket as its value. If the
-          client had included an RPT in its failed access attempt, It MAY also
+          client had included an RPT in its failed access attempt, it MAY also
           provide that RPT in an "rpt" property in the body.</t>
 
           <t>In circumstances where the client needs to provide requesting
