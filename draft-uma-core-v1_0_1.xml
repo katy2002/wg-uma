@@ -478,6 +478,16 @@
           It is not specific to a single resource owner, though its internal
           components are likely to be bound in practice to individual resource
           owners, depending on the RPT profile in use.</t>
+
+          <t>Note: When a client attempts access to a presumptively protected
+          resource without an RPT, the resource server needs to derive the
+          authorization server and resource set identifier associated with
+          that resource from some other aspect of the client's request. This
+          effectively means that the resource server&rsquo;s API needs to be
+          structured in such a way that the client's RPT-free request uniquely
+          identifies the resource set. In practice, this information likely
+          needs to be passed through the URI, headers, or body of the
+          request.</t>
         </section>
 
         <section title="Time-to-Live Considerations">
