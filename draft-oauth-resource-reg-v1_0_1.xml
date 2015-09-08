@@ -191,9 +191,9 @@
       resource set identifier associated with that resource from some other
       aspect of the client's request. This effectively means that the resource
       server&rsquo;s API needs to be structured in such a way that the
-      client's RPT-free request uniquely identifies the resource set. In
-      practice, this information likely needs to be passed through the URI,
-      headers, or body of the request.</t>
+      client's request without an access token uniquely identifies the
+      resource set. In practice, this information likely needs to be passed
+      through the URI, headers, or body of the request.</t>
 
       <section anchor="action-desc" title="Scope Descriptions">
         <t>A scope description is a JSON document with the following
