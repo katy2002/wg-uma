@@ -195,37 +195,6 @@
       resource set. In practice, this information likely needs to be passed
       through the URI, headers, or body of the request.</t>
 
-      <section anchor="action-desc" title="Scope Descriptions">
-        <t>A scope description is a JSON document with the following
-        properties:<list style="hanging">
-            <t hangText="name">REQUIRED. A human-readable string describing
-            some scope (extent) of access. The authorization server MAY use
-            this name in any user interface it presents to the resource
-            owner.</t>
-
-            <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
-            representing the scope. The authorization server MAY use the
-            referenced icon in any user interface it presents to the resource
-            owner.</t>
-          </list></t>
-
-        <figure>
-          <preamble>For example, this scope description characterizes a scope
-          that involves reading or viewing resources (vs. creating them or
-          editing them in some fashion):</preamble>
-
-          <artwork><![CDATA[
-{
-  "name" : "View",
-  "icon_uri" : "http://www.example.com/icons/reading-glasses"
-}
-]]></artwork>
-        </figure>
-
-        <t>See <xref target="resource-reg-example" /> for a long-form example
-        of scope descriptions used in resource set registration.</t>
-      </section>
-
       <section anchor="resource-set-desc" title="Resource Set Descriptions">
         <t>The resource server defines a resource set that the authorization
         server needs to be aware of by registering a resource set description
@@ -267,21 +236,10 @@
 
             <t hangText="scopes">REQUIRED. An array of strings indicating the
             available scopes for this resource set. Any of the strings MAY be
-            either a plain string or a URI. If a scope is a URI then it MUST
-            resolve to a scope description document as defined in <xref
-            target="action-desc" />. The resource server and authorization
-            server are presumed to have separately negotiated any required
-            interpretation of scope handling not conveyed through scope
-            descriptions. Published scope descriptions MAY reside anywhere on
-            the web; a resource server is not required to self-host scope
-            descriptions and may wish to point to standardized scope
-            descriptions residing elsewhere. It is the resource server's
-            responsibility to ensure that scope descriptions are accessible to
-            authorization servers through GET calls to support any user
-            interface requirements. The resource server and authorization
-            server are presumed to have separately negotiated any required
-            interpretation of scope handling not conveyed through scope
-            descriptions.</t>
+            either a plain string or a URI (see <xref
+            target="scope-interpretation" />). If a scope is a URI then it
+            MUST resolve to a scope description document (see <xref
+            target="action-desc" />).</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource set. The authorization server MAY use
@@ -307,6 +265,52 @@
 }
 ]]></artwork>
         </figure>
+
+        <section anchor="action-desc" title="Scope Descriptions">
+          <t>A scope description is a JSON document with the following
+          properties:<list style="hanging">
+              <t hangText="name">REQUIRED. A human-readable string describing
+              some scope (extent) of access. The authorization server MAY use
+              this name in any user interface it presents to the resource
+              owner.</t>
+
+              <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
+              representing the scope. The authorization server MAY use the
+              referenced icon in any user interface it presents to the
+              resource owner.</t>
+            </list></t>
+
+          <figure>
+            <preamble>For example, this scope description characterizes a
+            scope that involves reading or viewing resources (vs. creating
+            them or editing them in some fashion):</preamble>
+
+            <artwork><![CDATA[
+{
+  "name" : "View",
+  "icon_uri" : "http://www.example.com/icons/reading-glasses"
+}
+]]></artwork>
+          </figure>
+
+          <t>See <xref target="resource-reg-example" /> for a long-form
+          example of scope descriptions used in resource set registration.</t>
+        </section>
+
+        <section anchor="scope-interpretation" title="Scope Interpretation">
+          <t>If the resource server uses a plain string for a scope, then the
+          resource server and authorization server are presumed to have
+          negotiated any required interpretation of scope handling out of
+          band.</t>
+
+          <t>If the resource server uses a URI for a scope, the scope's
+          published scope description MAY reside anywhere on the web; a
+          resource server is not required to self-host scope descriptions and
+          may wish to point to standardized scope descriptions residing
+          elsewhere. It is the resource server's responsibility to ensure that
+          scope descriptions are accessible to authorization servers through
+          GET calls to support any user interface requirements.</t>
+        </section>
       </section>
 
       <section anchor="reg-api" title="Resource Set Registration API">
