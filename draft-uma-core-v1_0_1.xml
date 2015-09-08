@@ -1232,8 +1232,8 @@ Content-Type: application/json
 
             <artwork><![CDATA[
 HTTP/1.1 200 OK
-   Content-Type: application/json
-   Cache-Control: no-store
+Content-Type: application/json
+Cache-Control: no-store
 
    {
     "active": true,
