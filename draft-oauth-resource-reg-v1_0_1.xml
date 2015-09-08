@@ -336,23 +336,24 @@
         registration operations the authorization server is REQUIRED to
         support, where the ellipsis represents whatever path segments might
         appear before the required path structure. Each is defined in its own
-        section below. All other methods are unsupported. <list
-            style="symbols">
-            <t>Create resource set description: POST .../resource_set</t>
+        section below. All other methods are unsupported. The {_id} is the
+        authorization server-assigned identifier for the web resource
+        corresponding to the resource set as returned in the Location
+        header.<list style="symbols">
+            <t>Create resource set description: POST
+            {rsreguri}/resource_set</t>
 
-            <t>Read resource set description: GET .../resource_set/{_id}</t>
+            <t>Read resource set description: GET
+            {rsreguri}/resource_set/{_id}</t>
 
-            <t>Update resource set description: PUT .../resource_set/{_id}</t>
+            <t>Update resource set description: PUT
+            {rsreguri}/resource_set/{_id}</t>
 
             <t>Delete resource set description: DELETE
-            .../resource_set/{_id}</t>
+            {rsreguri}/resource_set/{_id}</t>
 
-            <t>List resource set descriptions: GET .../resource_set</t>
+            <t>List resource set descriptions: GET {rsreguri}/resource_set</t>
           </list></t>
-
-        <t>The {_id} is the authorization server-assigned identifier for the
-        web resource corresponding to the resource set as returned in the
-        Location header.</t>
 
         <t>Within the JSON body of a successful response, the authorization
         server includes common properties, possibly in addition to
