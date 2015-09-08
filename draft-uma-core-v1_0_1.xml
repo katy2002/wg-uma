@@ -585,7 +585,8 @@
             dynamic client registration feature; its absence indicates a lack
             of support. If the authorization server supports dynamic client
             registration, it MUST allow client applications to register a
-            claims_redirect_uri metadata field.</t>
+            claims_redirect_uri metadata field, as defined in <xref
+            target="claim-redirect" />.</t>
 
             <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
             at which the resource server or client asks the authorization
@@ -1263,9 +1264,10 @@ HTTP/1.1 200 OK
             process. If the client is <spanx
             style="bold">claims-unaware</spanx>, as discussed in <xref
             target="permission-success-to-client" />, then it SHOULD register
-            a claims_redirect_uri with the authorization server, either using
-            a static process or through <xref target="RFC7591" /> or <xref
-            target="OIDCDynClientReg" />.</t>
+            a claims_redirect_uri (as defined in <xref
+            target="claim-redirect" />) with the authorization server, either
+            using a static process or through <xref target="RFC7591" /> or
+            <xref target="OIDCDynClientReg" />.</t>
 
             <t>The client has acquired an AAT.</t>
           </list></t>
