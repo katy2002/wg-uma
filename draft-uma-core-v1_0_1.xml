@@ -987,9 +987,11 @@ Content-Type: application/json
           (see <xref target="register-permission" />), then assuming the
           resource server chooses to respond to the client with an UMA
           response, it MUST provide a "WWW-Authenticate" header with the
-          authentication scheme "UMA", with the authorization server's URI in
-          an "as_uri" parameter and the just-received permission ticket in a
-          "ticket" parameter.</t>
+          authentication scheme "UMA", with the URI of the authorization
+          server in an "as_uri" parameter (to aid in the client's discovery of
+          the authorization server's configuration data and endpoints as
+          required), and the just-received permission ticket in a "ticket"
+          parameter.</t>
 
           <t>If it responds with the HTTP status code 403 (Forbidden), it MAY
           also return the permission ticket in the body in a JSON-encoded
