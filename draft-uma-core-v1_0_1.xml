@@ -757,29 +757,39 @@
         </list></t>
 
       <t>In brief, the entire process is as follows. <list style="symbols">
+          <t>The client attempts to access the protected resource (see <xref
+          target="client-attempts-access" />).</t>
+
           <t>If the client's request at the protected resource has no RPT, or
           has an invalid RPT or insufficient authorization data associated
-          with the RPT as determined through RPT status checking, the resource
-          server registers a requested permission with the relevant
-          authorization server, and responds to the client with the resulting
-          permission ticket and the authorization server's location using a
-          "WWW-Authenticate: UMA" header.</t>
+          with the RPT as determined through RPT status checking (see <xref
+          target="check-rpt-status" />), the resource server registers a
+          requested permission with the relevant authorization server (see
+          <xref target="register-permission" />), and responds to the client
+          with the resulting permission ticket and the authorization server's
+          location using a "WWW-Authenticate: UMA" header (see <xref
+          target="permission-success-to-client" />).</t>
 
           <t>If the resource server fails to get a permission ticket, it
-          responds to the client with a warning header instead.</t>
+          responds to the client with a warning header instead (see <xref
+          target="permission-failure-to-client" />).</t>
 
           <t>If the client receives a permission ticket and authorization
           server location from the resource server, it requests authorization
-          data from the authorization server.</t>
+          data from the authorization server (see <xref
+          target="seek-authorization" />).</t>
 
-          <t>If the authorization request and any additional required
-          information sufficiently matches resource owner policies, the
-          authorization server returns an RPT associated with the appropriate
-          authorization data to the client.</t>
+          <t>If the authorization request and any additional information
+          required by the authorization server (see <xref
+          target="need-info" />) sufficiently matches resource owner policies,
+          the authorization server returns an RPT associated with the
+          appropriate authorization data to the client (see <xref
+          target="give-rpt" />).</t>
 
           <t>If the client's attempt has a valid RPT with sufficient
-          authorization data, the resource server gives access to the
-          protected resource.</t>
+          authorization data, the resource owner's policies have been met for
+          access to the protected resource (see <xref
+          target="give-access" />).</t>
         </list></t>
 
       <t>The recipient of each request message SHOULD respond unless it
@@ -1066,9 +1076,9 @@ Warning: 199 - "UMA Authorization Server Unreachable"
           <t>The client's presentation of a valid RPT associated with
           sufficient authorization data as determined through RPT status
           checking (see <xref target="check-rpt-status" />) indicates that the
-          resource owner's policies have been met. The resource server MAY
-          apply additional authorization controls when determining how to
-          respond.</t>
+          resource owner's policies have been met for access to the protected
+          resource. The resource server MAY apply additional authorization
+          controls when determining how to respond.</t>
 
           <figure>
             <preamble>Example of the resource server's response to the
@@ -1329,7 +1339,8 @@ Authorization: Bearer jwfLG53^sad$#f
           not fulfill the request.</t>
         </section>
 
-        <section title="Authorization Server Response to Client on Authorization Success">
+        <section anchor="give-rpt"
+                 title="Authorization Server Response to Client on Authorization Success">
           <t>If the authorization server's assessment process results in
           issuance of authorization data (see <xref
           target="authorization-assessment" />), it returns an HTTP 200 (OK)
