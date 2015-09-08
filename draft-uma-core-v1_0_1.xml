@@ -2285,8 +2285,8 @@ Cache-Control: no-store
         target="RFC7159" />. As a subset of the JavaScript scripting language,
         JSON data SHOULD be consumed through a process that does not
         dynamically execute it as code, to avoid malicious code execution. One
-        way to achieve this is to use a JavaScript interpreter rather than the
-        built-in JavaScript eval() function.</t>
+        way to achieve this is to use a JSON parser rather than the built-in
+        JavaScript eval() function.</t>
       </section>
 
       <section anchor="trust-considerations"
