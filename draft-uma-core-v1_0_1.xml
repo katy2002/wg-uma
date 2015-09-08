@@ -265,6 +265,15 @@
             apply to a resource set ("object"). UMA associates scopes with
             labeled resource sets.</t>
 
+            <t hangText="token">A packaged collection of data meant to be
+            transmitted to another entity. A token could be used for
+            authorized access (an "access token"), or could be used to
+            exchange information about a subject (a "claim token").</t>
+
+            <t hangText="requesting party token (RPT)">An UMA access token
+            associated with a set of authorization data, used by the client to
+            gain access to protected resources at the resource server.</t>
+
             <t hangText="authorization data">Data associated with an RPT that
             enables some combination of the authorization server and resource
             server to determine the correct extent of access to allow to a
@@ -281,8 +290,7 @@
             policy terminology, a permission is an entitlement that includes a
             "subject" (requesting party), "verbs" (one or more scopes of
             access), and an "object" (resource set). A permission is one
-            example of authorization data that an authorization server may add
-            to a requesting party token.</t>
+            example of authorization data.</t>
 
             <t hangText="permission ticket">A correlation handle that is
             conveyed from an authorization server to a resource server, from a
@@ -291,12 +299,29 @@
             assess the correct policies to apply to a request for
             authorization data.</t>
 
-            <t hangText="token">A packaged collection of data meant to be
-            transmitted to another entity. A token could be used for
-            authorized access (an "access token" such as an UMA RPT, PAT, or
-            AAT), or could be used to exchange information about a subject (a
-            "claim token" such as one that is conveyed by a client to an
-            authorization server while seeking authorization data).</t>
+            <t hangText="authorization API token (AAT)">An OAuth access token
+            with the scope "uma_authorization", used by the client at the
+            authorization API, consisting of the RPT endpoint.</t>
+
+            <t hangText="RPT endpoint">An endpoint at the authorization server
+            that issues RPTs and authorization data to the client.</t>
+
+            <t hangText="protection API token (PAT)">An OAuth access token
+            with the scope "uma_protection", used by the resource server at
+            the protection API, consisting of the resource set registration,
+            permission registration, and token introspection endpoints.</t>
+
+            <t hangText="resource set registration endpoint">An endpoint at
+            the authorization server that allows the resource server to
+            register resource sets.</t>
+
+            <t hangText="permission registration endpoint">An endpoint at the
+            authorization server that allows the resource server to request
+            permission tickets.</t>
+
+            <t hangText="token introspection endpoint">An endpoint at the
+            authorization server that allows the resource server to query the
+            status of an RPT and its associated authorization data.</t>
           </list></t>
       </section>
 
