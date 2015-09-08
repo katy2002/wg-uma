@@ -758,8 +758,8 @@
 
       <t>In brief, the entire process is as follows. <list style="symbols">
           <t>If the client's request at the protected resource has no RPT, or
-          an invalid RPT or insufficient authorization data associated with
-          the RPT as determined through RPT status checking, the resource
+          has an invalid RPT or insufficient authorization data associated
+          with the RPT as determined through RPT status checking, the resource
           server registers a requested permission with the relevant
           authorization server, and responds to the client with the resulting
           permission ticket and the authorization server's location using a
@@ -831,9 +831,9 @@ Host: photoz.example.com
 
       <section anchor="register-permission"
                title="Resource Server Registers Requested Permission With Authorization Server">
-        <t>If the client's request at the protected resource has no RPT, or an
-        invalid RPT or insufficient authorization data associated with the RPT
-        as determined through RPT status checking (see <xref
+        <t>If the client's request at the protected resource has no RPT, or
+        has an invalid RPT or insufficient authorization data associated with
+        the RPT as determined through RPT status checking (see <xref
         target="check-rpt-status" />), then assuming the resource server
         chooses to respond to the client, it MUST use the protection API's
         permission registration endpoint to register a requested permission
@@ -979,9 +979,9 @@ Content-Type: application/json
 
         <section anchor="permission-success-to-client"
                  title="Resource Server Response to Client on Permission Registration Success">
-          <t>If the client's request at a protected resource has no RPT, an
-          invalid RPT, or insufficient authorization data associated with the
-          RPT as determined through RPT status checking (see <xref
+          <t>If the client's request at a protected resource has no RPT, or
+          has an invalid RPT or insufficient authorization data associated
+          with the RPT as determined through RPT status checking (see <xref
           target="check-rpt-status" />), and the resource server successfully
           registered a requested permission and received a permission ticket
           (see <xref target="register-permission" />), then assuming the
@@ -1036,8 +1036,8 @@ WWW-Authenticate: UMA realm="example",
         <section anchor="permission-failure-to-client"
                  title="Resource Server Response to Client on Permission Registration Failure">
           <t>If the client's request at the protected resource has no RPT, or
-          an invalid RPT or insufficient authorization data associated with
-          the RPT as determined through RPT status checking (see <xref
+          has an invalid RPT or insufficient authorization data associated
+          with the RPT as determined through RPT status checking (see <xref
           target="check-rpt-status" />), and the resource server received an
           error of any kind from the authorization server when trying to
           register a requested permission such that it did not receive a
