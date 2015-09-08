@@ -858,7 +858,7 @@ Host: photoz.example.com
           <t>The resource server uses the POST method at the permission
           registration endpoint. The body of the HTTP request message contains
           a JSON object providing the requested permission, using a format
-          derived from the scope description format specified in <xref
+          derived from the resource set description format specified in <xref
           target="OAuth-resource-reg" />, as follows. The object has the
           following properties:<list style="hanging">
               <t hangText="resource_set_id">REQUIRED. The identifier for a
