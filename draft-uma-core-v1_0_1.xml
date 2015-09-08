@@ -1610,15 +1610,16 @@ Cache-Control: no-store
 
                     <t hangText="token">REQUIRED. A string containing the
                     claim information in the indicated format, base64url
-                    encoded. If claim token format features are included that
-                    require special interpretation, the client and
-                    authorization server are assumed to have a prior
-                    relationship that establishes how to interpret these
-                    features. For example, if the referenced format equates to
-                    SAML 2.0 assertions and the claim token contains audience
-                    restrictions, it is the joint responsibility of the client
-                    and authorization server to determine the proper audience
-                    values that enable successful token consumption.</t>
+                    encoded if it is not already so encoded. If claim token
+                    format features are included that require special
+                    interpretation, the client and authorization server are
+                    assumed to have a prior relationship that establishes how
+                    to interpret these features. For example, if the
+                    referenced format equates to SAML 2.0 assertions and the
+                    claim token contains audience restrictions, it is the
+                    joint responsibility of the client and authorization
+                    server to determine the proper audience values that enable
+                    successful token consumption.</t>
                   </list></t>
               </list></t>
 
