@@ -1076,13 +1076,15 @@ Warning: 199 - "UMA Authorization Server Unreachable"
 
             <artwork><![CDATA[
 HTTP/1.1 200 OK
-Content-Type: image/jpeg
+Content-Type: application/json
 ...
+{
+  "firstName": "Alice",
+  "lastName": "Adams",
+  "isAlive": true,
+  "age": 25,
+ }
 
-/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja
-3kAAQAEAAAAPAAA/+4ADkFkb2JlAGTAAAAAAf
-/bAIQABgQEBAUEBgUFBgkGBQYJCwgGBggLDAo
-KCwoKDBAMDAwMDAwQDA4PEA8ODBMTFBQTExwb
 ]]></artwork>
           </figure>
 
