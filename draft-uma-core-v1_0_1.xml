@@ -1152,9 +1152,9 @@ Content-Type: application/json
               <t>Keyword in HTTP Authorization header: "Bearer".</t>
 
               <t>Syntax and semantics of token data: As defined below; an
-              opaque string value, resolving to an extended JSON Web Token
-              (JWT) <xref target="RFC7519" /> format on introspection at the
-              authorization server.</t>
+              opaque string value, resolving to a JSON object that leverages
+              some JSON Web Token (JWT) <xref target="RFC7519" /> claims and
+              elements.</t>
 
               <t>Token data association: The on-the-wire token is opaque; it
               is introspected at run time by the resource server through
