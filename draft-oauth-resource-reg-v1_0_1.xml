@@ -338,8 +338,8 @@
         appear before the required path structure. Each is defined in its own
         section below. All other methods are unsupported. The {_id} is the
         authorization server-assigned identifier for the web resource
-        corresponding to the resource set as returned in the Location
-        header.<list style="symbols">
+        corresponding to the resource set at the time it was created, included
+        within the URL returned in the Location header.<list style="symbols">
             <t>Create resource set description: POST
             {rsreguri}/resource_set</t>
 
@@ -359,9 +359,10 @@
         server includes common properties, possibly in addition to
         method-specific properties, as follows:<list style="hanging">
             <t hangText="_id">REQUIRED (except for the List method). A string
-            value repeating the {_id} as appearing in the Location header. Its
-            appearance in both locations allows specialized header and body
-            client software to avoid extra parsing.</t>
+            value repeating the authorization server-defined identifier for
+            the web resource corresponding to the resource set. Its appearance
+            in the body makes it readily available as an object identifier for
+            various resource set management tasks.</t>
 
             <t hangText="user_access_policy_uri">OPTIONAL. A URI that allows
             the resource server to redirect an end-user resource owner to a
