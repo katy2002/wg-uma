@@ -430,7 +430,7 @@ Location: /rs/resource_set/12345
 ...
 
 {
-  "_id" : "12345",
+  "_id" : "KX3A-39WE",
   "user_access_policy_uri" : "http://as.example.com/rs/222/resource/333/policy"
 }
 ]]></artwork>
@@ -465,7 +465,7 @@ Content-Type: application/json
 ...
 
 {
-  "_id" : "12345",
+  "_id" : "KX3A-39WE",
   "name" : "Tweedl Social Service",
   "icon_uri" : "http://www.example.com/icons/sharesocial.png",
   "scopes" : [
@@ -522,7 +522,7 @@ HTTP/1.1 200 OK
 ...
 
 {
-  "_id": "12345"
+  "_id": "9UQU-DUWW"
 }
 
 ]]></artwork>
@@ -540,7 +540,7 @@ HTTP/1.1 200 OK
             header:</preamble>
 
             <artwork><![CDATA[
-DELETE /rs/resource_set/12345
+DELETE /rs/resource_set/9UQU-DUWW
 Authorization: Bearer 204c69636b6c69
 ...
 ]]></artwork>
@@ -588,7 +588,7 @@ Authorization: Bearer 204c69636b6c69
 HTTP/1.1 200 OK
 ...
 
-[ "12345", "54321" ]
+[ "KX3A-39WE", "9UQU-DUWW" ]
 ]]></artwork>
           </figure>
         </section>
