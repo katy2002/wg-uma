@@ -734,28 +734,26 @@
       begins with the client attempting access at a protected resource
       endpoint at the resource server. Several aspects of the client's
       behavior are out of scope for this specification:<list style="symbols">
-          <t>How the client came to discover, or be provisioned or configured
-          with, this endpoint: For example, the resource owner might have
-          advertised its availability publicly on a blog or other website,
-          listed it in a discovery service, or emailed a link to a particular
-          intended requesting party.</t>
-
-          <t>The impetus for the client's access attempt: For example, its
-          end-user requesting party might have clicked on a thumbnail
-          representation of the resource to retrieve a larger version.</t>
-
           <t>How the client acquired knowledge of the resource server's
-          client-facing interface: for eample, the resource server might have
-          a formally documented API or might serve up a simple web page. Note:
-          When a client attempts access to a presumptively protected resource
-          without an RPT, the resource server needs to derive the
-          authorization server and resource set identifier associated with
-          that resource from some other aspect of the client's request. This
-          effectively means that the resource server&rsquo;s API needs to be
-          structured in such a way that the client's RPT-free request uniquely
-          identifies the resource set. In practice, this information likely
-          needs to be passed through the URI, headers, or body of the
-          request.</t>
+          client-facing interface and the specific endpoint of the desired
+          protected resource. For example, the resource server might have a
+          formally documented API or it might serve up a simple web page, and
+          the resource owner might have advertised the endpoint publicly on a
+          blog or other website, listed it in a discovery service, or emailed
+          a link to a particular intended requesting party. Note: When a
+          client attempts access to a presumptively protected resource without
+          an RPT, the resource server needs to derive the authorization server
+          and resource set identifier associated with that resource from some
+          other aspect of the client's request. This effectively means that
+          the resource server&rsquo;s API needs to be structured in such a way
+          that the client's RPT-free request uniquely identifies the resource
+          set. In practice, this information likely needs to be passed through
+          the URI, headers, or body of the request.</t>
+
+          <t>The impetus for the client's access attempt. For example, its
+          end-user requesting party might have clicked on a thumbnail
+          representation of a graphics-based resource to retrieve a larger
+          version.</t>
         </list></t>
 
       <t>In brief, the entire process is as follows. <list style="symbols">
