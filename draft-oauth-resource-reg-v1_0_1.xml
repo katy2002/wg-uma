@@ -7,8 +7,8 @@
 <!ENTITY UMA PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/Home">
 <!ENTITY UMAreqs PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/UMA+Requirements">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-resource-reg" id="kantara"
-     ipr="kantara">
+<rfc category="std" docName="draft-hardjono-oauth-resource-reg-07"
+     id="kantara" ipr="kantara">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
