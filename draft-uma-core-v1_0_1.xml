@@ -349,7 +349,8 @@
         that enable such alternatives are provided in <xref
         target="comms-profiles" />.</t>
 
-        <section anchor="protection-api" title="Protection API">
+        <section anchor="protection-api"
+                 title="Protection API and Protection API Token">
           <t>The authorization server MUST present an HTTP-based protection
           API, protected by TLS and OAuth (or an OAuth-based authentication
           protocol), for use by resource servers. The authorization server
@@ -409,7 +410,8 @@
           request.</t>
         </section>
 
-        <section anchor="authorization-api" title="Authorization API">
+        <section anchor="authorization-api"
+                 title="Authorization API and Authorization API Token">
           <t>The authorization server MUST present an HTTP-based authorization
           API, protected by TLS and OAuth (or an OAuth-based authentication
           protocol), for use by clients. The authorization server thus has an
@@ -683,10 +685,11 @@
           target="OIDCDynClientReg" />; alternatively, they MAY use a static
           process.</t>
 
-          <t>The resource server acquires a PAT from the authorization server.
-          It is OPTIONAL for the resource owner to introduce the resource
-          server to the authorization server dynamically (for example, through
-          a "NASCAR"-style user interface where the resource owner selects a
+          <t>The resource server acquires a PAT (as defined in <xref
+          target="protection-api" />) from the authorization server. It is
+          OPTIONAL for the resource owner to introduce the resource server to
+          the authorization server dynamically (for example, through a
+          "NASCAR"-style user interface where the resource owner selects a
           chosen authorization server); alternatively, they MAY use a static
           process that may or may not directly involve the resource owner at
           introduction time.</t>
@@ -1281,7 +1284,12 @@ HTTP/1.1 200 OK
             using a static process or through <xref target="RFC7591" /> or
             <xref target="OIDCDynClientReg" />.</t>
 
-            <t>The client has acquired an AAT.</t>
+            <t>The client has acquired an AAT (as defined in <xref
+            target="authorization-api" />) from the authorization server. The
+            exact means by which the client acquires the AAT are out of scope
+            of this specification. In the case of an interactive OAuth flow,
+            an end-user requesting party will need to be available to
+            authorize issuance of the "uma_authorization" scope.</t>
           </list></t>
 
         <section title="Client Request to Authorization Server for Authorization Data">
