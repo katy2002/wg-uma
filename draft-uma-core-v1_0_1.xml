@@ -1697,8 +1697,11 @@ Authorization: Bearer jwfLG53^sad$#f
                 their redirection endpoint prior to utilizing the
                 authorization endpoint (either using a static process or
                 through <xref target="RFC7591" /> or <xref
-                target="OIDCDynClientReg" />). If the URI is pre-registered,
-                this URI MUST exactly match one of the pre-registered
+                target="OIDCDynClientReg" />). The claims redirection URIs of
+                a client MUST be registered distinct from the client's
+                redirection URIs as used at the authorization endpoint during
+                redirect-based OAuth flows. If the URI is pre-registered, this
+                URI MUST exactly match one of the pre-registered claims
                 redirection URIs, with the matching performed as described in
                 Section 6.2.1 of <xref target="RFC3986" /> (Simple String
                 Comparison).</t>
@@ -1729,8 +1732,8 @@ Host: as.example.com]]></artwork>
             <t>At the conclusion of its interaction with the requesting party,
             the authorization server returns the user agent to the client
             adding the following parameters to the query component of the
-            redirection URI using the "application/x-www-form-urlencoded"
-            format:<list style="hanging">
+            claims redirection URI using the
+            "application/x-www-form-urlencoded" format:<list style="hanging">
                 <t hangText="authorization_state">REQUIRED. Indicates that the
                 authorization server completed its claims-gathering
                 interaction with the requesting party with the indicated
@@ -1768,16 +1771,16 @@ Host: as.example.com]]></artwork>
               </list></t>
 
             <t>The client MUST ignore unrecognized response parameters. If the
-            request fails due to a missing, invalid, or mismatching
+            request fails due to a missing, invalid, or mismatching claims
             redirection URI, or if the client identifier is missing or
             invalid, the authorization server SHOULD inform the resource owner
             of the error and MUST NOT automatically redirect the user agent to
             the invalid redirection URI. If the request fails for reasons
-            other than a missing or invalid redirection URI, the authorization
-            server informs the client by adding an "error" parameter to the
-            query component of the redirection URI using the
-            "application/x-www-form-urlencoded" format, containing one of the
-            following ASCII error codes:<list style="hanging">
+            other than a missing or invalid claims redirection URI, the
+            authorization server informs the client by adding an "error"
+            parameter to the query component of the claims redirection URI
+            using the "application/x-www-form-urlencoded" format, containing
+            one of the following ASCII error codes:<list style="hanging">
                 <t hangText="invalid_request">The request is missing a
                 required parameter, includes an invalid parameter value (such
                 as an invalid or expired ticket), includes a parameter more
@@ -2177,15 +2180,16 @@ Cache-Control: no-store
         gathering claims from an end-user requesting party (described in <xref
         target="claim-redirect" />) creates the potential for cross-site
         request forgery (CSRF) through an open redirect if the authorization
-        server does not force the client to pre-register its redirection
-        endpoint, and server-side artifact tampering if the client does not
-        avail itself of the state parameter. The client SHOULD check that the
-        ticket value returned by an authorization server after a redirect is
-        completed has not been maliciously changed, for example by a man in
-        the browser (MITB), by using the state parameter. (See the <xref
-        target="UMA-Impl" /> for advice on ways to accomplish this.) Sections
-        4.4.1.8, 4.4.2.5, and 5.3.5 of <xref target="RFC6819" /> are apropos
-        for the UMA claims-gathering redirection flow as well.</t>
+        server does not force the client to pre-register its claims
+        redirection endpoint, and server-side artifact tampering if the client
+        does not avail itself of the state parameter. The client SHOULD check
+        that the ticket value returned by an authorization server after a
+        claims redirect is completed has not been maliciously changed, for
+        example by a man in the browser (MITB), by using the state parameter.
+        (See the <xref target="UMA-Impl" /> for advice on ways to accomplish
+        this.) Sections 4.4.1.8, 4.4.2.5, and 5.3.5 of <xref
+        target="RFC6819" /> are apropos for the UMA claims-gathering
+        redirection flow as well.</t>
 
         <t>When a client redirects an end-user requesting party to the
         requesting party claims endpoint, the client provides no a priori
