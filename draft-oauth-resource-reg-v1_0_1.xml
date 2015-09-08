@@ -382,8 +382,7 @@
         response (see <xref target="errors" />):<list style="hanging">
             <t hangText="unsupported_method_type">The resource server request
             used an unsupported HTTP method. The authorization server MUST
-            respond with the HTTP 405 (Method Not Allowed) status code and
-            MUST fail to act on the request.</t>
+            respond with the HTTP 405 (Method Not Allowed) status code.</t>
 
             <t hangText="not_found">The resource set requested from the
             authorization server cannot be found. The authorization server
