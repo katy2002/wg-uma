@@ -2351,7 +2351,14 @@ Cache-Control: no-store
       This can be seen in the issuance of an AAT, which represents the
       approval of a requesting party for a client to engage with an
       authorization server to perform tasks needed for obtaining
-      authorization, possibly including pushing claim tokens.</t>
+      authorization, possibly including pushing claim tokens. Claim tokens are
+      likely to contain personally identifiable and possibly very sensitive
+      information, and much like identity attributes exchanged during single
+      sign-on, the process of claim token pushing will tend to be invisible to
+      an end-user requesting party if they have not consciously acknowledged
+      and authorized the possibility. A requesting party who provides claims
+      to an authorization server once redirected there is less susceptible to
+      privacy-destroying behavior.</t>
 
       <t>Parties operating and using UMA software entities have opportunities
       to establish agreements about mutual rights, responsibilities, and
