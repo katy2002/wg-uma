@@ -863,8 +863,8 @@ Authorization: Bearer 204c69636b6c69
 {
   "resource_set_id": "112210f47de98100",
   "scopes": [
-      "http://photoz.example.com/dev/actions/view",
-      "http://photoz.example.com/dev/actions/all"
+      "view",
+      "http://photoz.example.com/dev/actions/print"
   ]
 }
 ]]></artwork>
@@ -1202,8 +1202,8 @@ HTTP/1.1 200 OK
       {
         "resource_set_id": "112210f47de98100",
         "scopes": [
-          "http://photoz.example.com/dev/actions/view",
-          "http://photoz.example.com/dev/actions/all"
+          "view",
+          "http://photoz.example.com/dev/actions/print"
          ],
         "exp" : 1256953732
       }

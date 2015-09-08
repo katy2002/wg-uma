@@ -291,9 +291,8 @@
 
         <figure>
           <preamble>For example, this description characterizes a resource set
-          (a photo album) that can potentially be only viewed, or
-          alternatively to which full access can be granted; the URIs point to
-          scope descriptions as defined in <xref
+          (a photo album) that can potentially be viewed or printed; the scope
+          URI points to a scope description as defined in <xref
           target="action-desc" />:</preamble>
 
           <artwork><![CDATA[
@@ -301,8 +300,8 @@
   "name" : "Photo Album",
   "icon_uri" : "http://www.example.com/icons/flower.png",
   "scopes" : [
-    "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/all"
+    "view",
+    "http://photoz.example.com/dev/scopes/print"
   ],
   "type" : "http://www.example.com/rsets/photoalbum"
 }
@@ -677,9 +676,7 @@ HTTP/1.1 200 OK
              title="Example of Registering Resource Sets">
       <t>The following non-normative example illustrates the intent and usage
       of resource set descriptions and scope descriptions as part of resource
-      set registration in the context of <xref target="UMA" />. This example
-      shows the use of scope strings that are URIs. See <xref
-      target="reg-api" /> for some examples of plain scope strings.</t>
+      set registration in the context of <xref target="UMA" />.</t>
 
       <t>This example contains some steps that are exclusively in the realm of
       user experience rather than web protocol, to achieve realistic
@@ -712,21 +709,28 @@ HTTP/1.1 200 OK
       offers two dozen different methods that apply to single photos, such as
       "addTags" and "getSizes", but rolls them up into two photo-related
       scopes of access: "view" (consisting of various read-only operations)
-      and "all" (consisting of various reading, editing, and printing
-      operations). It defines two scope descriptions that represent these
-      scopes, which it is able to reuse for all of its users (not just Alice),
-      and ensures that these scope description documents are available through
-      HTTP GET requests that may be made by authorization servers.</t>
+      and "print" (consisting of various printing operations). It defines two
+      scope descriptions that represent these scopes, which it is able to
+      reuse for all of its users (not just Alice), and ensures that these
+      scope description documents are available through HTTP GET requests that
+      may be made by authorization servers.</t>
 
-      <t>The "name" property values are intended to be seen by Alice when she
-      maps authorization constraints to specific resource sets and actions
-      while visiting CopMonkey, such that Alice would see the strings "View
-      Photo and Related Info" and "All Actions", likely accompanied by the
-      referenced icons, in the CopMonkey interface. (Other users of Photoz
-      might similarly see the same labels at CopMonkey or whatever other
-      authorization server they use. Photoz could distinguish natural-language
-      labels per user if it wishes, by pointing to scopes with differently
-      translated names.)</t>
+      <t>Photoz constructs scope description documents for the scopes in order
+      to provide data that will help them be displayed in user interfaces.
+      (This means that any scope strings it supplies in resource set
+      registration descriptions will need to be URIs referring to these
+      documents. The alternative would have been simple scope strings without
+      the additional user interface data.)</t>
+
+      <t>The "name" property values in the scope descriptions are intended to
+      be seen by Alice when she maps authorization constraints to specific
+      resource sets and actions while visiting CopMonkey, such that Alice
+      would see the strings "View Photo and Related Info" and "Print Photo",
+      likely accompanied by the referenced icons, in the CopMonkey interface.
+      (Other users of Photoz might similarly see the same labels at CopMonkey
+      or whatever other authorization server they use. Photoz could
+      distinguish natural-language labels per user if it wishes, by pointing
+      to scopes with differently translated names.)</t>
 
       <t>Example of the viewing-related scope description document available
       at http://photoz.example.com/dev/scopes/view:</t>
@@ -740,14 +744,14 @@ HTTP/1.1 200 OK
 ]]></artwork>
       </figure>
 
-      <t>Example of the broader scope description document available at
-      http://photoz.example.com/dev/scopes/all:</t>
+      <t>Example of the scope description document available at
+      http://photoz.example.com/dev/scopes/print:</t>
 
       <figure>
         <artwork><![CDATA[
 {
-  "name" : "All Actions",
-  "icon_uri" : "http://www.example.com/icons/galaxy.png"
+  "name" : "Print Photo",
+  "icon_uri" : "http://www.example.com/icons/printer.png"
 }
 ]]></artwork>
       </figure>
@@ -775,7 +779,7 @@ HTTP/1.1 200 OK
   "icon_uri" : "http://www.example.com/icons/flower",
   "scopes" : [
     "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/all"
+    "http://photoz.example.com/dev/scopes/print"
   ]
 }
 ]]></artwork>
@@ -797,7 +801,7 @@ Content-Type: application/json
   "icon_uri" : "http://www.example.com/icons/flower.png",
   "scopes" : [
     "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/all"
+    "http://photoz.example.com/dev/scopes/print"
   ]
 }
 ]]></artwork>
@@ -863,7 +867,7 @@ Content-Type: application/json
   "icon_uri" : "http://www.example.com/icons/flower.png",
   "scopes" : [
     "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/all"
+    "http://photoz.example.com/dev/scopes/print"
   ]
 }
 ]]></artwork>
@@ -912,7 +916,7 @@ Host: as.example.com
   "icon_uri" : "http://www.example.com/icons/flower.png",
   "scopes" : [
     "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/all"
+    "http://photoz.example.com/dev/scopes/print"
   ]
 }
 ]]></artwork>
@@ -934,9 +938,9 @@ Content-Type: application/json
 
       <t>There are other reasons Photoz might want to update resource set
       descriptions, having nothing to do with Alice's actions or wishes. For
-      example, it might extend its API to include new features, and want to
-      add new scopes to all of Alice's and other users' resource set
-      descriptions.</t>
+      example, it might extend its API to include new features such as photo
+      resizing, and want to add new scopes to all of Alice's and other users'
+      resource set descriptions.</t>
 
       <t>if Alice later decides to entirely remove sharing protection (user
       experience only) on this photo while visiting Photoz, ensuring that the
