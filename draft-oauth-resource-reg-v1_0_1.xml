@@ -89,10 +89,10 @@
           authorization server that brokers availability of user attributes by
           dealing with an ecosystem of attribute providers (APs). These APs
           effectively function as third-party resource servers. Thus, there is
-          value in defining a mechanism by which all of the third-party APs
-          can communicate with a central OP, as well as ensuring that trust
-          between the authorization server and resource servers is able to be
-          established in a dynamic, loosely coupled fashion.</t>
+          value in defining a mechanism by which the third-party APs can
+          register with a central OP, as well as ensuring that trust between
+          the APs and OP is able to be established in a dynamic, loosely
+          coupled fashion.</t>
 
           <t>In some deployments of User-Managed Access <xref target="UMA" />,
           which has a dependency on OAuth 2.0, an end-user resource owner (the
@@ -237,7 +237,7 @@
             <t hangText="scopes">REQUIRED. An array of strings indicating the
             available scopes for this resource set. Any of the strings MAY be
             either a plain string or a URI (see <xref
-            target="scope-interpretation" />). If a scope is a URI then it
+            target="scope-interpretation" />). If a scope is a URI, then it
             MUST resolve to a scope description document (see <xref
             target="action-desc" />).</t>
 
@@ -608,17 +608,14 @@ HTTP/1.1 200 OK
       reason, the authorization server produces an error response by adding
       the following properties to the entity body of the HTTP response:<list
           style="hanging">
-          <t hangText="error">REQUIRED. A single error code, as noted in the
-          API definition. Value for this property is defined in the specific
-          authorization server endpoint description.</t>
+          <t hangText="error">REQUIRED. A single error code. Values for this
+          property are defined throughout this specification.</t>
 
-          <t hangText="error_description">OPTIONAL. A human-readable text
-          providing additional information, used to assist in the
-          understanding and resolution of the error occurred.</t>
+          <t hangText="error_description">OPTIONAL. Human-readable text
+          providing additional information.</t>
 
           <t hangText="error_uri">OPTIONAL. A URI identifying a human-readable
-          web page with information about the error, used to provide the
-          end-user with additional information about the error.</t>
+          web page with information about the error.</t>
         </list></t>
     </section>
 
@@ -725,28 +722,23 @@ HTTP/1.1 200 OK
       previously instructed Photoz to use CopMonkey to protect any photos of
       hers.</t>
 
-      <t>Alice has previously visited CopMonkey to map a default "do not share
-      with anyone" policy to any resource sets registered by Photoz, until
-      such time as she maps some other more permissive policies to those
-      resources. (User experience only. This may have been done at the time
-      Alice introduced the resource server to the authorization server, and/or
-      it could have been a global or resource server-specific preference
-      setting. A different constraint or no constraint at all might be
-      associated with newly protected resources.) Other kinds of policies she
-      may eventually map to particular photos or albums might be "Share only
-      with husband@email.example.net" or "Share only with people in my
-      'family' group".</t>
+      <t>CopMonkey has a "default-deny" setup, so until such time as Alice
+      maps some other more permissive policies to any resource sets registered
+      by Photoz, the policy is not to share them. Policies she may eventually
+      map to particular photos or albums might be "Share only with
+      husband@email.example.net" or "Share only with people in my 'family'
+      group".</t>
 
-      <t>Photoz itself has a publicly documented application-specific API that
-      offers two dozen different methods that apply to single photos, such as
-      <spanx style="verb">addTags</spanx> and <spanx
-      style="verb">getSizes</spanx>, but rolls them up into two photo-related
-      scopes of access: "view" (consisting of various read-only operations)
-      and "print" (consisting of various printing operations). It defines two
-      scope descriptions that represent these scopes, which it is able to
-      reuse for all of its users (not just Alice), and ensures that these
-      scope description documents are available through HTTP GET requests that
-      may be made by authorization servers.</t>
+      <t>Photoz has a publicly documented application-specific API that offers
+      two dozen different methods that apply to single photos, such as <spanx
+      style="verb">addTags</spanx> and <spanx style="verb">getSizes</spanx>,
+      but rolls them up into two photo-related scopes of access: "view"
+      (consisting of various read-only operations) and "print" (consisting of
+      various printing operations). It defines two scope descriptions that
+      represent these scopes, which it is able to reuse for all of its users
+      (not just Alice), and ensures that these scope description documents are
+      available through HTTP GET requests that may be made by authorization
+      servers.</t>
 
       <t>Photoz constructs scope description documents for the scopes in order
       to provide data that will help them be displayed in user interfaces.
@@ -1026,19 +1018,6 @@ Host: as.example.com
     </references>
 
     <references title="Informative References">
-      <reference anchor="UMA"
-                 target="http://docs.kantarainitiative.org/uma/draft-uma-core.html">
-        <front>
-          <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
-
-          <author initials="T." surname="Hardjono">
-            <organization>MIT</organization>
-          </author>
-
-          <date day="" month="September" year="2015" />
-        </front>
-      </reference>
-
       <reference anchor="OpenIDConnect"
                  target="http://openid.net/specs/openid-connect-core-1_0.html">
         <front>
@@ -1049,6 +1028,19 @@ Host: as.example.com
           </author>
 
           <date day="8" month="November" year="2014" />
+        </front>
+      </reference>
+
+      <reference anchor="UMA"
+                 target="http://docs.kantarainitiative.org/uma/draft-uma-core.html">
+        <front>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
+
+          <author initials="T." surname="Hardjono">
+            <organization>MIT</organization>
+          </author>
+
+          <date day="" month="September" year="2015" />
         </front>
       </reference>
 
