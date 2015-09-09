@@ -112,8 +112,8 @@
       contractual or legal level (see, for example, <xref
       target="UMA-obligations" />). Parties operating entities that claim to
       be UMA-conforming should provide documentation of any rights and
-      obligations between and among them, especially as they pertain to the
-      concepts and clauses discussed in this companion specification.</t>
+      obligations between and among them; see <xref
+      target="trust-considerations" /> for more information.</t>
 
       <t>In enterprise settings, application access management sometimes
       involves letting back-office applications serve only as policy
