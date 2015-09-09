@@ -429,12 +429,12 @@ Authorization: Bearer MHg3OUZEQkZBMjcx
             <artwork><![CDATA[
 HTTP/1.1 201 Created
 Content-Type: application/json
-Location: /rs/resource_set/12345
+Location: /rs/resource_set/KX3A-39WE
 ...
 
 {
   "_id" : "KX3A-39WE",
-  "user_access_policy_uri" : "http://as.example.com/rs/222/resource/333/policy"
+  "user_access_policy_uri" : "http://as.example.com/rs/222/resource/KX3A-39WE/policy"
 }
 ]]></artwork>
           </figure>
@@ -453,7 +453,7 @@ Location: /rs/resource_set/12345
             header:</preamble>
 
             <artwork><![CDATA[
-GET /rs/resource_set/12345 HTTP/1.1
+GET /rs/resource_set/KX3A-39WE HTTP/1.1
 Authorization: Bearer MHg3OUZEQkZBMjcx
 ...
 ]]></artwork>
@@ -501,7 +501,7 @@ Content-Type: application/json
             header:</preamble>
 
             <artwork><![CDATA[
-PUT /rs/resource_set/12345 HTTP/1.1
+PUT /rs/resource_set/9UQU-DUWW HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer 204c69636b6c69
 ...
@@ -801,7 +801,7 @@ HTTP/1.1 200 OK
         <artwork><![CDATA[
 {
   "name" : "Steve the puppy!",
-  "icon_uri" : "http://www.example.com/icons/flower",
+  "icon_uri" : "http://www.example.com/icons/flower.png",
   "scopes" : [
     "http://photoz.example.com/dev/scopes/view",
     "http://photoz.example.com/dev/scopes/print"
@@ -842,7 +842,8 @@ Content-Type: application/json
 ...
 
 {
-  "_id" : "112210f47de98100"
+  "_id" : "112210f47de98100",
+  "user_access_policy_uri" : "http://as.example.com/rs/222/resource/112210f47de98100/policy"
 }
 ]]></artwork>
       </figure>
@@ -889,7 +890,7 @@ Content-Type: application/json
 
 {
   "_id" : "112210f47de98100",
-  "name" : "Photo album",
+  "name" : "Steve the puppy!",
   "icon_uri" : "http://www.example.com/icons/flower.png",
   "scopes" : [
     "http://photoz.example.com/dev/scopes/view",
