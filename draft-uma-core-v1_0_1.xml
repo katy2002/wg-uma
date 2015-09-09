@@ -302,16 +302,18 @@
             authorization data.</t>
 
             <t hangText="authorization API token (AAT)">An OAuth access token
-            with the scope "uma_authorization", used by the client at the
-            authorization API, consisting of the RPT endpoint.</t>
+            with the scope <spanx style="verb">uma_authorization</spanx>, used
+            by the client at the authorization API, consisting of the RPT
+            endpoint.</t>
 
             <t hangText="RPT endpoint">An endpoint at the authorization server
             that issues RPTs and authorization data to the client.</t>
 
             <t hangText="protection API token (PAT)">An OAuth access token
-            with the scope "uma_protection", used by the resource server at
-            the protection API, consisting of the resource set registration,
-            permission registration, and token introspection endpoints.</t>
+            with the scope <spanx style="verb">uma_protection</spanx>, used by
+            the resource server at the protection API, consisting of the
+            resource set registration, permission registration, and token
+            introspection endpoints.</t>
 
             <t hangText="resource set registration endpoint">An endpoint at
             the authorization server that allows the resource server to
@@ -375,14 +377,15 @@
             </list></t>
 
           <t>An entity seeking protection API access MUST have the scope
-          "uma_protection". An access token with at least this scope is called
-          a protection API token (PAT) and an entity that can acquire an
-          access token with this scope is by definition a resource server. A
-          single entity can serve in both resource server and client roles if
-          it has access tokens with the appropriate OAuth scopes. If a request
-          to an endpoint fails due to an invalid, missing, or expired PAT, or
-          requires higher privileges at this endpoint than provided by the
-          PAT, the authorization server responds with an OAuth error.</t>
+          <spanx style="verb">uma_protection</spanx>. An access token with at
+          least this scope is called a protection API token (PAT) and an
+          entity that can acquire an access token with this scope is by
+          definition a resource server. A single entity can serve in both
+          resource server and client roles if it has access tokens with the
+          appropriate OAuth scopes. If a request to an endpoint fails due to
+          an invalid, missing, or expired PAT, or requires higher privileges
+          at this endpoint than provided by the PAT, the authorization server
+          responds with an OAuth error.</t>
 
           <t>The authorization server MUST support the OAuth bearer token
           profile for PAT issuance, and MAY support other OAuth token
@@ -430,14 +433,15 @@
             </list></t>
 
           <t>An entity seeking authorization API access MUST have the scope
-          "uma_authorization". An access token with at least this scope is
-          called an authorization API token (AAT) and an entity that can
-          acquire an access token with this scope is by definition a client. A
-          single entity can serve in both resource server and client roles if
-          it has access tokens with the appropriate OAuth scopes. If a request
-          to an endpoint fails due to an invalid, missing, or expired AAT, or
-          requires higher privileges at this endpoint than provided by the
-          AAT, the authorization server responds with an OAuth error.</t>
+          <spanx style="verb">uma_authorization</spanx>. An access token with
+          at least this scope is called an authorization API token (AAT) and
+          an entity that can acquire an access token with this scope is by
+          definition a client. A single entity can serve in both resource
+          server and client roles if it has access tokens with the appropriate
+          OAuth scopes. If a request to an endpoint fails due to an invalid,
+          missing, or expired AAT, or requires higher privileges at this
+          endpoint than provided by the AAT, the authorization server responds
+          with an OAuth error.</t>
 
           <t>The authorization server MUST support the OAuth bearer token
           profile for AAT issuance, and MAY support other OAuth token
@@ -471,8 +475,9 @@
           available in this fashion using UMA, it MUST require a requesting
           party token (RPT) with sufficient authorization data for access.</t>
 
-          <t>This specification defines one RPT profile, call "bearer" (see
-          <xref target="uma-bearer-token-profile" />), which the authorization
+          <t>This specification defines one RPT profile, call <spanx
+          style="verb">Bearer</spanx> (see <xref
+          target="uma-bearer-token-profile" />), which the authorization
           server MUST support. It MAY support additional RPT profiles, and
           MUST declare all supported RPT profiles in its configuration data
           (see <xref target="am-endpoints" />).</t>
@@ -525,7 +530,7 @@
             hangIndent="6" style="hanging">
             <t hangText="version"><vspace />REQUIRED. The version of the UMA
             core protocol to which this authorization server conforms. The
-            value MUST be the string "1.0".</t>
+            value MUST be the string <spanx style="verb">"1.0"</spanx>.</t>
 
             <t hangText="issuer"><vspace />REQUIRED. A URI with no query or
             fragment component that the authorization server asserts as its
@@ -539,29 +544,34 @@
             issuance. The property value is an array of string values, where
             each string value (which MAY be a URI) is a token type. Non-URI
             token type strings defined by OAuth token-defining specifications
-            are privileged. For example, the type "bearer" stands for the
-            OAuth bearer token type defined in <xref target="RFC6750" />. The
-            authorization server is REQUIRED to support "bearer", and to
-            supply this value explicitly. The authorization server MAY declare
-            its support for additional PAT profiles.</t>
+            are privileged. For example, the type "<spanx
+            style="verb">bearer</spanx>" stands for the OAuth bearer token
+            type defined in <xref target="RFC6750" />. The authorization
+            server is REQUIRED to support "<spanx
+            style="verb">bearer</spanx>", and to supply this value explicitly.
+            The authorization server MAY declare its support for additional
+            PAT profiles.</t>
 
             <t hangText="aat_profiles_supported"><vspace />REQUIRED. OAuth
             access token types supported by this authorization server for AAT
             issuance. The property value is an array of string values, where
             each string value (which MAY be a URI) is a token type. Non-URI
             token type strings defined by OAuth token-defining specifications
-            are privileged. For example, the type "bearer" stands for the
-            OAuth bearer token type defined in <xref target="RFC6750" />. The
-            authorization server is REQUIRED to support "bearer", and to
-            supply this value explicitly. The authorization server MAY declare
-            its support for additional AAT profiles.</t>
+            are privileged. For example, the type "<spanx
+            style="verb">bearer</spanx>" stands for the OAuth bearer token
+            type defined in <xref target="RFC6750" />. The authorization
+            server is REQUIRED to support "<spanx
+            style="verb">bearer</spanx>", and to supply this value explicitly.
+            The authorization server MAY declare its support for additional
+            AAT profiles.</t>
 
             <t hangText="rpt_profiles_supported"><vspace />REQUIRED. Profiles
             supported by this authorization server for RPT issuance. The
             property value is an array of string values, where each string
             value is a URI identifying an RPT profile. The authorization
-            server is REQUIRED to support the "bearer" RPT profile defined in
-            <xref target="uma-bearer-token-profile" />, and to supply its
+            server is REQUIRED to support the <spanx
+            style="verb">Bearer</spanx> RPT profile defined in <xref
+            target="uma-bearer-token-profile" />, and to supply its
             identifying URI explicitly. The authorization server MAY declare
             its support for additional RPT profiles.</t>
 
@@ -570,8 +580,9 @@
             PATs. The property value is an array of string values, where each
             string value (which MAY be a URI) is a grant type. Non-URI token
             type strings defined by OAuth grant type-defining specifications
-            are privileged. For example, the type "authorization_code" stands
-            for the OAuth authorization code grant type defined in <xref
+            are privileged. For example, the type <spanx
+            style="verb">authorization_code</spanx> stands for the OAuth
+            authorization code grant type defined in <xref
             target="RFC6749" />.</t>
 
             <t hangText="aat_grant_types_supported"><vspace />REQUIRED. OAuth
@@ -579,8 +590,9 @@
             AATs. The property value is an array of string values, where each
             string value (which MAY be a URI) is a grant type. Non-URI token
             type strings defined by OAuth grant type-defining specifications
-            are privileged. For example, the type "authorization_code" stands
-            for the OAuth authorization code grant type defined in <xref
+            are privileged. For example, the type <spanx
+            style="verb">authorization_code</spanx> stands for the OAuth
+            authorization code grant type defined in <xref
             target="RFC6749" />.</t>
 
             <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
@@ -598,32 +610,34 @@
             <t hangText="dynamic_client_endpoint"><vspace />OPTIONAL. The
             endpoint to use for performing dynamic client registration in the
             case of the use of <xref target="RFC7591" />, or alternatively the
-            reserved string "openid" in the case of the use of <xref
-            target="OIDCDynClientReg" />. In the latter case, it is presumed
-            that the resource server or client will discover the dynamic
-            client registration endpoint from the authorization server's
-            published OpenID Provider Configuration Information. The presence
-            of this property indicates authorization server support for
-            dynamic client registration feature; its absence indicates a lack
-            of support. If the authorization server supports dynamic client
-            registration, it MUST allow client applications to register a
-            claims_redirect_uri metadata field, as defined in <xref
-            target="claim-redirect" />.</t>
+            reserved string "<spanx style="verb">openid</spanx>" in the case
+            of the use of <xref target="OIDCDynClientReg" />. In the latter
+            case, it is presumed that the resource server or client will
+            discover the dynamic client registration endpoint from the
+            authorization server's published OpenID Provider Configuration
+            Information. The presence of this property indicates authorization
+            server support for dynamic client registration feature; its
+            absence indicates a lack of support. If the authorization server
+            supports dynamic client registration, it MUST allow client
+            applications to register a <spanx
+            style="verb">claims_redirect_uri</spanx> metadata field, as
+            defined in <xref target="claim-redirect" />.</t>
 
             <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
             at which the resource server or client asks the authorization
-            server for a PAT or AAT. A requested scope of "uma_protection"
-            results in a PAT. A requested scope of "uma_authorization" results
-            in an AAT. Usage of this endpoint is defined by <xref
+            server for a PAT or AAT. A requested scope of <spanx
+            style="verb">uma_protection</spanx> results in a PAT. A requested
+            scope of <spanx style="verb">uma_authorization</spanx> results in
+            an AAT. Usage of this endpoint is defined by <xref
             target="RFC6749" />.</t>
 
             <t hangText="authorization_endpoint"><vspace />REQUIRED. The
             endpoint URI at which the resource server gathers the consent of
             the end-user resource owner or the client gathers the consent of
             the end-user requesting party for issuance of a PAT or AAT
-            respectively, if the "authorization_code" grant type is used.
-            Usage of this endpoint is defined by <xref
-            target="RFC6749" />.</t>
+            respectively, if the <spanx
+            style="verb">authorization_code</spanx> grant type is used. Usage
+            of this endpoint is defined by <xref target="RFC6749" />.</t>
 
             <t hangText="requesting_party_claims_endpoint"><vspace />OPTIONAL.
             The endpoint URI at which the authorization server interacts with
@@ -853,7 +867,8 @@ Host: photoz.example.com
                  title="Client Request to Resource Server With RPT">
           <figure>
             <preamble>Example of a client request at a protected resource
-            carrying an RPT using the UMA "bearer" RPT profile:</preamble>
+            carrying an RPT using the UMA <spanx style="verb">Bearer</spanx>
+            RPT profile:</preamble>
 
             <artwork><![CDATA[
 GET /users/alice/album/photo.jpg HTTP/1.1
@@ -979,7 +994,8 @@ Authorization: Bearer 204c69636b6c69
           <t>If the authorization server is successful in creating a
           permission ticket in response to the resource server's request,
           responds with an HTTP 201 (Created) status code and includes the
-          "ticket" property in the JSON-formatted body.</t>
+          <spanx style="verb">ticket</spanx> property in the JSON-formatted
+          body.</t>
 
           <figure>
             <preamble>For example:</preamble>
@@ -1001,7 +1017,8 @@ Content-Type: application/json
           authenticated properly but fails due to other reasons, the
           authorization server responds with an HTTP 400 (Bad Request) status
           code and includes one of the following UMA error codes (see <xref
-          target="uma-error-response" />):<list style="hanging">
+          target="uma-error-response" /> for more information about error
+          codes and responses):<list style="hanging">
               <t hangText="invalid_resource_set_id">The provided resource set
               identifier was not found at the authorization server.</t>
 
@@ -1212,7 +1229,8 @@ Content-Type: application/json
             </list></t>
 
           <t>An example of a client making a request with an RPT using the
-          "Bearer" scheme appears in <xref target="with-rpt" />.</t>
+          <spanx style="verb">Bearer</spanx> scheme appears in <xref
+          target="with-rpt" />.</t>
 
           <t>On receiving an RPT with the <spanx style="verb">Bearer</spanx>
           scheme in an authorization header from a client making an access
@@ -1223,10 +1241,12 @@ Content-Type: application/json
 
           <t>The authorization server responds with a JSON object with the
           structure dictated by <xref target="OAuth-introspection" />. If the
-          "active" property has a Boolean value of true, then the JSON object
-          MUST NOT contain a "scope" claim, and MUST contain an extension
-          property with the name "permissions" that contains an array of zero
-          or more values, each of which is an object consisting of these
+          <spanx style="verb">active</spanx> property has a Boolean value of
+          <spanx style="verb">true</spanx>, then the JSON object MUST NOT
+          contain a <spanx style="verb">scope</spanx> claim, and MUST contain
+          an extension property with the name <spanx
+          style="verb">permissions</spanx> that contains an array of zero or
+          more values, each of which is an object consisting of these
           properties:<list style="hanging">
               <t hangText="resource_set_id">REQUIRED. A string that uniquely
               identifies the resource set, access to which has been granted to
@@ -1243,20 +1263,23 @@ Content-Type: application/json
               <t hangText="exp">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
               permission will expire. If the property is absent, the
-              permission does not expire. If the token-level "exp" value
-              pre-dates a permission-level "exp" value, the former overrides
-              the latter.</t>
+              permission does not expire. If the token-level <spanx
+              style="verb">exp</spanx> value pre-dates a permission-level
+              <spanx style="verb">exp</spanx> value, the former overrides the
+              latter.</t>
 
               <t hangText="iat">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
-              permission was originally issued. If the token-level "iat" value
-              post-dates a permission-level "iat" value, the former overrides
-              the latter.</t>
+              permission was originally issued. If the token-level <spanx
+              style="verb">iat</spanx> value post-dates a permission-level
+              <spanx style="verb">iat</spanx> value, the former overrides the
+              latter.</t>
 
               <t hangText="nbf">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating the time
               before which this permission is not valid. If the token-level
-              "nbf" value post-dates a permission-level "nbf" value, the
+              <spanx style="verb">nbf</spanx> value post-dates a
+              permission-level <spanx style="verb">nbf</spanx> value, the
               former overrides the latter.</t>
             </list></t>
 
@@ -1312,30 +1335,32 @@ Cache-Control: no-store
             process. If the client is <spanx
             style="bold">claims-unaware</spanx>, as discussed in <xref
             target="permission-success-to-client" />, then it SHOULD register
-            a claims_redirect_uri (as defined in <xref
-            target="claim-redirect" />) with the authorization server, either
-            using a static process or through <xref target="RFC7591" /> or
-            <xref target="OIDCDynClientReg" />.</t>
+            a <spanx style="verb">claims_redirect_uri</spanx> (as defined in
+            <xref target="claim-redirect" />) with the authorization server,
+            either using a static process or through <xref target="RFC7591" />
+            or <xref target="OIDCDynClientReg" />.</t>
 
             <t>The client has acquired an AAT (as defined in <xref
             target="authorization-api" />) from the authorization server. The
             exact means by which the client acquires the AAT are out of scope
             of this specification. In the case of an interactive OAuth flow,
             an end-user requesting party will need to be available to
-            authorize issuance of the "uma_authorization" scope.</t>
+            authorize issuance of the <spanx
+            style="verb">uma_authorization</spanx> scope.</t>
           </list></t>
 
         <section title="Client Request to Authorization Server for Authorization Data">
           <t>The client performs a POST on the RPT endpoint, supplying its own
-          AAT in the header and a JSON object in the body with a "ticket"
-          property containing the permission ticket as its value. If the
-          client had included an RPT in its failed access attempt, it MAY also
-          provide that RPT in an "rpt" property in the body.</t>
+          AAT in the header and a JSON object in the body with a <spanx
+          style="verb">ticket</spanx> property containing the permission
+          ticket as its value. If the client had included an RPT in its failed
+          access attempt, it MAY also provide that RPT in an <spanx
+          style="verb">rpt</spanx> property in the body.</t>
 
           <t>In circumstances where the client needs to provide requesting
           party claims to the authorization server, it MAY also include a
-          "claim_tokens" property in its request; see <xref
-          target="claim-push" /> for more information.</t>
+          <spanx style="verb">claim_tokens</spanx> property in its request;
+          see <xref target="claim-push" /> for more information.</t>
 
           <figure>
             <preamble>Example of a request message containing an AAT, an RPT,
@@ -1436,7 +1461,8 @@ Content-Type: application/json
           <t>If the authorization server does not add the requested
           authorization data, it responds using one of the following UMA error
           codes and corresponding HTTP status codes (see <xref
-          target="uma-error-response" />):<list style="hanging">
+          target="uma-error-response" /> for more information about error
+          codes and responses):<list style="hanging">
               <t hangText="invalid_ticket">The provided ticket was not found
               at the authorization server. The authorization server responds
               with the HTTP 400 (Bad Request) status code.</t>
@@ -1541,14 +1567,17 @@ Cache-Control: no-store
           </section>
 
           <section anchor="authz-flows" title="Error Details About Claims">
-            <t>The "requesting_party_claims" sub-property of the
-            "error_details" object provides hints about additional
-            requirements regarding information the authorization server needs
-            about the requesting party. On receiving such hints, the client
-            has the opportunity to engage in claims-gathering flows of various
-            types. The "requesting_party_claims" sub-property MAY contain the
-            following parameters, where at least one of "required_claims" or
-            "redirect_user" MUST be supplied:<list style="hanging">
+            <t>The <spanx style="verb">requesting_party_claims</spanx>
+            sub-property of the <spanx style="verb">error_details</spanx>
+            object provides hints about additional requirements regarding
+            information the authorization server needs about the requesting
+            party. On receiving such hints, the client has the opportunity to
+            engage in claims-gathering flows of various types. The <spanx
+            style="verb">requesting_party_claims</spanx> sub-property MAY
+            contain the following parameters, where at least one of <spanx
+            style="verb">required_claims</spanx> or <spanx
+            style="verb">redirect_user</spanx> MUST be supplied:<list
+                style="hanging">
                 <t hangText="required_claims">An array containing objects that
                 describe characteristics of the required claims, with the
                 following properties:<list style="hanging">
@@ -1584,21 +1613,23 @@ Cache-Control: no-store
                 the requesting party's presence at the authorization server is
                 required for the process of claims gathering. For example, the
                 authorization server may require the requesting party to fill
-                out a CAPTCHA to help prove humanness. The default is false if
-                this parameter is not present. See <xref
-                target="am-endpoints" /> for how the authorization server
-                declares the requesting party claims endpoint to which the
-                client has the opportunity to redirect the requesting party.
-                Note that the word "user" implies an end-user (human)
+                out a CAPTCHA to help prove humanness. The default is <spanx
+                style="verb">false</spanx> if this parameter is not present.
+                See <xref target="am-endpoints" /> for how the authorization
+                server declares the requesting party claims endpoint to which
+                the client has the opportunity to redirect the requesting
+                party. Note that the word "user" implies an end-user (human)
                 requesting party; if the requesting party is not an end-user,
                 then no client action would be possible on receiving the
                 hint.</t>
 
                 <t hangText="ticket">The permission ticket that was in the
                 client's request for authorization data. If the authorization
-                server provides the "redirect_user" property, it MUST also
-                provide the "ticket" property. This helps the client avoid
-                maintaining this state information after the redirect.</t>
+                server provides the <spanx style="verb">redirect_user</spanx>
+                property, it MUST also provide the <spanx
+                style="verb">ticket</spanx> property. This helps the client
+                avoid maintaining this state information after the
+                redirect.</t>
               </list></t>
 
             <t>An example of the use of these properties appears in <xref
@@ -1649,20 +1680,22 @@ Cache-Control: no-store
                  title="Client Pushes Claim Tokens to Authorization Server">
           <t>If the client is <spanx style="bold">claims-aware</spanx> and the
           authorization server can accept pushed claims (for example, as it
-          might have indicated by providing "requesting_party_claims" hints
-          illustrated in <xref target="authorization-failure" />), the client
-          has the option to <spanx>push</spanx> claim tokens to the RPT
-          endpoint. The claim token can reflect the client's role as a
-          federated identity provider, a federated relying party, or an
-          application integrated with a native identity repository.</t>
+          might have indicated by providing <spanx
+          style="verb">requesting_party_claims</spanx> hints illustrated in
+          <xref target="authorization-failure" />), the client has the option
+          to <spanx>push</spanx> claim tokens to the RPT endpoint. The claim
+          token can reflect the client's role as a federated identity
+          provider, a federated relying party, or an application integrated
+          with a native identity repository.</t>
 
           <t>If the client is aware of the authorization server's requirements
           for claims through an out-of-band relationship, the client MAY push
           claim tokens in an initial interaction with the RPT endpoint.</t>
 
           <t>The client supplies claim tokens in the body of the authorization
-          data request message by providing, in addition to the "rpt" and
-          "ticket" properties, the following property:<list style="hanging">
+          data request message by providing, in addition to the <spanx
+          style="verb">rpt</spanx> and <spanx style="verb">ticket</spanx>
+          properties, the following property:<list style="hanging">
               <t hangText="claim_tokens">REQUIRED. An array of objects with
               the following properties:<list style="hanging">
                   <t hangText="format">REQUIRED. A string specifying the
@@ -1679,7 +1712,9 @@ Cache-Control: no-store
                   SAML 2.0 assertions and the claim token contains audience
                   restrictions, it is the joint responsibility of the client
                   and authorization server to determine the proper audience
-                  values that enable successful token consumption.</t>
+                  values that enable successful token consumption (see for
+                  <xref target="trust-push" /> relevant security
+                  considerations).</t>
                 </list></t>
             </list></t>
 
@@ -1717,42 +1752,43 @@ Authorization: Bearer jwfLG53^sad$#f
           endpoint in its configuration data, or if the authorization server
           requires direct interaction with the requesting party as part of its
           claims-gathering process (for example, as it might have indicated
-          through the "redirect_user" hint illustrated in <xref
-          target="authorization-failure" />), the client has the option to
-          <spanx>redirect</spanx> an end-user requesting party to the
-          requesting party claims endpoint. In this case, the authorization
-          server might be a relying party in a federated identity interaction,
-          or it might connect to a directory or other user repository, or even
-          interact with the user in other ways, such as presenting a
-          questionnaire in a web form. After this process completes, the
-          authorization server redirects the end-user requesting party back to
-          the client.</t>
+          through the <spanx style="verb">redirect_user</spanx> hint
+          illustrated in <xref target="authorization-failure" />), the client
+          has the option to <spanx>redirect</spanx> an end-user requesting
+          party to the requesting party claims endpoint. In this case, the
+          authorization server might be a relying party in a federated
+          identity interaction, or it might connect to a directory or other
+          user repository, or even interact with the user in other ways, such
+          as presenting a questionnaire in a web form. After this process
+          completes, the authorization server redirects the end-user
+          requesting party back to the client.</t>
 
           <t>The client constructs the request URI by adding the following
           parameters to the query component of the requesting party claims
-          endpoint URI using the "application/x-www-form-urlencoded"
-          format:<list style="hanging">
+          endpoint URI using the <spanx
+          style="verb">application/x-www-form-urlencoded</spanx> format:<list
+              style="hanging">
               <t hangText="client_id">REQUIRED. The client's identifier issued
               by the authorization server.</t>
 
               <t hangText="claims_redirect_uri">OPTIONAL. The URI to which the
               client wishes the authorization server to direct the requesting
               party's user agent after completing its interaction. The URI
-              MUST be absolute, MAY contain an
-              "application/x-www-form-urlencoded" formatted query parameter
-              component that MUST be retained when adding addition parameters,
-              and MUST NOT contain a fragment component. The authorization
-              server SHOULD require all clients to register their redirection
-              endpoint prior to utilizing the authorization endpoint (either
-              using a static process or through <xref target="RFC7591" /> or
-              <xref target="OIDCDynClientReg" />). The claims redirection URIs
-              of a client MUST be registered distinct from the client's
-              redirection URIs as used at the authorization endpoint during
-              redirect-based OAuth flows. If the URI is pre-registered, this
-              URI MUST exactly match one of the pre-registered claims
-              redirection URIs, with the matching performed as described in
-              Section 6.2.1 of <xref target="RFC3986" /> (Simple String
-              Comparison).</t>
+              MUST be absolute, MAY contain an <spanx
+              style="verb">application/x-www-form-urlencoded</spanx>-formatted
+              query parameter component that MUST be retained when adding
+              additional parameters, and MUST NOT contain a fragment
+              component. The authorization server SHOULD require all clients
+              to register their redirection endpoint prior to utilizing the
+              authorization endpoint (either using a static process or through
+              <xref target="RFC7591" /> or <xref
+              target="OIDCDynClientReg" />). The claims redirection URIs of a
+              client MUST be registered distinct from the client's redirection
+              URIs as used at the authorization endpoint during redirect-based
+              OAuth flows. If the URI is pre-registered, this URI MUST exactly
+              match one of the pre-registered claims redirection URIs, with
+              the matching performed as described in Section 6.2.1 of <xref
+              target="RFC3986" /> (Simple String Comparison).</t>
 
               <t hangText="ticket">REQUIRED. The permission ticket associated
               with the client's current request for authorization data for
@@ -1779,8 +1815,9 @@ Host: as.example.com]]></artwork>
           <t>At the conclusion of its interaction with the requesting party,
           the authorization server returns the user agent to the client adding
           the following parameters to the query component of the claims
-          redirection URI using the "application/x-www-form-urlencoded"
-          format:<list style="hanging">
+          redirection URI using the <spanx
+          style="verb">application/x-www-form-urlencoded</spanx> format:<list
+              style="hanging">
               <t hangText="authorization_state">REQUIRED. Indicates that the
               authorization server completed its claims-gathering interaction
               with the requesting party with the indicated state:<list
@@ -1823,10 +1860,12 @@ Host: as.example.com]]></artwork>
           error and MUST NOT automatically redirect the user agent to the
           invalid redirection URI. If the request fails for reasons other than
           a missing or invalid claims redirection URI, the authorization
-          server informs the client by adding an "error" parameter to the
-          query component of the claims redirection URI using the
-          "application/x-www-form-urlencoded" format, containing one of the
-          following ASCII error codes:<list style="hanging">
+          server informs the client by adding an <spanx
+          style="verb">error</spanx> parameter to the query component of the
+          claims redirection URI using the <spanx
+          style="verb">application/x-www-form-urlencoded</spanx> format,
+          containing one of the following ASCII error codes:<list
+              style="hanging">
               <t hangText="invalid_request">The request is missing a required
               parameter, includes an invalid parameter value (such as an
               invalid or expired ticket), includes a parameter more than once,
@@ -1908,8 +1947,8 @@ Cache-Control: no-store
 
 {
   "error": "invalid_request",
-  "error_description": "There is already a resource with this identifier.",
-  "error_uri": "https://as.example.com/errors/resource_exists"
+  "error_description": "Request is missing a required parameter.",
+  "error_uri": "https://as.example.com/errors/bad_uma_request"
 }
 ]]></artwork>
         </figure>
@@ -1917,14 +1956,14 @@ Cache-Control: no-store
     </section>
 
     <section anchor="comms-profiles" title="Profiles for API Extensibility">
-      <t>In some circumstances, it may be desirable to couple UMA roles
-      tightly. For example, an authorization server application might also
-      need to act as a client application in order to retrieve protected
-      resources so that it can present to resource owners a dashboard-like
-      user interface that accurately guides the setting of policy; it might
-      need to access itself-as-authorization server for that purpose. For
-      another example, the same organization might operate both an
-      authorization server and a resource server that communicate only with
+      <t>In some circumstances, it may be desirable to couple UMA software
+      entity roles tightly. For example, an authorization server application
+      might also need to act as a client application in order to retrieve
+      protected resources so that it can present to resource owners a
+      dashboard-like user interface that accurately guides the setting of
+      policy; it might need to access itself-as-authorization server for that
+      purpose. For another example, the same organization might operate both
+      an authorization server and a resource server that communicate only with
       each other behind a firewall, and it might seek more efficient
       communication methods between them.</t>
 
@@ -1936,12 +1975,12 @@ Cache-Control: no-store
       <t>This section defines profiles that allow inter-role communications
       channels and methods to vary in these circumstances. This specification
       still REQUIRES authorization servers to issue PATs, AATs, and RPTs and
-      associate authorization data with RPTs, and REQUIRES resource servers to
-      give clients access only when RPTs are associated with sufficient
-      authorization data. This is because, although tokens might not always
-      appear on the wire in the normal fashion, the tokens may represent sets
-      of expected behaviors of additional parties unable to take part in these
-      optimization opportunities.</t>
+      associate authorization data with RPTs, and REQUIRES resource servers
+      not to give access in the case of an invalid RPT or an RPT associated
+      with insufficient authorization. This is because, although tokens might
+      not always appear on the wire in the normal fashion, the tokens may
+      represent sets of expected behaviors of additional parties unable to
+      take part in these optimization opportunities.</t>
 
       <t>Where alternate communications channels are being used between
       independently implemented system entities, it is RECOMMENDED, for
@@ -1976,16 +2015,18 @@ Cache-Control: no-store
         authorization server in all respects, including using software
         interfaces and methods rather than network interfaces and APIs. The
         authorization server MUST still issue PATs, AATs, and RPTs and
-        associate authorization data with RPTs, and the resource server MUST
-        still give clients access only when RPTs are associated with
-        sufficient authorization data. Interactions with entities other than
-        the authorization server or resource server MUST be preserved exactly
-        as they would have if either of them were using standardized UMA APIs,
-        unless other extensibility profiles are also in use.</t>
+        associate authorization data with RPTs, and the resource server still
+        MUST NOT give clients access in the case of invalid RPTs or RPTs that
+        are associated with insufficient authorization data. Interactions with
+        entities other than the authorization server or resource server MUST
+        be preserved exactly as they would have if either of them were using
+        standardized UMA APIs, unless other extensibility profiles are also in
+        use.</t>
 
         <t>An authorization server using any of the opportunities afforded by
         this profile MUST declare use of this profile by supplying its
-        identifying URI for one of its "uma_profiles_supported" values in its
+        identifying URI for one of its <spanx
+        style="verb">uma_profiles_supported</spanx> values in its
         configuration data (see <xref target="am-endpoints" />).</t>
 
         <t>Same-entity communication or a tight integration of entities has
@@ -2028,16 +2069,18 @@ Cache-Control: no-store
         authorization server in all respects, including using software
         interfaces and methods rather than network interfaces and APIs. The
         authorization server MUST still issue PATs, AATs, and RPTs and
-        associate authorization data with RPTs, and the resource server MUST
-        still give clients access only when RPTs are associated with
-        sufficient authorization data. Interactions with entities other than
-        the authorization server or client MUST be preserved exactly as they
-        would have if either of them were using standardized UMA APIs, unless
-        other extensibility profiles are also in use.</t>
+        associate authorization data with RPTs, and the resource server still
+        MUST NOT give clients access in the case of invalid RPTs or RPTs that
+        are associated with insufficient authorization data. Interactions with
+        entities other than the authorization server or client MUST be
+        preserved exactly as they would have if either of them were using
+        standardized UMA APIs, unless other extensibility profiles are also in
+        use.</t>
 
         <t>An authorization server using any of the opportunities afforded by
         this profile MUST declare use of this profile by supplying its
-        identifying URI for one of its "uma_profiles_supported" values in its
+        identifying URI for one of its <spanx
+        style="verb">uma_profiles_supported</spanx> values in its
         configuration data (see <xref target="am-endpoints" />).</t>
 
         <t>Same-entity communication or a tight integration of entities has
@@ -2078,18 +2121,19 @@ Cache-Control: no-store
         HTTP-based resource interface to communicate with the authorization
         server in all respects, including using software interfaces and
         methods rather than network interfaces and APIs. The resource server
-        MUST still give clients access only when RPTs are associated with
-        sufficient authorization data. Interactions with entities other than
-        the resource server or client MUST be preserved exactly as they would
-        have if either of them were using standardized UMA APIs, unless other
-        extensibility profiles are also in use.</t>
+        still MUST NOT give clients access in the case of invalid RPTs or RPTs
+        that are associated with insufficient authorization data. Interactions
+        with entities other than the resource server or client MUST be
+        preserved exactly as they would have if either of them were using
+        standardized UMA APIs, unless other extensibility profiles are also in
+        use.</t>
 
         <t>An authorization server involved in deployments where resource
         servers and clients are known to be using opportunities afforded by
         the resource interface extensibility profile MAY declare use of this
-        profile by supplying its identifying URI for one of its
-        "uma_profiles_supported" values in its configuration data (see <xref
-        target="am-endpoints" />).</t>
+        profile by supplying its identifying URI for one of its <spanx
+        style="verb">uma_profiles_supported</spanx> values in its
+        configuration data (see <xref target="am-endpoints" />).</t>
 
         <t>Same-entity communication or a tight integration of entities has
         the opportunity to make deployments more secure by reducing possible
@@ -2138,7 +2182,8 @@ Cache-Control: no-store
 
           <t>Specify any conformance and interoperability considerations.</t>
 
-          <t>Supply any additional security and privacy considerations.</t>
+          <t>Supply any security and privacy considerations additional to
+          <xref target="sec-consid" />.</t>
         </list></t>
 
       <section anchor="uma-profiles" title="Specifying Profiles of UMA">
@@ -2149,8 +2194,8 @@ Cache-Control: no-store
           <list style="symbols">
             <t>Specify the set of interactions between endpoint entities
             involved in the profile, calling out any restrictions on ordinary
-            UMA-conformant operations and any extension properties used in
-            message formats.</t>
+            UMA operations and any extension properties used in message
+            formats.</t>
           </list>
         </t>
 
@@ -2187,7 +2232,8 @@ Cache-Control: no-store
                title="Specifying Claim Token Format Profiles">
         <t>It is RECOMMENDED that claim token format profiles additionally
         document the following information:<list style="symbols">
-            <t>Specify any related or additional error_details hints.</t>
+            <t>Specify any related or additional <spanx
+            style="verb">error_details</spanx> hints.</t>
 
             <t>Specify any constraints on the claim token format vs. a
             standard definition for it in a specification.</t>
@@ -2214,7 +2260,7 @@ Cache-Control: no-store
       considerations.</t>
 
       <section anchor="redirect-threats"
-               title="Redirection and Impersonation Threats">
+               title="Requesting Party Redirection and Impersonation Threats">
         <t>This section discusses threats related to UMA's nature as an
         protocol enabling autonomous (non-resource-owner) requesting parties
         to gain authorized access to sensitive resources, including through
@@ -2230,7 +2276,7 @@ Cache-Control: no-store
         that the ticket value returned by an authorization server after a
         claims redirect is completed has not been maliciously changed, for
         example by a man in the browser (MITB), by using the state parameter.
-        (See the <xref target="UMA-Impl" /> for advice on ways to accomplish
+        (See <xref target="UMA-Impl" /> for advice on ways to accomplish
         this.) Sections 4.4.1.8, 4.4.2.5, and 5.3.5 of <xref
         target="RFC6819" /> are apropos for the UMA claims-gathering
         redirection flow as well.</t>
@@ -2247,21 +2293,21 @@ Cache-Control: no-store
         might choose to demand use of the redirect flow over the push flow.
         However, the client has the opportunity to switch end-users -- say,
         enabling malicious end-user Carlos to impersonate the original
-        end-user Bob who approved the minting of of the AAT -- after the
+        end-user Bob who authorized the issuance of the AAT -- after the
         redirect completes and before it returns to the RPT endpoint to seek
         authorization data.</t>
 
-        <t>Another issue concerns the exposure of the RPT to an autonomous
-        requesting party, which could maliciously pass the token to an
-        unauthorized party.</t>
+        <t>Another issue concerns the exposure of a <spanx
+        style="verb">Bearer</spanx>-type RPT to an autonomous requesting
+        party, which could maliciously pass the token to an unauthorized
+        party.</t>
 
         <t>To mitigate requesting-party switching and RPT exposure threats,
         consider the following strategies.<list style="symbols">
             <t>Require that the requesting party legitimately represent the
             wielder of the bearer token on a legal or contractual level (for
-            example, as discussed in <xref target="UMA-obligations" />,
-            meaning this party is able to take on legal obligations). This
-            solution does not reduce the risk from the technical
+            example, as discussed in <xref target="UMA-obligations" />). This
+            solution does not reduce the risk from a technical
             perspective.</t>
 
             <t>The authorization server, possibly with input from the resource
@@ -2273,14 +2319,15 @@ Cache-Control: no-store
             degree of freshness (which would require a custom claims
             profile).</t>
 
-            <t>The strongest strategy is to disallow bearer-type RPTs within
-            the UMA profile being deployed, by providing or requiring an RPT
-            profile that requires use of a holder-of-key approach. In this
-            way, the wielder of the token must engage in a live session for
-            proof-of-possession. A less complex version of this strategy is to
-            "elevate trust" in the requesting party by requiring a stronger
-            authentication context, forcing step-up authentication by the
-            requesting party at run time.</t>
+            <t>A stronger strategy is to "elevate trust" in the requesting
+            party by requiring a stronger authentication context, forcing
+            step-up authentication by the requesting party at run time.</t>
+
+            <t>The strongest strategy is to disallow <spanx
+            style="verb">Bearer</spanx>-type RPTs within the UMA profile being
+            deployed, by providing or requiring an RPT profile that requires
+            use of a holder-of-key approach. In this way, the wielder of the
+            token must engage in a live session for proof-of-possession.</t>
           </list></t>
       </section>
 
@@ -2299,21 +2346,20 @@ Cache-Control: no-store
         security considerations.</t>
 
         <t>Clients using the OAuth implicit grant type carry particular
-        vulnerabilities in OAuth, and OpenID Connect doesn't help because of
-        the nature of the implicit grant flow. UMA scenarios are vulnerable as
-        well. For example, an "implicit client" might require the retrieval of
-        AATs more frequently, for each browser on each platform. An attacker
-        can initiate a spear phishing attack on the requesting party with a
-        link to a malicious website, relying on the requesting party to
-        authenticate to the authorization server through an email-based
-        identity provider in order to receive the AAT. The site can
-        impersonate the requesting party using the browser client's client ID
-        in an OpenID Connect implicit request to the UMA authorization server.
-        If the requesting party had previously given consent for an AAT to be
-        issued, this attempt will likely succeed. The subsequently issued AAT
-        and permission ticket for an attempted resource access could
-        potentially be used for RPT retrieval and authorization data
-        issuance.</t>
+        vulnerabilities in OAuth, and OpenID Connect is of no help in this
+        circumstance. UMA scenarios are vulnerable as well. For example, an
+        "implicit client" might require the retrieval of AATs more frequently,
+        for each browser on each platform. An attacker can initiate a spear
+        phishing attack on the requesting party with a link to a malicious
+        website, relying on the requesting party to authenticate to the
+        authorization server through an email-based identity provider in order
+        to receive the AAT. The site can impersonate the requesting party
+        using the browser client's client ID in an OpenID Connect implicit
+        request to the UMA authorization server. If the requesting party had
+        previously given consent for an AAT to be issued, this attempt will
+        likely succeed. The subsequently issued AAT and permission ticket for
+        an attempted resource access could potentially be used for RPT
+        retrieval and authorization data issuance.</t>
 
         <t>A number of mitigation strategies are possible.<list
             style="symbols">
@@ -2363,11 +2409,11 @@ Cache-Control: no-store
         <section anchor="trust-push"
                  title="Requirements for Trust When Clients Push Claim Tokens">
           <t>In contrast to the threats discussed in <xref
-          target="redirect-threats" />, regarding the redirection model for
-          claims-gathering (see <xref target="claim-redirect" />), this
-          section discusses the threats surrounding the model for
-          claims-gathering where the client is the source of claims (see <xref
-          target="claim-push" />).</t>
+          target="redirect-threats" />, regarding the requesting party
+          redirection model for claims-gathering (see <xref
+          target="claim-redirect" />), this section discusses the threats
+          surrounding the model for claims-gathering where the client is the
+          direct source of claims (see <xref target="claim-push" />).</t>
 
           <t>Because claim tokens of any format typically contain audience
           restrictions and an authorization server would typically not be in
@@ -2387,44 +2433,53 @@ Cache-Control: no-store
           Party for itself. This circumstance presents an opportunity for a
           technical optimization of the requirement for trust because the
           authorization server itself issued the client credentials for the
-          client in question, and could reasonably be the singular "aud" value
-          target in an OpenID Connect ID Token pushed by the client to the RPT
-          endpoint.</t>
+          client in question, and could reasonably be the singular <spanx
+          style="verb">aud</spanx> value target in an OpenID Connect ID Token
+          pushed by the client to the RPT endpoint.</t>
         </section>
       </section>
     </section>
 
     <section anchor="priv-consid" title="Privacy Considerations">
-      <t>The authorization server comes to be in possession of resource set
-      information that may reveal information about the resource owner, which
-      the authorization server's trust relationship with the resource server
-      is assumed to accommodate. However, the client is a less-trusted party
-      -- in fact, entirely untrustworthy until authorization data is
-      associated with its RPT. The more information about a resource set that
-      is registered, the more risk of privacy compromise there is through a
-      less-trusted authorization server.</t>
+      <t>UMA has the following privacy considerations.</t>
 
-      <t>The primary privacy duty of UMA's design is to the resource owner.
-      However, privacy considerations affect the requesting party as well.
-      This can be seen in the issuance of an AAT, which represents the
-      approval of a requesting party for a client to engage with an
-      authorization server to perform tasks needed for obtaining
-      authorization, possibly including pushing claim tokens. Claim tokens are
-      likely to contain personally identifiable and possibly very sensitive
-      information, and much like identity attributes exchanged during single
-      sign-on, the process of claim token pushing will tend to be invisible to
-      an end-user requesting party if they have not consciously acknowledged
-      and authorized the possibility. A requesting party who provides claims
-      to an authorization server once redirected there is less susceptible to
-      privacy-destroying behavior.</t>
+      <section title="Resource Set Information at the Authorization Server">
+        <t>The authorization server comes to be in possession of resource set
+        information that may reveal information about the resource owner,
+        which the authorization server's trust relationship with the resource
+        server is assumed to accommodate. However, the client is a
+        less-trusted party -- in fact, entirely untrustworthy until
+        authorization data is associated with its RPT. The more information
+        about a resource set that is registered, the more risk of privacy
+        compromise there is through a less-trusted authorization server.</t>
+      </section>
 
-      <t>Parties operating and using UMA software entities have opportunities
-      to establish agreements about mutual rights, responsibilities, and
-      common interpretations of UMA constructs for consistent and expected
-      software behavior. These agreements can be used to improve the parties'
-      respective privacy postures. See <xref target="trust-considerations" />
-      for more information. Additional considerations related to Privacy by
-      Design concepts are discussed in <xref target="UMA-PbD" />.</t>
+      <section title="Requesting Party Information at the Authorization Server">
+        <t>The primary privacy duty of UMA's design is to the resource owner.
+        However, privacy considerations affect the requesting party as well.
+        This can be seen in the issuance of an AAT, which represents the
+        approval of a requesting party for a client to engage with an
+        authorization server to perform tasks needed for obtaining
+        authorization, possibly including pushing claim tokens. Claim tokens
+        are likely to contain personally identifiable and possibly very
+        sensitive information, and much like identity attributes exchanged
+        during single sign-on, the process of claim token pushing will tend to
+        be invisible to an end-user requesting party if they have not
+        consciously acknowledged and authorized the possibility. A requesting
+        party who provides claims to an authorization server once redirected
+        there is less susceptible to privacy-destroying behavior.</t>
+      </section>
+
+      <section title="Profiles and Trust Establishment">
+        <t>Parties operating and using UMA software entities have
+        opportunities to establish agreements about mutual rights,
+        responsibilities, and common interpretations of UMA constructs for
+        consistent and expected software behavior. These agreements can be
+        used to improve the parties' respective privacy postures. See <xref
+        target="trust-considerations" /> for more information. Additional
+        considerations related to Privacy by Design concepts are discussed in
+        <xref target="UMA-PbD" />.</t>
+      </section>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -2483,7 +2538,7 @@ Cache-Control: no-store
             <list style="symbols">
               <t>URI suffix: uma-configuration</t>
 
-              <t>Change controller: Kantara Initiative User-Managed Access
+              <t>Change controller: Kantara Initiative User-M anaged Access
               Work Group - wg-uma@kantarainitiative.org</t>
 
               <t>Specification document: <xref target="am-endpoints" /> in
