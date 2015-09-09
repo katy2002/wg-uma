@@ -75,14 +75,13 @@
       target="RFC6749" /> resource server may need to communicate information
       about its protected resources to its authorization server:<list
           style="symbols">
-          <t>In some OAuth 2.0 deployments, the resource server and
-          authorization server are operated by the same organization and
-          deployed in the same domain, but many resource servers share a
-          single authorization server (a security token service (STS)
-          component). Thus, even though the trust between these two is
-          typically tightly bound, there is value in defining a singular
-          standardized resource protection communications interface between
-          the authorization server and each of the resource servers.</t>
+          <t>In some deployments of OAuth 2.0, many resource servers share a
+          single authorization server (a role often filled by a security token
+          service (STS) component). Thus, whether or not the trust between
+          these two is tightly bound, there is value in defining a singular
+          standardized communications interface for resource protection
+          between the authorization server and each of the resource
+          servers.</t>
 
           <t>In some deployments of OpenID Connect <xref
           target="OpenIDConnect" />, which has a dependency on OAuth 2.0, the
