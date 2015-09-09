@@ -1355,6 +1355,17 @@ Authorization: Bearer jwfLG53^sad$#f
           elements of that request, for example, granting authorization to
           some scopes associated with a requested permission but not all, or
           not fulfill the request.</t>
+
+          <t>The authorization server MUST use a default-deny authorization
+          assessment model in adding authorization data to RPTs, that is,
+          &ldquo;everything that is not expressly allowed is forbidden&rdquo;
+          for resource sets that resource servers have registered. Exercise
+          caution in implementing default-deny because corner cases can
+          inadvertently result in default-permit behavior. For example, it is
+          insufficient simply to assume that all resource sets have some
+          non-zero set of claims required for access, and then accept an empty
+          set of supplied claims as sufficient for access. See <xref
+          target="UMA-Impl" /> for further discussion.</t>
         </section>
 
         <section anchor="give-rpt"
