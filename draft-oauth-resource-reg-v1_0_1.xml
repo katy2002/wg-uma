@@ -161,7 +161,8 @@
             about. The operations available at this endpoint constitute a
             resource set registration API (see <xref target="reg-api" />). For
             purposes of illustration in this specification, the resource set
-            registration endpoint used in examples is "/rs/".</t>
+            registration endpoint used in examples is <spanx
+            style="verb">/rs</spanx>/.</t>
           </list></t>
       </section>
 
@@ -328,7 +329,9 @@
         resource set descriptions at a set of URIs with the following
         structure:</t>
 
-        <t>{rsreguri}/resource_set</t>
+        <t>
+          <spanx style="verb">{rsreguri}/resource_set</spanx>
+        </t>
 
         <t>The {rsreguri} component is the authorization server's resource set
         registration endpoint as advertised in its configuration data (see
@@ -336,10 +339,11 @@
         registration operations the authorization server is REQUIRED to
         support, where the ellipsis represents whatever path segments might
         appear before the required path structure. Each is defined in its own
-        section below. All other methods are unsupported. The {_id} is the
-        authorization server-assigned identifier for the web resource
-        corresponding to the resource set at the time it was created, included
-        within the URL returned in the Location header.<list style="symbols">
+        section below. All other methods are unsupported. The <spanx
+        style="verb">{_id}</spanx> is the authorization server-assigned
+        identifier for the web resource corresponding to the resource set at
+        the time it was created, included within the URL returned in the
+        Location header.<list style="symbols">
             <t>Create resource set description: POST
             {rsreguri}/resource_set</t>
 
@@ -393,7 +397,8 @@
                  title="Create Resource Set Description">
           <t>Adds a new resource set description using the POST method. If the
           request is successful, the authorization server MUST respond with a
-          status message that includes an _id property.</t>
+          status message that includes an <spanx style="verb">_id</spanx>
+          property.</t>
 
           <figure>
             <preamble>Form of a create request, with an access token in the
@@ -441,8 +446,8 @@ Location: /rs/resource_set/12345
           <t>Reads a previously registered resource set description using the
           GET method. If the request is successful, the authorization server
           MUST respond with a status message that includes a body containing
-          the referenced resource set description, along with an "_id"
-          property.</t>
+          the referenced resource set description, along with an <spanx
+          style="verb">_id</spanx> property.</t>
 
           <figure>
             <preamble>Form of a read request, with an access token in the
@@ -480,7 +485,8 @@ Content-Type: application/json
 
           <t>If the referenced resource set does not exist, the authorization
           server MUST produce an error response with an error property value
-          of "not_found", as defined in <xref target="reg-api" />.</t>
+          of <spanx style="verb">not_found</spanx>, as defined in <xref
+          target="reg-api" />.</t>
         </section>
 
         <section anchor="update-resource-set"
@@ -489,7 +495,7 @@ Content-Type: application/json
           means of a complete replacement of the previous resource set
           description, using the PUT method. If the request is successful, the
           authorization server MUST respond with a status message that
-          includes an "_id" property.</t>
+          includes an <spanx style="verb">_id</spanx> property.</t>
 
           <figure>
             <preamble>Form of an update request, with an access token in the
@@ -556,14 +562,16 @@ HTTP/1.1 204 No content
 
           <t>If the referenced resource set does not exist, the authorization
           server MUST produce an error response with an error property value
-          of "not_found", as defined in <xref target="reg-api" />.</t>
+          of <spanx style="verb">not_found</spanx>, as defined in <xref
+          target="reg-api" />.</t>
         </section>
 
         <section anchor="list-resource-sets"
                  title="List Resource Set Descriptions">
           <t>Lists all previously registered resource set identifiers for this
           user using the GET method. The authorization server MUST return the
-          list in the form of a JSON array of {_id} string values.</t>
+          list in the form of a JSON array of <spanx
+          style="verb">{_id}</spanx> string values.</t>
 
           <t>The resource server uses this method as a first step in checking
           whether its understanding of protected resources is in full
@@ -631,13 +639,15 @@ HTTP/1.1 200 OK
 
       <t>For example, a rogue resource server could register a resource set or
       scope with a reference to a drive-by download in icons returned by the
-      "icon_uri", enticing the resource owner to click on the icon during the
-      policy setting process. The authorization server SHOULD check to see if
-      all URIs defined in the "icon_uri" and in the array of "redirect_uris"
-      resolve to valid web pages. Since these are URI values that are intended
-      to be displayed to the resource owner in a policy-setting interface, the
-      authorization server SHOULD protect the resource owner from malicious
-      content hosted at the URIs where possible.</t>
+      <spanx style="verb">icon_uri</spanx>, enticing the resource owner to
+      click on the icon during the policy setting process. The authorization
+      server SHOULD check to see if all URIs defined in the <spanx
+      style="verb">icon_uri</spanx> and in the array of <spanx
+      style="verb">redirect_uris</spanx> resolve to valid web pages. Since
+      these are URI values that are intended to be displayed to the resource
+      owner in a policy-setting interface, the authorization server SHOULD
+      protect the resource owner from malicious content hosted at the URIs
+      where possible.</t>
 
       <t>Additionally, a rogue resource server could supply misleading names
       for a resource set or scope, or mislabel the type of a resource set,
@@ -730,7 +740,8 @@ HTTP/1.1 200 OK
 
       <t>Photoz itself has a publicly documented application-specific API that
       offers two dozen different methods that apply to single photos, such as
-      "addTags" and "getSizes", but rolls them up into two photo-related
+      <spanx style="verb">addTags</spanx> and <spanx
+      style="verb">getSizes</spanx>, but rolls them up into two photo-related
       scopes of access: "view" (consisting of various read-only operations)
       and "print" (consisting of various printing operations). It defines two
       scope descriptions that represent these scopes, which it is able to
@@ -872,7 +883,8 @@ Host: as.example.com
       </figure>
 
       <t>CopMonkey responds with the full content of the resource set
-      description, including its _id, as follows:</t>
+      description, including its <spanx style="verb">_id</spanx>, as
+      follows:</t>
 
       <figure>
         <preamble>Example of an HTTP response to a "read resource set
