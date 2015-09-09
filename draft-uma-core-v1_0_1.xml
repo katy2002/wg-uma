@@ -1123,11 +1123,12 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 ...
 {
-  "firstName": "Alice",
-  "lastName": "Adams",
-  "isAlive": true,
-  "age": 25,
- }
+  "f_number": "f/5.6",
+  "exposure": "1/320",
+  "focal_length_mm": 150,
+  "iso": 400,
+  "flash": false
+}
 
 ]]></artwork>
           </figure>
