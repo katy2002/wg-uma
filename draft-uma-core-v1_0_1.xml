@@ -399,15 +399,17 @@
           server to use this authorization server for protecting some or all
           of the resources belonging to this resource owner.</t>
 
-          <t>Note: When a client attempts access to a presumptively protected
-          resource without an RPT, the resource server needs to derive the
-          authorization server and resource set identifier associated with
-          that resource from some other aspect of the client's request. This
-          effectively means that the resource server&rsquo;s API needs to be
-          structured in such a way that the client's RPT-free request uniquely
-          identifies the resource set. In practice, this information likely
-          needs to be passed through the URI, headers, or body of the
-          request.</t>
+          <t>Note: The PAT is used in registering a requested permission on a
+          client's behalf (as described in <xref
+          target="register-permission" />). One circumstance precipitating
+          this action is when the client has attempted access without an RPT
+          (as described in <xref target="without-rpt" />). In order for the
+          resource server to know which authorization server to approach and
+          which PAT (representing a resource owner) and resource set
+          identifier to supply, the resource server's API needs be structured
+          in such a way that it can derive this information from the client's
+          RPT-free access attempt. In practice, this information likely needs
+          to be passed through the URI, headers, or body of the request.</t>
         </section>
 
         <section anchor="authorization-api"
@@ -460,7 +462,8 @@
           specification.</t>
         </section>
 
-        <section anchor="resource-api" title="Protected Resource Interface">
+        <section anchor="resource-api"
+                 title="Protected Resource Interface and Requesting Party Token">
           <t>The resource server MAY present to clients whatever HTTP-based
           APIs or endpoints it wishes. To protect any of its resources
           available in this fashion using UMA, it MUST require a requesting
@@ -488,6 +491,19 @@
           identifies the resource set. In practice, this information likely
           needs to be passed through the URI, headers, or body of the
           request.</t>
+
+          <t>Note: The first step in the process of gaining access
+          authorization is for a client to attempt access to the resource
+          server's API without an RPT (as described in <xref
+          target="without-rpt" />), and the second is for the resource server
+          to register a requested permission on the client's behalf at the
+          authorization server. This second step requires a PAT. In order for
+          the resource server to know which authorization server to approach
+          and which PAT (representing a resource owner) and resource set
+          identifier to supply, the resource server's API needs be structured
+          in such a way that it can derive this information from the client's
+          RPT-free access attempt. In practice, this information likely needs
+          to be passed through the URI, headers, or body of the request.</t>
         </section>
 
         <section title="Time-to-Live Considerations">
@@ -726,14 +742,18 @@
       the authorization server (see <xref
       target="permission-success-to-client" />).</t>
 
-      <t>Note: When a client attempts access to a presumptively protected
-      resource without an RPT, the resource server needs to derive the
-      authorization server and resource set identifier associated with that
-      resource from some other aspect of the client's request. This
-      effectively means that the resource server&rsquo;s API needs to be
-      structured in such a way that the client's RPT-free request uniquely
-      identifies the resource set. In practice, this information likely needs
-      to be passed through the URI, headers, or body of the request.</t>
+      <t>Note: The PAT that the resource server uses to register resource sets
+      must also be used later during client access attempts, for example, in
+      registering a requested permission on a client's behalf (as described in
+      <xref target="register-permission" />). One circumstance precipitating
+      this action is when the client has attempted access without an RPT (as
+      described in <xref target="without-rpt" />). In order for the resource
+      server to know which authorization server to approach and which PAT
+      (representing a resource owner) and resource set identifier to supply,
+      the resource server's API needs be structured in such a way that it can
+      derive this information from the client's RPT-free access attempt. In
+      practice, this information likely needs to be passed through the URI,
+      headers, or body of the request.</t>
     </section>
 
     <section anchor="getting-authz-accessing-resource"
@@ -753,15 +773,17 @@
           formally documented API or it might serve up a simple web page, and
           the resource owner might have advertised the endpoint publicly on a
           blog or other website, listed it in a discovery service, or emailed
-          a link to a particular intended requesting party. Note: When a
-          client attempts access to a presumptively protected resource without
-          an RPT, the resource server needs to derive the authorization server
-          and resource set identifier associated with that resource from some
-          other aspect of the client's request. This effectively means that
-          the resource server&rsquo;s API needs to be structured in such a way
-          that the client's RPT-free request uniquely identifies the resource
-          set. In practice, this information likely needs to be passed through
-          the URI, headers, or body of the request.</t>
+          a link to a particular intended requesting party. Note: A client
+          first attempts access to a resource without an RPT, and the resource
+          server next needs to make a request at the authorization server to
+          continue the authorization-seeking process. In order for the
+          resource server to know which authorization server to approach and
+          which PAT (representing a resource owner) and resource set
+          identifier to supply on that request, the resource server's API
+          needs be structured in such a way that it can derive this
+          information from the client's RPT-free access attempt. In practice,
+          this information likely needs to be passed through the URI, headers,
+          or body of the request.</t>
 
           <t>The impetus for the client's access attempt. For example, its
           end-user requesting party might have clicked on a thumbnail
