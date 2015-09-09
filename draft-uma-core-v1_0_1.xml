@@ -1516,6 +1516,108 @@ Cache-Control: no-store
 }
 ]]></artwork>
           </figure>
+
+          <section anchor="authn-flows"
+                   title="Error Details About Authentication Context">
+            <t>The <spanx style="verb">authentication_context</spanx>
+            sub-property of the <spanx style="verb">error_details</spanx>
+            object provides hints about additional requirements regarding the
+            requesting party's authentication that underlies the issuance of
+            the currently valid AAT. The <spanx
+            style="verb">authentication_context</spanx> sub-property contains
+            the following parameter:<list style="hanging">
+                <t hangText="required_acr">REQUIRED. An array of strings
+                specifying a set of acceptable authentication context class
+                reference values. Any one of the referenced authentication
+                context classes (sets of authentication methods or procedures
+                considered to be equivalent in a particular context) would
+                satisfy the requesting party authentication requirements. Each
+                string MAY be a URI, including one that has been registered
+                through <xref target="RFC6711" />.</t>
+              </list></t>
+
+            <t>See <xref target="step-up" /> for the client's next option.</t>
+          </section>
+
+          <section anchor="authz-flows" title="Error Details About Claims">
+            <t>The "requesting_party_claims" sub-property of the
+            "error_details" object provides hints about additional
+            requirements regarding information the authorization server needs
+            about the requesting party. On receiving such hints, the client
+            has the opportunity to engage in claims-gathering flows of various
+            types. The "requesting_party_claims" sub-property MAY contain the
+            following parameters, where at least one of "required_claims" or
+            "redirect_user" MUST be supplied:<list style="hanging">
+                <t hangText="required_claims">An array containing objects that
+                describe characteristics of the required claims, with the
+                following properties:<list style="hanging">
+                    <t hangText="name">OPTIONAL. A string (which MAY be a URI)
+                    representing the name of the claim; the "key" in a
+                    key-value pair.</t>
+
+                    <t hangText="friendly_name">OPTIONAL. A string that
+                    provides a more human-readable form of the attribute's
+                    name, which may be useful as a "display name" for use in
+                    user interfaces in cases where the actual name is complex
+                    or opaque, such as an OID or a UUID.</t>
+
+                    <t hangText="claim_type">OPTIONAL. A string, indicating
+                    the expected interpretation of the provided claim value.
+                    The string MAY be a URI.</t>
+
+                    <t hangText="claim_token_format">OPTIONAL. An array of
+                    strings specifying a set of acceptable formats for a token
+                    pushed by the client containing this claim (see <xref
+                    target="claim-push" />). Any one of the referenced formats
+                    would satisfy the authorization server's requirements.
+                    Each string MAY be a URI.</t>
+
+                    <t hangText="issuer">OPTIONAL. An array of strings
+                    specifying a set of acceptable issuing authorities for the
+                    claim. Any one of the referenced authorities would satisfy
+                    the authorization server's requirements. Each string MAY
+                    be a URI.</t>
+                  </list></t>
+
+                <t hangText="redirect_user">A Boolean value indicating whether
+                the requesting party's presence at the authorization server is
+                required for the process of claims gathering. For example, the
+                authorization server may require the requesting party to fill
+                out a CAPTCHA to help prove humanness. The default is false if
+                this parameter is not present. See <xref
+                target="am-endpoints" /> for how the authorization server
+                declares the requesting party claims endpoint to which the
+                client has the opportunity to redirect the requesting party.
+                Note that the word "user" implies an end-user (human)
+                requesting party; if the requesting party is not an end-user,
+                then no client action would be possible on receiving the
+                hint.</t>
+
+                <t hangText="ticket">The permission ticket that was in the
+                client's request for authorization data. If the authorization
+                server provides the "redirect_user" property, it MUST also
+                provide the "ticket" property. This helps the client avoid
+                maintaining this state information after the redirect.</t>
+              </list></t>
+
+            <t>An example of the use of these properties appears in <xref
+            target="authorization-failure" />.</t>
+
+            <t>The authorization server has many options for gathering
+            requesting party claims. For example, it could interact with an
+            end-user requesting party directly, or accept claims delivered by
+            a client, or perform a lookup in some external system. The process
+            is extensible and can have dependencies on the type of requesting
+            party (for example, natural person or legal person) or client (for
+            example, browser, native app, or autonomously running web
+            service).</t>
+
+            <t>The client and authorization server next have options for two
+            nonexclusive claims-gathering interaction patterns: push (see
+            <xref target="claim-push" />) and redirect (see <xref
+            target="claim-redirect" />). (See <xref target="sec-consid" /> for
+            important security considerations regarding claims gathering.)</t>
+          </section>
         </section>
       </section>
 
@@ -1532,151 +1634,58 @@ Cache-Control: no-store
         returned with the error, then the contents of that object indicate the
         flow options.</t>
 
-        <section anchor="authn-flows" title="Authentication Context Flows">
-          <t>The <spanx style="verb">authentication_context</spanx>
-          sub-property of the <spanx style="verb">error_details</spanx> object
-          provides hints about additional requirements regarding the
-          requesting party's authentication that underlies the issuance of the
-          currently valid AAT. On receiving such hints, the client has the
-          opportunity to redirect the requesting party to the authorization
-          server to reauthenticate in a manner anticipated to be more
-          successful for gaining access. Such an action is sometimes referred
-          to as "step-up" authentication. The <spanx
-          style="verb">authentication_context</spanx> sub-property contains
-          the following parameter:<list style="hanging">
-              <t hangText="required_acr">REQUIRED. An array of strings
-              specifying a set of acceptable authentication context class
-              reference values. Any one of the referenced authentication
-              context classes (sets of authentication methods or procedures
-              considered to be equivalent in a particular context) would
-              satisfy the requesting party authentication requirements. Each
-              string MAY be a URI, including one that has been registered
-              through <xref target="RFC6711" />.</t>
-            </list></t>
+        <section anchor="step-up"
+                 title="Client Redirects Requesting Party to Authorization Server for Authentication">
+          <t>On receiving an <spanx
+          style="verb">authentication_context</spanx> hint, the client has the
+          option to redirect the requesting party to the authorization server
+          to reauthenticate, as if for an AAT, in a manner anticipated to be
+          more successful for gaining access. Such an action is sometimes
+          referred to as "step-up" authentication.</t>
         </section>
 
-        <section anchor="authz-flows" title="Claims-Gathering Flows">
-          <t>The "requesting_party_claims" sub-property of the "error_details"
-          object provides hints about additional requirements regarding
-          information the authorization server needs about the requesting
-          party. On receiving such hints, the client has the opportunity to
-          engage in claims-gathering flows of various types. The
-          "requesting_party_claims" sub-property MAY contain the following
-          parameters, where at least one of "required_claims" or
-          "redirect_user" MUST be supplied:<list style="hanging">
-              <t hangText="required_claims">An array containing objects that
-              describe characteristics of the required claims, with the
-              following properties:<list style="hanging">
-                  <t hangText="name">OPTIONAL. A string (which MAY be a URI)
-                  representing the name of the claim; the "key" in a key-value
-                  pair.</t>
+        <section anchor="claim-push"
+                 title="Client Pushes Claim Tokens to Authorization Server">
+          <t>If the client is <spanx style="bold">claims-aware</spanx> and the
+          authorization server can accept pushed claims (for example, as it
+          might have indicated by providing "requesting_party_claims" hints
+          illustrated in <xref target="authorization-failure" />), the client
+          has the option to <spanx>push</spanx> claim tokens to the RPT
+          endpoint. The claim token can reflect the client's role as a
+          federated identity provider, a federated relying party, or an
+          application integrated with a native identity repository.</t>
 
-                  <t hangText="friendly_name">OPTIONAL. A string that provides
-                  a more human-readable form of the attribute's name, which
-                  may be useful as a "display name" for use in user interfaces
-                  in cases where the actual name is complex or opaque, such as
-                  an OID or a UUID.</t>
+          <t>If the client is aware of the authorization server's requirements
+          for claims through an out-of-band relationship, the client MAY push
+          claim tokens in an initial interaction with the RPT endpoint.</t>
 
-                  <t hangText="claim_type">OPTIONAL. A string, indicating the
-                  expected interpretation of the provided claim value. The
-                  string MAY be a URI.</t>
+          <t>The client supplies claim tokens in the body of the authorization
+          data request message by providing, in addition to the "rpt" and
+          "ticket" properties, the following property:<list style="hanging">
+              <t hangText="claim_tokens">REQUIRED. An array of objects with
+              the following properties:<list style="hanging">
+                  <t hangText="format">REQUIRED. A string specifying the
+                  format of the accompanying claim tokens. The string MAY be a
+                  URI.</t>
 
-                  <t hangText="claim_token_format">OPTIONAL. An array of
-                  strings specifying a set of acceptable formats for a token
-                  pushed by the client containing this claim (see <xref
-                  target="claim-push" />). Any one of the referenced formats
-                  would satisfy the authorization server's requirements. Each
-                  string MAY be a URI.</t>
-
-                  <t hangText="issuer">OPTIONAL. An array of strings
-                  specifying a set of acceptable issuing authorities for the
-                  claim. Any one of the referenced authorities would satisfy
-                  the authorization server's requirements. Each string MAY be
-                  a URI.</t>
+                  <t hangText="token">REQUIRED. A string containing the claim
+                  information in the indicated format, base64url encoded if it
+                  is not already so encoded. If claim token format features
+                  are included that require special interpretation, the client
+                  and authorization server are assumed to have a prior
+                  relationship that establishes how to interpret these
+                  features. For example, if the referenced format equates to
+                  SAML 2.0 assertions and the claim token contains audience
+                  restrictions, it is the joint responsibility of the client
+                  and authorization server to determine the proper audience
+                  values that enable successful token consumption.</t>
                 </list></t>
-
-              <t hangText="redirect_user">A Boolean value indicating whether
-              the requesting party's presence at the authorization server is
-              required for the process of claims gathering. For example, the
-              authorization server may require the requesting party to fill
-              out a CAPTCHA to help prove humanness. The default is false if
-              this parameter is not present. See <xref
-              target="am-endpoints" /> for how the authorization server
-              declares the requesting party claims endpoint to which the
-              client has the opportunity to redirect the requesting party.
-              Note that the word "user" implies an end-user (human) requesting
-              party; if the requesting party is not an end-user, then no
-              client action would be possible on receiving the hint.</t>
-
-              <t hangText="ticket">The permission ticket that was in the
-              client's request for authorization data. If the authorization
-              server provides the "redirect_user" property, it MUST also
-              provide the "ticket" property. This helps the client avoid
-              maintaining this state information after the redirect.</t>
             </list></t>
 
-          <t>An example of the use of these properties appears in <xref
-          target="authorization-failure" />.</t>
+          <figure>
+            <preamble>Example:</preamble>
 
-          <t>The authorization server has many options for gathering
-          requesting party claims. For example, it could interact with an
-          end-user requesting party directly, or accept claims delivered by a
-          client, or perform a lookup in some external system. The process is
-          extensible and can have dependencies on the type of requesting party
-          (for example, natural person or legal person) or client (for
-          example, browser, native app, or autonomously running web
-          service).</t>
-
-          <t>The client and authorization server have two nonexclusive
-          claims-gathering interaction patterns: push and redirect. (See <xref
-          target="sec-consid" /> for important security considerations
-          regarding claims gathering.)</t>
-
-          <section anchor="claim-push"
-                   title="Client Pushes Claim Tokens to Authorization Server">
-            <t>If the client is <spanx style="bold">claims-aware</spanx> and
-            the authorization server can accept pushed claims (for example, as
-            it might have indicated by providing "requesting_party_claims"
-            hints illustrated in <xref target="authorization-failure" />), the
-            client has the option to <spanx>push</spanx> claim tokens to the
-            RPT endpoint. The claim token can reflect the client's role as a
-            federated identity provider, a federated relying party, or an
-            application integrated with a native identity repository.</t>
-
-            <t>If the client is aware of the authorization server's
-            requirements for claims through an out-of-band relationship, the
-            client MAY push claim tokens in an initial interaction with the
-            RPT endpoint.</t>
-
-            <t>The client supplies claim tokens in the body of the
-            authorization data request message by providing, in addition to
-            the "rpt" and "ticket" properties, the following property:<list
-                style="hanging">
-                <t hangText="claim_tokens">REQUIRED. An array of objects with
-                the following properties:<list style="hanging">
-                    <t hangText="format">REQUIRED. A string specifying the
-                    format of the accompanying claim tokens. The string MAY be
-                    a URI.</t>
-
-                    <t hangText="token">REQUIRED. A string containing the
-                    claim information in the indicated format, base64url
-                    encoded if it is not already so encoded. If claim token
-                    format features are included that require special
-                    interpretation, the client and authorization server are
-                    assumed to have a prior relationship that establishes how
-                    to interpret these features. For example, if the
-                    referenced format equates to SAML 2.0 assertions and the
-                    claim token contains audience restrictions, it is the
-                    joint responsibility of the client and authorization
-                    server to determine the proper audience values that enable
-                    successful token consumption.</t>
-                  </list></t>
-              </list></t>
-
-            <figure>
-              <preamble>Example:</preamble>
-
-              <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
+            <artwork><![CDATA[POST /rpt_authorization HTTP/1.1
 Host: www.example.com
 Authorization: Bearer jwfLG53^sad$#f
 ...
@@ -1692,163 +1701,157 @@ Authorization: Bearer jwfLG53^sad$#f
     ]
 }
     ]]></artwork>
-            </figure>
+          </figure>
 
-            <t>This specification provides a framework for extensibility
-            through claim token format profiling. The authorization server MAY
-            support any number of claim token profiles, and SHOULD document
-            the claim token profiles it supports in its configuration
-            data.</t>
-          </section>
+          <t>This specification provides a framework for extensibility through
+          claim token format profiling. The authorization server MAY support
+          any number of claim token profiles, and SHOULD document the claim
+          token profiles it supports in its configuration data.</t>
+        </section>
 
-          <section anchor="claim-redirect"
-                   title="Client Redirects Requesting Party to Authorization Server">
-            <t>If the client is <spanx style="bold">claims-unaware</spanx> and
-            the authorization server has declared a requesting party claims
-            endpoint in its configuration data, or if the authorization server
-            requires direct interaction with the requesting party as part of
-            its claims-gathering process (for example, as it might have
-            indicated through the "redirect_user" hint illustrated in <xref
-            target="authorization-failure" />), the client has the option to
-            <spanx>redirect</spanx> an end-user requesting party to the
-            requesting party claims endpoint. In this case, the authorization
-            server might be a relying party in a federated identity
-            interaction, or it might connect to a directory or other user
-            repository, or even interact with the user in other ways, such as
-            presenting a questionnaire in a web form. After this process
-            completes, the authorization server redirects the end-user
-            requesting party back to the client.</t>
+        <section anchor="claim-redirect"
+                 title="Client Redirects Requesting Party to Authorization Server for Claims-Gathering">
+          <t>If the client is <spanx style="bold">claims-unaware</spanx> and
+          the authorization server has declared a requesting party claims
+          endpoint in its configuration data, or if the authorization server
+          requires direct interaction with the requesting party as part of its
+          claims-gathering process (for example, as it might have indicated
+          through the "redirect_user" hint illustrated in <xref
+          target="authorization-failure" />), the client has the option to
+          <spanx>redirect</spanx> an end-user requesting party to the
+          requesting party claims endpoint. In this case, the authorization
+          server might be a relying party in a federated identity interaction,
+          or it might connect to a directory or other user repository, or even
+          interact with the user in other ways, such as presenting a
+          questionnaire in a web form. After this process completes, the
+          authorization server redirects the end-user requesting party back to
+          the client.</t>
 
-            <t>The client constructs the request URI by adding the following
-            parameters to the query component of the requesting party claims
-            endpoint URI using the "application/x-www-form-urlencoded"
-            format:<list style="hanging">
-                <t hangText="client_id">REQUIRED. The client's identifier
-                issued by the authorization server.</t>
+          <t>The client constructs the request URI by adding the following
+          parameters to the query component of the requesting party claims
+          endpoint URI using the "application/x-www-form-urlencoded"
+          format:<list style="hanging">
+              <t hangText="client_id">REQUIRED. The client's identifier issued
+              by the authorization server.</t>
 
-                <t hangText="claims_redirect_uri">OPTIONAL. The URI to which
-                the client wishes the authorization server to direct the
-                requesting party's user agent after completing its
-                interaction. The URI MUST be absolute, MAY contain an
-                "application/x-www-form-urlencoded" formatted query parameter
-                component that MUST be retained when adding addition
-                parameters, and MUST NOT contain a fragment component. The
-                authorization server SHOULD require all clients to register
-                their redirection endpoint prior to utilizing the
-                authorization endpoint (either using a static process or
-                through <xref target="RFC7591" /> or <xref
-                target="OIDCDynClientReg" />). The claims redirection URIs of
-                a client MUST be registered distinct from the client's
-                redirection URIs as used at the authorization endpoint during
-                redirect-based OAuth flows. If the URI is pre-registered, this
-                URI MUST exactly match one of the pre-registered claims
-                redirection URIs, with the matching performed as described in
-                Section 6.2.1 of <xref target="RFC3986" /> (Simple String
-                Comparison).</t>
+              <t hangText="claims_redirect_uri">OPTIONAL. The URI to which the
+              client wishes the authorization server to direct the requesting
+              party's user agent after completing its interaction. The URI
+              MUST be absolute, MAY contain an
+              "application/x-www-form-urlencoded" formatted query parameter
+              component that MUST be retained when adding addition parameters,
+              and MUST NOT contain a fragment component. The authorization
+              server SHOULD require all clients to register their redirection
+              endpoint prior to utilizing the authorization endpoint (either
+              using a static process or through <xref target="RFC7591" /> or
+              <xref target="OIDCDynClientReg" />). The claims redirection URIs
+              of a client MUST be registered distinct from the client's
+              redirection URIs as used at the authorization endpoint during
+              redirect-based OAuth flows. If the URI is pre-registered, this
+              URI MUST exactly match one of the pre-registered claims
+              redirection URIs, with the matching performed as described in
+              Section 6.2.1 of <xref target="RFC3986" /> (Simple String
+              Comparison).</t>
 
-                <t hangText="ticket">REQUIRED. The permission ticket
-                associated with the client's current request for authorization
-                data for this requesting party. The authorization server MUST
-                return this parameter back to when the authorization_state is
-                need_info.</t>
+              <t hangText="ticket">REQUIRED. The permission ticket associated
+              with the client's current request for authorization data for
+              this requesting party. The authorization server MUST return this
+              parameter back to when the authorization_state is need_info.</t>
 
-                <t hangText="state">OPTIONAL. An opaque value used by the
-                client to maintain state between the request and callback. The
-                authorization server includes this value when redirecting the
-                user agent back to the client. The use of this parameter is
-                RECOMMENDED for preventing cross-site request forgery.</t>
-              </list></t>
+              <t hangText="state">OPTIONAL. An opaque value used by the client
+              to maintain state between the request and callback. The
+              authorization server includes this value when redirecting the
+              user agent back to the client. The use of this parameter is
+              RECOMMENDED for preventing cross-site request forgery.</t>
+            </list></t>
 
-            <figure>
-              <preamble>Example of a request issued by a client application
-              (line breaks are shown only for display convenience):</preamble>
+          <figure>
+            <preamble>Example of a request issued by a client application
+            (line breaks are shown only for display convenience):</preamble>
 
-              <artwork><![CDATA[GET /rqp_claims?client_id=some_client_id&state=abc
+            <artwork><![CDATA[GET /rqp_claims?client_id=some_client_id&state=abc
 &ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
 &claims_redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fredirect_claims HTTP/1.1
 Host: as.example.com]]></artwork>
-            </figure>
+          </figure>
 
-            <t>At the conclusion of its interaction with the requesting party,
-            the authorization server returns the user agent to the client
-            adding the following parameters to the query component of the
-            claims redirection URI using the
-            "application/x-www-form-urlencoded" format:<list style="hanging">
-                <t hangText="authorization_state">REQUIRED. Indicates that the
-                authorization server completed its claims-gathering
-                interaction with the requesting party with the indicated
-                state:<list style="hanging">
-                    <t hangText="claims_submitted">The client is free to
-                    return to the RPT endpoint to seek authorization data once
-                    again.</t>
+          <t>At the conclusion of its interaction with the requesting party,
+          the authorization server returns the user agent to the client adding
+          the following parameters to the query component of the claims
+          redirection URI using the "application/x-www-form-urlencoded"
+          format:<list style="hanging">
+              <t hangText="authorization_state">REQUIRED. Indicates that the
+              authorization server completed its claims-gathering interaction
+              with the requesting party with the indicated state:<list
+                  style="hanging">
+                  <t hangText="claims_submitted">The client is free to return
+                  to the RPT endpoint to seek authorization data once
+                  again.</t>
 
-                    <t hangText="not_authorized">The client is not authorized
-                    to have the desired authorization data added.</t>
+                  <t hangText="not_authorized">The client is not authorized to
+                  have the desired authorization data added.</t>
 
-                    <t hangText="need_info">The authorization server needs
-                    additional information in order to determine whether the
-                    client is authorized to have this authorization data. This
-                    response directs the client to return to the RPT endpoint,
-                    where it might be provided with error_details hints about
-                    additional information needed.</t>
+                  <t hangText="need_info">The authorization server needs
+                  additional information in order to determine whether the
+                  client is authorized to have this authorization data. This
+                  response directs the client to return to the RPT endpoint,
+                  where it might be provided with error_details hints about
+                  additional information needed.</t>
 
-                    <t hangText="request_submitted">The authorization server
-                    requires intervention by the resource owner to determine
-                    whether authorization data can be added. Further immediate
-                    interaction between the client, requesting party, and
-                    authorization server is out of scope of this
-                    specification.</t>
-                  </list></t>
+                  <t hangText="request_submitted">The authorization server
+                  requires intervention by the resource owner to determine
+                  whether authorization data can be added. Further immediate
+                  interaction between the client, requesting party, and
+                  authorization server is out of scope of this
+                  specification.</t>
+                </list></t>
 
-                <t hangText="ticket">OPTIONAL. The same permission ticket
-                value that the client provided in the request. It MUST be
-                present if and only if the authorization_state is
-                need_info.</t>
+              <t hangText="ticket">OPTIONAL. The same permission ticket value
+              that the client provided in the request. It MUST be present if
+              and only if the authorization_state is need_info.</t>
 
-                <t hangText="state">OPTIONAL. The same state value that the
-                client provided in the request. It MUST be present if and only
-                if the client provided it.</t>
-              </list></t>
+              <t hangText="state">OPTIONAL. The same state value that the
+              client provided in the request. It MUST be present if and only
+              if the client provided it.</t>
+            </list></t>
 
-            <t>The client MUST ignore unrecognized response parameters. If the
-            request fails due to a missing, invalid, or mismatching claims
-            redirection URI, or if the client identifier is missing or
-            invalid, the authorization server SHOULD inform the resource owner
-            of the error and MUST NOT automatically redirect the user agent to
-            the invalid redirection URI. If the request fails for reasons
-            other than a missing or invalid claims redirection URI, the
-            authorization server informs the client by adding an "error"
-            parameter to the query component of the claims redirection URI
-            using the "application/x-www-form-urlencoded" format, containing
-            one of the following ASCII error codes:<list style="hanging">
-                <t hangText="invalid_request">The request is missing a
-                required parameter, includes an invalid parameter value (such
-                as an invalid or expired ticket), includes a parameter more
-                than once, or is otherwise malformed.</t>
+          <t>The client MUST ignore unrecognized response parameters. If the
+          request fails due to a missing, invalid, or mismatching claims
+          redirection URI, or if the client identifier is missing or invalid,
+          the authorization server SHOULD inform the resource owner of the
+          error and MUST NOT automatically redirect the user agent to the
+          invalid redirection URI. If the request fails for reasons other than
+          a missing or invalid claims redirection URI, the authorization
+          server informs the client by adding an "error" parameter to the
+          query component of the claims redirection URI using the
+          "application/x-www-form-urlencoded" format, containing one of the
+          following ASCII error codes:<list style="hanging">
+              <t hangText="invalid_request">The request is missing a required
+              parameter, includes an invalid parameter value (such as an
+              invalid or expired ticket), includes a parameter more than once,
+              or is otherwise malformed.</t>
 
-                <t hangText="server_error">The authorization server
-                encountered an unexpected condition that prevented it from
-                fulfilling the request. (This error code is needed because an
-                HTTP 500 (Internal Server Error) status code cannot be
-                returned to the client via an HTTP redirect.)</t>
+              <t hangText="server_error">The authorization server encountered
+              an unexpected condition that prevented it from fulfilling the
+              request. (This error code is needed because an HTTP 500
+              (Internal Server Error) status code cannot be returned to the
+              client via an HTTP redirect.)</t>
 
-                <t hangText="temporarily_unavailable">The authorization server
-                is currently unable to handle the request due to a temporary
-                overloading or maintenance of the server. (This error code is
-                needed because an HTTP 503 (Service Unavailable) status code
-                cannot be returned to the client via an HTTP redirect.)</t>
-              </list></t>
+              <t hangText="temporarily_unavailable">The authorization server
+              is currently unable to handle the request due to a temporary
+              overloading or maintenance of the server. (This error code is
+              needed because an HTTP 503 (Service Unavailable) status code
+              cannot be returned to the client via an HTTP redirect.)</t>
+            </list></t>
 
-            <figure>
-              <preamble>Example of a response issued by an authorization
-              server (line breaks are shown only for display
-              convenience):</preamble>
+          <figure>
+            <preamble>Example of a response issued by an authorization server
+            (line breaks are shown only for display convenience):</preamble>
 
-              <artwork><![CDATA[GET /redirect_claims?&state=abc
+            <artwork><![CDATA[GET /redirect_claims?&state=abc
 &authorization_state=claims_submitted HTTP/1.1
 Host: client.example.com]]></artwork>
-            </figure>
-          </section>
+          </figure>
         </section>
       </section>
     </section>
