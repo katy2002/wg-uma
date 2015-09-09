@@ -1363,14 +1363,15 @@ Authorization: Bearer jwfLG53^sad$#f
           negatively to the request for authorization data.</t>
 
           <t>The authorization server bases the issuance of authorization data
-          on resource owner policies. Thus, these policies function as prior
-          asynchronous authorization grants. The authorization server is also
-          free to enable the resource owner to set policies that require the
-          owner to interact with the server to authorize an access attempt in
-          near-real time, or to help the resource owner field access requests
-          as post hoc authorization grants. Thus, authorization by UMA methods
-          constitutes an asynchronous authorization grant. All such processes
-          are outside the scope of this specification.</t>
+          on resource owner policies. Thus, these policies function as
+          authorization that has been granted ahead of time. The authorization
+          server is also free to enable the resource owner to set policies
+          that require the owner to interact with the server to authorize an
+          access attempt in near-real time, or to help the resource owner
+          field access requests as acts of post hoc authorization. Thus,
+          authorization by UMA methods constitutes an asynchronous
+          authorization grant. All such processes are outside the scope of
+          this specification.</t>
 
           <t>If the client incompletely satisfies any policy criteria, the
           authorization server is free to either partially fulfill the
