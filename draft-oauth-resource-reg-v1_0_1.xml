@@ -616,17 +616,18 @@ HTTP/1.1 200 OK
     </section>
 
     <section title="Security Considerations">
-      <t>This specification largely relies on OAuth for API security and
-      shares its security and vulnerability considerations.</t>
+      <t>This specification largely relies on the base API security method,
+      such as OAuth, for API security and shares its security and
+      vulnerability considerations.</t>
 
       <t>Some form of trust relationship between the authorization server and
-      resource server is presumed. However, where the trust relationship is
-      weak or loosely coupled, for example, if dynamic client registration is
-      supported for resource servers as OAuth clients of the resource set
-      registration API, the authorization server must be extremely careful
-      with any information supplied during resource set registration that may
-      be displayed to the resource owner in a user interface or be used to
-      drive authorization server-based workflows.</t>
+      resource server is presumed. However, where this pairwise trust
+      relationship is weak or loosely coupled, for example, if dynamic client
+      registration is supported for resource servers as OAuth clients of the
+      resource set registration API, the authorization server must be
+      extremely careful with any information supplied during resource set
+      registration that may be displayed to the resource owner in a user
+      interface or be used to drive authorization server-based workflows.</t>
 
       <t>For example, a rogue resource server could register a resource set or
       scope with a reference to a drive-by download in icons returned by the
@@ -664,6 +665,23 @@ HTTP/1.1 200 OK
       server trusting the URIs it registers by using well-known and
       third-party-standardized URIs. This may benefit resource set type values
       as well, if these are represented as URIs.</t>
+
+      <t>In many ways, the resource server depends more heavily on elements of
+      the pairwise trust relationship than does the authorization server.
+      Since the resource server needs to outsource a variety of resource
+      protection-related processes to the authorization server, a rogue or
+      impersonated authorization server would present great risk. Using OAuth
+      with its attendant channel security requirements for API authentication
+      would mitigate the risk of impersonation.</t>
+
+      <t>A small example of the risk posed by a rogue authorization server is
+      the user_access_policy_uri property, which is the one case of a URI
+      passed from authorization server to resource server rather than the
+      reverse. The resource server, in taking advantage of this URI, could
+      redirect a resource owner to a third-party web page infected with
+      malware or similar. To mitigate this specific risk, the resource server
+      could check that the URI is fully qualified and matches the host and
+      scheme of the authorization server.</t>
     </section>
 
     <section title="Privacy Considerations">
