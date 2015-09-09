@@ -3881,7 +3881,7 @@
 </tr>
 <tr>
   <td class="left kantara">Date:</td>
-  <td class="left kantara">2015-09-03</td>
+  <td class="left kantara">2015-09-09</td>
 </tr>
 <tr>
    <td class="kantara" colspan="2">&#160;</td>  
@@ -3901,7 +3901,7 @@
 </tr>
 <tr>
   <td class="left kantara"></td>
-  <td class="left kantara">Maciej Machulak, Cloud Identity Ltd</td>
+  <td class="left kantara">Maciej Machulak, Synergetics</td>
 </tr>
 <tr>
   <td class="left kantara"></td>
