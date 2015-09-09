@@ -1133,7 +1133,7 @@ Content-Type: application/json
 ]]></artwork>
           </figure>
 
-          <t>The resource server must not give access in the case of an
+          <t>The resource server MUST NOT give access in the case of an
           invalid RPT or an RPT associated with insufficient authorization. To
           ensure the integrity of the ecosystem in which the resource server,
           authorization server, and resource owner are participating, it is
