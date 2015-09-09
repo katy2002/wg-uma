@@ -2419,6 +2419,28 @@ Cache-Control: no-store
         </section>
       </section>
 
+      <section title="OAuth Token Introspection Response Registration">
+        <t>This specification registers the claim defined in <xref
+        target="uma-bearer-token-profile" />.</t>
+
+        <section title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>Name: permissions</t>
+
+              <t>Description: Array of objects, each describing a set of
+              scoped, time-limitable entitlements to a resource set</t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - wg-uma@kantarainitiative.org</t>
+
+              <t>Specification document: <xref
+              target="uma-bearer-token-profile" /> in this document</t>
+            </list>
+          </t>
+        </section>
+      </section>
+
       <section title="Well-Known URI Registration">
         <t>This specification registers the well-known URI defined in <xref
         target="am-endpoints" />.</t>
