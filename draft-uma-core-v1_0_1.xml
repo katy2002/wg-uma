@@ -49,10 +49,10 @@
     </author>
 
     <author fullname="Maciej Machulak" initials="M." surname="Machulak">
-      <organization>Cloud Identity</organization>
+      <organization>Synergetics</organization>
 
       <address>
-        <email>maciej.machulak@cloudidentity.co.uk</email>
+        <email>maciej@synergetics.be</email>
       </address>
     </author>
 
@@ -64,7 +64,7 @@
       </address>
     </author>
 
-    <date day="31" month="August" year="2015" />
+    <date day="" month="September" year="2015" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
