@@ -713,6 +713,11 @@ HTTP/1.1 200 OK
       steps are exclusively internal to the operation of the entity being
       discussed. These are labeled "internal only".</t>
 
+      <t>This example also does not contain any information regarding the
+      mechanism that is used to authenticate the resource server at the
+      authorization server, and mechanisms such as OAuth can be used for
+      this purpose.</t> 
+
       <t>A resource owner, Alice Adams, has just uploaded a photo of her new
       puppy to a resource server, Photoz.example.com, and wants to ensure that
       this specific photo is not publicly accessible.</t>
