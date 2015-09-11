@@ -1626,10 +1626,12 @@ Cache-Control: no-store
                 <t hangText="ticket">The permission ticket that was in the
                 client's request for authorization data. If the authorization
                 server provides the <spanx style="verb">redirect_user</spanx>
-                property, it MUST also provide the <spanx
-                style="verb">ticket</spanx> property. This helps the client
-                avoid maintaining this state information after the
-                redirect.</t>
+                property, it MAY also provide the <spanx
+                style="verb">ticket</spanx> property. If it is provided, the
+                client SHOULD NOT depend on the ticket's accuracy. Note: The
+                appearance of the permission ticket iis deprecated and will be
+                removed in a future UMA version. It is included here for
+                backwards compatibility.</t>
               </list></t>
 
             <t>An example of the use of these properties appears in <xref
