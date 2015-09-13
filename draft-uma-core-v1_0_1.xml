@@ -414,7 +414,8 @@
           identifier to supply, the resource server's API needs be structured
           in such a way that it can derive this information from the client's
           RPT-free access attempt. In practice, this information likely needs
-          to be passed through the URI, headers, or body of the request.</t>
+          to be passed through the URI, headers, or body of the client's
+          request.</t>
         </section>
 
         <section anchor="authorization-api"
@@ -500,7 +501,8 @@
           identifier to supply, the resource server's API needs be structured
           in such a way that it can derive this information from the client's
           RPT-free access attempt. In practice, this information likely needs
-          to be passed through the URI, headers, or body of the request.</t>
+          to be passed through the URI, headers, or body of the client's
+          request.</t>
         </section>
 
         <section title="Time-to-Live Considerations">
@@ -761,7 +763,7 @@
       the resource server's API needs be structured in such a way that it can
       derive this information from the client's RPT-free access attempt. In
       practice, this information likely needs to be passed through the URI,
-      headers, or body of the request.</t>
+      headers, or body of the client's request.</t>
     </section>
 
     <section anchor="getting-authz-accessing-resource"
@@ -791,7 +793,7 @@
           needs be structured in such a way that it can derive this
           information from the client's RPT-free access attempt. In practice,
           this information likely needs to be passed through the URI, headers,
-          or body of the request.</t>
+          or body of the client's request.</t>
 
           <t>The impetus for the client's access attempt. For example, its
           end-user requesting party might have clicked on a thumbnail
