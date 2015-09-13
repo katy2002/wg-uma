@@ -1901,7 +1901,7 @@ Host: client.example.com]]></artwork>
     </section>
 
     <section anchor="errors" title="Error Messages">
-      <t>Errors can occur at the OAuth level and the UMA level.</t>
+      <t>Both OAuth and UMA errors can occur.</t>
 
       <section anchor="oauth-error-response" title="OAuth Error Responses">
         <t>As described in <xref target="protection-api" /> and <xref
@@ -1911,14 +1911,14 @@ Host: client.example.com]]></artwork>
         request to an endpoint in one of these two APIs fails due to an
         invalid, missing, or expired access token, or requires higher
         privileges at this endpoint than provided by the token supplied, the
-        authorization server responds with an OAuth-level error.</t>
+        authorization server responds with an OAuth error.</t>
       </section>
 
       <section anchor="uma-error-response" title="UMA Error Responses">
         <t>If a request triggers no OAuth error, but is invalid for another
         reason as defined throughout this specification, the authorization
-        server or resource server responds with an UMA-level error, sometimes
-        along with a specified HTTP status code, by supplying the following
+        server or resource server responds with an UMA error, sometimes along
+        with a specified HTTP status code, by supplying the following
         properties in a JSON-encoded object in the body of the HTTP response:
         <list style="hanging">
             <t hangText="error">REQUIRED. A single error code. Values for this
