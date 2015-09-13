@@ -1684,9 +1684,8 @@ Cache-Control: no-store
 
         <section anchor="claim-push"
                  title="Client Pushes Claim Tokens to Authorization Server">
-          <t>If the client is <spanx style="bold">claims-aware</spanx> and the
-          authorization server can accept pushed claims (for example, as it
-          might have indicated by providing <spanx
+          <t>If the authorization server can accept pushed claims (for
+          example, as it might have indicated by providing <spanx
           style="verb">requesting_party_claims</spanx> hints illustrated in
           <xref target="authorization-failure" />), the client has the option
           to <spanx>push</spanx> claim tokens to the RPT endpoint. The claim
@@ -1753,12 +1752,11 @@ Authorization: Bearer jwfLG53^sad$#f
 
         <section anchor="claim-redirect"
                  title="Client Redirects Requesting Party to Authorization Server for Claims-Gathering">
-          <t>If the client is <spanx style="bold">claims-unaware</spanx> and
-          the authorization server has declared a requesting party claims
-          endpoint in its configuration data, or if the authorization server
-          requires direct interaction with the requesting party as part of its
-          claims-gathering process (for example, as it might have indicated
-          through the <spanx style="verb">redirect_user</spanx> hint
+          <t>If the authorization server has declared a requesting party
+          claims endpoint in its configuration data, or if the authorization
+          server requires direct interaction with the requesting party as part
+          of its claims-gathering process (for example, as it might have
+          indicated through the <spanx style="verb">redirect_user</spanx> hint
           illustrated in <xref target="authorization-failure" />), the client
           has the option to <spanx>redirect</spanx> an end-user requesting
           party to the requesting party claims endpoint. In this case, the
