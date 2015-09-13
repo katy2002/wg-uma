@@ -678,8 +678,10 @@
 
         <figure>
           <preamble>Example of authorization server configuration data that
-          resides at https://example.com/.well-known/uma-configuration (note
-          the use of https: for endpoints throughout):</preamble>
+          resides at <spanx
+          style="verb">https://example.com/.well-known/uma-configuration</spanx>
+          (note the use of <spanx style="verb">https:</spanx> for endpoints
+          throughout):</preamble>
 
           <artwork><![CDATA[{
 "version":"1.0",
