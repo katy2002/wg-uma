@@ -5814,7 +5814,7 @@ dd, li, p {
             the provisions of BCP 78 and BCP 79.
           </xsl:when>
           <xsl:when test="/rfc/@ipr = 'kantara'">
-            This draft specification was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and is awaiting approval for Public Review. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
+            This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for Public Review. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
           <xsl:otherwise>
             CONFORMANCE UNDEFINED.
@@ -6095,7 +6095,7 @@ dd, li, p {
           Copyright (c) 2015 Kantara Initiative and the persons identified as the document authors. All rights reserved.
         </t>
         <t>
-          This document is subject to the <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies%20_V1.1_.pdf?version=1&amp;modificationDate=1244488630000&amp;api=v2">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>)
+          This document is subject to the <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies%20_V1.1_.pdf?version=1&amp;modificationDate=1244488630000&amp;api=v2">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>).
         </t>
       </section>
     </xsl:when>
