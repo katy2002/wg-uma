@@ -1638,9 +1638,6 @@ Cache-Control: no-store
                 backwards compatibility.</t>
               </list></t>
 
-            <t>An example of the use of these properties appears in <xref
-            target="authorization-failure" />.</t>
-
             <t>The authorization server has many options for gathering
             requesting party claims. For example, it could interact with an
             end-user requesting party directly, or accept claims delivered by
