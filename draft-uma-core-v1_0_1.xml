@@ -2594,23 +2594,6 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      &RFC2119;
-
-      &RFC6749;
-
-      <reference anchor="OAuth-resource-reg"
-                 target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
-        <front>
-          <title>OAuth 2.0 Resource Set Registration</title>
-
-          <author initials="T." surname="Hardjono">
-            <organization>IETF</organization>
-          </author>
-
-          <date day="23" month="February" year="2015" />
-        </front>
-      </reference>
-
       <reference anchor="OAuth-introspection"
                  target="https://tools.ietf.org/html/draft-ietf-oauth-introspection-11">
         <front>
@@ -2624,27 +2607,16 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      &RFC6750;
-
-      &RFC6415;
-
-      &RFC7159;
-
-      &RFC7519;
-
-      &RFC7591;
-
-      <reference anchor="OIDCDynClientReg"
-                 target="http://openid.net/specs/openid-connect-registration-1_0.html">
+      <reference anchor="OAuth-resource-reg"
+                 target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
         <front>
-          <title>OpenID Connect Dynamic Client Registration 1.0 incorporating
-          errata set 1</title>
+          <title>OAuth 2.0 Resource Set Registration</title>
 
-          <author initials="N." surname="Sakimura">
-            <organization>OpenID Foundation</organization>
+          <author initials="T." surname="Hardjono">
+            <organization>IETF</organization>
           </author>
 
-          <date day="8" month="November" year="2014" />
+          <date day="23" month="February" year="2015" />
         </front>
       </reference>
 
@@ -2661,24 +2633,63 @@ Cache-Control: no-store
         </front>
       </reference>
 
+      <reference anchor="OIDCDynClientReg"
+                 target="http://openid.net/specs/openid-connect-registration-1_0.html">
+        <front>
+          <title>OpenID Connect Dynamic Client Registration 1.0 incorporating
+          errata set 1</title>
+
+          <author initials="N." surname="Sakimura">
+            <organization>OpenID Foundation</organization>
+          </author>
+
+          <date day="8" month="November" year="2014" />
+        </front>
+      </reference>
+
+      &RFC2119;
+
       &RFC3986;
+
+      &RFC6415;
+
+      &RFC6711;
+
+      &RFC6749;
+
+      &RFC6750;
 
       &RFC6819;
 
-      &RFC6711;
+      &RFC7159;
+
+      &RFC7519;
+
+      &RFC7591;
     </references>
 
     <references title="Informative References">
-      <reference anchor="UMA-usecases"
-                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">
+      <reference anchor="UMA-casestudies"
+                 target="http://kantarainitiative.org/confluence/display/uma/Case+Studies">
         <front>
-          <title>UMA Scenarios and Use Cases</title>
+          <title>UMA Case Studies</title>
 
           <author initials="E." surname="Maler">
-            <organization>Kantara</organization>
+            <organization />
           </author>
 
-          <date day="5" month="October" year="2010" />
+          <date day="" month="" year="2015" />
+        </front>
+      </reference>
+
+      <reference anchor="UMA-Impl"
+                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Implementer%27s+Guide">
+        <front>
+          <title>UMA Implementer's Guide</title>
+
+          <author initials="E." surname="Maler" />
+
+          <date day="" month="" year="2015" />
         </front>
       </reference>
 
@@ -2695,32 +2706,6 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      <reference anchor="UMA-casestudies"
-                 target="http://kantarainitiative.org/confluence/display/uma/Case+Studies">
-        <front>
-          <title>UMA Case Studies</title>
-
-          <author initials="E." surname="Maler">
-            <organization />
-          </author>
-
-          <date day="" month="" year="2015" />
-        </front>
-      </reference>
-
-      <reference anchor="UMAnitarians"
-                 target="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">
-        <front>
-          <title>UMA Participant Roster</title>
-
-          <author initials="E." surname="Maler">
-            <organization>Maler</organization>
-          </author>
-
-          <date day="" month="" year="2015" />
-        </front>
-      </reference>
-
       <reference anchor="UMA-PbD"
                  target="http://kantarainitiative.org/confluence/display/uma/Privacy+by+Design+Implications+of+UMA">
         <front>
@@ -2732,12 +2717,27 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      <reference anchor="UMA-Impl"
-                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Implementer%27s+Guide">
+      <reference anchor="UMA-usecases"
+                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">
         <front>
-          <title>UMA Implementer's Guide</title>
+          <title>UMA Scenarios and Use Cases</title>
 
-          <author initials="E." surname="Maler" />
+          <author initials="E." surname="Maler">
+            <organization>Kantara</organization>
+          </author>
+
+          <date day="5" month="October" year="2010" />
+        </front>
+      </reference>
+
+      <reference anchor="UMAnitarians"
+                 target="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">
+        <front>
+          <title>UMA Participant Roster</title>
+
+          <author initials="E." surname="Maler">
+            <organization>Maler</organization>
+          </author>
 
           <date day="" month="" year="2015" />
         </front>
