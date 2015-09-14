@@ -1287,6 +1287,7 @@
     <xsl:call-template name="kantaraLogo"/>
   </xsl:if>
 
+
   <div id="{$anchor-prefix}.title">
     <!-- main title -->
       <xsl:choose>
@@ -1433,10 +1434,8 @@
     <xsl:call-template name="emit-ietf-preamble"/>
   </xsl:if>
 
-  <xsl:if test="$xml2rfc-toc='yes'">
     <xsl:apply-templates select="/" mode="toc" />
     <xsl:call-template name="insertTocAppendix" />
-  </xsl:if>
 
 </xsl:template>
 
@@ -6387,7 +6386,7 @@ dd, li, p {
   </xsl:if>
 
   <!-- copyright statements -->
-  <xsl:if test="$xml2rfc-private='' and not($no-copylong)">
+  <xsl:if test="$xml2rfc-private='' and not($no-copylong) and not($ipr-kantara)">
     <li>
       <xsl:call-template name="insert-toc-line">
         <xsl:with-param name="target" select="concat($anchor-prefix,'.ipr')"/>
@@ -6571,7 +6570,6 @@ dd, li, p {
 </xsl:template>
 
 <xsl:template match="*|text()" mode="toc" />
-
 
 <xsl:template name="insertTocAppendix">
 
