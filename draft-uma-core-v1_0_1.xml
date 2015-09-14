@@ -1048,11 +1048,10 @@ Content-Type: application/json
           resource server chooses to respond to the client with an UMA
           response, it MUST provide a <spanx
           style="verb">WWW-Authenticate</spanx> header with the authentication
-          scheme <spanx style="verb">UMA</spanx>, with the URI of the
-          authorization server in an <spanx style="verb">as_uri</spanx>
-          parameter (to aid in the client's discovery of the authorization
-          server's configuration data and endpoints as required), and the
-          just-received permission ticket in a <spanx
+          scheme <spanx style="verb">UMA</spanx>, with the <spanx
+          style="verb">issuer</spanx> URI from the authorization server's
+          configuration data in an <spanx style="verb">as_uri</spanx>
+          parameter and the just-received permission ticket in a <spanx
           style="verb">ticket</spanx> parameter.</t>
 
           <t>If the resource server responds with the HTTP status code 403
