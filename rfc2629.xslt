@@ -1434,8 +1434,10 @@
     <xsl:call-template name="emit-ietf-preamble"/>
   </xsl:if>
 
+  <xsl:if test="$id-kantara">
     <xsl:apply-templates select="/" mode="toc" />
     <xsl:call-template name="insertTocAppendix" />
+  </xsl:if>
 
 </xsl:template>
 
