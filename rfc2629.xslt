@@ -3881,7 +3881,7 @@
 </tr>
 <tr>
   <td class="left kantara">Date:</td>
-  <td class="left kantara">2015-09-12</td>
+  <td class="left kantara"><xsl:value-of select="number($xml2rfc-ext-pub-year)" />-<xsl:value-of select="number($pub-month-numeric)" />-<xsl:value-of select="number($xml2rfc-ext-pub-day)" /></td>
 </tr>
 <tr>
    <td class="kantara" colspan="2">&#160;</td>  
