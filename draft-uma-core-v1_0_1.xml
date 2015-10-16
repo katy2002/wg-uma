@@ -1632,7 +1632,7 @@ Cache-Control: no-store
                 property, it MAY also provide the <spanx
                 style="verb">ticket</spanx> property. If it is provided, the
                 client SHOULD NOT depend on the ticket's accuracy. Note: The
-                appearance of the permission ticket iis deprecated and will be
+                appearance of the permission ticket is deprecated and will be
                 removed in a future UMA version. It is included here for
                 backwards compatibility.</t>
               </list></t>
