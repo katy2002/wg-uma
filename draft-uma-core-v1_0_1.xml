@@ -1793,7 +1793,9 @@ Authorization: Bearer jwfLG53^sad$#f
               <t hangText="ticket">REQUIRED. The permission ticket associated
               with the client's current request for authorization data for
               this requesting party. The authorization server MUST return this
-              parameter back to when the authorization_state is need_info.</t>
+              parameter back to when the <spanx
+              style="verb">authorization_state</spanx> is <spanx
+              style="verb">need_info</spanx>.</t>
 
               <t hangText="state">OPTIONAL. An opaque value used by the client
               to maintain state between the request and callback. The
