@@ -336,13 +336,11 @@
         registration endpoint as advertised in its configuration data (see
         <xref target="am-endpoints" />). Following is a summary of the five
         registration operations the authorization server is REQUIRED to
-        support, where the ellipsis represents whatever path segments might
-        appear before the required path structure. Each is defined in its own
-        section below. All other methods are unsupported. The <spanx
-        style="verb">{_id}</spanx> is the authorization server-assigned
-        identifier for the web resource corresponding to the resource set at
-        the time it was created, included within the URL returned in the
-        Location header.<list style="symbols">
+        support. Each is defined in its own section below. All other methods
+        are unsupported. The <spanx style="verb">{_id}</spanx> is the
+        authorization server-assigned identifier for the web resource
+        corresponding to the resource set at the time it was created, included
+        within the URL returned in the Location header.<list style="symbols">
             <t>Create resource set description: POST
             {rsreguri}/resource_set</t>
 
@@ -715,8 +713,8 @@ HTTP/1.1 200 OK
 
       <t>This example also does not contain any information regarding the
       mechanism that is used to authenticate the resource server at the
-      authorization server, and mechanisms such as OAuth can be used for
-      this purpose.</t> 
+      authorization server, and mechanisms such as OAuth can be used for this
+      purpose.</t>
 
       <t>A resource owner, Alice Adams, has just uploaded a photo of her new
       puppy to a resource server, Photoz.example.com, and wants to ensure that
