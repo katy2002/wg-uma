@@ -996,7 +996,7 @@ Authorization: Bearer 204c69636b6c69
 
         <section title="Authorization Server Response to Resource Server on Permission Registration Success">
           <t>If the authorization server is successful in creating a
-          permission ticket in response to the resource server's request,
+          permission ticket in response to the resource server's request, it
           responds with an HTTP 201 (Created) status code and includes the
           <spanx style="verb">ticket</spanx> property in the JSON-formatted
           body.</t>
