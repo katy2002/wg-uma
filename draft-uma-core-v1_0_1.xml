@@ -1258,10 +1258,10 @@ Content-Type: application/json
               as protected.</t>
 
               <t hangText="scopes">REQUIRED. An array referencing one or more
-              strings representing scopes to which access was granted for
-              this resource set. Each string MUST correspond to a scope that
-              was registered by this resource server for the referenced
-              resource set.</t>
+              strings representing scopes to which access was granted for this
+              resource set. Each string MUST correspond to a scope that was
+              registered by this resource server for the referenced resource
+              set.</t>
 
               <t hangText="exp">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
@@ -1335,13 +1335,11 @@ Cache-Control: no-store
             authorization server. It is OPTIONAL for the client credentials to
             be provided dynamically through <xref target="RFC7591" /> or <xref
             target="OIDCDynClientReg" />; alternatively, they MAY use a static
-            process. If the client is <spanx
-            style="bold">claims-unaware</spanx>, as discussed in <xref
-            target="permission-success-to-client" />, then it SHOULD register
-            a <spanx style="verb">claims_redirect_uri</spanx> (as defined in
-            <xref target="claim-redirect" />) with the authorization server,
-            either using a static process or through <xref target="RFC7591" />
-            or <xref target="OIDCDynClientReg" />.</t>
+            process. The client SHOULD register a <spanx
+            style="verb">claims_redirect_uri</spanx> (as defined in <xref
+            target="claim-redirect" />) with the authorization server, either
+            using a static process or through <xref target="RFC7591" /> or
+            <xref target="OIDCDynClientReg" />.</t>
 
             <t>The client has acquired an AAT (as defined in <xref
             target="authorization-api" />) from the authorization server. The
