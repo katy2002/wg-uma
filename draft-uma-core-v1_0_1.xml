@@ -1258,7 +1258,7 @@ Content-Type: application/json
               as protected.</t>
 
               <t hangText="scopes">REQUIRED. An array referencing one or more
-              strings represesnting scopes to which access was granted for
+              strings representing scopes to which access was granted for
               this resource set. Each string MUST correspond to a scope that
               was registered by this resource server for the referenced
               resource set.</t>
