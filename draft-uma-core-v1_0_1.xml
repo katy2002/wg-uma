@@ -372,7 +372,7 @@
               target="register-permission" /></t>
 
               <t>Token introspection endpoint as defined by <xref
-              target="OAuth-introspection" /> and <xref
+              target="RFC7662" /> and <xref
               target="token-introspection" /></t>
             </list></t>
 
@@ -1188,9 +1188,8 @@ Content-Type: application/json
           <t>Within any RPT profile, when a resource server needs to
           introspect a token in a non-self-contained way to determine its
           status, it MAY require, allow, or prohibit use of the OAuth token
-          introspection endpoint (defined by <xref
-          target="OAuth-introspection" />) that is part of the protection API,
-          and MAY profile its usage.</t>
+          introspection endpoint (defined by <xref target="RFC7662" />) that
+          is part of the protection API, and MAY profile its usage.</t>
         </section>
 
         <section anchor="uma-bearer-token-profile" title="RPT Profile: Bearer">
@@ -1215,7 +1214,7 @@ Content-Type: application/json
               <t>Token data association: The on-the-wire token is opaque; it
               is introspected at run time by the resource server through
               profiled use of the OAuth token introspection endpoint <xref
-              target="OAuth-introspection" />, as defined below.</t>
+              target="RFC7662" />, as defined below.</t>
 
               <t>Token data processing: As defined in this section and
               throughout <xref target="getting-authz-accessing-resource" /> of
@@ -1243,11 +1242,11 @@ Content-Type: application/json
           resource-owner context to the authorization server.</t>
 
           <t>The authorization server responds with a JSON object with the
-          structure dictated by <xref target="OAuth-introspection" />. If the
-          <spanx style="verb">active</spanx> property has a Boolean value of
-          <spanx style="verb">true</spanx>, then the JSON object MUST NOT
-          contain a <spanx style="verb">scope</spanx> claim, and MUST contain
-          an extension property with the name <spanx
+          structure dictated by <xref target="RFC7662" />. If the <spanx
+          style="verb">active</spanx> property has a Boolean value of <spanx
+          style="verb">true</spanx>, then the JSON object MUST NOT contain a
+          <spanx style="verb">scope</spanx> claim, and MUST contain an
+          extension property with the name <spanx
           style="verb">permissions</spanx> that contains an array of zero or
           more values, each of which is an object consisting of these
           properties:<list style="hanging">
@@ -2590,19 +2589,6 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      <reference anchor="OAuth-introspection"
-                 target="https://tools.ietf.org/html/draft-ietf-oauth-introspection-11">
-        <front>
-          <title>OAuth 2.0 Token Introspection</title>
-
-          <author initials="J." surname="Richer">
-            <organization />
-          </author>
-
-          <date day="3" month="July" year="2015" />
-        </front>
-      </reference>
-
       <reference anchor="OAuth-resource-reg"
                  target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
         <front>
@@ -2662,6 +2648,18 @@ Cache-Control: no-store
       &RFC7519;
 
       &RFC7591;
+
+      <reference anchor="RFC7662" target="https://tools.ietf.org/html/rfc7662">
+        <front>
+          <title>OAuth 2.0 Token Introspection</title>
+
+          <author initials="J." role="editor" surname="Richer">
+            <organization />
+          </author>
+
+          <date day="" month="October" year="2015" />
+        </front>
+      </reference>
     </references>
 
     <references title="Informative References">
