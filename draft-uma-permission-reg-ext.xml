@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
+"http://xml.resource.org/authoring/rfc2629.dtd" [
+<!ENTITY RFC2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC6749 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
+<!ENTITY RFC7159 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY UMA PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/Home">
+<!ENTITY UMAreqs PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/UMA+Requirements">
+]>
+<rfc category="std" docName="draft-maler-uma-permregext" id="kantara"
+     ipr="kantara">
+  <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
+  <?rfc toc='yes' ?>
+
+  <?rfc tocdepth='4' ?>
+
+  <?rfc symrefs='yes' ?>
+
+  <?rfc sortrefs='yes' ?>
+
+  <?rfc compact='yes' ?>
+
+  <?rfc subcompact='no' ?>
+
+  <front>
+    <title abbrev="draft-maler-uma-permregext">UMA Permission Registration
+    Extension</title>
+
+    <author fullname="Eve Maler" initials="E." surname="Maler">
+      <organization>ForgeRock</organization>
+
+      <address>
+        <email>eve.maler@forgerock.com</email>
+      </address>
+    </author>
+
+    <date day="" month="October" year="2015" />
+
+    <abstract>
+      <t>This extension specification defines a mechanism for an UMA V1.0.1
+      resource server to register multiple requested permissions at an UMA
+      authorization server, not just a single one.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="introduction" title="Introduction">
+      <t>This extension specification defines a mechanism for a User-Managed
+      Access (<xref target="UMA" />) V1.0.1 resource server to register
+      multiple requested permissions at an UMA authorization server, not just
+      a single one.</t>
+
+      <section title="Notational Conventions">
+        <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
+        'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this
+        document are to be interpreted as described in <xref
+        target="RFC2119" />.</t>
+
+        <t>Unless otherwise noted, all protocol properties and values are case
+        sensitive. JSON <xref target="RFC7159" /> data structures defined by
+        this specification MAY contain extension properties that are not
+        defined in this specification. Any entity receiving or retrieving a
+        JSON data structure SHOULD ignore extension properties it is unable to
+        understand. Extension names that are unprotected from collisions are
+        outside the scope of this specification.</t>
+      </section>
+    </section>
+
+    <section anchor=""
+             title="Extension to How Resource Server Registers Requested Permissions With Authorization Server">
+      <t>The resource server is assumed to need to use the protection API's
+      permission registration endpoint under all the same circumstances as
+      defined in the base UMA specification. This extension specification
+      defines a mechanism for allowing an array of one or more requested
+      permissions.</t>
+
+      <t>Note: A future minor revision of the UMA specification could
+      potentially incorporate this extension as long as the non-array option
+      is preserved; the non-array option could be eliminated only in a future
+      major revision of the specification because it would be backwards
+      incompatible.</t>
+
+      <section anchor="summary" title="Extension Summary and Identifying URI">
+        <t>Following is a summary of the extension defined in this
+        specification.<list style="symbols">
+            <t>Identifying URI: <spanx
+            style="verb">https://docs.kantarainitiative.org/uma/extensions/perm-reg-1.0</spanx></t>
+
+            <t>Extension author and contact information: Eve Maler
+            (eve@xmlgrrl.com)</t>
+
+            <t>Updates or obsoletes: None; this extension is new.</t>
+
+            <t>Security considerations: None additional.</t>
+
+            <t>Privacy considerations: None additional.</t>
+
+            <t>Error states: See below.</t>
+          </list></t>
+      </section>
+
+      <section title="Authorization Server Configuration Data Extension for Indicating Extension Support">
+        <t>An authorization server that supports the extension defined in this
+        specification MUST provide a JSON property in its configuration data
+        with a name that matches the identifying URI as defined in <xref
+        target="summary" />, and one of the following values:<list
+            style="hanging">
+            <t hangText="supported">This is an authorization server that
+            supports the extension form of requested permission registration
+            in addition to the form defined in the UMA V1.0.1
+            specification.</t>
+
+            <t hangText="extension-only">This is an authorization server that
+            supports the extension form (arrays only), and not the singular
+            form of requested permissions. Note that such an authorization
+            server <spanx style="strong">cannot conform</spanx> to UMA V1.0 or
+            V1.0.1.</t>
+          </list> </t>
+      </section>
+
+      <section title="Resource Server Request to Permission Registration Endpoint">
+        <figure>
+          <preamble>Example of an HTTP request that registers a requested
+          permission at the authorization server's permission registration
+          endpoint, with a PAT in the header, containing an array of requested
+          permissions with a single object in it:</preamble>
+
+          <artwork><![CDATA[
+POST /host/rsrc_uri HTTP/1.1
+Content-Type: application/json
+Host: as.example.com
+Authorization: Bearer 426561726572
+
+[
+{ "resource_set_id": "7b727369647d",
+  "scopes": [ "view", "print" ]
+}
+]
+]]></artwork>
+        </figure>
+
+        <figure>
+          <preamble>Example of an HTTP request that registers a requested
+          permission at the authorization server's permission registration
+          endpoint, with a PAT in the header, containing an array of requested
+          permissions with three objects in it:</preamble>
+
+          <artwork><![CDATA[
+POST /host/rsrc_uri HTTP/1.1
+Content-Type: application/json
+Host: as.example.com
+Authorization: Bearer 426561726572
+
+[
+{ "resource_set_id": "7b727369647d",
+  "scopes": [ "view", "crop", "lightbox" ]
+},
+{ "resource_set_id": "7b72736964327d",
+  "scopes": [ "view", "layout", "print" ]
+},
+{ "resource_set_id": "7b72736964337d",
+  "scopes": [
+      "http://www.example.com/scopes/all"
+  ]
+}
+]
+]]></artwork>
+        </figure>
+      </section>
+
+      <section title="Authorization Server Response to Resource Server on Permission Registration Success">
+        <t>If the authorization server is successful in creating a permission
+        ticket in response to all the elements of the resource server's
+        request, it responds with an HTTP 201 (Created) status code and
+        includes a ticket property in the JSON-formatted body that represents
+        the entire set of the one or more requested permissions that were
+        registered.</t>
+
+        <figure>
+          <preamble>For example:</preamble>
+
+          <artwork><![CDATA[
+HTTP/1.1 201 Created
+Content-Type: application/json
+...
+
+{
+"ticket": "332d7273-6964732d-63726561-74656421"
+}
+]]></artwork>
+        </figure>
+      </section>
+
+      <section title="Authorization Server Response to Resource Server on Permission Registration Failure">
+        <t>If the resource server's request is authenticated properly but
+        fails because one or more of the requested permissions has an invalid
+        resource set identifier or an invalid scope, then... [TO BE DISCUSSED:
+        What should happen? Should a partial result be registered? If so, what
+        should be the response? Or should the whole thing fail?]</t>
+      </section>
+    </section>
+
+    <section title="Security Considerations">
+      <t>None additional.</t>
+    </section>
+
+    <section title="Privacy Considerations">
+      <t>None additional.</t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This document makes no request of IANA.</t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      &RFC2119;
+
+      &RFC7159;
+
+      <reference anchor="UMA"
+                 target="https://docs.kantarainitiative.org/uma/draft-uma-core-v1_0_1.html">
+        <front>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
+
+          <author initials="T." surname="Hardjono">
+            <organization>MIT</organization>
+          </author>
+
+          <date day="" month="September" year="2015" />
+        </front>
+      </reference>
+    </references>
+  </back>
+</rfc>
