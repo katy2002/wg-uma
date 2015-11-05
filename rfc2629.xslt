@@ -49,7 +49,7 @@
 
 <xsl:strip-space elements="abstract author back figure front list middle note postal reference references rfc section texttable"/>
 
-<xsl:output method="html" encoding="iso-8859-1" version="4.0" doctype-public="-//W3C//DTD HTML 4.01//EN" indent="no"/>
+<xsl:output method="html" encoding="utf-8" indent="no"/>
 
 <!-- rfc comments PI -->
 
@@ -569,6 +569,8 @@
   )" />
 
 <xsl:variable name="rfcno" select="/rfc/@number"/>
+
+<xsl:variable name="xml2rfc-ext-pub-version" select="/rfc/@version"/>
 
 <xsl:variable name="submissionType">
   <xsl:choose>
@@ -2457,6 +2459,7 @@
     <xsl:call-template name="get-lang" />
   </xsl:variable>
 
+  <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
   <html lang="{$lang}">
     <head>
       <xsl:if test="$xml2rfc-ext-support-rfc2731!='no'">
@@ -3875,7 +3878,7 @@
 
 <tr>
   <td class="left kantara">Version:</td>
-  <td class="left kantara">1.0.1</td>
+  <td class="left kantara"><xsl:value-of select="$xml2rfc-ext-pub-version" /></td>
 </tr>
 <tr>
    <td class="kantara" colspan="2">&#160;</td>   
