@@ -7,8 +7,8 @@
 <!ENTITY UMA PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/Home">
 <!ENTITY UMAreqs PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/UMA+Requirements">
 ]>
-<rfc category="std" docName="draft-hardjono-oauth-resource-reg-07"
-     id="kantara" ipr="kantara">
+<rfc category="std" docName="draft-hardjono-oauth-resource-reg"
+     id="kantara" ipr="kantara" version="1.0.1">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -59,7 +59,7 @@
       </address>
     </author>
 
-    <date day="" month="September" year="2015" />
+    <date day="5" month="November" year="2015" />
 
     <abstract>
       <t>This specification defines a resource set registration mechanism
@@ -1036,7 +1036,7 @@ Host: as.example.com
       </reference>
 
       <reference anchor="UMA"
-                 target="http://docs.kantarainitiative.org/uma/draft-uma-core.html">
+                 target="http://docs.kantarainitiative.org/uma/draft-uma-core-v1.0.1.html">
         <front>
           <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
 
@@ -1044,7 +1044,7 @@ Host: as.example.com
             <organization>MIT</organization>
           </author>
 
-          <date day="" month="September" year="2015" />
+          <date day="5" month="November" year="2015" />
         </front>
       </reference>
 
