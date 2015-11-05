@@ -14,7 +14,7 @@
 <!ENTITY RFC7662 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7662.xml">
 ]>
 
-<rfc category="std" docName="draft-uma-core" id="kantara" ipr="kantara" version="1.0.1">
+<rfc category="std" docName="draft-uma-core" id="kantara" ipr="kantara" version="1.0.1" target="lc">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
