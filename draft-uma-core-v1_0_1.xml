@@ -979,7 +979,7 @@ Authorization: Bearer 204c69636b6c69
           a permission ticket with both a client and a requesting party at the
           time the client first makes a request at the RPT endpoint. If the
           authorization server observes that a permission ticket is used by
-          multiple different clients, it SHOULD attempt to revoke all RPTs
+          multiple different clients, it SHOULD attempt to revoke any RPT
           already granted based on the compromised permission ticket.</t>
 
           <t>Permission tickets MUST NOT be single-use; this is in order to
