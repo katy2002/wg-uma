@@ -5817,11 +5817,14 @@ dd, li, p {
             This Internet-Draft is submitted to IETF in full conformance with
             the provisions of BCP 78 and BCP 79.
           </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and not (/rfc/@target = 'lc')">
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'publicreview')">
             This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for Public Review. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
           <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'lc')">
             This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for LC certification for Draft Recommendation. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
+          </xsl:when>
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'certified')">
+            This Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been certified by the Leadership Council to undergo a Kantara All-Member Ballot. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
           <xsl:otherwise>
             CONFORMANCE UNDEFINED.

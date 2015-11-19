@@ -8,7 +8,7 @@
 <!ENTITY UMAreqs PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/UMA+Requirements">
 ]>
 <rfc category="std" docName="draft-hardjono-oauth-resource-reg"
-     id="kantara" ipr="kantara" version="1.0.1" target="lc">
+     id="kantara" ipr="kantara" version="1.0.1" target="certified">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -59,7 +59,7 @@
       </address>
     </author>
 
-    <date day="5" month="November" year="2015" />
+    <date day="19" month="November" year="2015" />
 
     <abstract>
       <t>This specification defines a resource set registration mechanism

@@ -14,7 +14,7 @@
 <!ENTITY RFC7662 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7662.xml">
 ]>
 
-<rfc category="std" docName="draft-uma-core" id="kantara" ipr="kantara" version="1.0.1" target="lc">
+<rfc category="std" docName="draft-uma-core" id="kantara" ipr="kantara" version="1.0.1" target="certified">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -66,7 +66,7 @@
       </address>
     </author>
 
-    <date day="5" month="November" year="2015" />
+    <date day="19" month="November" year="2015" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
