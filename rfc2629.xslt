@@ -5876,7 +5876,7 @@ dd, li, p {
             This Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been certified by the Leadership Council to undergo a Kantara All-Member Ballot. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
           <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'approved')">
-            This Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and approved by the Membership of the Kantara Initiative as a Recommendation according to its <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref>.
+            This specification was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and approved by the Membership of the Kantara Initiative as a Recommendation according to its <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref>.
           </xsl:when>
           <xsl:otherwise>
             CONFORMANCE UNDEFINED.
