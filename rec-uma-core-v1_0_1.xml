@@ -2592,7 +2592,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="OAuth-resource-reg"
-                 target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
+                 target="https://docs.kantarainitiative.org/uma/rec-oauth-resource-reg-v1.0.1.html">
         <front>
           <title>OAuth 2.0 Resource Set Registration</title>
 
@@ -2600,7 +2600,7 @@ Cache-Control: no-store
             <organization>IETF</organization>
           </author>
 
-          <date day="23" month="February" year="2015" />
+          <date day="28" month="December" year="2015" />
         </front>
       </reference>
 
@@ -2657,7 +2657,7 @@ Cache-Control: no-store
 
     <references title="Informative References">
       <reference anchor="UMA-casestudies"
-                 target="http://kantarainitiative.org/confluence/display/uma/Case+Studies">
+                 target="https://kantarainitiative.org/confluence/display/uma/Case+Studies">
         <front>
           <title>UMA Case Studies</title>
 
@@ -2670,7 +2670,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMA-Impl"
-                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Implementer%27s+Guide">
+                 target="https://kantarainitiative.org/confluence/display/uma/UMA+Implementer%27s+Guide">
         <front>
           <title>UMA Implementer's Guide</title>
 
@@ -2681,7 +2681,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMA-obligations"
-                 target="http://docs.kantarainitiative.org/uma/draft-uma-trust.html">
+                 target="https://docs.kantarainitiative.org/uma/draft-uma-trust.html">
         <front>
           <title>Binding Obligations on UMA Participants</title>
 
@@ -2694,7 +2694,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMA-PbD"
-                 target="http://kantarainitiative.org/confluence/display/uma/Privacy+by+Design+Implications+of+UMA">
+                 target="https://kantarainitiative.org/confluence/display/uma/Privacy+by+Design+Implications+of+UMA">
         <front>
           <title>Privacy by Design Implications of UMA</title>
 
@@ -2705,7 +2705,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMA-usecases"
-                 target="http://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">
+                 target="https://kantarainitiative.org/confluence/display/uma/UMA+Scenarios+and+Use+Cases">
         <front>
           <title>UMA Scenarios and Use Cases</title>
 
@@ -2718,7 +2718,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMAnitarians"
-                 target="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">
+                 target="https://kantarainitiative.org/confluence/display/uma/Participant+Roster">
         <front>
           <title>UMA Participant Roster</title>
 

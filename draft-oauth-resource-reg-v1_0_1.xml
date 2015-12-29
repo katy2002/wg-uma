@@ -1036,7 +1036,7 @@ Host: as.example.com
       </reference>
 
       <reference anchor="UMA"
-                 target="http://docs.kantarainitiative.org/uma/rec-uma-core-v1.0.1.html">
+                 target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1.0.1.html">
         <front>
           <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
 
@@ -1049,7 +1049,7 @@ Host: as.example.com
       </reference>
 
       <reference anchor="UMAnitarians"
-                 target="http://kantarainitiative.org/confluence/display/uma/Participant+Roster">
+                 target="https://kantarainitiative.org/confluence/display/uma/Participant+Roster">
         <front>
           <title>UMA Participant Roster</title>
 
