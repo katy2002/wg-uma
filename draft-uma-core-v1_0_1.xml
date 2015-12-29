@@ -2592,7 +2592,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="OAuth-resource-reg"
-                 target="https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg">
+                 target="http://docs.kantarainitiative.org/uma/rec-oauth-resource-reg-v1.0.1.html">
         <front>
           <title>OAuth 2.0 Resource Set Registration</title>
 
@@ -2600,7 +2600,7 @@ Cache-Control: no-store
             <organization>IETF</organization>
           </author>
 
-          <date day="23" month="February" year="2015" />
+          <date day="28" month="December" year="2015" />
         </front>
       </reference>
 

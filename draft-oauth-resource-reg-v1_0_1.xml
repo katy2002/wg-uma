@@ -1036,7 +1036,7 @@ Host: as.example.com
       </reference>
 
       <reference anchor="UMA"
-                 target="http://docs.kantarainitiative.org/uma/draft-uma-core-v1.0.1.html">
+                 target="http://docs.kantarainitiative.org/uma/rec-uma-core-v1.0.1.html">
         <front>
           <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
 
@@ -1044,7 +1044,7 @@ Host: as.example.com
             <organization>MIT</organization>
           </author>
 
-          <date day="5" month="November" year="2015" />
+          <date day="28" month="December" year="2015" />
         </front>
       </reference>
 
