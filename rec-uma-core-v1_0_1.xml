@@ -2592,7 +2592,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="OAuth-resource-reg"
-                 target="https://docs.kantarainitiative.org/uma/rec-oauth-resource-reg-v1.0.1.html">
+                 target="https://docs.kantarainitiative.org/uma/rec-oauth-resource-reg-v1_0_1.html">
         <front>
           <title>OAuth 2.0 Resource Set Registration</title>
 

@@ -1036,7 +1036,7 @@ Host: as.example.com
       </reference>
 
       <reference anchor="UMA"
-                 target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1.0.1.html">
+                 target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1_0_1.html">
         <front>
           <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
 
