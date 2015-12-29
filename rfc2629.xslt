@@ -1131,7 +1131,7 @@
       </xsl:choose>
       <xsl:choose>
         <xsl:when test="$xml2rfc-linkmailto!='no'">
-          <a href="mailto:{$email}"><xsl:value-of select="$email" /></a>   
+          <a href="mailto:{$email}"><xsl:value-of select="$email" /></a>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$email" />
@@ -1302,7 +1302,7 @@
       </xsl:choose>
 
     <xsl:if test="/rfc/@docName and not($id-kantara)">
-    
+
       <xsl:variable name="docname" select="/rfc/@docName"/>
 
       <xsl:choose>
@@ -1315,7 +1315,7 @@
           <p class="filename"><xsl:value-of select="$docname"/></p>
         </xsl:otherwise>
       </xsl:choose>
-      
+
       <xsl:variable name="docname-noext">
         <xsl:choose>
           <xsl:when test="contains($docname,'.')">
@@ -1870,7 +1870,7 @@
 <xsl:template name="expand-format-percent">
   <xsl:param name="format"/>
   <xsl:param name="pos"/>
-  
+
   <xsl:choose>
     <xsl:when test="$format=''"><!-- done--></xsl:when>
     <xsl:when test="substring($format,1,1)!='%' or string-length($format)=1">
@@ -1902,7 +1902,7 @@
       </xsl:call-template>
     </xsl:otherwise>
   </xsl:choose>
-  
+
 </xsl:template>
 
 <xsl:template match="middle">
@@ -2017,9 +2017,9 @@
 <xsl:template name="compute-section-number">
   <xsl:param name="bib"/>
   <xsl:param name="ref"/>
-  
+
   <xsl:variable name="anch" select="substring-after($ref/@x:rel,'#')"/>
-  
+
   <xsl:choose>
     <xsl:when test="$anch=''">
       <xsl:call-template name="error">
@@ -2263,7 +2263,7 @@
             </xsl:if>
           </xsl:when>
           <xsl:when test="@name='Internet-Draft' and $rfcno > 7375">
-            <!-- special case in RFC formatting since 2015 -->            
+            <!-- special case in RFC formatting since 2015 -->
             <xsl:text>Work in Progress, </xsl:text>
             <xsl:value-of select="@value" />
           </xsl:when>
@@ -2647,7 +2647,7 @@
             <xsl:apply-templates mode="t-content" select="node()[1]">
               <xsl:with-param name="inherited-self-link" select="$inherited-self-link"/>
             </xsl:apply-templates>
-          </xsl:otherwise>          
+          </xsl:otherwise>
         </xsl:choose>
       </div>
     </xsl:when>
@@ -2667,7 +2667,7 @@
           <xsl:apply-templates mode="t-content" select="node()[1]">
             <xsl:with-param name="inherited-self-link" select="$inherited-self-link"/>
           </xsl:apply-templates>
-        </xsl:otherwise>          
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
@@ -2859,9 +2859,9 @@
         </xsl:when>
         <xsl:otherwise/>
       </xsl:choose>
-  
+
       <xsl:call-template name="insertInsDelClass" />
-  
+
       <xsl:if test="$sectionNumber!='' and not(contains($sectionNumber,'unnumbered-'))">
         <a href="#{$anchor-prefix}.section.{$sectionNumber}">
           <xsl:call-template name="emit-section-number">
@@ -2870,12 +2870,12 @@
         </a>
         <xsl:text>&#0160;</xsl:text>
       </xsl:if>
-  
+
       <!-- issue tracking? -->
       <xsl:if test="@ed:resolves">
         <xsl:call-template name="insert-issue-pointer"/>
       </xsl:if>
-  
+
       <xsl:choose>
         <xsl:when test="@anchor">
           <xsl:call-template name="check-anchor"/>
@@ -3166,7 +3166,7 @@
             <xsl:attribute name="id"><xsl:value-of select="$anchor"/></xsl:attribute>
           </xsl:if>
         </xsl:if>
-        
+
         <xsl:apply-templates />
       </a>
       <xsl:if test="not(@format='none')">
@@ -3191,7 +3191,7 @@
 
   <xsl:variable name="xref" select="."/>
   <xsl:variable name="anchor"><xsl:value-of select="$anchor-prefix"/>.xref.<xsl:value-of select="$xref/@target"/>.<xsl:number level="any" count="xref[@target=$xref/@target]"/></xsl:variable>
-  
+
   <xsl:variable name="sfmt">
     <xsl:call-template name="get-section-xref-format">
       <xsl:with-param name="default">
@@ -3299,8 +3299,8 @@
               <xsl:when test="$pparent/self::list">
                 <xsl:value-of select="$pparent/@style"/>
               </xsl:when>
-              <xsl:when test="$pparent/self::dl">definition</xsl:when> 
-              <xsl:when test="$pparent/self::ol">numbers</xsl:when> 
+              <xsl:when test="$pparent/self::dl">definition</xsl:when>
+              <xsl:when test="$pparent/self::ol">numbers</xsl:when>
               <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
@@ -3332,7 +3332,7 @@
                   <xsl:value-of select="$tcnt"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="$tcnt"/>              
+                  <xsl:value-of select="$tcnt"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
@@ -3868,49 +3868,98 @@
 </xsl:template>
 
 <xsl:template name="kantaraLogo">
-  <img class="kantara" src="https://kantarainitiative.org/wp-content/uploads/2014/07/img1.png" alt="Kantara Initiative"/>  
+  <img class="kantara" src="https://kantarainitiative.org/wp-content/uploads/2014/07/img1.png" alt="Kantara Initiative"/>
 </xsl:template>
 
-<xsl:template name="kantaraHeader">
-  <p>
-<table class="header kantara">
-<tbody>
+  <xsl:template name="kantaraHeader">
+    <p>
+  <table class="header kantara">
+  <tbody>
 
-<tr>
-  <td class="left kantara">Version:</td>
-  <td class="left kantara"><xsl:value-of select="$xml2rfc-ext-pub-version" /></td>
-</tr>
-<tr>
-   <td class="kantara" colspan="2">&#160;</td>   
-</tr>
-<tr>
-  <td class="left kantara">Date:</td>
-  <td class="left kantara"><xsl:value-of select="number($xml2rfc-ext-pub-year)" />-<xsl:value-of select="number($pub-month-numeric)" />-<xsl:value-of select="number($xml2rfc-ext-pub-day)" /></td>
-</tr>
-<tr>
-   <td class="kantara" colspan="2">&#160;</td>  
-</tr>
+  <tr>
+    <td class="left kantara">Version:</td>
+    <td class="left kantara"><xsl:value-of select="$xml2rfc-ext-pub-version" /></td>
+  </tr>
+  <tr>
+     <td class="kantara" colspan="2">&#160;</td>
+  </tr>
+  <tr>
+    <td class="left kantara">Date:</td>
+    <td class="left kantara"><xsl:value-of select="number($xml2rfc-ext-pub-year)" />-<xsl:value-of select="number($pub-month-numeric)" />-<xsl:value-of select="number($xml2rfc-ext-pub-day)" /></td>
+  </tr>
+  <tr>
+     <td class="kantara" colspan="2">&#160;</td>
+  </tr>
 
-<tr>
-  <td class="left kantara">Editor:</td>
-  <td class="left kantara">Thomas Hardjono, MIT</td>
-</tr>
-<tr>
-   <td class="kantara" colspan="2">&#160;</td>
-</tr>
+  <xsl:for-each select="author">
+    <xsl:if test="@fullname">
+        <xsl:if test="@role and @role='editor'">
+          <xsl:variable name="org">
+            <xsl:choose>
+              <xsl:when test="organization/@abbrev"><xsl:value-of select="organization/@abbrev" /></xsl:when>
+              <xsl:otherwise><xsl:value-of select="organization" /></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:variable name="orgOfFollowing">
+            <xsl:choose>
+              <xsl:when test="following-sibling::*[1]/organization/@abbrev"><xsl:value-of select="following-sibling::*[1]/organization/@abbrev" /></xsl:when>
+              <xsl:otherwise><xsl:value-of select="following-sibling::*/organization" /></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:variable name="editor" >
+          <xsl:if test="$org != $orgOfFollowing and $org != '' and @role='editor'">
+              <xsl:value-of select="@fullname" />, <xsl:value-of select="$org" />
+          </xsl:if>
+          </xsl:variable>
+          <tr>
+            <td class="left kantara">Editor:</td>
+            <td class="left kantara"><xsl:value-of select="$editor"/></td>
+          </tr>
+          <tr>
+            <td class="kantara" colspan="2">&#160;</td>
+          </tr>
+        </xsl:if>
+    </xsl:if>
+  </xsl:for-each>
 
-<tr>
-  <td class="left kantara">Contributors:</td>
-  <td class="left kantara">Eve Maler, ForgeRock</td>
-</tr>
-<tr>
-  <td class="left kantara"></td>
-  <td class="left kantara">Maciej Machulak, Synergetics</td>
-</tr>
-<tr>
-  <td class="left kantara"></td>
-  <td class="left kantara">Domenico Catalano, Oracle</td>
-</tr>
+
+    <xsl:for-each select="author">
+      <xsl:if test="@fullname">
+        <xsl:if test="not(@role) or not(@role='editor')">
+          <xsl:variable name="org">
+            <xsl:choose>
+              <xsl:when test="organization/@abbrev"><xsl:value-of select="organization/@abbrev" /></xsl:when>
+              <xsl:otherwise><xsl:value-of select="organization" /></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:variable name="orgOfFollowing">
+            <xsl:choose>
+              <xsl:when test="following-sibling::*[1]/organization/@abbrev"><xsl:value-of select="following-sibling::*[1]/organization/@abbrev" /></xsl:when>
+              <xsl:otherwise><xsl:value-of select="following-sibling::*/organization" /></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:variable name="contributor" >
+            <xsl:if test="$org != $orgOfFollowing and $org != '' and not(@role='editor')">
+              <xsl:value-of select="@fullname" />, <xsl:value-of select="$org" />
+            </xsl:if>
+          </xsl:variable>
+          <xsl:choose>
+            <xsl:when test="position() = 2">
+              <tr>
+                <td class="left kantara">Contributors:</td>
+                <td class="left kantara"><xsl:value-of select="$contributor"/></td>
+              </tr>
+            </xsl:when>
+            <xsl:otherwise>
+              <tr>
+                <td class="left kantara"></td>
+                <td class="left kantara"><xsl:value-of select="$contributor"/></td>
+              </tr>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:if>
+      </xsl:if>
+    </xsl:for-each>
 </tbody>
 </table>
 </p>
@@ -4379,7 +4428,7 @@ RfcRefresh.getNodeText = function(elem) {
       result += children[i].nodeValue;
     }
   }
-  return result; 
+  return result;
 }
 
 RfcRefresh.getParserError = function(dom) {
@@ -4398,7 +4447,7 @@ RfcRefresh.getParserError = function(dom) {
     }
     return errmsg;
   }
-  
+
   var list = dom.getElementsByTagNameNS(RfcRefresh.NS_XHTML, "parsererror");
   if (list.length != 0) {
     // Webkit
@@ -4409,9 +4458,9 @@ RfcRefresh.getParserError = function(dom) {
       errmsg.msg = RfcRefresh.getNodeText(list[0]);
     }
     return errmsg;
-  }  
-  
-  
+  }
+
+
   return null;
 }
 
@@ -4431,7 +4480,7 @@ RfcRefresh.refresh = function(txt) {
     var parser = new DOMParser();
     var dom = parser.parseFromString(txt, "text/xml");
     var errmsg = RfcRefresh.getParserError(dom);
-    
+
     if (errmsg != null) {
       var err = document.createElement("pre");
       err.className = "refreshxmlerror <xsl:value-of select="$css-noprint"/>";
@@ -4463,7 +4512,7 @@ RfcRefresh.refresh = function(txt) {
           }
         }
       }
-    
+
       var html = RfcRefresh.xslt.transformToDocument(dom);
       RfcRefresh.findDifferences(document, html);
     }
@@ -4472,7 +4521,7 @@ RfcRefresh.refresh = function(txt) {
 
 RfcRefresh.initRefresh = function() {
   RfcRefresh.getXSLT();
-    
+
   window.setTimeout(function(){
     if (RfcRefresh.xslt != null) {
       var xhr = new XMLHttpRequest();
@@ -4598,33 +4647,33 @@ function getMeta(rfcno, container) {
       if (xhr.status === 200) {
         var doc = xhr.responseXML;
         var info = getChildByName(doc.documentElement, "info");
-  
+
         var cont = document.getElementById(container);
         // empty the container
         while (cont.firstChild) {
           cont.removeChild(myNode.firstChild);
-        }      
-  
+        }
+
         var c = getChildByName(info, "stdstatus");
         if (c !== null) {
           var bld = newElementWithText("b", c.textContent);
           cont.appendChild(bld);
         }
-  
+
         c = getChildByName(info, "updatedby");
         if (c !== null) {
           cont.appendChild(newElement("br"));
           cont.appendChild(newText("Updated by: "));
           appendRfcLinks(cont, c.textContent);
         }
-  
+
         c = getChildByName(info, "obsoletedby");
         if (c !== null) {
           cont.appendChild(newElement("br"));
           cont.appendChild(newText("Obsoleted by: "));
           appendRfcLinks(cont, c.textContent);
         }
-        
+
         c = getChildByName(info, "errata");
         if (c !== null) {
           cont.appendChild(newElement("br"));
@@ -4783,7 +4832,7 @@ h1 {
 }
 h1.kantara {
   margin-top: 12pt;
-  margin-bottom: 12pt;  
+  margin-bottom: 12pt;
 }
 h2 {
   font-size: 130%;
@@ -5086,7 +5135,7 @@ blockquote > * .bcp14 {
     margin-left: .3em;
     text-decoration: none;
     visibility: hidden;
-    -webkit-user-select: none;<!-- not std CSS yet--> 
+    -webkit-user-select: none;<!-- not std CSS yet-->
     -moz-user-select: none;
     -ms-user-select: none;
 }
@@ -5179,7 +5228,7 @@ thead th {
   border-radius: 5px;
   background: #006400;
   border: 1px solid silver;
-  -webkit-user-select: none;<!-- not std CSS yet--> 
+  -webkit-user-select: none;<!-- not std CSS yet-->
   -moz-user-select: none;
   -ms-user-select: none;
 }
@@ -5443,7 +5492,7 @@ dd, li, p {
     <xsl:variable name="xrefs" select="//reference[not(starts-with(@anchor,'deleted-'))][generate-id(.) = generate-id(key('index-first-letter',translate(substring(concat(/rfc/back/displayreference[@target=current()/@anchor]/@to,@anchor),1,1),$lcase,$ucase))[1])]"/>
 
     <xsl:for-each select="$irefs | $xrefs">
-    
+
       <xsl:sort select="translate(concat(@item,/rfc/back/displayreference[@target=current()/@anchor]/@to,@anchor),$lcase,$ucase)" />
 
       <xsl:variable name="letter" select="translate(substring(concat(@item,/rfc/back/displayreference[@target=current()/@anchor]/@to,@anchor),1,1),$lcase,$ucase)"/>
@@ -5817,14 +5866,17 @@ dd, li, p {
             This Internet-Draft is submitted to IETF in full conformance with
             the provisions of BCP 78 and BCP 79.
           </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'publicreview')">
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'publicReview')">
             This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for Public Review. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'lc')">
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'approvedByLC')">
             This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for LC certification for Draft Recommendation. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'certified')">
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'certifiedByLC')">
             This Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been certified by the Leadership Council to undergo a Kantara All-Member Ballot. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
+          </xsl:when>
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'approved')">
+            This Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and approved by the Membership of the Kantara Initiative as a Recommendation according to its <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref>.
           </xsl:when>
           <xsl:otherwise>
             CONFORMANCE UNDEFINED.
@@ -5883,7 +5935,7 @@ dd, li, p {
       <xsl:if test="not($id-kantara)">
         <t>
           Internet-Drafts are draft documents valid for a maximum of six months
-          and may be updated, replaced, or obsoleted by other documents at any time.           
+          and may be updated, replaced, or obsoleted by other documents at any time.
           It is inappropriate to use Internet-Drafts as reference material or to cite
           them other than as &#8220;work in progress&#8221;.
         </t>
@@ -6114,7 +6166,7 @@ dd, li, p {
         <t>
           Copyright &#169; <xsl:value-of select="$xml2rfc-ext-pub-year" /> IETF Trust and the persons identified
           as the document authors.  All rights reserved.
-        </t>      
+        </t>
         <xsl:choose>
           <xsl:when test="$ipr-2010-01">
             <t>
@@ -6288,7 +6340,7 @@ dd, li, p {
     <h2 class="np"> <!-- this pagebreak occurs always -->
       <a href="#{$anchor-prefix}.toc">Table of Contents</a>
     </h2>
-  
+
     <ul class="toc">
       <xsl:apply-templates mode="toc" />
     </ul>
@@ -6315,7 +6367,7 @@ dd, li, p {
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  
+
   <!-- handle tocdepth parameter -->
   <xsl:choose>
     <xsl:when test="(not($tocparam) or $tocparam='' or $tocparam='default') and $depth >= $parsedTocDepth">
