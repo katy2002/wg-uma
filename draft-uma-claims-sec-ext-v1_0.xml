@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
+"http://xml.resource.org/authoring/rfc2629.dtd" [
+<!ENTITY RFC2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
+<!ENTITY RFC6750 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6750.xml">
+<!ENTITY RFC6415 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6415.xml">
+<!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY RFC7519 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7519.xml">
+<!ENTITY RFC7591 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7591.xml">
+<!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC6819 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6819.xml">
+<!ENTITY RFC6711 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6711.xml">
+<!ENTITY RFC7662 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7662.xml">
+]>
+<rfc category="std" docName="draft-uma-claims-ext" id="kantara" ipr="kantara"
+     target="approved" version="1.0">
+  <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
+  <?rfc toc='yes' ?>
+
+  <?rfc tocdepth='4' ?>
+
+  <?rfc symrefs='yes' ?>
+
+  <?rfc sortrefs='yes' ?>
+
+  <?rfc compact='yes' ?>
+
+  <?rfc subcompact='no' ?>
+
+  <front>
+    <title abbrev="UMA Core">UMA Enhanced Claims-Gathering Security
+    Extension</title>
+
+    <author fullname="Maciej Machulak" initials="M." role="editor"
+            surname="Machulak">
+      <organization>Synergetics</organization>
+
+      <address>
+        <email>maciej@synergetics.be</email>
+      </address>
+    </author>
+
+    <author fullname="Eve Maler" initials="E." surname="Maler">
+      <organization>ForgeRock</organization>
+
+      <address>
+        <email>eve.maler@forgerock.com</email>
+      </address>
+    </author>
+
+    <author fullname="Domenico Catalano" initials="D." surname="Catalano">
+      <organization>Oracle</organization>
+
+      <address>
+        <email>domenico.catalano@oracle.com</email>
+      </address>
+    </author>
+
+    <date day="21" month="February" year="2016" />
+
+    <abstract>
+      <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
+      resource owners can control protected-resource access by clients
+      operated by arbitrary requesting parties, where the resources reside on
+      any number of resource servers, and where a centralized authorization
+      server governs access based on resource owner policies. This extension
+      to UMA V1.0 and V1.0.1 enhances security by adding entropy to the UMA
+      permission ticket to avoid a session fixation attack through the use of
+      the requesting party claims endpoint. [ISSUE: The "Enhanced" in the
+      title is suddenly sounding awkward. Meant as "enhanced security", right?
+      Needed?]</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="introduction" title="Introduction">
+      <t>User-Managed Access <xref target="UMA" /> is a profile of OAuth 2.0
+      <xref target="RFC6749" />. UMA defines how resource owners can control
+      protected-resource access by clients operated by arbitrary requesting
+      parties, where the resources reside on any number of resource servers,
+      and where a centralized authorization server governs access based on
+      resource owner policies. This extension to UMA V1.0 and V1.0.1 enhances
+      security by adding entropy to the UMA permission ticket to avoid a
+      session fixation attack through the use of the requesting party claims
+      endpoint. It is RECOMMENDED for UMA authorization servers and clients
+      that intend to use trust elevation methods involving the requesting
+      party claims endpoint, versus any other methods, to use this extension.
+      [ISSUE: Does this RECOMMENDATION make sense to appear in this doc?]</t>
+
+      <section title="Notational Conventions">
+        <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
+        'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this
+        document are to be interpreted as described in <xref
+        target="RFC2119" />.</t>
+
+        <t>Unless otherwise noted, all protocol properties and values are case
+        sensitive. JSON <xref target="RFC7159" /> data structures defined by
+        this specification MAY contain extension properties that are not
+        defined in this specification. Any entity receiving or retrieving a
+        JSON data structure SHOULD ignore extension properties it is unable to
+        understand. Extension names that are unprotected from collisions are
+        outside the scope of this specification.</t>
+      </section>
+
+      <section anchor="summary"
+               title="Extension Summary and Configuration Data">
+        <t>Following is a summary of this extension and how its identifying
+        URI is used.<list style="symbols">
+            <t>Identifying URI: <spanx
+            style="verb">https://docs.kantarainitiative.org/uma/extensions/claims-sec-1.0</spanx><list
+                style="symbols">
+                <t>An UMA V1.0 or V1.0.1 authorization server that supports
+                this extension MUST provide this identifying URI in the <spanx
+                style="verb">uma_profiles_supported</spanx> property in its
+                configuration data. [ISSUE: If this extension is RECOMMENDED,
+                should there be no way to provide two endpoints, one with the
+                extension and one without? It's possible to design such a
+                thing if needed.]</t>
+              </list></t>
+
+            <t>Extension author and contact information: Maciej Machulak
+            (maciej@syntegrity.be).</t>
+
+            <t>Updates or obsoletes: None; this extension is new.</t>
+
+            <t>Security considerations: None additional. The topic of the
+            extension is security.</t>
+
+            <t>Privacy considerations: None additional.</t>
+
+            <t>Error states: None additional.</t>
+          </list></t>
+      </section>
+    </section>
+
+    <section anchor="getting-authz-accessing-resource"
+             title="Security Extension">
+      <t>If the client redirects the requesting party to the requesting party
+      endpoint, the UMA V1.0 and V1.0.1 specifications direct the
+      authorization server to return the user agent to the client with, among
+      other parameters, a <spanx style="verb">ticket</spanx> parameter whose
+      value is the same as the permission ticket value the client sent to it
+      previously. (The parameter is required only when the authorization
+      server previously sent the client a <spanx
+      style="verb">need_info</spanx> response.) It is possible for the <spanx
+      style="verb">need_info</spanx>/<spanx style="verb">ticket</spanx> cycle
+      to repeat.</t>
+
+      <t>A session fixation attack is possible when an attacker using a client
+      with the same client ID as the legitimate phishes a legitimate
+      requesting party into completing a claims-gathering flow at this
+      endpoint and then takes over and completes the original session with the
+      permission ticket that remains static throughout the transaction.</t>
+
+      <t>To mitigate this attack, the authorization server MUST select a new
+      securely random value for the permission ticket every time it adds a
+      <spanx style="verb">ticket</spanx> query component to the requesting
+      party claims endpoint URI when it returns the user agent to the
+      client.</t>
+
+      <t>[ISSUE: Point to a "friendly doc" in the non-normative refs?]</t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This document makes no requests of IANA.</t>
+    </section>
+
+    <section anchor="Acknowledgments" title="Acknowledgments">
+      <t>The following people made significant contributions to the Work
+      Group's understanding of the attack (in alphabetical order:<list
+          style="symbols">
+          <t>Josh Mandel</t>
+
+          <t>Justin Richer</t>
+
+          <t>Sarah Squire</t>
+        </list></t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <reference anchor="UMA"
+                 target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1_0_1.html">
+        <front>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
+
+          <author initials="T." surname="Hardjono">
+            <organization>MIT</organization>
+          </author>
+
+          <date day="28" month="December" year="2015" />
+        </front>
+      </reference>
+
+      <reference anchor="BCP195" target="https://tools.ietf.org/html/bcp195">
+        <front>
+          <title>Recommendations for Secure Use of Transport Layer Security
+          (TLS) and Datagram Transport Layer Security (DTLS)</title>
+
+          <author initials="Y." surname="Sheffer">
+            <organization />
+          </author>
+
+          <date day="" month="May" year="2015" />
+        </front>
+      </reference>
+
+      &RFC2119;
+
+      &RFC3986;
+
+      &RFC6415;
+
+      &RFC6711;
+
+      &RFC6749;
+
+      &RFC6750;
+
+      &RFC6819;
+
+      &RFC7159;
+
+      &RFC7519;
+
+      &RFC7591;
+
+      &RFC7662;
+    </references>
+
+    <references title="Informative References">
+      <reference anchor="UMAnitarians"
+                 target="https://kantarainitiative.org/confluence/display/uma/Participant+Roster">
+        <front>
+          <title>UMA Participant Roster</title>
+
+          <author initials="E." surname="Maler">
+            <organization>Maler</organization>
+          </author>
+
+          <date day="" month="" year="2015" />
+        </front>
+      </reference>
+    </references>
+  </back>
+</rfc>
