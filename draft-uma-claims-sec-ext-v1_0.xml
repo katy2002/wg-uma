@@ -14,7 +14,7 @@
 <!ENTITY RFC7662 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7662.xml">
 ]>
 <rfc category="std" docName="draft-uma-claims-ext" id="kantara" ipr="kantara"
-     target="approved" version="1.0">
+  target="publicReview" version="1.0">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -68,9 +68,7 @@
       server governs access based on resource owner policies. This extension
       to UMA V1.0 and V1.0.1 enhances security by adding entropy to the UMA
       permission ticket to avoid a session fixation attack through the use of
-      the requesting party claims endpoint. [ISSUE: The "Enhanced" in the
-      title is suddenly sounding awkward. Meant as "enhanced security", right?
-      Needed?]</t>
+      the requesting party claims endpoint.</t>
     </abstract>
   </front>
 
@@ -84,10 +82,13 @@
       resource owner policies. This extension to UMA V1.0 and V1.0.1 enhances
       security by adding entropy to the UMA permission ticket to avoid a
       session fixation attack through the use of the requesting party claims
-      endpoint. It is RECOMMENDED for UMA authorization servers and clients
+      endpoint.</t>
+      
+      <t>It is RECOMMENDED for UMA authorization servers and clients
       that intend to use trust elevation methods involving the requesting
       party claims endpoint, versus any other methods, to use this extension.
-      [ISSUE: Does this RECOMMENDATION make sense to appear in this doc?]</t>
+      [ISSUE: Does this RECOMMENDATION make sense to appear in this doc? Should
+      such RECOMMENDATION eventually appear in the core spec instead?]</t>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
@@ -114,14 +115,11 @@
                 <t>An UMA V1.0 or V1.0.1 authorization server that supports
                 this extension MUST provide this identifying URI in the <spanx
                 style="verb">uma_profiles_supported</spanx> property in its
-                configuration data. [ISSUE: If this extension is RECOMMENDED,
-                should there be no way to provide two endpoints, one with the
-                extension and one without? It's possible to design such a
-                thing if needed.]</t>
+                configuration data.</t>
               </list></t>
 
             <t>Extension author and contact information: Maciej Machulak
-            (maciej@syntegrity.be).</t>
+            (maciej@synergetics.be).</t>
 
             <t>Updates or obsoletes: None; this extension is new.</t>
 
@@ -137,28 +135,62 @@
 
     <section anchor="getting-authz-accessing-resource"
              title="Security Extension">
-      <t>If the client redirects the requesting party to the requesting party
-      endpoint, the UMA V1.0 and V1.0.1 specifications direct the
-      authorization server to return the user agent to the client with, among
+      <t>If the client redirects the requesting party end user to the requesting party
+      claims endpoint at the authorisation server, the UMA V1.0 and V1.0.1 specifications define that the
+      authorization server must return the user agent to the client with, among
       other parameters, a <spanx style="verb">ticket</spanx> parameter whose
-      value is the same as the permission ticket value the client sent to it
-      previously. (The parameter is required only when the authorization
+      value is the same as the permission ticket value the client sent to this authorisation server
+      previously. The <spanx style="verb">ticket</spanx> parameter in the response from the
+        authorization server is required only when the authorization
       server previously sent the client a <spanx
-      style="verb">need_info</spanx> response.) It is possible for the <spanx
+      style="verb">need_info</spanx> response. It is possible for the <spanx
       style="verb">need_info</spanx>/<spanx style="verb">ticket</spanx> cycle
       to repeat.</t>
 
-      <t>A session fixation attack is possible when an attacker using a client
-      with the same client ID as the legitimate phishes a legitimate
-      requesting party into completing a claims-gathering flow at this
-      endpoint and then takes over and completes the original session with the
+      <t>A session fixation attack is possible when an attacker 
+      An attacker uses a client with the same client identifier as the legitimate one
+      and phishes a legitimate requesting party into completing a claims-gathering flow at the requesting
+      party claims endpoint of the authorization server. 
+      Despite completing a claims-gathering flow, a legitimate user 
+      Instead, the attacker takes over and completes the original session with the
       permission ticket that remains static throughout the transaction.</t>
+      
+      <t>The attack is possible because of a constant permission ticket pointing
+      to an authorisation state at the authorisation server when such authorisation
+      state can change (i.e. initially the authorisation state refers to the permissions
+      as registered by the resource server while after successful completion
+      of the claims-gathering flow such state can refer to an authorised set ot permissions).</t>
 
       <t>To mitigate this attack, the authorization server MUST select a new
       securely random value for the permission ticket every time it adds a
-      <spanx style="verb">ticket</spanx> query component to the requesting
-      party claims endpoint URI when it returns the user agent to the
-      client.</t>
+      <spanx style="verb">ticket</spanx> query parameter to the
+        <spanx style="verb">claims_redirect_uri</spanx> after a claims-gathering workflow.
+        (see Section 3.6.3 in <xref target="UMA" />)</t>
+      
+      <t>
+        UMA deployments that implement this specification have to make the permission
+        ticket securely random and different at each step of the UMA protocol. The <spanx style="verb">ticket</spanx>
+        parameter value that points to a particular permission registered by the
+        resource server MUST be updated whenever a ticket is submitted by the client
+        to the Authorization Server. This makes each permission ticket a nonce that
+        is linked with the registered permission. Importantly, once the ticket value
+        is changed the old value MUST be invalidated. As such, the permission registered
+        by the resource server at the authorization server MUST be linked with a single
+        permission ticket only. In this scheme, a client can only present a given ticket
+        one time, and receives a new value to replace with it upon presentation. This
+        works for the claims gathering workflow as well as the re-authentication workflow
+        described in Section 3.6.1 of the UMA specification <xref target="UMA"></xref>.
+      </t>
+
+      <t>This specification extension waives the
+        requirement that permission tickets must not be single use. Instead, it
+        imposes a requirement that permission tickets must be single use and securely random. This
+        change affects the following sections of the UMA protocol specification <xref target="UMA"></xref>:<list>
+          <t style="symbols">Section 3.2.2</t>
+          <t style="symbols">Section 3.6.3</t>
+          <t style="symbols">...</t>
+        </list>
+      </t>
 
       <t>[ISSUE: Point to a "friendly doc" in the non-normative refs?]</t>
     </section>
@@ -169,7 +201,7 @@
 
     <section anchor="Acknowledgments" title="Acknowledgments">
       <t>The following people made significant contributions to the Work
-      Group's understanding of the attack (in alphabetical order:<list
+      Group's understanding of the attack (in alphabetical order):<list
           style="symbols">
           <t>Josh Mandel</t>
 
