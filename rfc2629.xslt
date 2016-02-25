@@ -6154,7 +6154,7 @@ dd, li, p {
     <xsl:when test="$ipr-kantara">
       <section title="Copyright Notice" myns:unnumbered="unnumbered" myns:notoclink="notoclink" anchor="{$anchor-prefix}.copyrightnotice">
         <t>
-          Copyright (c) 2015 Kantara Initiative and the persons identified as the document authors. All rights reserved.
+          Copyright &#169; <xsl:value-of select="$xml2rfc-ext-pub-year" /> Kantara Initiative and the persons identified as the document authors. All rights reserved.
         </t>
         <t>
           This document is subject to the <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies%20_V1.1_.pdf?version=1&amp;modificationDate=1244488630000&amp;api=v2">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>).
