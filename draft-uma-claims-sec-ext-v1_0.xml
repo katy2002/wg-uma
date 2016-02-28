@@ -3,15 +3,7 @@
 "http://xml.resource.org/authoring/rfc2629.dtd" [
 <!ENTITY RFC2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
-<!ENTITY RFC6750 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6750.xml">
-<!ENTITY RFC6415 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6415.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
-<!ENTITY RFC7519 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7519.xml">
-<!ENTITY RFC7591 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7591.xml">
-<!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
-<!ENTITY RFC6819 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6819.xml">
-<!ENTITY RFC6711 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6711.xml">
-<!ENTITY RFC7662 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7662.xml">
 ]>
 <rfc category="std" docName="draft-uma-claims-ext" id="kantara" ipr="kantara"
   target="publicReview" version="1.0">
@@ -30,8 +22,7 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="UMA Core">UMA Enhanced Claims-Gathering Security
-    Extension</title>
+    <title>UMA Claims-Gathering Security Extension</title>
 
     <author fullname="Maciej Machulak" initials="M." role="editor"
             surname="Machulak">
@@ -74,19 +65,20 @@
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>User-Managed Access <xref target="UMA" /> is a profile of OAuth 2.0
+      <t>User-Managed Access is a profile of OAuth 2.0
       <xref target="RFC6749" />. UMA defines how resource owners can control
       protected-resource access by clients operated by arbitrary requesting
       parties, where the resources reside on any number of resource servers,
       and where a centralized authorization server governs access based on
-      resource owner policies. This extension to UMA V1.0 and V1.0.1 enhances
+      resource owner policies. This extension to UMA V1.0 <xref target="UMA10" /> 
+        and UMA V1.0.1 <xref target="UMA101" /> enhances
       security by adding entropy to the UMA permission ticket to avoid a
       session fixation attack through the use of the requesting party claims
       endpoint.</t>
       
       <t>It is RECOMMENDED for UMA authorization servers and clients
       that intend to use trust elevation methods involving the requesting
-      party claims endpoint, versus any other methods, to use this extension.
+      party claims endpoint to use this extension.
       [ISSUE: Does this RECOMMENDATION make sense to appear in this doc? Should
       such RECOMMENDATION eventually appear in the core spec instead?]</t>
 
@@ -148,12 +140,15 @@
       to repeat.</t>
 
       <t>A session fixation attack is possible when an attacker 
-      An attacker uses a client with the same client identifier as the legitimate one
+      uses a client with the same client identifier as the legitimate one
       and phishes a legitimate requesting party into completing a claims-gathering flow at the requesting
       party claims endpoint of the authorization server. 
-      Despite completing a claims-gathering flow, a legitimate user 
+      Despite completing a claims-gathering flow, a client operated
+      by a legitimate requesting party does not request for a requesting party
+      permission ticket because this client has not initiated the flow
+      of requesting access to a protected resource on a resource server.
       Instead, the attacker takes over and completes the original session with the
-      permission ticket that remains static throughout the transaction.</t>
+      permission ticket value that remains static throughout the transaction.</t>
       
       <t>The attack is possible because of a constant permission ticket pointing
       to an authorisation state at the authorisation server when such authorisation
@@ -165,32 +160,14 @@
       securely random value for the permission ticket every time it adds a
       <spanx style="verb">ticket</spanx> query parameter to the
         <spanx style="verb">claims_redirect_uri</spanx> after a claims-gathering workflow.
-        (see Section 3.6.3 in <xref target="UMA" />)</t>
+        (see Section 3.4.1.2.2 in <xref target="UMA10" /> and Section 3.6.3 in <xref target="UMA101" />)
+        and MUST invalidate the permission ticket previously received from the client.
+        Effectively, this requirement nullifies the original requirement
+        (stated in Section 3.2.2 of UMA V1.0.1 specification <xref target="UMA101"/> as "Permission tickets MUST NOT be single-use")
+        and turns the ticket, in both its front-channel and back-channel correlation roles,
+        into a single-use nonce. This requirement does not change any original requirements
+        of UMA V1.0 specification.</t>
       
-      <t>
-        UMA deployments that implement this specification have to make the permission
-        ticket securely random and different at each step of the UMA protocol. The <spanx style="verb">ticket</spanx>
-        parameter value that points to a particular permission registered by the
-        resource server MUST be updated whenever a ticket is submitted by the client
-        to the Authorization Server. This makes each permission ticket a nonce that
-        is linked with the registered permission. Importantly, once the ticket value
-        is changed the old value MUST be invalidated. As such, the permission registered
-        by the resource server at the authorization server MUST be linked with a single
-        permission ticket only. In this scheme, a client can only present a given ticket
-        one time, and receives a new value to replace with it upon presentation. This
-        works for the claims gathering workflow as well as the re-authentication workflow
-        described in Section 3.6.1 of the UMA specification <xref target="UMA"></xref>.
-      </t>
-
-      <t>This specification extension waives the
-        requirement that permission tickets must not be single use. Instead, it
-        imposes a requirement that permission tickets must be single use and securely random. This
-        change affects the following sections of the UMA protocol specification <xref target="UMA"></xref>:<list>
-          <t style="symbols">Section 3.2.2</t>
-          <t style="symbols">Section 3.6.3</t>
-          <t style="symbols">...</t>
-        </list>
-      </t>
 
       <t>[ISSUE: Point to a "friendly doc" in the non-normative refs?]</t>
     </section>
@@ -214,10 +191,22 @@
 
   <back>
     <references title="Normative References">
-      <reference anchor="UMA"
+      <reference anchor="UMA10"
+        target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1_0.html">
+        <front>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0, Version 1.0</title>
+          
+          <author initials="T." surname="Hardjono">
+            <organization>MIT</organization>
+          </author>
+          
+          <date day="04" month="April" year="2015" />
+        </front>
+      </reference>
+      <reference anchor="UMA101"
                  target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1_0_1.html">
         <front>
-          <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0, Version 1.0.1</title>
 
           <author initials="T." surname="Hardjono">
             <organization>MIT</organization>
@@ -227,40 +216,12 @@
         </front>
       </reference>
 
-      <reference anchor="BCP195" target="https://tools.ietf.org/html/bcp195">
-        <front>
-          <title>Recommendations for Secure Use of Transport Layer Security
-          (TLS) and Datagram Transport Layer Security (DTLS)</title>
-
-          <author initials="Y." surname="Sheffer">
-            <organization />
-          </author>
-
-          <date day="" month="May" year="2015" />
-        </front>
-      </reference>
-
       &RFC2119;
-
-      &RFC3986;
-
-      &RFC6415;
-
-      &RFC6711;
 
       &RFC6749;
 
-      &RFC6750;
-
-      &RFC6819;
-
       &RFC7159;
-
-      &RFC7519;
-
-      &RFC7591;
-
-      &RFC7662;
+      
     </references>
 
     <references title="Informative References">
@@ -273,7 +234,7 @@
             <organization>Maler</organization>
           </author>
 
-          <date day="" month="" year="2015" />
+          <date day="" month="" year="2016" />
         </front>
       </reference>
     </references>
