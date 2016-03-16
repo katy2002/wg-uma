@@ -6,7 +6,7 @@
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 ]>
 <rfc category="std" docName="draft-uma-claims-ext" id="kantara" ipr="kantara"
-  target="publicReview" version="1.0">
+     target="publicReview" version="1.0">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -22,7 +22,8 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title>UMA Claims-Gathering Security Extension</title>
+    <title abbrev="uma-claims-sec-ext">UMA Claims-Gathering Extension for
+    Enhanced Security</title>
 
     <author fullname="Maciej Machulak" initials="M." role="editor"
             surname="Machulak">
@@ -49,7 +50,7 @@
       </address>
     </author>
 
-    <date day="21" month="February" year="2016" />
+    <date day="15" month="March" year="2016" />
 
     <abstract>
       <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
@@ -57,30 +58,24 @@
       operated by arbitrary requesting parties, where the resources reside on
       any number of resource servers, and where a centralized authorization
       server governs access based on resource owner policies. This extension
-      to UMA V1.0 and V1.0.1 enhances security by adding entropy to the UMA
-      permission ticket to avoid a session fixation attack through the use of
-      the requesting party claims endpoint.</t>
+      to UMA V1.0 and V1.0.1 enhances security by providing an alternate
+      requesting party endpoint that adds entropy to the UMA permission ticket
+      to avoid a session fixation attack.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>User-Managed Access is a profile of OAuth 2.0
-      <xref target="RFC6749" />. UMA defines how resource owners can control
+      <t>User-Managed Access is a profile of OAuth 2.0 <xref
+      target="RFC6749" />. UMA defines how resource owners can control
       protected-resource access by clients operated by arbitrary requesting
       parties, where the resources reside on any number of resource servers,
       and where a centralized authorization server governs access based on
-      resource owner policies. This extension to UMA V1.0 <xref target="UMA10" /> 
-        and UMA V1.0.1 <xref target="UMA101" /> enhances
-      security by adding entropy to the UMA permission ticket to avoid a
-      session fixation attack through the use of the requesting party claims
-      endpoint.</t>
-      
-      <t>It is RECOMMENDED for UMA authorization servers and clients
-      that intend to use trust elevation methods involving the requesting
-      party claims endpoint to use this extension.
-      [ISSUE: Does this RECOMMENDATION make sense to appear in this doc? Should
-      such RECOMMENDATION eventually appear in the core spec instead?]</t>
+      resource owner policies. This extension to UMA V1.0 <xref
+      target="UMA10" /> and UMA V1.0.1 <xref target="UMA101" /> enhances
+      security by providing an alternate requesting party endpoint that adds
+      entropy to the UMA permission ticket to avoid a session fixation
+      attack.</t>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
@@ -127,49 +122,66 @@
 
     <section anchor="getting-authz-accessing-resource"
              title="Security Extension">
-      <t>If the client redirects the requesting party end user to the requesting party
-      claims endpoint at the authorisation server, the UMA V1.0 and V1.0.1 specifications define that the
-      authorization server must return the user agent to the client with, among
-      other parameters, a <spanx style="verb">ticket</spanx> parameter whose
-      value is the same as the permission ticket value the client sent to this authorisation server
-      previously. The <spanx style="verb">ticket</spanx> parameter in the response from the
-        authorization server is required only when the authorization
-      server previously sent the client a <spanx
+      <t>If the client redirects the requesting party end user to the
+      requesting party claims endpoint at the authorisation server, the UMA
+      V1.0 and V1.0.1 specifications define that the authorization server must
+      return the user agent to the client with, among other parameters, a
+      <spanx style="verb">ticket</spanx> parameter whose value is the same as
+      the permission ticket value the client sent to this authorisation server
+      previously. The <spanx style="verb">ticket</spanx> parameter in the
+      response from the authorization server is required only when the
+      authorization server previously sent the client a <spanx
       style="verb">need_info</spanx> response. It is possible for the <spanx
       style="verb">need_info</spanx>/<spanx style="verb">ticket</spanx> cycle
       to repeat.</t>
 
-      <t>A session fixation attack is possible when an attacker 
-      uses a client with the same client identifier as the legitimate one
-      and phishes a legitimate requesting party into completing a claims-gathering flow at the requesting
-      party claims endpoint of the authorization server. 
-      Despite completing a claims-gathering flow, a client operated
-      by a legitimate requesting party does not request for a requesting party
-      permission ticket because this client has not initiated the flow
+      <t>A session fixation attack is possible when an attacker uses a client
+      with the same client identifier as the legitimate one and phishes a
+      legitimate requesting party into completing a claims-gathering flow at
+      the requesting party claims endpoint of the authorization server.
+      Despite completing a claims-gathering flow, a client operated by a
+      legitimate requesting party does not request a requesting party
+      permission ticket because that party's client did not initiate the flow
       of requesting access to a protected resource on a resource server.
-      Instead, the attacker takes over and completes the original session with the
-      permission ticket value that remains static throughout the transaction.</t>
-      
-      <t>The attack is possible because of a constant permission ticket pointing
-      to an authorisation state at the authorisation server when such authorisation
-      state can change (i.e. initially the authorisation state refers to the permissions
-      as registered by the resource server while after successful completion
-      of the claims-gathering flow such state can refer to an authorised set ot permissions).</t>
+      Instead, the attacker takes over and completes the original session with
+      the permission ticket value that remains static throughout the
+      transaction.</t>
 
-      <t>To mitigate this attack, the authorization server MUST select a new
-      securely random value for the permission ticket every time it adds a
-      <spanx style="verb">ticket</spanx> query parameter to the
-        <spanx style="verb">claims_redirect_uri</spanx> after a claims-gathering workflow.
-        (see Section 3.4.1.2.2 in <xref target="UMA10" /> and Section 3.6.3 in <xref target="UMA101" />)
-        and MUST invalidate the permission ticket previously received from the client.
-        Effectively, this requirement nullifies the original requirement
-        (stated in Section 3.2.2 of UMA V1.0.1 specification <xref target="UMA101"/> as "Permission tickets MUST NOT be single-use")
-        and turns the ticket, in both its front-channel and back-channel correlation roles,
-        into a single-use nonce. This requirement does not change any original requirements
-        of UMA V1.0 specification.</t>
-      
+      <t>The attack is possible because of a constant permission ticket value
+      pointing to an authorization state at the authorisation server when such
+      authorisation state can change (that is, initially the authorization
+      state refers to the permission as registered by the resource server
+      while after successful completion of the claims-gathering flow such
+      state can refer to an authorized set ot permissions).</t>
 
-      <t>[ISSUE: Point to a "friendly doc" in the non-normative refs?]</t>
+      <t>To mitigate this attack, an authorization server that has indicated
+      its conformance to this extension profile through the identifying URI
+      indicated in <xref target="summary" /> MUST do the following:<list
+          style="symbols">
+          <t>Advertise an enhanced requesting party claims endpoint in its
+          configuration data called <spanx
+          style="verb">security_enhanced_claims_endpoint</spanx>, and use this
+          endpoint exclusively for interacting with the end-user requesting
+          party to gather claims.</t>
+
+          <t>Every time it adds a <spanx style="verb">ticket</spanx> query
+          parameter to the <spanx style="verb">claims_redirect_uri</spanx>
+          after a claims-gathering workflow at this endpoint, select a new
+          securely random value for the permission ticket, and invalidate the
+          permission ticket previously received from the client. (Compare with
+          Section 3.4.1.2.2 in <xref target="UMA10" /> and Section 3.6.3 in
+          <xref target="UMA101" />.) Effectively, when this extension is in
+          effect, the requirement stated in Section 3.2.2 of <xref
+          target="UMA101" /> as "Permission tickets MUST NOT be single-use" is
+          nullfied, and the ticket, in both its front-channel and back-channel
+          correlation roles, becomes a single-use nonce.</t>
+        </list></t>
+
+      <t>This extension does not change any original requirements of UMA if
+      used without these enhancements.</t>
+
+      <t>See <xref target="UMAsession" /> for background information on this
+      attack and the provided mitigation.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -192,21 +204,24 @@
   <back>
     <references title="Normative References">
       <reference anchor="UMA10"
-        target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1_0.html">
+                 target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1_0.html">
         <front>
-          <title>User-Managed Access (UMA) Profile of OAuth 2.0, Version 1.0</title>
-          
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0, Version
+          1.0</title>
+
           <author initials="T." surname="Hardjono">
             <organization>MIT</organization>
           </author>
-          
+
           <date day="04" month="April" year="2015" />
         </front>
       </reference>
+
       <reference anchor="UMA101"
                  target="https://docs.kantarainitiative.org/uma/rec-uma-core-v1_0_1.html">
         <front>
-          <title>User-Managed Access (UMA) Profile of OAuth 2.0, Version 1.0.1</title>
+          <title>User-Managed Access (UMA) Profile of OAuth 2.0, Version
+          1.0.1</title>
 
           <author initials="T." surname="Hardjono">
             <organization>MIT</organization>
@@ -221,20 +236,20 @@
       &RFC6749;
 
       &RFC7159;
-      
     </references>
 
     <references title="Informative References">
-      <reference anchor="UMAnitarians"
-                 target="https://kantarainitiative.org/confluence/display/uma/Participant+Roster">
+      <reference anchor="UMAsession"
+                 target="http://kantarainitiative.org/confluence/display/uma/Understanding+the+Session+Fixation+Attack+on+UMA+Claims-Gathering+and+the+Provided+Mitigation">
         <front>
-          <title>UMA Participant Roster</title>
+          <title>Understanding the Session Fixation Attack on UMA
+          Claims-Gathering and the Provided Mitigation</title>
 
           <author initials="E." surname="Maler">
-            <organization>Maler</organization>
+            <organization>ForgeRock</organization>
           </author>
 
-          <date day="" month="" year="2016" />
+          <date day="27" month="February" year="2016" />
         </front>
       </reference>
     </references>
