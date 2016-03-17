@@ -59,8 +59,8 @@
       any number of resource servers, and where a centralized authorization
       server governs access based on resource owner policies. This extension
       to UMA V1.0 and V1.0.1 enhances security by providing an alternate
-      requesting party endpoint that adds entropy to the UMA permission ticket
-      to avoid a session fixation attack.</t>
+      requesting party claims endpoint that adds entropy to the UMA permission
+      ticket to avoid a session fixation attack.</t>
     </abstract>
   </front>
 
@@ -73,8 +73,8 @@
       and where a centralized authorization server governs access based on
       resource owner policies. This extension to UMA V1.0 <xref
       target="UMA10" /> and UMA V1.0.1 <xref target="UMA101" /> enhances
-      security by providing an alternate requesting party endpoint that adds
-      entropy to the UMA permission ticket to avoid a session fixation
+      security by providing an alternate requesting party claims endpoint that
+      adds entropy to the UMA permission ticket to avoid a session fixation
       attack.</t>
 
       <section title="Notational Conventions">
@@ -123,12 +123,12 @@
     <section anchor="getting-authz-accessing-resource"
              title="Security Extension">
       <t>If the client redirects the requesting party end user to the
-      requesting party claims endpoint at the authorisation server, the UMA
+      requesting party claims endpoint at the authorization server, the UMA
       V1.0 and V1.0.1 specifications define that the authorization server must
       return the user agent to the client with, among other parameters, a
       <spanx style="verb">ticket</spanx> parameter whose value is the same as
-      the permission ticket value the client sent to this authorisation server
-      previously. The <spanx style="verb">ticket</spanx> parameter in the
+      the permission ticket value the client sent to this authorization server
+      earlier. The <spanx style="verb">ticket</spanx> parameter in the
       response from the authorization server is required only when the
       authorization server previously sent the client a <spanx
       style="verb">need_info</spanx> response. It is possible for the <spanx
@@ -136,20 +136,21 @@
       to repeat.</t>
 
       <t>A session fixation attack is possible when an attacker uses a client
-      with the same client identifier as the legitimate one and phishes a
-      legitimate requesting party into completing a claims-gathering flow at
+      with the same client identifier as the legitimate client. The attacker phishes a
+      a legitimate requesting party into completing a claims-gathering flow at
       the requesting party claims endpoint of the authorization server.
-      Despite completing a claims-gathering flow, a client operated by a
-      legitimate requesting party does not request a requesting party
-      permission ticket because that party's client did not initiate the flow
-      of requesting access to a protected resource on a resource server.
+      Despite completing such claims-gathering flow, a client operated by a
+      legitimate requesting party does not send a request for a requesting
+      party token because the client acting on behalf of the legitimate
+      requesting party did not initiate the flow
+      of requesting access to a protected resource at a resource server.
       Instead, the attacker takes over and completes the original session with
       the permission ticket value that remains static throughout the
       transaction.</t>
 
       <t>The attack is possible because of a constant permission ticket value
-      pointing to an authorization state at the authorisation server when such
-      authorisation state can change (that is, initially the authorization
+      pointing to an authorization state at the authorization server when such
+      authorization state can change (that is, initially the authorization
       state refers to the permission as registered by the resource server
       while after successful completion of the claims-gathering flow such
       state can refer to an authorized set ot permissions).</t>
@@ -166,7 +167,7 @@
 
           <t>Every time it adds a <spanx style="verb">ticket</spanx> query
           parameter to the <spanx style="verb">claims_redirect_uri</spanx>
-          after a claims-gathering workflow at this endpoint, select a new
+          after a claims-gathering flow at this endpoint, select a new
           securely random value for the permission ticket, and invalidate the
           permission ticket previously received from the client. (Compare with
           Section 3.4.1.2.2 in <xref target="UMA10" /> and Section 3.6.3 in
