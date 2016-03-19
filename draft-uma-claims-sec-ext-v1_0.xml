@@ -50,15 +50,10 @@
       </address>
     </author>
 
-    <date day="15" month="March" year="2016" />
+    <date day="18" month="March" year="2016" />
 
     <abstract>
-      <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
-      resource owners can control protected-resource access by clients
-      operated by arbitrary requesting parties, where the resources reside on
-      any number of resource servers, and where a centralized authorization
-      server governs access based on resource owner policies. This extension
-      to UMA V1.0 and V1.0.1 enhances security by providing an alternate
+      <t>This extension to UMA enhances security by providing an alternate
       requesting party claims endpoint that adds entropy to the UMA permission
       ticket to avoid a session fixation attack.</t>
     </abstract>
@@ -66,30 +61,25 @@
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>User-Managed Access is a profile of OAuth 2.0 <xref
-      target="RFC6749" />. UMA defines how resource owners can control
-      protected-resource access by clients operated by arbitrary requesting
-      parties, where the resources reside on any number of resource servers,
-      and where a centralized authorization server governs access based on
-      resource owner policies. This extension to UMA V1.0 <xref
-      target="UMA10" /> and UMA V1.0.1 <xref target="UMA101" /> enhances
-      security by providing an alternate requesting party claims endpoint that
-      adds entropy to the UMA permission ticket to avoid a session fixation
-      attack.</t>
+      <t>This extension to UMA enhances security by providing an alternate
+      requesting party claims endpoint that adds entropy to the UMA permission
+      ticket to avoid a session fixation attack. The extension applies to V1.0
+      <xref target="UMA10" />, UMA V1.0.1 <xref target="UMA101" />, and any
+      version of UMA susceptible to the identical attack. </t>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
-        'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this
-        document are to be interpreted as described in <xref
-        target="RFC2119" />.</t>
+        'SHOULD', 'SHOULD NOT', 'RECOMMENDED', ]NOT RECOMMENDED', 'MAY', and
+        'OPTIONAL' in this document are to be interpreted as described in
+        <xref target="RFC2119" />.</t>
 
         <t>Unless otherwise noted, all protocol properties and values are case
         sensitive. JSON <xref target="RFC7159" /> data structures defined by
         this specification MAY contain extension properties that are not
         defined in this specification. Any entity receiving or retrieving a
         JSON data structure SHOULD ignore extension properties it is unable to
-        understand. Extension names that are unprotected from collisions are
-        outside the scope of this specification.</t>
+        understand. Names of such extension properties that are unprotected
+        from collisions are outside the scope of this specification.</t>
       </section>
 
       <section anchor="summary"
@@ -99,8 +89,8 @@
             <t>Identifying URI: <spanx
             style="verb">https://docs.kantarainitiative.org/uma/extensions/claims-sec-1.0</spanx><list
                 style="symbols">
-                <t>An UMA V1.0 or V1.0.1 authorization server that supports
-                this extension MUST provide this identifying URI in the <spanx
+                <t>An UMA authorization server implementing this specification
+                MUST provide this identifying URI in the <spanx
                 style="verb">uma_profiles_supported</spanx> property in its
                 configuration data.</t>
               </list></t>
@@ -110,7 +100,7 @@
 
             <t>Updates or obsoletes: None; this extension is new.</t>
 
-            <t>Security considerations: None additional. The topic of the
+            <t>Security considerations: None additional. The purpose of the
             extension is security.</t>
 
             <t>Privacy considerations: None additional.</t>
@@ -122,67 +112,117 @@
 
     <section anchor="getting-authz-accessing-resource"
              title="Security Extension">
-      <t>If the client redirects the requesting party end user to the
-      requesting party claims endpoint at the authorization server, the UMA
-      V1.0 and V1.0.1 specifications define that the authorization server must
-      return the user agent to the client with, among other parameters, a
-      <spanx style="verb">ticket</spanx> parameter whose value is the same as
-      the permission ticket value the client sent to this authorization server
-      earlier. The <spanx style="verb">ticket</spanx> parameter in the
-      response from the authorization server is required only when the
-      authorization server previously sent the client a <spanx
-      style="verb">need_info</spanx> response. It is possible for the <spanx
-      style="verb">need_info</spanx>/<spanx style="verb">ticket</spanx> cycle
-      to repeat.</t>
-
-      <t>A session fixation attack is possible when an attacker uses a client
-      with the same client identifier as the legitimate client. The attacker phishes a
-      a legitimate requesting party into completing a claims-gathering flow at
-      the requesting party claims endpoint of the authorization server.
-      Despite completing such claims-gathering flow, a client operated by a
-      legitimate requesting party does not send a request for a requesting
-      party token because the client acting on behalf of the legitimate
-      requesting party did not initiate the flow
-      of requesting access to a protected resource at a resource server.
-      Instead, the attacker takes over and completes the original session with
-      the permission ticket value that remains static throughout the
-      transaction.</t>
-
-      <t>The attack is possible because of a constant permission ticket value
-      pointing to an authorization state at the authorization server when such
-      authorization state can change (that is, initially the authorization
-      state refers to the permission as registered by the resource server
-      while after successful completion of the claims-gathering flow such
-      state can refer to an authorized set ot permissions).</t>
-
-      <t>To mitigate this attack, an authorization server that has indicated
-      its conformance to this extension profile through the identifying URI
-      indicated in <xref target="summary" /> MUST do the following:<list
-          style="symbols">
-          <t>Advertise an enhanced requesting party claims endpoint in its
-          configuration data called <spanx
-          style="verb">security_enhanced_claims_endpoint</spanx>, and use this
-          endpoint exclusively for interacting with the end-user requesting
-          party to gather claims.</t>
-
-          <t>Every time it adds a <spanx style="verb">ticket</spanx> query
-          parameter to the <spanx style="verb">claims_redirect_uri</spanx>
-          after a claims-gathering flow at this endpoint, select a new
-          securely random value for the permission ticket, and invalidate the
-          permission ticket previously received from the client. (Compare with
-          Section 3.4.1.2.2 in <xref target="UMA10" /> and Section 3.6.3 in
-          <xref target="UMA101" />.) Effectively, when this extension is in
-          effect, the requirement stated in Section 3.2.2 of <xref
-          target="UMA101" /> as "Permission tickets MUST NOT be single-use" is
-          nullfied, and the ticket, in both its front-channel and back-channel
-          correlation roles, becomes a single-use nonce.</t>
-        </list></t>
-
-      <t>This extension does not change any original requirements of UMA if
-      used without these enhancements.</t>
-
       <t>See <xref target="UMAsession" /> for background information on this
-      attack and the provided mitigation.</t>
+      attack, the provided mitigation, and further discussion.</t>
+
+      <section title="Purpose and Applicability of the Extension">
+        <t>One of the methods of requesting party trust elevation defined by
+        UMA, redirecting an end-user requesting party to the authorization
+        server for claims-gathering, is susceptible to a session fixation
+        attack. The consequence is that a malicious requesting party may be
+        able to access a protected resource not intended for access by that
+        party.</t>
+
+        <t>This extension mitigates the attack by enhancing the security of
+        the claims-gathering mechanism. Any authorization server intending to
+        use interactive claims-gathering as the sole means of trust elevation
+        SHOULD consider implementing the extension defined in this
+        specification.</t>
+
+        <t>Trust elevation through authentication context (requesting party
+        authentication at the authorization endpoint) and pushed claims
+        (claims provided to the RPT endpoint by the client) are not
+        susceptible to this attack.</t>
+      </section>
+
+      <section title="Attack Sequence">
+        <t>Preconditions:<list style="symbols">
+            <t>The attacker (a malicious requesting party) and the victim (an
+            innocent end-user requesting party) both use a client (same
+            instance or different instances) with the same client ID. The
+            client(s) are legitimate and uncompromised.</t>
+
+            <t>Both the attacker and the victim already have AATs.</t>
+          </list></t>
+
+        <t>Sequence:<list style="numbers">
+            <t>The attacker attempts access to an UMA-protected resource at a
+            resource server that she should not be able to access.</t>
+
+            <t>The resource server registers a requested permission; the
+            authorization server returns a permission ticket; and the resource
+            server returns a permission ticket (along with other data) to the
+            client.</t>
+
+            <t>The client asks for authorization data and RPT at the
+            authorization server; the authorization server returns a <spanx
+            style="verb">need_info</spanx> response with an <spanx
+            style="verb">error_details</spanx> block containing a <spanx
+            style="verb">redirect_user</spanx> hint (or the client infers the
+            requirement to redirect the victim's browser to the requesting
+            party claims endpoint).</t>
+
+            <t>The client attempts to redirect the victim's browser to the
+            requesting party claims endpoint, but the attacker prevents this
+            redirection and copies the redirect URL (optionally stripping off
+            the state parameter), including a permission ticket query
+            parameter, and passes it to the victim.</t>
+
+            <t>After being phished with the URL, the victim assists the
+            authorization server in completing the claims-gathering
+            process.</t>
+
+            <t>The authorization server redirects the victim back to the
+            client. No relevant session is found in the client, so the
+            POST-redirect request fails. Alternatively, if the attacker
+            controls the victim's network access, she prevents communication
+            between victim and client.</t>
+
+            <t>After sufficient time has elapsed, the attacker sends a final
+            request for an RPT, and receives an RPT with sufficient
+            authorization data.</t>
+
+            <t>The attacker gains access to the protected resource.</t>
+          </list></t>
+      </section>
+
+      <section title="Mitigation of the Attack">
+        <t>To mitigate this attack, an authorization server indicating its
+        conformance to this extension through the identifying URI indicated in
+        <xref target="summary" /> MUST do the following.<list style="symbols">
+            <t>The authorization server MUST provide a configuration data
+            property for an enhanced requesting party claims endpoint in its
+            configuration data called <spanx
+            style="verb">security_enhanced_claims_endpoint</spanx>, with the
+            URI for the endpoint as its value.</t>
+
+            <t>The authorization server MUST replace any use of the originally
+            specified requesting party claims endpoint with the
+            security-enhanced claims endpoint for interacting with the
+            end-user requesting party to gather claims. It MUST NOT provide a
+            configuration data property for the <spanx
+            style="verb">requesting_party_claims_endpoint</spanx> endpoint.
+            Effectively, this extension supersedes the <xref target="UMA10" />
+            and <xref target="UMA101" /> Section 1.4 statement "If this
+            property is absent, the authorization server does not interact
+            with the end-user requesting party for claims gathering."</t>
+
+            <t>The authorization server MUST, every time it adds a <spanx
+            style="verb">ticket</spanx> query parameter to the <spanx
+            style="verb">claims_redirect_uri</spanx> after a claims-gathering
+            flow at this security-enhanced endpoint, select a new unguessable
+            securely random value for the permission ticket and invalidate the
+            permission ticket previously received from the client.
+            Effectively, this extension supersedes the <xref
+            target="UMA101" /> Section 3.2.2 requirement "Permission tickets
+            MUST NOT be single-use" and the Section 3.6.3 phrase "The same
+            permission ticket value that the client provided in the
+            request..."; the ticket, in both its front-channel and
+            back-channel correlation roles, becomes a single-use nonce. This
+            defeats the attacker's ability to compose a successful RPT request
+            in step 7 of the sequence.</t>
+          </list></t>
+      </section>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -233,8 +273,6 @@
       </reference>
 
       &RFC2119;
-
-      &RFC6749;
 
       &RFC7159;
     </references>
