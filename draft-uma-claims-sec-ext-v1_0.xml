@@ -135,7 +135,7 @@
         susceptible to this attack.</t>
       </section>
 
-      <section title="Attack Sequence">
+      <section title="Attack Sequence" anchor="attack">
         <t>Preconditions:<list style="symbols">
             <t>The attacker (a malicious requesting party) and the victim (a
             legitimate end-user requesting party) both use a client (same
@@ -224,7 +224,7 @@
             request..."; the ticket, in both its front-channel and
             back-channel correlation roles, becomes a single-use nonce. This
             defeats the attacker's ability to compose a successful RPT request
-            in step 7 of the UMA protocol sequence.</t>
+            in step 7 of the attack described in <xref target="summary" />.</t>
           </list></t>
       </section>
     </section>
