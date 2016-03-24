@@ -61,20 +61,22 @@
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>This extension to UMA enhances security by providing an alternate
-      requesting party claims endpoint that adds entropy to the UMA permission
-      ticket to avoid a session fixation attack. The extension applies to V1.0
-      <xref target="UMA10" />, UMA V1.0.1 <xref target="UMA101" />, and any
-      version of UMA susceptible to the identical attack. </t>
+      <t>This extension to the User Managed Access (UMA) protocol provides
+      enhanced security by defining an alternate requesting party claims
+      endpoint. This endpoint alters the claims gathering process to generate
+      an unpredictable return URI by returning a new UMA permission ticket
+      value, thereby avoiding an existing session fixation attack. This
+      extension applies to UMA V1.0 <xref target="UMA10"/>, UMA V1.0.1 <xref
+      target="UMA101"/>, and any version of UMA susceptible to the attack.</t>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
         'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED', 'MAY', and
         'OPTIONAL' in this document are to be interpreted as described in
-        <xref target="RFC2119" />.</t>
+        <xref target="RFC2119"/>.</t>
 
         <t>Unless otherwise noted, all protocol properties and values are case
-        sensitive. JSON <xref target="RFC7159" /> data structures defined by
+        sensitive. JSON <xref target="RFC7159"/> data structures defined by
         this specification MAY contain extension properties that are not
         defined in this specification. Any entity receiving or retrieving a
         JSON data structure SHOULD ignore extension properties it is unable to
