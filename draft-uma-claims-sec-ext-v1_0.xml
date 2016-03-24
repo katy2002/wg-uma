@@ -42,15 +42,15 @@
       </address>
     </author>
 
-    <author fullname="Domenico Catalano" initials="D." surname="Catalano">
-      <organization>Oracle</organization>
+    <author fullname="Justin Richer" initials="J." surname="Richer">
+      <organization>Bespoke Engineering</organization>
 
       <address>
-        <email>domenico.catalano@oracle.com</email>
+        <email>kantara@justin.richer.org</email>
       </address>
     </author>
 
-    <date day="22" month="March" year="2016" />
+    <date day="22" month="March" year="2016"/>
 
     <abstract>
       <t>This extension to UMA enhances security by providing an alternate
@@ -271,8 +271,6 @@
       Group's understanding of the attack (in alphabetical order):<list
           style="symbols">
           <t>Josh Mandel</t>
-
-          <t>Justin Richer</t>
 
           <t>Sarah Squire</t>
         </list></t>
