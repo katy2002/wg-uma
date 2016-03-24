@@ -277,13 +277,14 @@
     </section>
 
     <section title="Security Considerations">
-      <t>An authorization server must not allow clients to use both the old
-      style claims gathering endpoint as well as the new security-enhanced
-      claims gathering endpoint to be used simultaneously, since it is
-      impossible for the authorization server to differentiate between a
-      legitimate request from a non-upgraded client (using a fixed permission
-      ticket value) from a compromised client using the new protocol (and
-      simply ignoring the new ticket value).</t>
+      <t>It is essential for an authorization server to handle only one style
+      of claims gathering for clients. An authorization server must not allow
+      clients to use both the old style claims gathering endpoint as well as
+      the new security-enhanced claims gathering endpoint to be used
+      simultaneously, since it is impossible for the authorization server to
+      differentiate between a legitimate request from a non-upgraded client
+      (using a fixed permission ticket value) from a compromised client using
+      the new protocol (and simply ignoring the new ticket value).</t>
     </section>
   </middle>
 
