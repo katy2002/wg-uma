@@ -134,8 +134,11 @@
         claims gathering process and halting the attack. The URI is made
         unguessable by returning a new permission ticket value, which the
         client then uses to interact with the authorization server from that
-        point forward, discarding any previous ticket values in the
-        process.</t>
+        point forward, discarding any previous ticket values in the process.
+        This functionality is implemented through a new security enhanced
+        claims gathering endpoint that replaces the requesting party claims
+        gatering endpoint; the rest of the claims gathering process remains
+        unchanged.</t>
 
         <t>Any authorization server intending to use interactive
         claims-gathering as a means of trust elevation SHOULD implement the
