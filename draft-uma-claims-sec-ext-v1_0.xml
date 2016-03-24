@@ -5,8 +5,8 @@
 <!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 ]>
-<rfc category="std" docName="draft-uma-claims-ext" id="kantara" ipr="kantara"
-     target="publicReview" version="1.0">
+<rfc category="std" docName="draft-uma-claims-sec-ext" id="kantara"
+     ipr="kantara" target="publicReview" version="1.0">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
