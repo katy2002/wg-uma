@@ -114,43 +114,52 @@
 
     <section anchor="getting-authz-accessing-resource"
              title="Security Extension">
-      <t>See <xref target="UMAsession" /> for background information on this
+      <t>See <xref target="UMAsession"/> for background information on this
       attack, the provided mitigation, and further discussion.</t>
 
-      <section title="Purpose and Applicability of the Extension">
+      <section anchor="purpose"
+               title="Purpose and Applicability of the Extension">
         <t>One of the methods of requesting party trust elevation defined by
         UMA is redirecting an end-user requesting party to the authorization
-        server for claims-gathering. This method is susceptible to a session 
-        fixation attack. The consequence is that a malicious requesting party
-        may be able to access a protected resource not intended for access by
-        that party.</t>
+        server for claims-gathering. Since the return URI from this claims
+        gathering process is predictable, this method is susceptible to a
+        session fixation attack. As a consequence, a malicious requesting
+        party may be able to access a protected resource not intended for
+        access by that party by having a legitimate user supply claims and
+        associate them with the attacker's permission ticket.</t>
 
         <t>This extension mitigates the attack by enhancing the security of
-        the claims-gathering mechanism. Any authorization server intending to
-        use interactive claims-gathering as the sole means of trust elevation
-        SHOULD consider implementing the extension defined in this
-        specification.</t>
+        the claims-gathering mechanism to return an unpredictable URI, thereby
+        making an attacker unable to guess the return state from the victim's
+        claims gathering process and halting the attack. The URI is made
+        unguessable by returning a new permission ticket value, which the
+        client then uses to interact with the authorization server from that
+        point forward, discarding any previous ticket values in the
+        process.</t>
 
-        <t>Trust elevation through authentication context (requesting party
-        authentication at the authorization endpoint) and pushed claims
-        (claims provided to the RPT endpoint by the client) are not
-        susceptible to this attack.</t>
+        <t>Any authorization server intending to use interactive
+        claims-gathering as the sole means of trust elevation SHOULD implement
+        the extension defined in this specification. Trust elevation through
+        authentication context (requesting party authentication at the
+        authorization endpoint) and pushed claims (claims provided to the RPT
+        endpoint by the client) are not susceptible to this attack.</t>
       </section>
 
-      <section title="Attack Sequence" anchor="attack">
+      <section anchor="attack" title="Attack Sequence">
         <t>Preconditions:<list style="symbols">
             <t>The attacker (a malicious requesting party) and the victim (a
             legitimate end-user requesting party) both use a client (same
-            instance or different instances) with the same client ID. The
-            client(s) are legitimate and uncompromised.</t>
+            instance or different instances) with the same client ID. </t>
+
+            <t>The client(s) are legitimate and uncompromised.</t>
 
             <t>Both the attacker and the victim already have their respective
-              AATs.</t>
+            AATs, which are valid.</t>
           </list></t>
 
         <t>Sequence:<list style="numbers">
-            <t>The attacker attempts access to an UMA-protected resource at a
-            resource server that they should not be able to access.</t>
+            <t>The attacker attempts access to an UMA protected resource
+            normally available to the victim but not the attacker.</t>
 
             <t>The resource server registers a requested permission; the
             authorization server returns a permission ticket; and the resource
@@ -162,39 +171,75 @@
             style="verb">need_info</spanx> response with an <spanx
             style="verb">error_details</spanx> block containing a <spanx
             style="verb">redirect_user</spanx> hint (or the client infers the
-            requirement to redirect the victim's browser to the requesting
-            party claims endpoint).</t>
+            requirement to redirect the browser to the requesting party claims
+            endpoint).</t>
 
-            <t>The client attempts to redirect the victim's browser to the
-            requesting party claims endpoint, but the attacker prevents this
-            redirection and copies the redirect URL (optionally stripping off
-            the state parameter), including a permission ticket query
-            parameter, and passes it to the victim.</t>
+            <t>The client attempts to redirect the attacker's browser to the
+            requesting party claims endpoint, but the attacker copies the
+            redirect URL (optionally stripping off the state parameter),
+            including a permission ticket query parameter, and passes it to
+            the victim. The attacker may try to prevent the redirect from
+            their client as well.</t>
 
-            <t>The victim needs to be tricked to access the URL provided by
-            the attacker (e.g. using a phishing technique). After being
-            phished with the URL, the victim assists the authorization server
-            in completing the claims-gathering process.</t>
+            <t>The victim is tricked to access the URL provided by the
+            attacker (e.g. using a phishing technique). After being phished
+            with the URL, the victim assists the authorization server in
+            completing the claims-gathering process.</t>
 
             <t>The authorization server redirects the victim back to the
             client. No relevant session is found in the client, so the
             post-redirect request fails. Alternatively, if the attacker
             controls the victim's network access, they prevent communication
-            between victim and client.</t>
+            between victim and client and stop the redirect.</t>
 
             <t>After sufficient time has elapsed, the attacker sends a final
-            request for an RPT, and receives an RPT with sufficient
-            authorization data to access an UMA-protected resource at a resource
-            server.</t>
+            request for an RPT using their original ticket value and receives
+            an RPT with sufficient authorization data to access the UMA
+            protected resource.</t>
 
-            <t>The attacker gains access to the UMA-protected resource.</t>
+            <t>The attacker gains access to the UMA protected resource using
+            the RPT empowered with the victim's claims provided in (5).</t>
           </list></t>
       </section>
 
-      <section title="Mitigation of the Attack">
+      <section anchor="mitigation" title="Mitigation of the Attack">
         <t>To mitigate this attack, an UMA authorization server indicating its
         conformance to this extension through the identifying URI defined in
-        <xref target="summary" /> MUST do the following.<list style="symbols">
+        <xref target="summary"/> MUST do the following.<list style="symbols">
+            <t>The authorization server MUST select a new unguessable value
+            for the permission ticket and invalidate the permission ticket
+            previously received from the client every time it adds a <spanx
+            style="verb">ticket</spanx> query parameter to the <spanx
+            style="verb">claims_redirect_uri</spanx> after a claims-gathering
+            flow at this security-enhanced endpoint. This extension supersedes
+            the <xref target="UMA101"/> Section 3.2.2 requirement "Permission
+            tickets MUST NOT be single-use" and the Section 3.6.3 phrase "The
+            same permission ticket value that the client provided in the
+            request...". Consequently, the ticket becomes a single-use nonce
+            in both its front-channel and back-channel correlation roles. This
+            ticket value rotation defeats the attacker's ability to compose a
+            successful RPT request in step 7 of the attack described in <xref
+            target="attack"/>.</t>
+
+            <t>The client MUST read the new <spanx style="verb">ticket</spanx>
+            value from the callback to its <spanx
+            style="verb">claims_redirect_uri</spanx> and MUST discard the
+            previous <spanx style="verb">ticket</spanx> value used in the
+            request to the claims gathering endpoint. </t>
+
+            <t>The client MUST use new <spanx style="verb">ticket</spanx>
+            value for all future interactions with the authorization server,
+            including the RPT endpoint and security enhanced claims gathering
+            endpoint, until such time that its value is replaced again (such
+            as by repeated calls to the security enhanced claims gathering
+            endpoint).</t>
+
+            <t>The client SHOULD use the <spanx style="verb">state</spanx>
+            parameter to prevent other forms of attacks against its <spanx
+            style="verb">claims_redirect_uri</spanx> endpoint, but use of the
+            <spanx style="verb">state</spanx> parameter alone does not prevent
+            the attack described in this specification.</t>
+
             <t>The authorization server MUST provide a configuration data
             property for an alternate requesting party claims endpoint in its
             configuration data called <spanx
@@ -204,29 +249,15 @@
             <t>The authorization server MUST replace any use of the originally
             specified requesting party claims endpoint with the
             security-enhanced requesting party claims endpoint for interacting
-            with the end-user requesting party to gather claims.
-            The authorization server MUST NOT provide a
-            configuration data property for the <spanx
-            style="verb">requesting_party_claims_endpoint</spanx> configuration
-            data. Effectively, this extension supersedes the <xref target="UMA10" />
-            and <xref target="UMA101" /> Section 1.4 statement "If this
-            property is absent, the authorization server does not interact
-            with the end-user requesting party for claims gathering."</t>
-
-            <t>The authorization server MUST, every time it adds a <spanx
-            style="verb">ticket</spanx> query parameter to the <spanx
-            style="verb">claims_redirect_uri</spanx> after a claims-gathering
-            flow at this security-enhanced endpoint, select a new unguessable
-            value for the permission ticket and invalidate the
-            permission ticket previously received from the client.
-            Effectively, this extension supersedes the <xref
-            target="UMA101" /> Section 3.2.2 requirement "Permission tickets
-            MUST NOT be single-use" and the Section 3.6.3 phrase "The same
-            permission ticket value that the client provided in the
-            request..."; the ticket, in both its front-channel and
-            back-channel correlation roles, becomes a single-use nonce. This
-            defeats the attacker's ability to compose a successful RPT request
-            in step 7 of the attack described in <xref target="summary" />.</t>
+            with the end-user requesting party to gather claims. The
+            authorization server MUST NOT provide a configuration data
+            property for the <spanx
+            style="verb">requesting_party_claims_endpoint</spanx>
+            configuration data. Effectively, this extension supersedes the
+            <xref target="UMA10"/> and <xref target="UMA101"/> Section 1.4
+            statement "If this property is absent, the authorization server
+            does not interact with the end-user requesting party for claims
+            gathering."</t>
           </list></t>
       </section>
     </section>
