@@ -208,7 +208,8 @@
       <section anchor="mitigation" title="Mitigation of the Attack">
         <t>To mitigate this attack, an UMA authorization server indicating its
         conformance to this extension through the identifying URI defined in
-        <xref target="summary"/> MUST do the following.<list style="symbols">
+        <xref target="summary"/> and the client conforming to this extension
+        MUST do the following.<list style="symbols">
             <t>The authorization server MUST select a new unguessable value
             for the permission ticket and invalidate the permission ticket
             previously received from the client every time it adds a <spanx
