@@ -138,8 +138,8 @@
         process.</t>
 
         <t>Any authorization server intending to use interactive
-        claims-gathering as the sole means of trust elevation SHOULD implement
-        the extension defined in this specification. Trust elevation through
+        claims-gathering as a means of trust elevation SHOULD implement the
+        extension defined in this specification. Trust elevation through
         authentication context (requesting party authentication at the
         authorization endpoint) and pushed claims (claims provided to the RPT
         endpoint by the client) are not susceptible to this attack.</t>
