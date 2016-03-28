@@ -50,33 +50,34 @@
       </address>
     </author>
 
-    <date day="22" month="March" year="2016"/>
+    <date day="28" month="March" year="2016" />
 
     <abstract>
       <t>This extension to UMA enhances security by providing an alternate
-      requesting party claims endpoint that adds entropy to the UMA permission
-      ticket to avoid a session fixation attack.</t>
+      requesting party claims endpoint that alters the claims-gathering
+      process to avoid a session fixation attack.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>This extension to the User Managed Access (UMA) protocol provides
+      <t>This extension to the User-Managed Access (UMA) protocol provides
       enhanced security by defining an alternate requesting party claims
-      endpoint. This endpoint alters the claims gathering process to generate
-      an unpredictable return URI by returning a new UMA permission ticket
-      value, thereby avoiding an existing session fixation attack. This
-      extension applies to UMA V1.0 <xref target="UMA10"/>, UMA V1.0.1 <xref
-      target="UMA101"/>, and any version of UMA susceptible to the attack.</t>
+      endpoint, called the security-enhanced claims endpoint. This endpoint
+      alters the claims-gathering process to generate an unpredictable return
+      URI by returning a new UMA permission ticket value, thereby avoiding an
+      existing session fixation attack. This extension applies to UMA V1.0
+      <xref target="UMA10" />, UMA V1.0.1 <xref target="UMA101" />, and any
+      version of UMA susceptible to the attack.</t>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
         'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED', 'MAY', and
         'OPTIONAL' in this document are to be interpreted as described in
-        <xref target="RFC2119"/>.</t>
+        <xref target="RFC2119" />.</t>
 
         <t>Unless otherwise noted, all protocol properties and values are case
-        sensitive. JSON <xref target="RFC7159"/> data structures defined by
+        sensitive. JSON <xref target="RFC7159" /> data structures defined by
         this specification MAY contain extension properties that are not
         defined in this specification. Any entity receiving or retrieving a
         JSON data structure SHOULD ignore extension properties it is unable to
@@ -114,16 +115,16 @@
 
     <section anchor="getting-authz-accessing-resource"
              title="Security Extension">
-      <t>See <xref target="UMAsession"/> for background information on this
+      <t>See <xref target="UMAsession" /> for background information on this
       attack, the provided mitigation, and further discussion.</t>
 
       <section anchor="purpose"
                title="Purpose and Applicability of the Extension">
         <t>One of the methods of requesting party trust elevation defined by
         UMA is redirecting an end-user requesting party to the authorization
-        server for claims-gathering. Since the return URI from this claims
-        gathering process is predictable, this method is susceptible to a
-        session fixation attack. As a consequence, a malicious requesting
+        server for claims-gathering. Since the return URI from this
+        claims-gathering process is predictable, this method is susceptible to
+        a session fixation attack. As a consequence, a malicious requesting
         party may be able to access a protected resource not intended for
         access by that party by having a legitimate user supply claims and
         associate them with the attacker's permission ticket.</t>
@@ -131,14 +132,13 @@
         <t>This extension mitigates the attack by enhancing the security of
         the claims-gathering mechanism to return an unpredictable URI, thereby
         making an attacker unable to guess the return state from the victim's
-        claims gathering process and halting the attack. The URI is made
+        claims-gathering process and halting the attack. The URI is made
         unguessable by returning a new permission ticket value, which the
         client then uses to interact with the authorization server from that
         point forward, discarding any previous ticket values in the process.
         This functionality is implemented through a new security enhanced
-        claims gathering endpoint that replaces the requesting party claims
-        gatering endpoint; the rest of the claims gathering process remains
-        unchanged.</t>
+        claims endpoint that replaces the requesting party claims endpoint;
+        the rest of the claims-gathering process remains unchanged.</t>
 
         <t>Any authorization server intending to use interactive
         claims-gathering as a means of trust elevation SHOULD implement the
@@ -152,7 +152,7 @@
         <t>Preconditions:<list style="symbols">
             <t>The attacker (a malicious requesting party) and the victim (a
             legitimate end-user requesting party) both use a client (same
-            instance or different instances) with the same client ID. </t>
+            instance or different instances) with the same client ID.</t>
 
             <t>The client(s) are legitimate and uncompromised.</t>
 
@@ -208,7 +208,7 @@
       <section anchor="mitigation" title="Mitigation of the Attack">
         <t>To mitigate this attack, an UMA authorization server indicating its
         conformance to this extension through the identifying URI defined in
-        <xref target="summary"/> and the client conforming to this extension
+        <xref target="summary" /> and the client conforming to this extension
         MUST do the following.<list style="symbols">
             <t>The authorization server MUST select a new unguessable value
             for the permission ticket and invalidate the permission ticket
@@ -216,26 +216,26 @@
             style="verb">ticket</spanx> query parameter to the <spanx
             style="verb">claims_redirect_uri</spanx> after a claims-gathering
             flow at this security-enhanced endpoint. This extension supersedes
-            the <xref target="UMA101"/> Section 3.2.2 requirement "Permission
+            the <xref target="UMA101" /> Section 3.2.2 requirement "Permission
             tickets MUST NOT be single-use" and the Section 3.6.3 phrase "The
             same permission ticket value that the client provided in the
             request...". Consequently, the ticket becomes a single-use nonce
             in both its front-channel and back-channel correlation roles. This
             ticket value rotation defeats the attacker's ability to compose a
             successful RPT request in step 7 of the attack described in <xref
-            target="attack"/>.</t>
+            target="attack" />.</t>
 
             <t>The client MUST read the new <spanx style="verb">ticket</spanx>
             value from the callback to its <spanx
             style="verb">claims_redirect_uri</spanx> and MUST discard the
             previous <spanx style="verb">ticket</spanx> value used in the
-            request to the claims gathering endpoint. </t>
+            request to the claims-gathering endpoint.</t>
 
             <t>The client MUST use new <spanx style="verb">ticket</spanx>
             value for all future interactions with the authorization server,
-            including the RPT endpoint and security enhanced claims gathering
+            including the RPT endpoint and security enhanced claims-gathering
             endpoint, until such time that its value is replaced again (such
-            as by repeated calls to the security enhanced claims gathering
+            as by repeated calls to the security enhanced claims-gathering
             endpoint).</t>
 
             <t>The client SHOULD use the <spanx style="verb">state</spanx>
@@ -258,7 +258,7 @@
             property for the <spanx
             style="verb">requesting_party_claims_endpoint</spanx>
             configuration data. Effectively, this extension supersedes the
-            <xref target="UMA10"/> and <xref target="UMA101"/> Section 1.4
+            <xref target="UMA10" /> and <xref target="UMA101" /> Section 1.4
             statement "If this property is absent, the authorization server
             does not interact with the end-user requesting party for claims
             gathering."</t>
@@ -283,12 +283,12 @@
     <section title="Security Considerations">
       <t>It is essential for an authorization server to handle only one style
       of claims gathering for clients. An authorization server must not allow
-      clients to use both the old style claims gathering endpoint as well as
-      the new security-enhanced claims gathering endpoint to be used
-      simultaneously, since it is impossible for the authorization server to
-      differentiate between a legitimate request from a non-upgraded client
-      (using a fixed permission ticket value) from a compromised client using
-      the new protocol (and simply ignoring the new ticket value).</t>
+      clients to use both the old requesting party claims endpoint and the new
+      security-enhanced claims endpoint to be used simultaneously, since it is
+      impossible for the authorization server to differentiate between a
+      legitimate request from a non-upgraded client (using a fixed permission
+      ticket value) from a compromised client using the new protocol (and
+      simply ignoring the new ticket value).</t>
     </section>
   </middle>
 
@@ -338,7 +338,7 @@
             <organization>ForgeRock</organization>
           </author>
 
-          <date day="27" month="February" year="2016" />
+          <date day="28" month="March" year="2016" />
         </front>
       </reference>
     </references>
