@@ -6,7 +6,7 @@
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 ]>
 <rfc category="std" docName="draft-uma-claims-sec-ext" id="kantara"
-     ipr="kantara" target="publicReview" version="1.0">
+     ipr="kantara" target="draft" version="1.0">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -50,7 +50,7 @@
       </address>
     </author>
 
-    <date day="28" month="March" year="2016" />
+    <date day="29" month="March" year="2016" />
 
     <abstract>
       <t>This extension to UMA enhances security by providing an alternate
@@ -133,10 +133,10 @@
         the claims-gathering mechanism to return an unpredictable URI, thereby
         making an attacker unable to guess the return state from the victim's
         claims-gathering process and halting the attack. The URI is made
-        unguessable by returning a new permission ticket value, which the
+        unguessable by returning a new permission ticket value which the
         client then uses to interact with the authorization server from that
         point forward, discarding any previous ticket values in the process.
-        This functionality is implemented through a new security enhanced
+        This functionality is implemented through a new security-enhanced
         claims endpoint that replaces the requesting party claims endpoint;
         the rest of the claims-gathering process remains unchanged.</t>
 
@@ -157,7 +157,7 @@
             <t>The client(s) are legitimate and uncompromised.</t>
 
             <t>Both the attacker and the victim already have their respective
-            AATs, which are valid.</t>
+            AATs which are valid.</t>
           </list></t>
 
         <t>Sequence:<list style="numbers">
@@ -283,7 +283,7 @@
     <section title="Security Considerations">
       <t>It is essential for an authorization server to handle only one style
       of claims gathering for clients. An authorization server must not allow
-      clients to use both the old requesting party claims endpoint and the new
+      clients to use both the requesting party claims endpoint and the
       security-enhanced claims endpoint to be used simultaneously, since it is
       impossible for the authorization server to differentiate between a
       legitimate request from a non-upgraded client (using a fixed permission

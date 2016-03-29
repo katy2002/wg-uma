@@ -5866,6 +5866,9 @@ dd, li, p {
             This Internet-Draft is submitted to IETF in full conformance with
             the provisions of BCP 78 and BCP 79.
           </xsl:when>
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'draft')">
+            This document is a draft technical specification produced by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref>. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
+          </xsl:when>
           <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'publicReview')">
             This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for Public Review. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
