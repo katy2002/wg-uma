@@ -7,8 +7,8 @@
 <!ENTITY UMA PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/Home">
 <!ENTITY UMAreqs PUBLIC "" "http://kantarainitiative.org/confluence/display/uma/UMA+Requirements">
 ]>
-<rfc category="std" docName="draft-oauth-resource-reg"
-     id="kantara" ipr="kantara" version="1.0.1" target="approved">
+<rfc category="std" docName="oauth-resource-reg" id="kantara" ipr="kantara"
+     target="draft" version="2.0">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -26,16 +26,7 @@
   <front>
     <title abbrev="OAuth RSR">OAuth 2.0 Resource Set Registration</title>
 
-    <author fullname="Thomas Hardjono" initials="T." role="editor"
-            surname="Hardjono">
-      <organization>MIT</organization>
-
-      <address>
-        <email>hardjono@mit.edu</email>
-      </address>
-    </author>
-
-    <author fullname="Eve Maler" initials="E." surname="Maler">
+    <author fullname="Eve Maler" initials="E." role="editor" surname="Maler">
       <organization>ForgeRock</organization>
 
       <address>
@@ -44,22 +35,22 @@
     </author>
 
     <author fullname="Maciej Machulak" initials="M." surname="Machulak">
-      <organization>Synergetics</organization>
+      <organization>iWelcome</organization>
 
       <address>
-        <email>maciej@synergetics.be</email>
+        <email>maciej.machulak@iwelcome.com</email>
       </address>
     </author>
 
-    <author fullname="Domenico Catalano" initials="D." surname="Catalano">
-      <organization>Oracle</organization>
+    <author fullname="Justin Richer" initials="J." surname="Richer">
+      <organization>Bespoke Engineering</organization>
 
       <address>
-        <email>domenico.catalano@oracle.com</email>
+        <email>justin@bspk.io</email>
       </address>
     </author>
 
-    <date day="28" month="December" year="2015" />
+    <date day="9" month="August" year="2016"/>
 
     <abstract>
       <t>This specification defines a resource set registration mechanism
@@ -72,7 +63,7 @@
   <middle>
     <section anchor="introduction" title="Introduction">
       <t>There are various circumstances under which an OAuth 2.0 <xref
-      target="RFC6749" /> resource server may need to communicate information
+      target="RFC6749"/> resource server may need to communicate information
       about its protected resources to its authorization server:<list
           style="symbols">
           <t>In some deployments of OAuth 2.0, many resource servers share a
@@ -84,7 +75,7 @@
           servers.</t>
 
           <t>In some deployments of OpenID Connect <xref
-          target="OpenIDConnect" />, which has a dependency on OAuth 2.0, the
+          target="OpenIDConnect"/>, which has a dependency on OAuth 2.0, the
           OpenID Provider (OP) component is a specialized version of an OAuth
           authorization server that brokers availability of user attributes by
           dealing with an ecosystem of attribute providers (APs). These APs
@@ -94,7 +85,7 @@
           the APs and OP is able to be established in a dynamic, loosely
           coupled fashion.</t>
 
-          <t>In some deployments of User-Managed Access <xref target="UMA" />,
+          <t>In some deployments of User-Managed Access <xref target="UMA"/>,
           which has a dependency on OAuth 2.0, an end-user resource owner (the
           "user" in UMA) may choose their own authorization server as an
           independent cloud-based service, along with using any number of
@@ -115,10 +106,10 @@
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
         'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this
         document are to be interpreted as described in <xref
-        target="RFC2119" />.</t>
+        target="RFC2119"/>.</t>
 
         <t>Unless otherwise noted, all protocol properties and values are case
-        sensitive. JSON <xref target="RFC7159" /> data structures defined by
+        sensitive. JSON <xref target="RFC7159"/> data structures defined by
         this specification MAY contain extension properties that are not
         defined in this specification. Any entity receiving or retrieving a
         JSON data structure SHOULD ignore extension properties it is unable to
@@ -158,7 +149,7 @@
             defined by this specification at which the resource server
             registers resource sets it wants the authorization server to know
             about. The operations available at this endpoint constitute a
-            resource set registration API (see <xref target="reg-api" />). For
+            resource set registration API (see <xref target="reg-api"/>). For
             purposes of illustration in this specification, the resource set
             registration endpoint used in examples is <spanx
             style="verb">/rs</spanx>/.</t>
@@ -177,7 +168,7 @@
       <t>This specification defines a resource set registration API. The
       endpoint for this API SHOULD also require some form of authentication to
       access this endpoint, such as Client Authentication as described in
-      <xref target="RFC6749" /> or a separate OAuth access token. The methods
+      <xref target="RFC6749"/> or a separate OAuth access token. The methods
       of managing and validating these authentication credentials are out of
       scope of this specification.</t>
 
@@ -186,10 +177,10 @@
       resource sets at the authorization server's registration endpoint.</t>
 
       <t>Note: When a client attempts access to a presumptively protected
-      resource without an access token, as occurs in <xref target="UMA" />,
-      the resource server needs to derive the authorization server and
-      resource set identifier associated with that resource from some other
-      aspect of the client's request. This effectively means that the resource
+      resource without an access token, as occurs in <xref target="UMA"/>, the
+      resource server needs to derive the authorization server and resource
+      set identifier associated with that resource from some other aspect of
+      the client's request. This effectively means that the resource
       server&rsquo;s API needs to be structured in such a way that the
       client's request without an access token uniquely identifies the
       resource set. In practice, this information likely needs to be passed
@@ -237,9 +228,9 @@
             <t hangText="scopes">REQUIRED. An array of strings indicating the
             available scopes for this resource set. Any of the strings MAY be
             either a plain string or a URI (see <xref
-            target="scope-interpretation" />). If a scope is a URI, then it
+            target="scope-interpretation"/>). If a scope is a URI, then it
             MUST resolve to a scope description document (see <xref
-            target="action-desc" />).</t>
+            target="action-desc"/>).</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource set. The authorization server MAY use
@@ -251,19 +242,12 @@
           <preamble>For example, this description characterizes a resource set
           (a photo album) that can potentially be viewed or printed; the scope
           URI points to a scope description as defined in <xref
-          target="action-desc" />:</preamble>
+          target="action-desc"/>:</preamble>
 
-          <artwork><![CDATA[
-{
-  "name" : "Photo Album",
-  "icon_uri" : "http://www.example.com/icons/flower.png",
-  "scopes" : [
-    "view",
-    "http://photoz.example.com/dev/scopes/print"
-  ],
-  "type" : "http://www.example.com/rsets/photoalbum"
-}
-]]></artwork>
+          <artwork>{ "name" : "Photo Album", "icon_uri" :
+          "http://www.example.com/icons/flower.png", "scopes" : [ "view",
+          "http://photoz.example.com/dev/scopes/print" ], "type" :
+          "http://www.example.com/rsets/photoalbum" }</artwork>
         </figure>
 
         <section anchor="action-desc" title="Scope Descriptions">
@@ -285,16 +269,12 @@
             scope that involves reading or viewing resources (vs. creating
             them or editing them in some fashion):</preamble>
 
-            <artwork><![CDATA[
-{
-  "name" : "View",
-  "icon_uri" : "http://www.example.com/icons/reading-glasses"
-}
-]]></artwork>
+            <artwork>{ "name" : "View", "icon_uri" :
+            "http://www.example.com/icons/reading-glasses" }</artwork>
           </figure>
 
-          <t>See <xref target="resource-reg-example" /> for a long-form
-          example of scope descriptions used in resource set registration.</t>
+          <t>See <xref target="resource-reg-example"/> for a long-form example
+          of scope descriptions used in resource set registration.</t>
         </section>
 
         <section anchor="scope-interpretation" title="Scope Interpretation">
@@ -334,7 +314,7 @@
 
         <t>The {rsreguri} component is the authorization server's resource set
         registration endpoint as advertised in its configuration data (see
-        <xref target="am-endpoints" />). Following is a summary of the five
+        <xref target="am-endpoints"/>). Following is a summary of the five
         registration operations the authorization server is REQUIRED to
         support. Each is defined in its own section below. All other methods
         are unsupported. The <spanx style="verb">{_id}</spanx> is the
@@ -380,7 +360,7 @@
         <t>If the request to the resource set registration endpoint is
         incorrect, then the authorization server instead responds with an
         error message by including one of the following error codes with the
-        response (see <xref target="errors" />):<list style="hanging">
+        response (see <xref target="errors"/>):<list style="hanging">
             <t hangText="unsupported_method_type">The resource server request
             used an unsupported HTTP method. The authorization server MUST
             respond with the HTTP 405 (Method Not Allowed) status code.</t>
@@ -401,40 +381,24 @@
             <preamble>Form of a create request, with an access token in the
             header:</preamble>
 
-            <artwork><![CDATA[
-POST /rs/resource_set HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer MHg3OUZEQkZBMjcx
-...
-
-{
-  "name" : "Tweedl Social Service",
-  "icon_uri" : "http://www.example.com/icons/sharesocial.png",
-  "scopes" : [
-    "read-public",
-    "post-updates",
-    "read-private",
-    "http://www.example.com/scopes/all"
-  ],
-  "type" : "http://www.example.com/rsets/socialstream/140-compatible"
-}
-]]></artwork>
+            <artwork>POST /rs/resource_set HTTP/1.1 Content-Type:
+            application/json Authorization: Bearer MHg3OUZEQkZBMjcx ... {
+            "name" : "Tweedl Social Service", "icon_uri" :
+            "http://www.example.com/icons/sharesocial.png", "scopes" : [
+            "read-public", "post-updates", "read-private",
+            "http://www.example.com/scopes/all" ], "type" :
+            "http://www.example.com/rsets/socialstream/140-compatible"
+            }</artwork>
           </figure>
 
           <figure>
             <preamble>Form of a successful response:</preamble>
 
-            <artwork><![CDATA[
-HTTP/1.1 201 Created
-Content-Type: application/json
-Location: /rs/resource_set/KX3A-39WE
-...
-
-{
-  "_id" : "KX3A-39WE",
-  "user_access_policy_uri" : "http://as.example.com/rs/222/resource/KX3A-39WE/policy"
-}
-]]></artwork>
+            <artwork>HTTP/1.1 201 Created Content-Type: application/json
+            Location: /rs/resource_set/KX3A-39WE ... { "_id" : "KX3A-39WE",
+            "user_access_policy_uri" :
+            "http://as.example.com/rs/222/resource/KX3A-39WE/policy"
+            }</artwork>
           </figure>
         </section>
 
@@ -450,40 +414,26 @@ Location: /rs/resource_set/KX3A-39WE
             <preamble>Form of a read request, with an access token in the
             header:</preamble>
 
-            <artwork><![CDATA[
-GET /rs/resource_set/KX3A-39WE HTTP/1.1
-Authorization: Bearer MHg3OUZEQkZBMjcx
-...
-]]></artwork>
+            <artwork>GET /rs/resource_set/KX3A-39WE HTTP/1.1 Authorization:
+            Bearer MHg3OUZEQkZBMjcx ...</artwork>
           </figure>
 
           <figure>
             <preamble>Form of a successful response:</preamble>
 
-            <artwork><![CDATA[
-HTTP/1.1 200 OK
-Content-Type: application/json
-...
-
-{
-  "_id" : "KX3A-39WE",
-  "name" : "Tweedl Social Service",
-  "icon_uri" : "http://www.example.com/icons/sharesocial.png",
-  "scopes" : [
-    "read-public",
-    "post-updates",
-    "read-private",
-    "http://www.example.com/scopes/all"
-  ],
-  "type" : "http://www.example.com/rsets/socialstream/140-compatible"
-}
-]]></artwork>
+            <artwork>HTTP/1.1 200 OK Content-Type: application/json ... {
+            "_id" : "KX3A-39WE", "name" : "Tweedl Social Service", "icon_uri"
+            : "http://www.example.com/icons/sharesocial.png", "scopes" : [
+            "read-public", "post-updates", "read-private",
+            "http://www.example.com/scopes/all" ], "type" :
+            "http://www.example.com/rsets/socialstream/140-compatible"
+            }</artwork>
           </figure>
 
           <t>If the referenced resource set does not exist, the authorization
           server MUST produce an error response with an error property value
           of <spanx style="verb">not_found</spanx>, as defined in <xref
-          target="reg-api" />.</t>
+          target="reg-api"/>.</t>
         </section>
 
         <section anchor="update-resource-set"
@@ -498,36 +448,18 @@ Content-Type: application/json
             <preamble>Form of an update request, with an access token in the
             header:</preamble>
 
-            <artwork><![CDATA[
-PUT /rs/resource_set/9UQU-DUWW HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer 204c69636b6c69
-...
-
-{
-  "name" : "Photo Album",
-  "icon_uri" : "http://www.example.com/icons/sky.png",
-  "scopes" : [
-    "http://photoz.example.com/dev/scopes/view",
-    "public-read"
-  ],
-  "type" : "http://www.example.com/rsets/photoalbum"
-}
-]]></artwork>
+            <artwork>PUT /rs/resource_set/9UQU-DUWW HTTP/1.1 Content-Type:
+            application/json Authorization: Bearer 204c69636b6c69 ... { "name"
+            : "Photo Album", "icon_uri" :
+            "http://www.example.com/icons/sky.png", "scopes" : [
+            "http://photoz.example.com/dev/scopes/view", "public-read" ],
+            "type" : "http://www.example.com/rsets/photoalbum" }</artwork>
           </figure>
 
           <figure>
             <preamble>Form of a successful response:</preamble>
 
-            <artwork><![CDATA[
-HTTP/1.1 200 OK
-...
-
-{
-  "_id": "9UQU-DUWW"
-}
-
-]]></artwork>
+            <artwork>HTTP/1.1 200 OK ... { "_id": "9UQU-DUWW" }</artwork>
           </figure>
         </section>
 
@@ -541,26 +473,20 @@ HTTP/1.1 200 OK
             <preamble>Form of a delete request, with an access token in the
             header:</preamble>
 
-            <artwork><![CDATA[
-DELETE /rs/resource_set/9UQU-DUWW
-Authorization: Bearer 204c69636b6c69
-...
-]]></artwork>
+            <artwork>DELETE /rs/resource_set/9UQU-DUWW Authorization: Bearer
+            204c69636b6c69 ...</artwork>
           </figure>
 
           <figure>
             <preamble>Form of a successful response:</preamble>
 
-            <artwork><![CDATA[
-HTTP/1.1 204 No content
-...
-]]></artwork>
+            <artwork>HTTP/1.1 204 No content ...</artwork>
           </figure>
 
           <t>If the referenced resource set does not exist, the authorization
           server MUST produce an error response with an error property value
           of <spanx style="verb">not_found</spanx>, as defined in <xref
-          target="reg-api" />.</t>
+          target="reg-api"/>.</t>
         </section>
 
         <section anchor="list-resource-sets"
@@ -578,22 +504,15 @@ HTTP/1.1 204 No content
             <preamble>Form of a list request, with an access token in the
             header:</preamble>
 
-            <artwork><![CDATA[
-GET /rs/resource_set HTTP/1.1
-Authorization: Bearer 204c69636b6c69
-...
-]]></artwork>
+            <artwork>GET /rs/resource_set HTTP/1.1 Authorization: Bearer
+            204c69636b6c69 ...</artwork>
           </figure>
 
           <figure>
             <preamble>Form of a successful response:</preamble>
 
-            <artwork><![CDATA[
-HTTP/1.1 200 OK
-...
-
-[ "KX3A-39WE", "9UQU-DUWW" ]
-]]></artwork>
+            <artwork>HTTP/1.1 200 OK ... [ "KX3A-39WE", "9UQU-DUWW"
+            ]</artwork>
           </figure>
         </section>
       </section>
@@ -703,7 +622,7 @@ HTTP/1.1 200 OK
              title="Example of Registering Resource Sets">
       <t>The following non-normative example illustrates the intent and usage
       of resource set descriptions and scope descriptions as part of resource
-      set registration in the context of <xref target="UMA" />.</t>
+      set registration in the context of <xref target="UMA"/>.</t>
 
       <t>This example contains some steps that are exclusively in the realm of
       user experience rather than web protocol, to achieve realistic
@@ -764,24 +683,16 @@ HTTP/1.1 200 OK
       at http://photoz.example.com/dev/scopes/view:</t>
 
       <figure>
-        <artwork><![CDATA[
-{
-  "name" : "View Photo and Related Info",
-  "icon_uri" : "http://www.example.com/icons/reading-glasses.png"
-}
-]]></artwork>
+        <artwork>{ "name" : "View Photo and Related Info", "icon_uri" :
+        "http://www.example.com/icons/reading-glasses.png" }</artwork>
       </figure>
 
       <t>Example of the scope description document available at
       http://photoz.example.com/dev/scopes/print:</t>
 
       <figure>
-        <artwork><![CDATA[
-{
-  "name" : "Print Photo",
-  "icon_uri" : "http://www.example.com/icons/printer.png"
-}
-]]></artwork>
+        <artwork>{ "name" : "Print Photo", "icon_uri" :
+        "http://www.example.com/icons/printer.png" }</artwork>
       </figure>
 
       <t>While visiting Photoz, Alice selects a link or button that instructs
@@ -801,16 +712,10 @@ HTTP/1.1 200 OK
       above.</t>
 
       <figure>
-        <artwork><![CDATA[
-{
-  "name" : "Steve the puppy!",
-  "icon_uri" : "http://www.example.com/icons/flower.png",
-  "scopes" : [
-    "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/print"
-  ]
-}
-]]></artwork>
+        <artwork>{ "name" : "Steve the puppy!", "icon_uri" :
+        "http://www.example.com/icons/flower.png", "scopes" : [
+        "http://photoz.example.com/dev/scopes/view",
+        "http://photoz.example.com/dev/scopes/print" ] }</artwork>
       </figure>
 
       <t>Photoz uses the Create method of CopMonkey's standard OAuth resource
@@ -819,36 +724,21 @@ HTTP/1.1 200 OK
       description.</t>
 
       <figure>
-        <artwork><![CDATA[
-POST /rs/resource_set HTTP/1.1
-Content-Type: application/json
-...
-
-{
-  "name" : "Steve the puppy!",
-  "icon_uri" : "http://www.example.com/icons/flower.png",
-  "scopes" : [
-    "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/print"
-  ]
-}
-]]></artwork>
+        <artwork>POST /rs/resource_set HTTP/1.1 Content-Type: application/json
+        ... { "name" : "Steve the puppy!", "icon_uri" :
+        "http://www.example.com/icons/flower.png", "scopes" : [
+        "http://photoz.example.com/dev/scopes/view",
+        "http://photoz.example.com/dev/scopes/print" ] }</artwork>
       </figure>
 
       <t>If the registration attempt succeeds, CopMonkey responds in the
       following fashion.</t>
 
       <figure>
-        <artwork><![CDATA[
-HTTP/1.1 201 Created
-Content-Type: application/json
-...
-
-{
-  "_id" : "112210f47de98100",
-  "user_access_policy_uri" : "http://as.example.com/rs/222/resource/112210f47de98100/policy"
-}
-]]></artwork>
+        <artwork>HTTP/1.1 201 Created Content-Type: application/json ... {
+        "_id" : "112210f47de98100", "user_access_policy_uri" :
+        "http://as.example.com/rs/222/resource/112210f47de98100/policy"
+        }</artwork>
       </figure>
 
       <t>At the time Alice indicates she would like this photo protected,
@@ -870,11 +760,8 @@ Content-Type: application/json
       the resource set description as follows.</t>
 
       <figure>
-        <artwork><![CDATA[
-GET /rs/resource_set/112210f47de98100 HTTP/1.1
-Host: as.example.com
-...
-]]></artwork>
+        <artwork>GET /rs/resource_set/112210f47de98100 HTTP/1.1 Host:
+        as.example.com ...</artwork>
       </figure>
 
       <t>CopMonkey responds with the full content of the resource set
@@ -886,21 +773,11 @@ Host: as.example.com
         description" request, containing a resource set description from the
         authorization server:</preamble>
 
-        <artwork><![CDATA[
-HTTP/1.1 200 OK
-Content-Type: application/json
-...
-
-{
-  "_id" : "112210f47de98100",
-  "name" : "Steve the puppy!",
-  "icon_uri" : "http://www.example.com/icons/flower.png",
-  "scopes" : [
-    "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/print"
-  ]
-}
-]]></artwork>
+        <artwork>HTTP/1.1 200 OK Content-Type: application/json ... { "_id" :
+        "112210f47de98100", "name" : "Steve the puppy!", "icon_uri" :
+        "http://www.example.com/icons/flower.png", "scopes" : [
+        "http://photoz.example.com/dev/scopes/view",
+        "http://photoz.example.com/dev/scopes/print" ] }</artwork>
       </figure>
 
       <t>If for some reason Photoz and CopMonkey have gotten dramatically out
@@ -908,22 +785,15 @@ Content-Type: application/json
       CopMonkey currently knows about:</t>
 
       <figure>
-        <artwork><![CDATA[
-GET /rs/resource_set HTTP/1.1
-Host: as.example.com
-...
-]]></artwork>
+        <artwork>GET /rs/resource_set HTTP/1.1 Host: as.example.com
+        ...</artwork>
       </figure>
 
       <t>CopMonkey's response might look as follows:</t>
 
       <figure>
-        <artwork><![CDATA[
-HTTP/1.1 200 OK
-...
-
-[ "112210f47de98100", "34234df47eL95300" ]
-]]></artwork>
+        <artwork>HTTP/1.1 200 OK ... [ "112210f47de98100", "34234df47eL95300"
+        ]</artwork>
       </figure>
 
       <t>If Alice later changes the photo's title (user experience only) on
@@ -935,35 +805,18 @@ HTTP/1.1 200 OK
       request.</t>
 
       <figure>
-        <artwork><![CDATA[
-PUT /rs/resource_set/112210f47de98100 HTTP/1.1
-Content-Type: application/json
-Host: as.example.com
-...
-
-{
-  "name" : "Steve on October 14, 2011",
-  "icon_uri" : "http://www.example.com/icons/flower.png",
-  "scopes" : [
-    "http://photoz.example.com/dev/scopes/view",
-    "http://photoz.example.com/dev/scopes/print"
-  ]
-}
-]]></artwork>
+        <artwork>PUT /rs/resource_set/112210f47de98100 HTTP/1.1 Content-Type:
+        application/json Host: as.example.com ... { "name" : "Steve on October
+        14, 2011", "icon_uri" : "http://www.example.com/icons/flower.png",
+        "scopes" : [ "http://photoz.example.com/dev/scopes/view",
+        "http://photoz.example.com/dev/scopes/print" ] }</artwork>
       </figure>
 
       <t>CopMonkey would respond as follows.</t>
 
       <figure>
-        <artwork><![CDATA[
-HTTP/1.1 201 Created
-Content-Type: application/json
-...
-
-{
-  "_id" : "112210f47de98100"
-}
-]]></artwork>
+        <artwork>HTTP/1.1 201 Created Content-Type: application/json ... {
+        "_id" : "112210f47de98100" }</artwork>
       </figure>
 
       <t>There are other reasons Photoz might want to update resource set
@@ -978,11 +831,8 @@ Content-Type: application/json
       deleting the relevant resource set registration, as follows:</t>
 
       <figure>
-        <artwork><![CDATA[
-DELETE /rs/resource_set/112210f47de98100 HTTP/1.1
-Host: as.example.com
-...
-]]></artwork>
+        <artwork>DELETE /rs/resource_set/112210f47de98100 HTTP/1.1 Host:
+        as.example.com ...</artwork>
       </figure>
     </section>
 
@@ -1008,7 +858,7 @@ Host: as.example.com
 
       <t>Additional contributors to this specification include the Kantara UMA
       Work Group participants, a list of whom can be found at <xref
-      target="UMAnitarians" />.</t>
+      target="UMAnitarians"/>.</t>
     </section>
   </middle>
 
@@ -1028,10 +878,10 @@ Host: as.example.com
           <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
 
           <author initials="N." surname="Sakimura">
-            <organization />
+            <organization/>
           </author>
 
-          <date day="8" month="November" year="2014" />
+          <date day="8" month="November" year="2014"/>
         </front>
       </reference>
 
@@ -1040,11 +890,11 @@ Host: as.example.com
         <front>
           <title>User-Managed Access (UMA) Profile of OAuth 2.0</title>
 
-          <author initials="T." surname="Hardjono">
+          <author initials="E." surname="Maler">
             <organization>MIT</organization>
           </author>
 
-          <date day="28" month="December" year="2015" />
+          <date day="9" month="August" year="2016"/>
         </front>
       </reference>
 
@@ -1057,7 +907,7 @@ Host: as.example.com
             <organization>Maler</organization>
           </author>
 
-          <date day="" month="" year="2015" />
+          <date day="" month="" year="2016"/>
         </front>
       </reference>
     </references>
