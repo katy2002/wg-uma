@@ -305,35 +305,34 @@
         through this API.)</t>
 
         <t>The authorization server MUST present an API for registering
-        resource set descriptions at a set of URIs with the following
-        structure:</t>
+        resource set descriptions at a set of URIs whose first set of path
+        components is the authorization server's resource set registration
+        endpoint as advertised in its configuration data (see <xref
+        target="am-endpoints"/>).</t>
 
-        <t>
-          <spanx style="verb">{rsreguri}/resource_set</spanx>
-        </t>
-
-        <t>The {rsreguri} component is the authorization server's resource set
-        registration endpoint as advertised in its configuration data (see
-        <xref target="am-endpoints"/>). Following is a summary of the five
-        registration operations the authorization server is REQUIRED to
-        support. Each is defined in its own section below. All other methods
-        are unsupported. The <spanx style="verb">{_id}</spanx> is the
+        <t>Following is a summary of the five registration operations the
+        authorization server is REQUIRED to support, where <spanx
+        style="emph">rsreguri</spanx> stands for the resource set registration
+        endpoint and <spanx style="emph">_id</spanx> stands for the
         authorization server-assigned identifier for the web resource
         corresponding to the resource set at the time it was created, included
-        within the URL returned in the Location header.<list style="symbols">
-            <t>Create resource set description: POST
-            {rsreguri}/resource_set</t>
+        within the URL returned in the Location header. Each operation is
+        defined in its own section below. All other methods are
+        unsupported.<list style="symbols">
+            <t>Create resource set description: POST <spanx
+            style="emph">rsreguri</spanx>/</t>
 
-            <t>Read resource set description: GET
-            {rsreguri}/resource_set/{_id}</t>
+            <t>Read resource set description: GET <spanx
+            style="emph">rsreguri</spanx>/<spanx style="emph">_id</spanx></t>
 
-            <t>Update resource set description: PUT
-            {rsreguri}/resource_set/{_id}</t>
+            <t>Update resource set description: PUT <spanx
+            style="emph">rsreguri</spanx>/<spanx style="emph">_id</spanx></t>
 
-            <t>Delete resource set description: DELETE
-            {rsreguri}/resource_set/{_id}</t>
+            <t>Delete resource set description: DELETE <spanx
+            style="emph">rsreguri</spanx>/<spanx style="emph">_id</spanx></t>
 
-            <t>List resource set descriptions: GET {rsreguri}/resource_set</t>
+            <t>List resource set descriptions: GET <spanx
+            style="emph">rsreguri</spanx>/</t>
           </list></t>
 
         <t>Within the JSON body of a successful response, the authorization
@@ -381,9 +380,9 @@
             <preamble>Form of a create request, with an access token in the
             header:</preamble>
 
-            <artwork>POST /rs/resource_set HTTP/1.1 Content-Type:
-            application/json Authorization: Bearer MHg3OUZEQkZBMjcx ... {
-            "name" : "Tweedl Social Service", "icon_uri" :
+            <artwork>POST /rs/ HTTP/1.1 Content-Type: application/json
+            Authorization: Bearer MHg3OUZEQkZBMjcx ... { "name" : "Tweedl
+            Social Service", "icon_uri" :
             "http://www.example.com/icons/sharesocial.png", "scopes" : [
             "read-public", "post-updates", "read-private",
             "http://www.example.com/scopes/all" ], "type" :
@@ -395,7 +394,7 @@
             <preamble>Form of a successful response:</preamble>
 
             <artwork>HTTP/1.1 201 Created Content-Type: application/json
-            Location: /rs/resource_set/KX3A-39WE ... { "_id" : "KX3A-39WE",
+            Location: /rs/KX3A-39WE ... { "_id" : "KX3A-39WE",
             "user_access_policy_uri" :
             "http://as.example.com/rs/222/resource/KX3A-39WE/policy"
             }</artwork>
@@ -414,8 +413,8 @@
             <preamble>Form of a read request, with an access token in the
             header:</preamble>
 
-            <artwork>GET /rs/resource_set/KX3A-39WE HTTP/1.1 Authorization:
-            Bearer MHg3OUZEQkZBMjcx ...</artwork>
+            <artwork>GET /rs/KX3A-39WE HTTP/1.1 Authorization: Bearer
+            MHg3OUZEQkZBMjcx ...</artwork>
           </figure>
 
           <figure>
@@ -448,10 +447,9 @@
             <preamble>Form of an update request, with an access token in the
             header:</preamble>
 
-            <artwork>PUT /rs/resource_set/9UQU-DUWW HTTP/1.1 Content-Type:
-            application/json Authorization: Bearer 204c69636b6c69 ... { "name"
-            : "Photo Album", "icon_uri" :
-            "http://www.example.com/icons/sky.png", "scopes" : [
+            <artwork>PUT /rs/9UQU-DUWW HTTP/1.1 Content-Type: application/json
+            Authorization: Bearer 204c69636b6c69 ... { "name" : "Photo Album",
+            "icon_uri" : "http://www.example.com/icons/sky.png", "scopes" : [
             "http://photoz.example.com/dev/scopes/view", "public-read" ],
             "type" : "http://www.example.com/rsets/photoalbum" }</artwork>
           </figure>
@@ -473,8 +471,8 @@
             <preamble>Form of a delete request, with an access token in the
             header:</preamble>
 
-            <artwork>DELETE /rs/resource_set/9UQU-DUWW Authorization: Bearer
-            204c69636b6c69 ...</artwork>
+            <artwork>DELETE /rs/9UQU-DUWW Authorization: Bearer 204c69636b6c69
+            ...</artwork>
           </figure>
 
           <figure>
@@ -504,8 +502,8 @@
             <preamble>Form of a list request, with an access token in the
             header:</preamble>
 
-            <artwork>GET /rs/resource_set HTTP/1.1 Authorization: Bearer
-            204c69636b6c69 ...</artwork>
+            <artwork>GET /rs/ HTTP/1.1 Authorization: Bearer 204c69636b6c69
+            ...</artwork>
           </figure>
 
           <figure>
@@ -724,8 +722,8 @@
       description.</t>
 
       <figure>
-        <artwork>POST /rs/resource_set HTTP/1.1 Content-Type: application/json
-        ... { "name" : "Steve the puppy!", "icon_uri" :
+        <artwork>POST /rs/ HTTP/1.1 Content-Type: application/json ... {
+        "name" : "Steve the puppy!", "icon_uri" :
         "http://www.example.com/icons/flower.png", "scopes" : [
         "http://photoz.example.com/dev/scopes/view",
         "http://photoz.example.com/dev/scopes/print" ] }</artwork>
@@ -760,8 +758,8 @@
       the resource set description as follows.</t>
 
       <figure>
-        <artwork>GET /rs/resource_set/112210f47de98100 HTTP/1.1 Host:
-        as.example.com ...</artwork>
+        <artwork>GET /rs/112210f47de98100 HTTP/1.1 Host: as.example.com
+        ...</artwork>
       </figure>
 
       <t>CopMonkey responds with the full content of the resource set
@@ -785,8 +783,7 @@
       CopMonkey currently knows about:</t>
 
       <figure>
-        <artwork>GET /rs/resource_set HTTP/1.1 Host: as.example.com
-        ...</artwork>
+        <artwork>GET /rs/ HTTP/1.1 Host: as.example.com ...</artwork>
       </figure>
 
       <t>CopMonkey's response might look as follows:</t>
@@ -805,7 +802,7 @@
       request.</t>
 
       <figure>
-        <artwork>PUT /rs/resource_set/112210f47de98100 HTTP/1.1 Content-Type:
+        <artwork>PUT /rs/112210f47de98100 HTTP/1.1 Content-Type:
         application/json Host: as.example.com ... { "name" : "Steve on October
         14, 2011", "icon_uri" : "http://www.example.com/icons/flower.png",
         "scopes" : [ "http://photoz.example.com/dev/scopes/view",
@@ -831,8 +828,8 @@
       deleting the relevant resource set registration, as follows:</t>
 
       <figure>
-        <artwork>DELETE /rs/resource_set/112210f47de98100 HTTP/1.1 Host:
-        as.example.com ...</artwork>
+        <artwork>DELETE /rs/112210f47de98100 HTTP/1.1 Host: as.example.com
+        ...</artwork>
       </figure>
     </section>
 
