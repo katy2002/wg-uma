@@ -504,10 +504,6 @@
 
         <t>The configuration data has the following properties.<list
             hangIndent="6" style="hanging">
-            <t hangText="version"><vspace/>REQUIRED. The version of the UMA
-            core protocol to which this authorization server conforms. The
-            value MUST be the string <spanx style="verb">"1.0"</spanx>.</t>
-
             <t hangText="issuer"><vspace/>REQUIRED. A URI with no query or
             fragment component that the authorization server asserts as its
             issuer identifier. This value MUST be identical to the web
@@ -655,7 +651,7 @@
           (note the use of <spanx style="verb">https:</spanx> for endpoints
           throughout):</preamble>
 
-          <artwork>{ "version":"1.0", "issuer":"https://example.com",
+          <artwork>{ "issuer":"https://example.com",
           "pat_profiles_supported":["bearer"],
           "aat_profiles_supported":["bearer"], "rpt_profiles_supported":
           ["https://docs.kantarainitiative.org/uma/profiles/uma-token-bearer-1.0"],
