@@ -30,8 +30,7 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="UMA Core">User-Managed Access (UMA) Profile of OAuth
-    2.0</title>
+    <title abbrev="UMA Core">User-Managed Access (UMA) 2.0</title>
 
     <author fullname="Eve Maler" initials="E." role="editor" surname="Maler">
       <organization>ForgeRock</organization>
@@ -60,27 +59,26 @@
     <date day="17" month="August" year="2016"/>
 
     <abstract>
-      <t>User-Managed Access (UMA) is a profile of OAuth 2.0. UMA defines how
-      resource owners can control protected-resource access by clients
-      operated by arbitrary requesting parties, where the resources reside on
-      any number of resource servers, and where a centralized authorization
-      server governs access based on resource owner policies.</t>
+      <t>User-Managed Access (UMA) 2.0 is a federated authorization framework
+      that defines an extension OAuth 2.0 grant type and uses OAuth and
+      federated identity technologies in various other ways. It defines how
+      resource owners can control protected-resource access by clients used by
+      arbitrary requesting parties, where the resources reside on any number
+      of resource servers, and where a centralized authorization server
+      governs access based on resource owner policies.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>User-Managed Access (UMA) is a profile of OAuth 2.0 <xref
-      target="RFC6749"/>. [DISCUSS: 153/154/ed: Now that we have a more formal
-      "UMA grant" that is an extension OAuth grant, should we describe UMA as
-      an &ldquo;extension&rdquo; of OAuth? Change the spec title and intro
-      accordingly?] UMA defines how resource owners can control
-      protected-resource access by clients operated by arbitrary requesting
-      parties, where the resources reside on any number of resource servers,
-      and where a centralized authorization server governs access based on
-      resource owner policies. Resource owners configure authorization servers
-      with access policies that serve as asynchronous authorization
-      grants.</t>
+      <t>User-Managed Access (UMA) 2.0 is a federated authorization framework
+      that defines an extension OAuth 2.0 <xref target="RFC6749"/> grant type
+      and uses OAuth and federated identity technologies in various other
+      ways. It defines how resource owners can control protected-resource
+      access by clients used by arbitrary requesting parties, where the
+      resources reside on any number of resource servers, and where a
+      centralized authorization server governs access based on resource owner
+      policies.</t>
 
       <t>UMA serves numerous use cases where a resource owner uses a dedicated
       service to manage authorization for access to their resources,
