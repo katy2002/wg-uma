@@ -311,13 +311,14 @@
         target="am-endpoints"/>).</t>
 
         <t>The authorization server is REQUIRED to support the following five
-        registration options and MUST NOT support any other operations. Here,
-        <spanx style="emph">rsreguri</spanx> stands for the resource set
-        registration endpoint and <spanx style="emph">_id</spanx> stands for
-        the authorization server-assigned identifier for the web resource
-        corresponding to the resource set at the time it was created, included
-        within the URL returned in the Location header. Each operation is
-        defined in its own section below.<list style="symbols">
+        registration options; any other operations are undefined by this
+        specification. Here, <spanx style="emph">rsreguri</spanx> stands for
+        the resource set registration endpoint and <spanx
+        style="emph">_id</spanx> stands for the authorization server-assigned
+        identifier for the web resource corresponding to the resource set at
+        the time it was created, included within the URL returned in the
+        Location header. Each operation is defined in its own section
+        below.<list style="symbols">
             <t>Create resource set description: POST <spanx
             style="emph">rsreguri</spanx>/</t>
 
