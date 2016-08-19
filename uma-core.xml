@@ -361,24 +361,21 @@
               target="RFC7662"/> and <xref target="token-introspection"/></t>
             </list></t>
 
-          <t>An entity seeking protection API access MUST have the scope
-          <spanx style="verb">uma_protection</spanx>. An access token with at
-          least this scope is called a protection API token (PAT) and an
-          entity that can acquire an access token with this scope is by
-          definition a resource server. A single entity can serve in both
-          resource server and client roles if it has access tokens with the
-          appropriate OAuth scopes. If a request to an endpoint fails due to
-          an invalid, missing, or expired PAT, or requires higher privileges
-          at this endpoint than provided by the PAT, the authorization server
-          responds with an OAuth error.</t>
+          <t>An entity seeking protection API access MUST be an OAuth client
+          with client credentials and the scope <spanx
+          style="verb">uma_protection</spanx>. An access token with at least
+          this scope is called a protection API token (PAT). Because an UMA
+          resource server needs to access the protection API, it therefore
+          MUST be an OAuth client. If a request to an endpoint fails due to an
+          invalid, missing, or expired PAT, or requires higher privileges at
+          this endpoint than provided by the PAT, the authorization server
+          responds with an OAuth error. A single entity can serve in both UMA
+          resource server and UMA client roles.</t>
 
           <t>The authorization server MUST support the OAuth bearer token
           profile for PAT issuance, and MAY support other OAuth token
-          profiles. It MUST declare all supported token profiles and grant
-          types for PAT issuance in its configuration data. Any OAuth
-          authorization grant type might be appropriate depending on
-          circumstances; for example, the client credentials grant is useful
-          in the case of an organization acting as a resource owner. <xref
+          profiles. The authorization server MUST declare all supported token
+          profiles for PAT issuance in its configuration data.<xref
           target="UMA-Impl"/> discusses grant options further.</t>
 
           <t>A PAT binds a resource owner, a resource server the owner uses
@@ -387,7 +384,14 @@
           specific to any client or requesting party. The issuance of a PAT
           represents the approval of the resource owner for this resource
           server to use this authorization server for protecting some or all
-          of the resources belonging to this resource owner.</t>
+          of the resources belonging to this resource owner. Any OAuth
+          authorization grant type might be appropriate depending on
+          circumstances; for example, the client credentials grant is useful
+          in the case of an organization acting as a resource owner, whereas
+          an interactive grant type is typically more appropriate for
+          capturing the approval of an end-user resource owner. The
+          authorization server MUST declare all supported grant types for PAT
+          issuance in its configuration data.</t>
 
           <t>Note: The PAT is used in registering a requested permission on a
           client's behalf (as described in <xref
@@ -419,9 +423,8 @@
 
           <t>An UMA client seeking access to a resource set needs OAuth client
           credentials issued by the UMA authorization server protecting that
-          resource set. A single such client can serve in both UMA resource
-          server and UMA client roles if it also has been granted the <spanx
-          style="verb">uma_protection</spanx> scope.</t>
+          resource set. A single entity can serve in both UMA resource server
+          and UMA client roles.</t>
 
           <t>The authorization server MAY enable an end-user requesting party
           to consent to direct client engagement in the trust elevation
