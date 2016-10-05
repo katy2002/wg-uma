@@ -1200,14 +1200,11 @@ Content-Type: application/json ...
               target="claim-push" /> for more information.</t>
 
               <t hangText="pct">OPTIONAL. If the authorization server
-              previously returned a PCT along with an the RPT, the client MAY
+              previously returned a PCT along with an RPT, the client MAY
               include the PCT in order to optimize the process of seeking a
               new RPT. Given that a PCT represents a set of requesting party
-              claims, even if this PCT were obtained in the course of seeking
-              access to a different resource or the same resource at a time
-              when different resource owner policies applied, the client MUST
-              make a best effort to ensure that it is associated with the same
-              requesting party as previously.</t>
+              claims, the client MUST make a best effort to ensure that it is
+              associated with the same requesting party as previously.</t>
             </list></t>
 
           <figure>
@@ -1245,14 +1242,19 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
           this specification.</t>
 
           <t>The authorization server evaluates the policies in light of
-          claims gathered from the client. These claims MAY be pushed directly
-          by the client using the <spanx style="verb">claim_tokens</spanx>
-          parameter, MAY be gathered interactively at the requesting party
-          claims endpoint, and MAY be represented by the persisted claims
-          token (PCT) present by the client in the <spanx
-          style="verb">pct</spanx> parameter. The authorization server MAY
-          combine claims from these sources in any manner it chooses, though a
-          simple union of all claims is reasonable.</t>
+          claims in evidence. These claims MAY have come from one or more of
+          three sources: pushed directly by the client using the <spanx
+          style="verb">claim_tokens</spanx> parameter during the just-previous
+          authorization process, gathered interactively at the requesting
+          party claims endpoint during the just-previous authorization
+          process, or represented by the PCT presented by the client in the
+          <spanx style="verb">pct</spanx> parameter.</t>
+
+          <t>Since policies are out of band for UMA and the authorization
+          server's policy expression and evaluation capabilities might take a
+          simple or arbitrarily complex form, its corresponding abilities to
+          combine or perform calculations over claim values might also
+          vary.</t>
 
           <t>Note: If the client incompletely satisfies any policy criteria,
           the authorization server is free either to partially fulfill the
