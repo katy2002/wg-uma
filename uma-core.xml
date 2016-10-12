@@ -2128,9 +2128,10 @@ Content-Type: application/json
         might choose to demand use of the redirect flow over the push flow.
         However, the client has the opportunity to switch end-users -- say,
         enabling malicious end-user Carlos to impersonate the original
-        end-user Bob who authorized the issuance of the AAT -- after the
-        redirect completes and before it returns to the RPT endpoint to seek
-        authorization data.</t>
+        end-user Bob, who might be represented by a PCT already in that
+        client's possession and might even have authorized the issuance of
+        that PCT -- after the redirect completes and before it returns to the
+        RPT endpoint to seek authorization data.</t>
 
         <t>Another issue concerns the exposure of a <spanx
         style="verb">Bearer</spanx>-type RPT to an autonomous requesting
@@ -2168,33 +2169,30 @@ Content-Type: application/json
 
       <section title="Client Authentication">
         <t>Along with TLS, UMA requires OAuth, or any OAuth-based
-        authentication protocol, as the security mechanism for its
-        standardized APIs. The UMA resource server acts in the role of an
-        OAuth client at the authorization server's protection API, and the UMA
-        client acts in the role of an OAuth client at the authorization
-        server's authorization API. While it is possible to use any profile of
-        OAuth for this protection, it is RECOMMENDED for the authorization
-        server to use OpenID Connect, and to use its mechanisms for stronger
-        client authentication at the token endpoint, in order to strengthen
-        the authentication of OAuth clients. Section 16 of <xref
-        target="OIDCCore" /> provides more information on OpenID Connect
-        security considerations.</t>
+        authentication protocol, as the security mechanism for its protection
+        API. The UMA resource server thus acts in the role of an OAuth client
+        at the authorization server's protection API. While it is possible to
+        use any profile of OAuth for this protection, it is RECOMMENDED for
+        the authorization server to use OpenID Connect, and to use its
+        mechanisms for stronger client authentication at the token endpoint,
+        in order to strengthen the authentication of OAuth clients. Section 16
+        of <xref target="OIDCCore" /> provides more information on OpenID
+        Connect security considerations.</t>
 
         <t>Clients using the OAuth implicit grant type carry particular
         vulnerabilities in OAuth, and OpenID Connect is of no help in this
         circumstance. UMA scenarios are vulnerable as well. For example, an
-        "implicit client" might require the retrieval of AATs more frequently,
+        "implicit client" might require the retrieval of PATs more frequently,
         for each browser on each platform. An attacker can initiate a spear
-        phishing attack on the requesting party with a link to a malicious
-        website, relying on the requesting party to authenticate to the
+        phishing attack on the resource owner with a link to a malicious
+        website, relying on the resource owner to authenticate to the
         authorization server through an email-based identity provider in order
-        to receive the AAT. The site can impersonate the requesting party
-        using the browser client's client ID in an OpenID Connect implicit
-        request to the UMA authorization server. If the requesting party had
-        previously given consent for an AAT to be issued, this attempt will
-        likely succeed. The subsequently issued AAT and permission ticket for
-        an attempted resource access could potentially be used for RPT
-        retrieval and authorization data issuance.</t>
+        to receive the PAT. The site can impersonate the resource owner using
+        the browser client's client ID in an OpenID Connect implicit request
+        to the UMA authorization server. If the resource owner had previously
+        authorized a PAT to be issued, this attempt will likely succeed. The
+        subsequently issued PAT could be used for resource set registration
+        and other protection API tasks.</t>
 
         <t>A number of mitigation strategies are possible.<list
             style="symbols">
@@ -2292,15 +2290,15 @@ Content-Type: application/json
       <section title="Requesting Party Information at the Authorization Server">
         <t>The primary privacy duty of UMA's design is to the resource owner.
         However, privacy considerations affect the requesting party as well.
-        This can be seen in the issuance of an AAT, which represents the
-        approval of a requesting party for a client to engage with an
-        authorization server to perform tasks needed for obtaining
-        authorization, possibly including pushing claim tokens. Claim tokens
-        are likely to contain personally identifiable and possibly very
-        sensitive information, and much like identity attributes exchanged
-        during single sign-on, the process of claim token pushing will tend to
-        be invisible to an end-user requesting party if they have not
-        consciously acknowledged and authorized the possibility. A requesting
+        This can be seen in the optional issuance of a PCT, which enables an
+        opportunity to optimize an access-seeking flow for a requesting party
+        through persisting a set of collected claims across authorization
+        processes, and can involve a requesting party's authorization for this
+        persistence. Claims are likely to contain personally identifiable and
+        possibly very sensitive information, and much like identity attributes
+        exchanged during single sign-on, the process of claim pushing in
+        particular will tend to be invisible to an end-user requesting party
+        if they have not consciously authorized the possibility. A requesting
         party who provides claims to an authorization server once redirected
         there is less susceptible to privacy-destroying behavior.</t>
       </section>
