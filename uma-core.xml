@@ -560,10 +560,10 @@
             requesting party using the UMA grant.</t>
 
             <t hangText="authorization_endpoint"><vspace />REQUIRED. The
-            endpoint URI at which the resource server gathers the consent of
-            an end-user resource owner. Note that the UMA grant does not
-            involve the client gathering the consent of an end-user requesting
-            party directly.</t>
+            endpoint URI at which the resource server gathers the
+            authorization of an end-user resource owner for PAT issuance. Note
+            that the UMA grant does not involve the client gathering the
+            authorization of an end-user requesting party directly.</t>
 
             <t hangText="requesting_party_claims_endpoint"><vspace />OPTIONAL.
             The endpoint URI at which the authorization server interacts with
@@ -1478,134 +1478,103 @@ Cache-Control: no-store
 {  
    "error":"need_info",
    "error_details":{  
-      "authentication_context":{  
-         "required_acr":[  
-            "https://example.com/acrs/LOA3.14159"
-         ]
-      },
-      "requesting_party_claims":{  
-         "required_claims":[  
-            {  
-               "name":"email23423453ou453",
-               "friendly_name":"email",
-               "claim_type":"urn:oid:0.9.2342.19200300.100.1.3",
-               "claim_token_format":[  
-                  "http://openid.net/specs/openid-connect-core-1_0.html#HybridIDToken"
-               ],
-               "issuer":[  
-                  "https://example.com/idp"
-               ]
-            }
-         ],
-         "redirect_user":true,
-         "ticket":"016f84e8-f9b9-11e0-bd6f-0021cc6004de"
-      }
+      "required_claims":[  
+         {  
+            "name":"email23423453ou453",
+            "friendly_name":"email",
+            "claim_type":"urn:oid:0.9.2342.19200300.100.1.3",
+            "claim_token_format":[  
+               "http://openid.net/specs/openid-connect-core-1_0.html#HybridIDToken"
+            ],
+            "issuer":[  
+               "https://example.com/idp"
+            ]
+         }
+      ],
+      "redirect_user":true
    }
 }
 ]]></artwork>
           </figure>
 
-          <section anchor="authn-flows"
-                   title="Error Details About Authentication Context">
-            <t>The <spanx style="verb">authentication_context</spanx>
-            sub-property of the <spanx style="verb">error_details</spanx>
-            object provides hints about additional requirements regarding the
-            requesting party's authentication that underlies the issuance of
-            the currently valid AAT. The <spanx
-            style="verb">authentication_context</spanx> sub-property contains
-            the following parameter:<list style="hanging">
-                <t hangText="required_acr">REQUIRED. An array of strings
-                specifying a set of acceptable authentication context class
-                reference values. Any one of the referenced authentication
-                context classes (sets of authentication methods or procedures
-                considered to be equivalent in a particular context) would
-                satisfy the requesting party authentication requirements. Each
-                string MAY be a URI, including one that has been registered
-                through <xref target="RFC6711" />.</t>
-              </list></t>
+          <t>The <spanx style="verb">error_details</spanx> object is OPTIONAL
+          for the authorization server to provide. It provides hints about
+          additional requirements regarding information the authorization
+          server needs about the requesting party. On receiving such hints,
+          the client has the opportunity to engage, or engage the requesting
+          party, with the authorization server in claims collection flows of
+          various types. The <spanx style="verb">error_details</spanx>
+          sub-property MAY contain the following parameters, where at least
+          one of <spanx style="verb">required_claims</spanx> or <spanx
+          style="verb">redirect_user</spanx> MUST be supplied: [ISSUE: Does
+          this correspond to what Justin is suggesting? Note that
+          authentication_context is gone due to the AAT being gone, in favor
+          of claim-centric authentication handling.]<list style="hanging">
+              <t hangText="required_claims">An array containing objects that
+              describe characteristics of the required claims, with the
+              following properties:<list style="hanging">
+                  <t hangText="name">OPTIONAL. A string (which MAY be a URI)
+                  representing the name of the claim; the "key" in a key-value
+                  pair.</t>
 
-            <t>See <xref target="step-up" /> for the client's next option.</t>
-          </section>
+                  <t hangText="friendly_name">OPTIONAL. A string that provides
+                  a more human-readable form of the attribute's name, which
+                  may be useful as a "display name" for use in user interfaces
+                  in cases where the actual name is complex or opaque, such as
+                  an OID or a UUID.</t>
 
-          <section anchor="authz-flows" title="Error Details About Claims">
-            <t>The <spanx style="verb">requesting_party_claims</spanx>
-            sub-property of the <spanx style="verb">error_details</spanx>
-            object provides hints about additional requirements regarding
-            information the authorization server needs about the requesting
-            party. On receiving such hints, the client has the opportunity to
-            engage in claims-gathering flows of various types. The <spanx
-            style="verb">requesting_party_claims</spanx> sub-property MAY
-            contain the following parameters, where at least one of <spanx
-            style="verb">required_claims</spanx> or <spanx
-            style="verb">redirect_user</spanx> MUST be supplied:<list
-                style="hanging">
-                <t hangText="required_claims">An array containing objects that
-                describe characteristics of the required claims, with the
-                following properties:<list style="hanging">
-                    <t hangText="name">OPTIONAL. A string (which MAY be a URI)
-                    representing the name of the claim; the "key" in a
-                    key-value pair.</t>
+                  <t hangText="claim_type">OPTIONAL. A string, indicating the
+                  expected interpretation of the provided claim value. The
+                  string MAY be a URI.</t>
 
-                    <t hangText="friendly_name">OPTIONAL. A string that
-                    provides a more human-readable form of the attribute's
-                    name, which may be useful as a "display name" for use in
-                    user interfaces in cases where the actual name is complex
-                    or opaque, such as an OID or a UUID.</t>
+                  <t hangText="claim_token_format">OPTIONAL. An array of
+                  strings specifying a set of acceptable formats for a token
+                  pushed by the client containing this claim (see <xref
+                  target="claim-push" />). Any one of the referenced formats
+                  would satisfy the authorization server's requirements. Each
+                  string MAY be a URI.</t>
 
-                    <t hangText="claim_type">OPTIONAL. A string, indicating
-                    the expected interpretation of the provided claim value.
-                    The string MAY be a URI.</t>
+                  <t hangText="issuer">OPTIONAL. An array of strings
+                  specifying a set of acceptable issuing authorities for the
+                  claim. Any one of the referenced authorities would satisfy
+                  the authorization server's requirements. Each string MAY be
+                  a URI.</t>
+                </list></t>
 
-                    <t hangText="claim_token_format">OPTIONAL. An array of
-                    strings specifying a set of acceptable formats for a token
-                    pushed by the client containing this claim (see <xref
-                    target="claim-push" />). Any one of the referenced formats
-                    would satisfy the authorization server's requirements.
-                    Each string MAY be a URI.</t>
+              <t hangText="redirect_user">A Boolean value indicating whether
+              the requesting party's presence at the authorization server is
+              required for the process of claims gathering. For example, the
+              authorization server may require the requesting party to fill
+              out a CAPTCHA to help prove humanness. The default is <spanx
+              style="verb">false</spanx> if this parameter is not present. See
+              <xref target="am-endpoints" /> for how the authorization server
+              declares the requesting party claims endpoint to which the
+              client has the opportunity to redirect the requesting party.
+              Note that the word "user" implies an end-user (human) requesting
+              party; if the requesting party is not an end-user, then no
+              client action would be possible on receiving the hint.</t>
 
-                    <t hangText="issuer">OPTIONAL. An array of strings
-                    specifying a set of acceptable issuing authorities for the
-                    claim. Any one of the referenced authorities would satisfy
-                    the authorization server's requirements. Each string MAY
-                    be a URI.</t>
-                  </list></t>
+              <t hangText="ticket">A permission ticket that allows the client
+              to make further requests to the authorization server during this
+              attempted authorization. The value of this permission ticket
+              MUST NOT be the same as the one the client used to make its
+              request.</t>
+            </list></t>
 
-                <t hangText="redirect_user">A Boolean value indicating whether
-                the requesting party's presence at the authorization server is
-                required for the process of claims gathering. For example, the
-                authorization server may require the requesting party to fill
-                out a CAPTCHA to help prove humanness. The default is <spanx
-                style="verb">false</spanx> if this parameter is not present.
-                See <xref target="am-endpoints" /> for how the authorization
-                server declares the requesting party claims endpoint to which
-                the client has the opportunity to redirect the requesting
-                party. Note that the word "user" implies an end-user (human)
-                requesting party; if the requesting party is not an end-user,
-                then no client action would be possible on receiving the
-                hint.</t>
+          <t>The authorization server has many options for collecting
+          requesting party claims. For example, it could interact with an
+          end-user requesting party directly to gather claims, or accept
+          claims pushed by a client, or perform a lookup in some external
+          system. The process is extensible and can have dependencies on the
+          type of requesting party (for example, natural person or legal
+          person) or client (for example, browser, native app, or autonomously
+          running web service).</t>
 
-                <t hangText="ticket">A permission ticket that allows the
-                client to make further requests to the authorization server
-                during this attempted authorization. The value of this
-                permission ticket MUST NOT be the same as the one the client
-                used to make its request.</t>
-              </list></t>
-
-            <t>The authorization server has many options for gathering
-            requesting party claims. For example, it could interact with an
-            end-user requesting party directly, or accept claims delivered by
-            a client, or perform a lookup in some external system. The process
-            is extensible and can have dependencies on the type of requesting
-            party (for example, natural person or legal person) or client (for
-            example, browser, native app, or autonomously running web
-            service).</t>
-
-            <t>The client and authorization server next have options for two
-            nonexclusive claims-gathering interaction patterns: push (see
-            <xref target="claim-push" />) and redirect (see <xref
-            target="claim-redirect" />). (See <xref target="sec-consid" /> for
-            important security considerations regarding claims gathering.)</t>
-          </section>
+          <t>The client and authorization server next have options for two
+          nonexclusive claims collection patterns: push (see <xref
+          target="claim-push" />) and redirect (see <xref
+          target="claim-redirect" />). (See <xref target="sec-consid" /> for
+          important security considerations regarding claims collection.)</t>
         </section>
       </section>
 
@@ -1695,7 +1664,7 @@ Authorization: Bearer jwfLG53^sad$#f
           <t>If the authorization server has declared a requesting party
           claims endpoint in its configuration data, or if the authorization
           server requires direct interaction with the requesting party as part
-          of its claims-gathering process (for example, as it might have
+          of its claims collection process (for example, as it might have
           indicated through the <spanx style="verb">redirect_user</spanx> hint
           illustrated in <xref target="authorization-failure" />), the client
           has the option to <spanx>redirect</spanx> an end-user requesting
@@ -1841,20 +1810,22 @@ Host: client.example.com
           </figure>
 
           <section anchor="interaction-consent"
-                   title="Authorization Server Gathers Requesting Party Consent for Trust Elevation by Client: Saved Consent">
-            <t>The authorization server MAY gather consent from an end-user
-            requesting party for subsequent direct client engagement in the
-            trust elevation process, and then MAY subsequently represent this
-            consent as a saved consent token when returning an RPT to the
-            client if the authorization is successful (see <xref
-            target="saved-consent-token" /> for information on generating and
-            using the saved consent token).</t>
+                   title="Authorization Server Gathers Requesting Party Consent for Trust Elevation by Client: Persisted Claims">
+            <t>As noted in <xref target="saved-consent-token" />, the
+            authorization server MAY choose to persist pushed and/or
+            interactively gathered claims of a requesting party and issue a
+            PCT in order to optimize future authorization processes on behalf
+            of a requesting party. It MAY also gather authorization from an
+            end-user requesting party for persisting these claims, one option
+            being persisting this authorization in the form of an actual claim
+            itself.</t>
 
-            <t>A consent-gathering interaction could be combined with other
-            interactions as necessary in the particular service ecosystem. For
-            example, the authorization server might present an opportunity for
-            the requesting party to create or manage a login account for more
-            persistent storage of gathered claims over time.</t>
+            <t>The authorization server MAY combine authorization-gathering
+            interaction with other interactions as necessary, and in any
+            order. For example, the authorization server might present an
+            opportunity for the requesting party to create or manage a login
+            account for more persistent storage of gathered and pushed claims
+            over time.</t>
           </section>
         </section>
       </section>
@@ -2497,7 +2468,7 @@ Cache-Control: no-store
             <list style="symbols">
               <t>URI suffix: uma2-configuration</t>
 
-              <t>Change controller: Kantara Initiative User-M anaged Access
+              <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - wg-uma@kantarainitiative.org</t>
 
               <t>Specification document: <xref target="am-endpoints" /> in
