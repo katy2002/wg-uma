@@ -412,7 +412,7 @@
         </section>
 
         <section anchor="authorization-api"
-                 title="UMA Grant Type, and Requesting Party Token">
+                 title="UMA Grant Type and Requesting Party Token">
           <t>The authorization server issues access tokens that enable client
           access to UMA-protected resources on the requesting party&rsquo;s
           behalf using an OAuth extension grant type known as the UMA grant
@@ -435,9 +435,9 @@
           requesting party during the authorization process. It is intended to
           be used when this client obtains a new RPT for this requesting party
           at this authorization server, for the same or a different resource
-          set [ISSUE: what about at the same or a different resource server?],
-          available under the same or different policies, controlled by the
-          same or a different resource owner.</t>
+          set at the same or a different resource server, available under the
+          same or different policies, controlled by the same or a different
+          resource owner.</t>
 
           <t>An UMA client seeking access to a resource set needs OAuth client
           credentials issued by the UMA authorization server protecting that
@@ -925,11 +925,11 @@ Authorization: Bearer 204c69636b6c69
           authorization for that attempted access.</t>
 
           <t>The authorization server MUST make permission ticket values
-          unguessable by resource servers and clients and securely random.
-          Within these constraints, however, the authorization server MAY
-          format the ticket however it chooses, for example either as a random
-          string that references data held on the server or by including data
-          within the ticket itself.</t>
+          unguessable by resource servers and clients. Within these
+          constraints, however, the authorization server MAY format the ticket
+          however it chooses, for example either as a random string that
+          references data held on the server or by including data within the
+          ticket itself.</t>
 
           <t>Permission tickets MUST be single-use.</t>
 
@@ -1265,9 +1265,10 @@ Cache-Control: no-store
         requesting party&rsquo;s behalf, a client needs to present a valid RPT
         with sufficient authorization data. The client uses the token endpoint
         to acquire an RPT and optionally to ask for specific scopes it wants,
-        providing the permission ticket it received from the resource server
+        providing the permission ticket it received from the resource server,
         and optionally providing a persisted claims token (PCT) it received
-        from this authorization server.</t>
+        from this authorization server to optimize the process of seeking a
+        new RPT.</t>
 
         <t>This interaction depends on the following preconditions:<list
             style="symbols">
@@ -1306,7 +1307,10 @@ Cache-Control: no-store
               same RPT here.</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
-              representing the scopes that the client is requesting.</t>
+              representing the scopes that the client is requesting. [ISSUE:
+              What is the relationship between these scopes and multiple
+              resource sets, if the permission ticket maps to such? ISSUE:
+              Provide one or more examples of requesting scopes?]</t>
 
               <t hangText="claim_tokens">OPTIONAL. Claims pushed directly from
               the client to the authorization server. See <xref
@@ -1316,8 +1320,11 @@ Cache-Control: no-store
               previously returned a PCT along with an RPT, the client MAY
               include the PCT in order to optimize the process of seeking a
               new RPT. Given that a PCT represents a set of requesting party
-              claims, the client MUST make a best effort to ensure that it is
-              associated with the same requesting party as previously.</t>
+              claims, a client supplying a PCT in its RPT request MUST make a
+              best effort to ensure that the requesting party using the client
+              now is the same as the requesting party that was associated with
+              the PCT when it was issued. See <xref target="sec-consid-pct" />
+              for additional PCT security considerations.</t>
             </list></t>
 
           <figure>
@@ -1434,7 +1441,9 @@ Content-Type: application/json
             expressed in an encrypted format that can be decrypted only by the
             authorization server that issued the PCT. See <xref
             target="interaction-consent" /> for more information about the
-            end-user requesting party interaction option.</t>
+            end-user requesting party interaction option. See <xref
+            target="sec-consid-pct" /> for additional PCT security
+            considerations.</t>
 
             <t>The PCT MAY be included by the client in future requests to the
             token endpoint using the UMA grant type (see <xref
@@ -2356,6 +2365,32 @@ Cache-Control: no-store
             authentication. However, this is easier for a mobile app than for
             a browser-based HTML app.</t>
           </list></t>
+      </section>
+
+      <section anchor="sec-consid-pct" title="Persisted Claim Tokens">
+        <t>A PCT is similar to a refresh token in that it carries extra power
+        over the usage of an RPT. The authorization server and client MUST
+        keep PCTs confidential in transit and storage, and MUST NOT share any
+        PCT with any other entity other than the issuer or issued client,
+        respectively. The authorization server MUST maintain the binding
+        between a PCT and the client to which it was issued.</t>
+
+        <t>Given that a PCT represents a set of requesting party claims, a
+        client supplying a PCT in its RPT request MUST make a best effort to
+        ensure that the requesting party using the client now is the same as
+        the requesting party that was associated with the PCT when it was
+        issued. Different clients will have different capabilities in this
+        respect; for example, some applications are single-user and perform no
+        local authentication, associating all PCTs with the "current user",
+        while others might have more sophisticated authentication and
+        capabilities.</t>
+
+        <t />
+      </section>
+
+      <section anchor="cred-guessing" title="Credentials-Guessing">
+        <t>The authorization server MUST prevent attackers from guessing
+        permission tickets and PCTs.</t>
       </section>
 
       <section title="JSON Usage">
