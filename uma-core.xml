@@ -615,7 +615,7 @@
    "claim_token_profiles_supported":[  
       "https://example.com/claims/formats/token1"
    ],
-   "dynamic_client_endpoint":"https://as.example.com/dyn_client_reg_uri",
+   "registration_endpoint":"https://as.example.com/dyn_client_reg_uri",
    "token_endpoint":"https://as.example.com/token_uri",
    "authorization_endpoint":"https://as.example.com/authz_uri",
    "requesting_party_claims_endpoint":"https://as.example.com/rqp_claims_uri",
@@ -970,9 +970,9 @@ Content-Type: application/json
           code and includes one of the following UMA error codes (see <xref
           target="uma-error-response" /> for more information about error
           codes and responses):<list style="hanging">
-              <t hangText="invalid_resource_set_id">Any one of the provided
-              resource set identifier was not found at the authorization
-              server.</t>
+              <t hangText="invalid_resource_set_id">At least one of the
+              provided resource set identifiers was not found at the
+              authorization server.</t>
 
               <t hangText="invalid_scope">At least one of the scopes included
               in the request was not registered previously by this resource
@@ -1433,17 +1433,17 @@ Content-Type: application/json
           <section anchor="saved-consent-token"
                    title="Authorization Server Response to Client on Authorization Success with Persisted Claims Token">
             <t>The authorization server MAY return a PCT along with an RPT.
-            The PCT represents claims presented by the client, either directly
-            or through the requesting party claims endpoint. The PCT MUST be
-            unguessable by an attacker. The PCT MUST NOT disclose claims from
-            the requesting party directly to possessors of the PCT. Instead,
-            such claims SHOULD be associated by reference to the PCT or
-            expressed in an encrypted format that can be decrypted only by the
-            authorization server that issued the PCT. See <xref
-            target="interaction-consent" /> for more information about the
-            end-user requesting party interaction option. See <xref
-            target="sec-consid-pct" /> for additional PCT security
-            considerations.</t>
+            The PCT represents claims collected during this authorization
+            process, either directly or through the requesting party claims
+            endpoint. The PCT MUST be unguessable by an attacker. The PCT MUST
+            NOT disclose claims from the requesting party directly to
+            possessors of the PCT. Instead, such claims SHOULD be associated
+            by reference to the PCT or expressed in an encrypted format that
+            can be decrypted only by the authorization server that issued the
+            PCT. See <xref target="interaction-consent" /> for more
+            information about the end-user requesting party interaction
+            option. See <xref target="sec-consid-pct" /> for additional PCT
+            security considerations.</t>
 
             <t>The PCT MAY be included by the client in future requests to the
             token endpoint using the UMA grant type (see <xref
@@ -1862,7 +1862,7 @@ Host: client.example.com
           </figure>
 
           <section anchor="interaction-consent"
-                   title="Authorization Server Gathers Requesting Party Consent for Trust Elevation by Client: Persisted Claims">
+                   title="Authorization Server Gathers Requesting Party Authorization for Trust Elevation by Client: Persisted Claims">
             <t>As noted in <xref target="saved-consent-token" />, the
             authorization server MAY choose to persist pushed and/or
             interactively gathered claims of a requesting party and issue a
@@ -2243,149 +2243,167 @@ Cache-Control: no-store
       <t>The following sections describe additional security
       considerations.</t>
 
-      <section anchor="redirect-threats"
-               title="Requesting Party Redirection and Impersonation Threats">
-        <t>This section discusses threats related to UMA's nature as an
-        protocol enabling autonomous (non-resource-owner) requesting parties
-        to gain authorized access to sensitive resources, including through
-        the process of claims-gathering redirection.</t>
+      <section anchor="rqp-threats" title="Requesting Party Threats">
+        <t>This section discusses threats related to UMA's nature as a
+        protocol enabling party-to-party sharing of protected resource access;
+        that is, enabling requesting parties who are not the resource owner to
+        gain authorized access to protected resources.</t>
 
-        <t>Like ordinary OAuth redirection, UMA redirection for the purpose of
-        gathering claims from an end-user requesting party (described in <xref
-        target="claim-redirect" />) creates the potential for cross-site
-        request forgery (CSRF) through an open redirect if the authorization
-        server does not force the client to pre-register its claims
-        redirection endpoint, and server-side artifact tampering if the client
-        does not avail itself of the state parameter. The client SHOULD check
-        that the ticket value returned by an authorization server after a
-        claims redirect is completed has not been maliciously changed, for
-        example by a man in the browser (MITB), by using the state parameter.
-        (See <xref target="UMA-Impl" /> for advice on ways to accomplish
-        this.) Sections 4.4.1.8, 4.4.2.5, and 5.3.5 of <xref
-        target="RFC6819" /> are apropos for the UMA claims-gathering
-        redirection flow as well.</t>
+        <t>For privacy considerations related to requesting parties, see <xref
+        target="rqp-privacy" />.</t>
 
-        <t>When a client redirects an end-user requesting party to the
-        requesting party claims endpoint, the client provides no a priori
-        context to the authorization server about which user is appearing at
-        the endpoint, other than implicitly through the permission ticket.
-        Since the authorization server is free to gather any claims it wishes,
-        the effect is to "late-bind" them to the permission ticket and the
-        state string provided by the client, with the effect of enabling the
-        authorization server not to trust client-asserted claims. This is a
-        desirable result and reflects one reason why the authorization server
-        might choose to demand use of the redirect flow over the push flow.
-        However, the client has the opportunity to switch end-users -- say,
-        enabling malicious end-user Carlos to impersonate the original
-        end-user Bob, who might be represented by a PCT already in that
-        client's possession and might even have authorized the issuance of
-        that PCT -- after the redirect completes and before it returns to the
-        RPT endpoint to seek authorization data.</t>
+        <section anchor="redirect-threats"
+                 title="Requesting Party Redirection and Impersonation">
+          <t>Like ordinary OAuth redirection, UMA redirection for the purpose
+          of gathering claims from an end-user requesting party (described in
+          <xref target="claim-redirect" />) creates the potential for
+          cross-site request forgery (CSRF) through an open redirect if the
+          authorization server does not force the client to pre-register its
+          claims redirection endpoint, and server-side artifact tampering if
+          the client does not avail itself of the state parameter. The client
+          SHOULD check that the ticket value returned by an authorization
+          server after a claims redirect is completed has not been maliciously
+          changed, for example by a man in the browser, by using the state
+          parameter. (See <xref target="UMA-Impl" /> for advice on ways to
+          accomplish this.) Sections 4.4.1.8, 4.4.2.5, and 5.3.5 of <xref
+          target="RFC6819" /> are apropos for the UMA claims-gathering
+          redirection flow as well.</t>
 
-        <t>Another issue concerns the exposure of a <spanx
-        style="verb">Bearer</spanx>-type RPT to an autonomous requesting
-        party, which could maliciously pass the token to an unauthorized
-        party.</t>
+          <t>When a client redirects an end-user requesting party to the
+          requesting party claims endpoint, the client provides no a priori
+          context to the authorization server about which user is appearing at
+          the endpoint, other than implicitly through the permission ticket.
+          Since the authorization server is free to gather any claims it
+          wishes, the effect is to "late-bind" them to the permission ticket
+          and the state string provided by the client, with the effect of
+          enabling the authorization server not to trust client-asserted
+          claims. This is a desirable result and reflects one reason why the
+          authorization server might choose to demand use of the redirect flow
+          over the push flow. However, the client has the opportunity to
+          switch end-users -- say, enabling malicious end-user Carlos to
+          impersonate the original end-user Bob, who might be represented by a
+          PCT already in that client's possession and might even have
+          authorized the issuance of that PCT -- after the redirect completes
+          and before it returns to the RPT endpoint to seek authorization
+          data.</t>
 
-        <t>To mitigate requesting-party switching and RPT exposure threats,
-        consider the following strategies.<list style="symbols">
-            <t>Require that the requesting party legitimately represent the
-            wielder of the bearer token on a legal or contractual level (for
-            example, as discussed in <xref target="UMA-obligations" />). This
-            solution does not reduce the risk from a technical
-            perspective.</t>
+          <t>Another issue concerns the exposure of a <spanx
+          style="verb">Bearer</spanx>-type RPT to a requesting party, which
+          could maliciously pass the token to an unauthorized party.</t>
 
-            <t>The authorization server, possibly with input from the resource
-            owner, can implement tighter time-to-live strategies around the
-            authorization data in RPTs. This is a classic approach with bearer
-            tokens that helps to limit a malicious party's ability to
-            intercept and use the bearer token. In the same vein, the
-            authorization server could require claims to have a reasonable
-            degree of freshness (which would require a custom claims
-            profile).</t>
+          <t>To mitigate requesting-party switching and RPT exposure threats,
+          consider the following strategies.<list style="symbols">
+              <t>Require that the requesting party legitimately represent the
+              wielder of the bearer token on a legal or contractual level.
+              This solution does not reduce the risk from a technical
+              perspective.</t>
 
-            <t>A stronger strategy is to "elevate trust" in the requesting
-            party by requiring a stronger authentication context, forcing
-            step-up authentication by the requesting party at run time.</t>
+              <t>The authorization server, possibly with input from the
+              resource owner, can implement tighter time-to-live strategies
+              around the authorization data in RPTs. This is a classic
+              approach with bearer tokens that helps to limit a malicious
+              party's ability to intercept and use the bearer token. In the
+              same vein, the authorization server could require claims to have
+              a reasonable degree of freshness (which would require a custom
+              claims profile).</t>
 
-            <t>The strongest strategy is to disallow <spanx
-            style="verb">Bearer</spanx>-type RPTs within the UMA profile being
-            deployed, by providing or requiring an RPT profile that requires
-            use of a holder-of-key approach. In this way, the wielder of the
-            token must engage in a live session for proof-of-possession.</t>
-          </list></t>
+              <t>A stronger strategy is to "elevate trust" in the requesting
+              party by requiring a stronger authentication context, forcing
+              step-up authentication by the requesting party at run time.</t>
+
+              <t>The strongest strategy is to disallow <spanx
+              style="verb">Bearer</spanx>-type RPTs within the UMA profile
+              being deployed, by providing or requiring an RPT profile that
+              requires use of a holder-of-key approach. In this way, the
+              wielder of the token must engage in a live session for
+              proof-of-possession.</t>
+            </list></t>
+        </section>
+
+        <section anchor="sec-consid-pct"
+                 title="Requesting Party Claims and Persisted Claim Tokens">
+          <t>A PCT is similar to a refresh token in that it carries extra
+          power over the usage of an RPT. The authorization server and client
+          MUST keep PCTs confidential in transit and storage, and MUST NOT
+          share any PCT with any other entity other than the issuer or issued
+          client, respectively. The authorization server MUST maintain the
+          binding between a PCT and the client to which it was issued.</t>
+
+          <t>Given that a PCT represents a set of requesting party claims, a
+          client supplying a PCT in its RPT request MUST make a best effort to
+          ensure that the requesting party using the client now is the same as
+          the requesting party that was associated with the PCT when it was
+          issued. Different clients will have different capabilities in this
+          respect; for example, some applications are single-user and perform
+          no local authentication, associating all PCTs with the "current
+          user", while others might have more sophisticated authentication and
+          user mapping capabilities.</t>
+        </section>
       </section>
 
-      <section title="Client Authentication">
-        <t>Along with TLS, UMA requires OAuth, or any OAuth-based
-        authentication protocol, as the security mechanism for its protection
-        API. The UMA resource server thus acts in the role of an OAuth client
-        at the authorization server's protection API. While it is possible to
-        use any profile of OAuth for this protection, it is RECOMMENDED for
-        the authorization server to use OpenID Connect, and to use its
-        mechanisms for stronger client authentication at the token endpoint,
-        in order to strengthen the authentication of OAuth clients. Section 16
-        of <xref target="OIDCCore" /> provides more information on OpenID
-        Connect security considerations.</t>
+      <section anchor="sec-consid-oauth-oidc"
+               title="OAuth- and OpenID Connect-Related Security Considerations">
+        <t>This section discusses security considerations related to UMA's use
+        of OAuth and OpenID Connect.</t>
 
-        <t>Clients using the OAuth implicit grant type carry particular
-        vulnerabilities in OAuth, and OpenID Connect is of no help in this
-        circumstance. UMA scenarios are vulnerable as well. For example, an
-        "implicit client" might require the retrieval of PATs more frequently,
-        for each browser on each platform. An attacker can initiate a spear
-        phishing attack on the resource owner with a link to a malicious
-        website, relying on the resource owner to authenticate to the
-        authorization server through an email-based identity provider in order
-        to receive the PAT. The site can impersonate the resource owner using
-        the browser client's client ID in an OpenID Connect implicit request
-        to the UMA authorization server. If the resource owner had previously
-        authorized a PAT to be issued, this attempt will likely succeed. The
-        subsequently issued PAT could be used for resource set registration
-        and other protection API tasks.</t>
+        <section title="Strengthening Client Authentication Using OpenID Connect">
+          <t>Along with requiring TLS, UMA requires OAuth, or any OAuth-based
+          authentication protocol, as the security mechanism for its
+          protection API. The UMA resource server thus acts in the role of an
+          OAuth client at the authorization server's protection API. While it
+          is possible to use any profile of OAuth for this protection, it is
+          RECOMMENDED for the authorization server to use OpenID Connect, and
+          to use its mechanisms for stronger client authentication at the
+          token endpoint, in order to strengthen the authentication of OAuth
+          clients. Section 16 of <xref target="OIDCCore" /> provides more
+          information on OpenID Connect security considerations.</t>
+        </section>
 
-        <t>A number of mitigation strategies are possible.<list
-            style="symbols">
-            <t>The authorization server could penalize or disallow use of the
-            implicit grant flow. This could be done at a variety of
-            levels:<list style="symbols">
-                <t>Enabling resource owners to define policies controlling the
-                use of such clients</t>
+        <section title="Interacting with Resource Owners and Requesting Parties Using OAuth's Implicit Grant Type">
+          <t>Clients using the OAuth implicit grant type carry particular
+          vulnerabilities in OAuth, and using OpenID Connect is of no help in
+          this circumstance. This is true where an UMA resource server is used
+          as an OAuth client for obtaining a PAT on a resource owner's behalf,
+          and also where an authorization server is gathering claims from a
+          requesting party through OAuth.</t>
 
-                <t>Setting system-default policies controlling their use</t>
+          <t>For example, an "implicit client" might require the retrieval of
+          PATs more frequently, for each browser on each platform. An attacker
+          can initiate a spear phishing attack on the resource owner with a
+          link to a malicious website, relying on the resource owner to
+          authenticate to the authorization server through an email-based
+          identity provider in order to receive the PAT. The site can
+          impersonate the resource owner using the browser client's client ID
+          in an OpenID Connect implicit request to the UMA authorization
+          server. If the resource owner had previously authorized a PAT to be
+          issued, this attempt will likely succeed. The subsequently issued
+          PAT could be used for resource set registration and other protection
+          API tasks.</t>
 
-                <t>Participating in mutual agreements with other parties that
-                admit only suitably secure client applications to interact
-                with service operators</t>
-              </list></t>
+          <t>A number of mitigation strategies are possible.<list
+              style="symbols">
+              <t>The authorization server could penalize or disallow use of
+              the implicit grant flow. This could be done at a variety of
+              levels:<list style="symbols">
+                  <t>Enabling resource owners to define policies controlling
+                  the use of such clients</t>
 
-            <t>The authorization server could support dynamic client
-            registration at the client instance level, such that each instance
-            receives a unique client_id and secret. The client can then use
-            the authorization code flow and have at least some form of client
-            authentication. However, this is easier for a mobile app than for
-            a browser-based HTML app.</t>
-          </list></t>
-      </section>
+                  <t>Setting system-default policies controlling their use</t>
 
-      <section anchor="sec-consid-pct" title="Persisted Claim Tokens">
-        <t>A PCT is similar to a refresh token in that it carries extra power
-        over the usage of an RPT. The authorization server and client MUST
-        keep PCTs confidential in transit and storage, and MUST NOT share any
-        PCT with any other entity other than the issuer or issued client,
-        respectively. The authorization server MUST maintain the binding
-        between a PCT and the client to which it was issued.</t>
+                  <t>Participating in mutual agreements with other parties,
+                  for example, through the definition and mandated use of
+                  profiles, that admit only suitably secure client
+                  applications to interact with service operators</t>
+                </list></t>
 
-        <t>Given that a PCT represents a set of requesting party claims, a
-        client supplying a PCT in its RPT request MUST make a best effort to
-        ensure that the requesting party using the client now is the same as
-        the requesting party that was associated with the PCT when it was
-        issued. Different clients will have different capabilities in this
-        respect; for example, some applications are single-user and perform no
-        local authentication, associating all PCTs with the "current user",
-        while others might have more sophisticated authentication and
-        capabilities.</t>
-
-        <t />
+              <t>The authorization server could support dynamic client
+              registration at the client instance level, such that each
+              instance receives a unique client_id and secret. The client can
+              then use the authorization code flow and have at least some form
+              of client authentication. However, this is easier for a mobile
+              app than for a browser-based HTML app.</t>
+            </list></t>
+        </section>
       </section>
 
       <section anchor="cred-guessing" title="Credentials-Guessing">
@@ -2462,7 +2480,8 @@ Cache-Control: no-store
         compromise there is through a less-trusted authorization server.</t>
       </section>
 
-      <section title="Requesting Party Information at the Authorization Server">
+      <section anchor="rqp-privacy"
+               title="Requesting Party Information at the Authorization Server">
         <t>The primary privacy duty of UMA's design is to the resource owner.
         However, privacy considerations affect the requesting party as well.
         This can be seen in the optional issuance of a PCT, which enables an
@@ -2685,19 +2704,6 @@ Cache-Control: no-store
           <author initials="E." surname="Maler" />
 
           <date day="" month="" year="2016" />
-        </front>
-      </reference>
-
-      <reference anchor="UMA-obligations"
-                 target="https://docs.kantarainitiative.org/uma/draft-uma-trust.html">
-        <front>
-          <title>Binding Obligations on UMA Participants</title>
-
-          <author initials="E." surname="Maler">
-            <organization />
-          </author>
-
-          <date day="25" month="January" year="2013" />
         </front>
       </reference>
 
