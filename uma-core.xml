@@ -1570,7 +1570,7 @@ Cache-Control: no-store
             ]
          }
       ],
-      "redirect_user":https://as.example.com/rqp_claims_uri?id=2346576421
+      "redirect_user":"https://as.example.com/rqp_claims_uri?id=2346576421"
    }
 }
 ]]></artwork>
@@ -1585,10 +1585,8 @@ Cache-Control: no-store
           various types. The <spanx style="verb">error_details</spanx>
           sub-property MAY contain the following parameters, where at least
           one of <spanx style="verb">required_claims</spanx> or <spanx
-          style="verb">redirect_user</spanx> MUST be supplied: [ISSUE: Does
-          this correspond to what Justin is suggesting? Note that
-          authentication_context is gone due to the AAT being gone, in favor
-          of claim-centric authentication handling.]<list style="hanging">
+          style="verb">redirect_user</spanx> MUST be supplied.<list
+              style="hanging">
               <t hangText="required_claims">An array containing objects that
               describe characteristics of the required claims, with the
               following properties:<list style="hanging">
