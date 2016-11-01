@@ -425,29 +425,31 @@
                  title="UMA Grant Type and Requesting Party Token">
           <t>The authorization server issues access tokens that enable client
           access to UMA-protected resources on the requesting party&rsquo;s
-          behalf using an OAuth extension grant type known as the UMA grant
+          behalf using an OAuth extension grant type called the UMA grant
           type. In this grant type, the client uses the OAuth token endpoint
-          on the requesting party&rsquo;s behalf. To differentiate from access
-          tokens issued during another kind of OAuth grant type, and to
-          differentiate from other tokens issued during the UMA process, this
-          access token is known as the requesting party token (RPT).</t>
+          on the requesting party&rsquo;s behalf. To differentiate access
+          tokens issued through the UMA grant type from other tokens involved
+          in the UMA process, this access token is called the requesting party
+          token (RPT).</t>
 
-          <t>In addition to this endpoint, the authorization server MAY also
-          provide an interactive claims-gathering endpoint for various types
-          of direct interaction with an end-user requesting party as part of
-          its trust elevation process; see <xref target="claim-redirect" />
-          for more information about this option.</t>
+          <t>In addition to the OAuth token endpoint being used for RPT
+          issuance, the authorization server MAY also provide a requesting
+          party claims endpoint for various types of direct interaction with
+          an end-user requesting party, which is somewhat analogous to the
+          redirection URI defined in <xref target="RFC6749" /> for use by the
+          resource owner; see <xref target="claim-redirect" /> for more
+          information about this option.</t>
 
           <t>The authorization server MAY choose to issue a persisted claims
-          token (PCT) to the client during the authorization process in order
-          to optimize future RPT requests. The PCT represents the set of
-          claims collected by the authorization server from this client and
-          requesting party during the authorization process. It is intended to
-          be used when this client obtains a new RPT for this requesting party
-          at this authorization server, for the same or a different resource
-          set at the same or a different resource server, available under the
-          same or different policies, controlled by the same or a different
-          resource owner.</t>
+          token (PCT) to the client at the conclusion of the authorization
+          process in order to optimize future RPT requests. The PCT represents
+          the set of claims collected by the authorization server from this
+          client and requesting party during the authorization process. It is
+          intended to be used when this client obtains a new RPT for this
+          requesting party at this authorization server, for the same or a
+          different resource set at the same or a different resource server,
+          available under the same or different policies, controlled by the
+          same or a different resource owner.</t>
 
           <t>An UMA client seeking access to a resource set needs OAuth client
           credentials issued by the UMA authorization server protecting that
