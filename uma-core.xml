@@ -566,10 +566,19 @@
             authorization of an end-user requesting party directly.</t>
 
             <t hangText="requesting_party_claims_endpoint"><vspace />OPTIONAL.
-            The endpoint URI at which the authorization server interacts with
-            the end-user requesting party to gather claims. If this property
-            is absent, the authorization server does not interact with the
-            end-user requesting party for claims gathering.</t>
+            A static endpoint URI at which the authorization server declares
+            that it interacts with end-user requesting parties to gather
+            claims. If the authorization server also provides a requesting
+            party claims endpoint URI as part of its <spanx
+            style="verb">redirect_user</spanx> hint in a <spanx
+            style="verb">need_info</spanx> response to a client on
+            authorization failure (see <xref
+            target="authorization-failure" />), that value overrides the one
+            provided in the configuration data. Providing the static endpoint
+            URI is useful for enabling interactive claims gathering prior to
+            pushed-claims flows, so that, for example, it is possible to
+            gather requesting party authorization for persisting all claims
+            subsequently collected.</t>
 
             <t hangText="introspection_endpoint"><vspace />REQUIRED. The
             endpoint URI at which the resource server introspects an RPT
@@ -1543,7 +1552,7 @@ Cache-Control: no-store
             ]
          }
       ],
-      "redirect_user":true
+      "redirect_user":https://as.example.com/rqp_claims_uri?id=2346576421
    }
 }
 ]]></artwork>
@@ -1593,18 +1602,18 @@ Cache-Control: no-store
                   a URI.</t>
                 </list></t>
 
-              <t hangText="redirect_user">A Boolean value indicating whether
-              the requesting party's presence at the authorization server is
-              required for the process of claims gathering. For example, the
-              authorization server may require the requesting party to fill
-              out a CAPTCHA to help prove humanness. The default is <spanx
-              style="verb">false</spanx> if this parameter is not present. See
-              <xref target="am-endpoints" /> for how the authorization server
-              declares the requesting party claims endpoint to which the
-              client has the opportunity to redirect the requesting party.
-              Note that the word "user" implies an end-user (human) requesting
-              party; if the requesting party is not an end-user, then no
-              client action would be possible on receiving the hint.</t>
+              <t hangText="redirect_user">OPTIONAL. The requesting party
+              claims endpoint URI to which to redirect the end-user requesting
+              party at the authorization server to continue the process of
+              interactive claims gathering. For example, the authorization
+              server may require the requesting party to fill out a CAPTCHA to
+              help prove humanness. If the requesting party is not an
+              end-user, then no client action would be possible on receiving
+              the hint. If a static requesting party claims endpoint was also
+              provided in the authorization server's configuration data, then
+              this value overrides the static value. Providing a value in this
+              response might be appropriate, for example, if the URI needs to
+              be customized per requesting party.</t>
 
               <t hangText="ticket">A permission ticket that allows the client
               to make further requests to the authorization server during this
