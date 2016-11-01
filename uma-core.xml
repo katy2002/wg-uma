@@ -273,6 +273,16 @@
             authorization data and RPTs to a client and protects resources
             managed at a resource server.</t>
 
+            <t hangText="authorization process"><vspace />A potentially
+            repeating loop of RPT-seeking and claims collection activity that
+            can involve both client/authorization server messaging and
+            end-user requesting party/authorization server interactive claims
+            gathering, all in service of ensuring that the requesting side
+            seeking access to the protected resource meets the policy
+            conditions set forth by the resource owner. A client seeking an
+            RPT is inside the authorization process loop until it definitely
+            succeeds or fails at the RPT request task.</t>
+
             <t hangText="permission">A scope of access over a particular
             resource set at a particular resource server that is being
             requested by, or granted to, a requesting party. In authorization
@@ -1494,6 +1504,12 @@ Content-Type: application/json
               have this authorization data added. The authorization server
               responds with the HTTP 403 (Forbidden) status code.</t>
 
+              <t hangText="request_submitted">The authorization server
+              requires intervention by the resource owner to determine whether
+              the client is authorized to have this authorization data. The
+              authorization server responds with the HTTP 403 (Forbidden)
+              status code.</t>
+
               <t hangText="need_info">The authorization server needs
               additional information in order to determine whether the client
               is authorized to have this authorization data. The authorization
@@ -1504,13 +1520,15 @@ Content-Type: application/json
               required information. The client then has the opportunity to
               engage in follow-on flows to continue seeking authorization (see
               <xref target="need-info" />).</t>
-
-              <t hangText="request_submitted">The authorization server
-              requires intervention by the resource owner to determine whether
-              the client is authorized to have this authorization data.
-              Further immediate interaction between the client and
-              authorization server is out of scope of this specification.</t>
             </list></t>
+
+          <t>The first four error responses conclude the authorization
+          server's interaction with the client, and the client is free to
+          attempt access to the protected resource another time. The fifth
+          error response, <spanx style="verb">need_info</spanx>, begins an
+          authorization process loop that concludes only when the client
+          receives one of the other four errors or a success condition (as
+          described in <xref target="give-rpt" />).</t>
 
           <figure>
             <preamble>Example when the ticket has expired:</preamble>
