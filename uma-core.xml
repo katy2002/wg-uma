@@ -493,7 +493,7 @@
             fragment component that the authorization server asserts as its
             issuer identifier. This value MUST be identical to the web
             location of the configuration data minus the <spanx
-            style="verb">.well-known/uma-configuration</spanx> path
+            style="verb">.well-known/uma2-configuration</spanx> path
             components.</t>
 
             <t hangText="pat_profiles_supported"><vspace />REQUIRED. OAuth
@@ -597,7 +597,7 @@
         <figure>
           <preamble>Example of authorization server configuration data that
           resides at <spanx
-          style="verb">https://example.com/.well-known/uma-configuration</spanx>
+          style="verb">https://example.com/.well-known/uma2-configuration</spanx>
           (note the use of <spanx style="verb">https:</spanx> for endpoints
           throughout):</preamble>
 
