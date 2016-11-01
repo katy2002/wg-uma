@@ -1747,12 +1747,17 @@ Authorization: Bearer jwfLG53^sad$#f
               to register their redirection endpoint prior to utilizing the
               authorization endpoint (either using a static process or through
               <xref target="RFC7591" /> or <xref
-              target="OIDCDynClientReg" />). The claims redirection URIs of a
-              client MUST be registered distinct from the client's redirection
-              URIs as used at the authorization endpoint during redirect-based
-              OAuth flows. If the URI is pre-registered, this URI MUST exactly
-              match one of the pre-registered claims redirection URIs, with
-              the matching performed as described in Section 6.2.1 of <xref
+              target="OIDCDynClientReg" />). Claims redirection URIs are
+              different from the redirection URIs defined in <xref
+              target="RFC6749" /> in that they are intended for the exclusive
+              use of requesting parties and not resource owners. Therefore,
+              authorization servers MUST NOT redirect requesting parties to
+              pre-registered redirection URIs defined in <xref
+              target="RFC6749" /> unless such URIs are also pre-registered
+              specifically as claims redirection URIs. If the URI is
+              pre-registered, this URI MUST exactly match one of the
+              pre-registered claims redirection URIs, with the matching
+              performed as described in Section 6.2.1 of <xref
               target="RFC3986" /> (Simple String Comparison).</t>
 
               <t hangText="ticket">REQUIRED. The latest permission ticket
