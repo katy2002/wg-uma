@@ -382,12 +382,12 @@
 
           <t>The UMA resource server, which is the entity seeking protection
           API access, MUST be an OAuth client with client credentials and the
-          the ability to get an OAuth access token with at least the scope
-          <spanx style="verb">uma_protection</spanx>. An access token with at
-          least this scope is called a protection API token (PAT). If a
-          request to an endpoint fails due to an invalid, missing, or expired
-          PAT, or requires higher privileges at this endpoint than provided by
-          the PAT, the authorization server responds with an OAuth error.</t>
+          ability to get an OAuth access token with at least the scope <spanx
+          style="verb">uma_protection</spanx>. An access token with at least
+          this scope is called a protection API token (PAT). If a request to
+          an endpoint fails due to an invalid, missing, or expired PAT, or
+          requires higher privileges at this endpoint than provided by the
+          PAT, the authorization server responds with an OAuth error.</t>
 
           <t>The authorization server MUST support the OAuth bearer token
           profile for PAT issuance, and MAY support other OAuth token
@@ -1351,6 +1351,12 @@ Content-Type: application/json
               have this authorization data added. The authorization server
               responds with the HTTP 403 (Forbidden) status code.</t>
 
+              <t hangText="invalid_scope">At least one of the scopes included
+              in the request does not match an available scope for any of the
+              resource sets associated with requested permission for the
+              permission ticket provided by the client. The authorization
+              server responds with the HTTP 400 (Bad Request) status code.</t>
+
               <t hangText="request_submitted">The authorization server
               requires intervention by the resource owner to determine whether
               the client is authorized to have this authorization data. The
@@ -1369,9 +1375,9 @@ Content-Type: application/json
               <xref target="need-info" />).</t>
             </list></t>
 
-          <t>The first four error responses conclude the authorization
+          <t>The first five error responses conclude the authorization
           server's interaction with the client, and the client is free to
-          attempt access to the protected resource another time. The fifth
+          attempt access to the protected resource another time. The sixth
           error response, <spanx style="verb">need_info</spanx>, begins or
           continues an authorization process loop that concludes only when the
           client receives one of the other four errors or a success condition
