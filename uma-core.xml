@@ -509,29 +509,6 @@
             style="verb">.well-known/uma2-configuration</spanx> path
             components.</t>
 
-            <t hangText="pat_profiles_supported"><vspace />REQUIRED. OAuth
-            access token types supported by this authorization server for PAT
-            issuance. The property value is an array of string values, where
-            each string value (which MAY be a URI) is a token type. Non-URI
-            token type strings defined by OAuth token-defining specifications
-            are privileged. For example, the type "<spanx
-            style="verb">bearer</spanx>" stands for the OAuth bearer token
-            type defined in <xref target="RFC6750" />. The authorization
-            server is REQUIRED to support "<spanx
-            style="verb">bearer</spanx>", and to supply this value explicitly.
-            The authorization server MAY declare its support for additional
-            PAT profiles.</t>
-
-            <t hangText="rpt_profiles_supported"><vspace />REQUIRED. Profiles
-            supported by this authorization server for RPT issuance. The
-            property value is an array of string values, where each string
-            value is a URI identifying an RPT profile. The authorization
-            server is REQUIRED to support the <spanx
-            style="verb">Bearer</spanx> RPT profile defined in <xref
-            target="uma-bearer-token-profile" />, and to supply its
-            identifying URI explicitly. The authorization server MAY declare
-            its support for additional RPT profiles.</t>
-
             <t hangText="pat_grant_types_supported"><vspace />REQUIRED. OAuth
             grant types supported by this authorization server in issuing
             PATs. The property value is an array of string values, where each
@@ -625,12 +602,6 @@
 
           <artwork><![CDATA[{  
    "issuer":"https://example.com",
-   "pat_profiles_supported":[  
-      "bearer"
-   ],
-   "rpt_profiles_supported":[  
-      "https://docs.kantarainitiative.org/uma/profiles/uma-token-bearer-1.0"
-   ],
    "pat_grant_types_supported":[  
       "authorization_code"
    ],
