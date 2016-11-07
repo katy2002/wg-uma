@@ -273,15 +273,19 @@
             authorization data and RPTs to a client and protects resources
             managed at a resource server.</t>
 
-            <t hangText="authorization process"><vspace />A potentially
-            repeating loop of RPT-seeking and claims collection activity that
-            can involve both client/authorization server messaging and
-            end-user requesting party/authorization server interactive claims
-            gathering, all in service of ensuring that the requesting side
-            seeking access to the protected resource meets the policy
-            conditions set forth by the resource owner. A client seeking an
-            RPT is inside the authorization process loop until it definitely
-            succeeds or fails at the RPT request task.</t>
+            <t hangText="authorization process"><vspace />The process through
+            which the client attempts to obtain an RPT from the authorization
+            server in order to access a protected resource on behalf of a
+            requesting party. The process involves two activities: claims
+            collection and authorization assessment. Claims collection
+            involves either claims pushed by the client or claims
+            interactively gathered from the requesting party, or both.
+            Authorization assessment involves assessing any claims and other
+            contextual factors against the resource owner's policy conditions
+            in order to mitigate access authorization risk. The two activities
+            alternate and the pair can repeat; either can come first. The
+            process concludes when the client definitively succeeds or fails
+            in obtaining an RPT.</t>
 
             <t hangText="permission">A scope of access over a particular
             resource set at a particular resource server that is being
@@ -309,13 +313,11 @@
 
             <t hangText="persisted claims token (PCT)">A correlation handle
             issued by an authorization server that represents a set of claims
-            collected from a requesting party/client pair during one
-            authorization process to be used during future authorization
-            processes. The authorization server MAY have gathered the claims
-            interactively or the client MAY have pushed them, or both, and an
-            end-user requesting party MAY have provided authorization in some
-            interactive fashion for the authorization server to persist this
-            information across authorization processes.</t>
+            collected during one authorization process to be used during
+            future authorization processes. An end-user requesting party MAY
+            have provided authorization in some interactive fashion for the
+            authorization server to persist this information across
+            authorization processes.</t>
 
             <t hangText="resource set registration endpoint">An endpoint at
             the authorization server that allows the resource server to
@@ -443,13 +445,12 @@
           <t>The authorization server MAY choose to issue a persisted claims
           token (PCT) to the client at the conclusion of the authorization
           process in order to optimize future RPT requests. The PCT represents
-          the set of claims collected by the authorization server from this
-          client and requesting party during the authorization process. It is
-          intended to be used when this client obtains a new RPT for this
-          requesting party at this authorization server, for the same or a
-          different resource set at the same or a different resource server,
-          available under the same or different policies, controlled by the
-          same or a different resource owner.</t>
+          the set of claims collected by the authorization server during the
+          authorization process. It is intended to be used when this client
+          obtains a new RPT for this requesting party at this authorization
+          server, for the same or a different resource set at the same or a
+          different resource server, available under the same or different
+          policies, controlled by the same or a different resource owner.</t>
 
           <t>An UMA client seeking access to a resource set needs OAuth client
           credentials issued by the UMA authorization server protecting that
@@ -1212,12 +1213,13 @@ Content-Type: application/json
               <t hangText="pct">OPTIONAL. If the authorization server
               previously returned a PCT along with an RPT, the client MAY
               include the PCT in order to optimize the process of seeking a
-              new RPT. Given that a PCT represents a set of requesting party
-              claims, a client supplying a PCT in its RPT request MUST make a
-              best effort to ensure that the requesting party using the client
-              now is the same as the requesting party that was associated with
-              the PCT when it was issued. See <xref target="sec-consid-pct" />
-              for additional PCT security considerations.</t>
+              new RPT. Given that some claims represented by a PCT are likely
+              to contain identity information about a requesting party, a
+              client supplying a PCT in its RPT request MUST make a best
+              effort to ensure that the requesting party using the client now
+              is the same as the requesting party that was associated with the
+              PCT when it was issued. See <xref target="sec-consid-pct" /> for
+              additional PCT security considerations.</t>
             </list></t>
 
           <figure>
@@ -1399,10 +1401,10 @@ Content-Type: application/json
           <t>The first four error responses conclude the authorization
           server's interaction with the client, and the client is free to
           attempt access to the protected resource another time. The fifth
-          error response, <spanx style="verb">need_info</spanx>, begins an
-          authorization process loop that concludes only when the client
-          receives one of the other four errors or a success condition (as
-          described in <xref target="give-rpt" />).</t>
+          error response, <spanx style="verb">need_info</spanx>, begins or
+          continues an authorization process loop that concludes only when the
+          client receives one of the other four errors or a success condition
+          (as described in <xref target="give-rpt" />).</t>
 
           <figure>
             <preamble>Example when the ticket has expired:</preamble>
@@ -1768,13 +1770,12 @@ Host: client.example.com
           <section anchor="interaction-consent"
                    title="Authorization Server Gathers Requesting Party Authorization for Trust Elevation by Client: Persisted Claims">
             <t>As noted in <xref target="saved-consent-token" />, the
-            authorization server MAY choose to persist pushed and/or
-            interactively gathered claims of a requesting party and issue a
-            PCT in order to optimize future authorization processes on behalf
-            of a requesting party. It MAY also gather authorization from an
-            end-user requesting party for persisting these claims, one option
-            being persisting this authorization in the form of an actual claim
-            itself.</t>
+            authorization server MAY choose to persist collected claims and
+            issue a PCT in order to optimize future authorization processes on
+            behalf of a requesting party. It MAY also gather authorization
+            from an end-user requesting party for persisting these claims, one
+            option being persisting this authorization in the form of an
+            actual claim itself.</t>
 
             <t>The authorization server MAY combine authorization-gathering
             interaction with other interactions as necessary, and in any
