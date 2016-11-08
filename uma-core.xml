@@ -153,14 +153,14 @@
       <t>The phases work as follows: <list style="hanging">
           <t hangText="Protect a resource">(Described in <xref
           target="protecting-a-resource" />.) The resource owner, who manages
-          online resources at the resource server ("A"), introduces it to the
+          digital resources at the resource server ("A"), introduces it to the
           authorization server so that the latter can begin protecting the
           resources. To accomplish this, the authorization server presents a
           protection API ("B") to the resource server. This API is protected
           by OAuth (or an OAuth-based authentication protocol) and requires a
           protection API token (PAT) for access. Out of band, the resource
           owner configures the authorization server with policies associated
-          with the resource sets ("C") that the resource registers for
+          with the resources ("C") that the resource server registers for
           protection.</t>
 
           <t hangText="Get authorization">(Described in <xref
@@ -211,20 +211,21 @@
             of the entire &ldquo;authorization interface&rdquo;. Does this
             work?]</t>
 
-            <t hangText="resource owner"><vspace />An OAuth resource owner
-            that is the "user" in User-Managed Access. This is typically an
-            end-user (a natural person) but it can also be a corporation or
-            other legal person.</t>
+            <t hangText="resource owner"><vspace />An entity capable of
+            granting access to a protected resource, the "user" in
+            User-Managed Access. This is typically an end-user (a natural
+            person) but it can also be a corporation or other legal
+            person.</t>
 
             <t hangText="policy">The configuration parameters of an
             authorization server that effect resource access management.
             Authorization policies typically include elements similar to parts
             of speech; for example, "subjects" describe those seeking access
             (requesting parties and clients), "verbs" describe operational
-            scopes of access, and "objects" describe targeted resource sets.
-            Policy configuration takes place between the resource owner and
-            the authorization server, and thus is out of scope for this
-            specification.</t>
+            scopes of access, and "objects" describe targeted resources to
+            protect. Policy configuration takes place between the resource
+            owner and the authorization server, and thus is out of scope for
+            this specification.</t>
 
             <t hangText="requesting party"><vspace />An end-user, or a
             corporation or other legal person, that uses a client to seek
@@ -241,17 +242,19 @@
             server in order to gain permission for access to a protected
             resource.</t>
 
-            <t hangText="resource set">One or more protected resources that a
-            resource server manages as a set, abstractly. In authorization
-            policy terminology, a resource set is the "object" being
-            protected. This term derives from <xref
-            target="OAuth-resource-reg" />.</t>
+            <t hangText="protected resource">A digital resource to which a
+            resource owner is able to control access grants. From the resource
+            server's perspective, the resource might consist of one or
+            multiple parts, but it is managed as a single resource from the
+            perspective of UMA protection. In authorization policy
+            terminology, a resource is the "object" being protected. This term
+            derives from <xref target="OAuth-resource-reg" />.</t>
 
             <t hangText="scope">A bounded extent of access that is possible to
-            perform on a resource set. In authorization policy terminology, a
-            scope is one of the potentially many "verbs" that can logically
-            apply to a resource set ("object"). UMA associates scopes with
-            labeled resource sets. This term derives from <xref
+            perform on a protected resource. In authorization policy
+            terminology, a scope is one of the potentially many "verbs" that
+            can logically apply to a resource ("object"). UMA associates
+            scopes with labeled resources. This term derives from <xref
             target="OAuth-resource-reg" />.</t>
 
             <t hangText="token">A packaged collection of data meant to be
@@ -288,12 +291,12 @@
             in obtaining an RPT.</t>
 
             <t hangText="permission">A scope of access over a particular
-            resource set at a particular resource server that is being
-            requested by, or granted to, a requesting party. In authorization
-            policy terminology, a permission is an entitlement that includes a
+            resource at a particular resource server that is being requested
+            by, or granted to, a requesting party. In authorization policy
+            terminology, a permission is an entitlement that includes a
             "subject" (requesting party), "verbs" (one or more scopes of
-            access), and an "object" (resource set). A permission is one
-            example of authorization data.</t>
+            access), and an "object" (resource). A permission is one example
+            of authorization data.</t>
 
             <t hangText="permission ticket">A correlation handle that is
             conveyed from an authorization server to a resource server, from a
@@ -308,7 +311,7 @@
             <t hangText="protection API token (PAT)">An OAuth access token
             with the scope <spanx style="verb">uma_protection</spanx>, used by
             the resource server at the protection API, consisting of the
-            resource set registration, permission registration, and token
+            resource registration, permission registration, and token
             introspection endpoints.</t>
 
             <t hangText="persisted claims token (PCT)">A correlation handle
@@ -321,7 +324,7 @@
 
             <t hangText="resource set registration endpoint">An endpoint at
             the authorization server that allows the resource server to
-            register resource sets.</t>
+            register resources for protection.</t>
 
             <t hangText="permission registration endpoint">An endpoint at the
             authorization server that allows the resource server to request
@@ -416,7 +419,7 @@
           attempted access without an RPT (as described in <xref
           target="without-rpt" />). In order for the resource server to know
           which authorization server to approach and which PAT (representing a
-          resource owner) and resource set identifier to supply, the resource
+          resource owner) and resource identifier to supply, the resource
           server's API needs be structured in such a way that it can derive
           this information from the client's RPT-free access attempt. In
           practice, this information likely needs to be passed through the
@@ -448,13 +451,13 @@
           the set of claims collected by the authorization server during the
           authorization process. It is intended to be used when this client
           obtains a new RPT for this requesting party at this authorization
-          server, for the same or a different resource set at the same or a
+          server, for the same or a different resource at the same or a
           different resource server, available under the same or different
           policies, controlled by the same or a different resource owner.</t>
 
-          <t>An UMA client seeking access to a resource set needs OAuth client
+          <t>An UMA client seeking access to a resource needs OAuth client
           credentials issued by the UMA authorization server protecting that
-          resource set.</t>
+          resource.</t>
 
           <t>The resource server MAY present to clients whatever HTTP-based
           APIs or endpoints it wishes. To protect any of its resources
@@ -469,12 +472,11 @@
           to register a requested permission at the authorization server,
           which requires a PAT for authorization. In order for the resource
           server to know which authorization server to approach and which PAT
-          (representing a resource owner) and resource set identifier to
-          supply, the resource server's API needs be structured in such a way
-          that it can derive this information from the client's RPT-free
-          access attempt. In practice, this information likely needs to be
-          passed through the URI, headers, or body of the client's
-          request.</t>
+          (representing a resource owner) and resource identifier to supply,
+          the resource server's API needs be structured in such a way that it
+          can derive this information from the client's RPT-free access
+          attempt. In practice, this information likely needs to be passed
+          through the URI, headers, or body of the client's request.</t>
         </section>
 
         <section title="Time-to-Live Considerations">
@@ -483,11 +485,11 @@
           corresponding refresh tokens where applicable, the individual
           authorization data components associated with RPTs where applicable,
           and even the client credentials that it issues. Different
-          time-to-live strategies may be suitable for different resource sets
-          and scopes of access, and the authorization server has the
-          opportunity to give the resource owner control over lifetimes of
-          tokens and authorization data issued on their behalf through policy.
-          These options are all outside the scope of this specification.</t>
+          time-to-live strategies may be suitable for different resources and
+          scopes of access, and the authorization server has the opportunity
+          to give the resource owner control over lifetimes of tokens and
+          authorization data issued on their behalf through policy. These
+          options are all outside the scope of this specification.</t>
         </section>
       </section>
 
@@ -579,10 +581,10 @@
 
             <t
             hangText="resource_set_registration_endpoint"><vspace />REQUIRED.
-            The endpoint URI at which the resource server registers resource
-            sets to put them under authorization manager protection. Usage of
-            this endpoint is defined by <xref target="OAuth-resource-reg" />
-            and <xref target="protecting-a-resource" />. A valid PAT MUST
+            The endpoint URI at which the resource server registers resources
+            to put them under authorization manager protection. Usage of this
+            endpoint is defined by <xref target="OAuth-resource-reg" /> and
+            <xref target="protecting-a-resource" />. A valid PAT MUST
             accompany requests to this protected endpoint.</t>
 
             <t hangText="permission_registration_endpoint"><vspace />REQUIRED.
@@ -647,8 +649,8 @@
           process that may or may not directly involve the resource owner at
           introduction time.</t>
 
-          <t>In an ongoing fashion, the resource server registers any resource
-          sets with the authorization server for which it intends to outsource
+          <t>In an ongoing fashion, the resource server registers any
+          resources with the authorization server to put them under
           protection, using the resource set registration endpoint of the
           protection API (see <xref target="OAuth-resource-reg" />).</t>
         </list></t>
@@ -661,23 +663,23 @@
       Any such partitioning by the resource server or owner is outside the
       scope of this specification.</t>
 
-      <t>Once a resource set has been placed under authorization server
-      protection through the registration of a resource set description for
-      it, and until such a description's deletion by the resource server, the
-      resource server MUST limit access to corresponding resources, requiring
+      <t>Once a resource has been placed under authorization server protection
+      through the registration of a resource description document for it, and
+      until such a description's deletion by the resource server, the resource
+      server MUST limit access to corresponding resources, requiring
       sufficient authorization data associated with client-presented RPTs by
       the authorization server (see <xref
       target="permission-success-to-client" />).</t>
 
-      <t>Note: The PAT that the resource server uses to register resource sets
+      <t>Note: The PAT that the resource server uses to register resources
       must also be used later during client access attempts, for example, in
       registering a requested permission on a client's behalf (as described in
       <xref target="register-permission" />). One circumstance precipitating
       this action is when the client has attempted access without an RPT (as
       described in <xref target="without-rpt" />). In order for the resource
       server to know which authorization server to approach and which PAT
-      (representing a resource owner) and resource set identifier to supply,
-      the resource server's API needs be structured in such a way that it can
+      (representing a resource owner) and resource identifier to supply, the
+      resource server's API needs be structured in such a way that it can
       derive this information from the client's RPT-free access attempt. In
       practice, this information likely needs to be passed through the URI,
       headers, or body of the client's request.</t>
@@ -705,12 +707,12 @@
           server next needs to make a request at the authorization server to
           continue the authorization-seeking process. In order for the
           resource server to know which authorization server to approach and
-          which PAT (representing a resource owner) and resource set
-          identifier to supply on that request, the resource server's API
-          needs be structured in such a way that it can derive this
-          information from the client's RPT-free access attempt. In practice,
-          this information likely needs to be passed through the URI, headers,
-          or body of the client's request.</t>
+          which PAT (representing a resource owner) and resource identifier to
+          supply on that request, the resource server's API needs be
+          structured in such a way that it can derive this information from
+          the client's RPT-free access attempt. In practice, this information
+          likely needs to be passed through the URI, headers, or body of the
+          client's request.</t>
 
           <t>The impetus for the client's access attempt. For example, its
           end-user requesting party might have clicked on a thumbnail
@@ -761,8 +763,8 @@
       <section anchor="client-attempts-access"
                title="Client Attempts Access to Protected Resource">
         <t>This interaction assumes that the resource server has already
-        registered any relevant resource sets prior to the client's access
-        attempt at any resource that is intended to be UMA-protected.</t>
+        registered any relevant resources prior to the client's access attempt
+        at any resource that is intended to be UMA-protected.</t>
 
         <section anchor="without-rpt"
                  title="Client Request to Resource Server With No RPT">
@@ -816,8 +818,8 @@ Host: photoz.example.com
         requested permission that it registers, as long as it minimally
         suffices for the access attempted by the client. For example, it can
         choose to register a permission that covers several scopes or a
-        resource set that is greater in extent than the specific resource that
-        the client attempted to access.</t>
+        resource that is greater in extent than the specific resource that the
+        client attempted to access.</t>
 
         <t>The PAT provided in the API request enables the authorization
         server to map the requested permission to the appropriate resource
@@ -829,22 +831,22 @@ Host: photoz.example.com
         <section title="Resource Server Request to Permission Registration Endpoint">
           <t>The resource server uses the POST method at the permission
           registration endpoint. The body of the HTTP request message contains
-          a JSON object (for a request containing a single resource set) or
-          array (for a request containing more than one resource set)
-          providing the requested permission, using a format derived from the
-          resource set description format specified in <xref
+          a JSON object (for a request containing a single resource) or array
+          (for a request containing more than one resource) providing the
+          requested permission, using a format derived from the resource
+          description format specified in <xref
           target="OAuth-resource-reg" />, as follows. The object used in both
           forms has the following properties:<list style="hanging">
               <t hangText="resource_set_id">REQUIRED. The identifier for a
-              resource set to which this client is seeking access. The
-              identifier MUST correspond to a resource set that was previously
+              resource to which this client is seeking access. The identifier
+              MUST correspond to a resource that was previously
               registered.</t>
 
               <t hangText="permission_scopes">REQUIRED. An array referencing
               one or more identifiers of scopes to which access is needed for
-              this resource set. Each scope identifier MUST correspond to a
-              scope that was registered by this resource server for the
-              referenced resource set.</t>
+              this resource. Each scope identifier MUST correspond to a scope
+              that was registered by this resource server for the referenced
+              resource.</t>
             </list></t>
 
           <figure>
@@ -964,8 +966,8 @@ Content-Type: application/json
           target="uma-error-response" /> for more information about error
           codes and responses):<list style="hanging">
               <t hangText="invalid_resource_set_id">At least one of the
-              provided resource set identifiers was not found at the
-              authorization server.</t>
+              provided resource identifiers was not found at the authorization
+              server.</t>
 
               <t hangText="invalid_scope">At least one of the scopes included
               in the request was not registered previously by this resource
@@ -1117,7 +1119,7 @@ Content-Type: application/json
 
         <t>[ISSUES: Okay not to make anything MTI here? Xref to 6750? Say
         anything specifically about PoP? Need to make specific reference to
-        resource set IDs in connection with scopes when it comes to what comes
+        resource IDs in connection with scopes when it comes to what comes
         back in token introspection responses? See "Section 7 - Security
         considerations - bearer tokens" thread.]</t>
       </section>
@@ -1174,8 +1176,8 @@ Content-Type: application/json
               <t hangText="scope">OPTIONAL. A string of space-separated values
               representing the scopes that the client is requesting. [ISSUE:
               What is the relationship between these scopes and multiple
-              resource sets, if the permission ticket maps to such? ISSUE:
-              Provide one or more examples of requesting scopes?]</t>
+              resources, if the permission ticket maps to such? ISSUE: Provide
+              one or more examples of requesting scopes?]</t>
 
               <t hangText="claim_tokens">OPTIONAL. Claims pushed directly from
               the client to the authorization server. See <xref
@@ -1213,7 +1215,7 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
           <t>The authorization server uses the permission ticket to look up
           the details of the previously registered requested permission, maps
           the requested permission to operative resource owner policies based
-          on the resource set identifier and scopes associated with it,
+          on the resource identifier and scopes associated with it,
           potentially requests additional information and receives additional
           information such as claims, and ultimately responds positively or
           negatively to the request for authorization data.</t>
@@ -1252,14 +1254,14 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
 
           <t>The authorization server MUST use a default-deny authorization
           assessment model in adding authorization data to RPTs, that is,
-          "everything that is not expressly allowed is forbidden" for resource
-          sets that resource servers have registered. Exercise caution in
+          "everything that is not expressly allowed is forbidden" for
+          resources that resource servers have registered. Exercise caution in
           implementing default-deny because corner cases can inadvertently
           result in default-permit behavior. For example, it is insufficient
-          simply to assume that all resource sets have some non-zero set of
-          claims required for access, and then accept an empty set of supplied
-          claims as sufficient for access. See <xref target="UMA-Impl" /> for
-          further discussion.</t>
+          simply to assume that all resources have some non-zero set of claims
+          required for access, and then accept an empty set of supplied claims
+          as sufficient for access. See <xref target="UMA-Impl" /> for further
+          discussion.</t>
         </section>
 
         <section anchor="give-rpt"
@@ -1353,7 +1355,7 @@ Content-Type: application/json
 
               <t hangText="invalid_scope">At least one of the scopes included
               in the request does not match an available scope for any of the
-              resource sets associated with requested permission for the
+              resources associated with requested permission for the
               permission ticket provided by the client. The authorization
               server responds with the HTTP 400 (Bad Request) status code.</t>
 
@@ -2259,8 +2261,8 @@ Cache-Control: no-store
           in an OpenID Connect implicit request to the UMA authorization
           server. If the resource owner had previously authorized a PAT to be
           issued, this attempt will likely succeed. The subsequently issued
-          PAT could be used for resource set registration and other protection
-          API tasks.</t>
+          PAT could be used for resource registration and other protection API
+          tasks.</t>
 
           <t>A number of mitigation strategies are possible.<list
               style="symbols">
@@ -2352,13 +2354,13 @@ Cache-Control: no-store
       <t>UMA has the following privacy considerations.</t>
 
       <section title="Resource Set Information at the Authorization Server">
-        <t>The authorization server comes to be in possession of resource set
+        <t>The authorization server comes to be in possession of resource
         information that may reveal information about the resource owner,
         which the authorization server's trust relationship with the resource
         server is assumed to accommodate. However, the client is a
         less-trusted party -- in fact, entirely untrustworthy until
         authorization data is associated with its RPT. The more information
-        about a resource set that is registered, the more risk of privacy
+        about a resource that is registered, the more risk of privacy
         compromise there is through a less-trusted authorization server.</t>
       </section>
 
@@ -2404,7 +2406,7 @@ Cache-Control: no-store
               <t>Claim name: permissions</t>
 
               <t>Claim description: Array of objects, each describing a set of
-              scoped, time-limitable entitlements to a resource set</t>
+              scoped, time-limitable entitlements to a resource</t>
 
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - wg-uma@kantarainitiative.org</t>
@@ -2426,7 +2428,7 @@ Cache-Control: no-store
               <t>Name: permissions</t>
 
               <t>Description: Array of objects, each describing a set of
-              scoped, time-limitable entitlements to a resource set</t>
+              scoped, time-limitable entitlements to a resource</t>
 
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - wg-uma@kantarainitiative.org</t>
