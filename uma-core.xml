@@ -372,7 +372,7 @@
 
           <t>The protection API consists of three endpoints:<list
               style="symbols">
-              <t>Resource set registration endpoint as defined by <xref
+              <t>Resource registration endpoint as defined by <xref
               target="OAuth-resource-reg" /></t>
 
               <t>Permission registration endpoint as defined by <xref
@@ -579,8 +579,7 @@
             target="token-introspection" />. A valid PAT MUST accompany
             requests to this protected endpoint.</t>
 
-            <t
-            hangText="resource_set_registration_endpoint"><vspace />REQUIRED.
+            <t hangText="resource_registration_endpoint"><vspace />REQUIRED.
             The endpoint URI at which the resource server registers resources
             to put them under authorization manager protection. Usage of this
             endpoint is defined by <xref target="OAuth-resource-reg" /> and
@@ -614,7 +613,7 @@
    "token_endpoint":"https://as.example.com/token_uri",
    "authorization_endpoint":"https://as.example.com/authz_uri",
    "requesting_party_claims_endpoint":"https://as.example.com/rqp_claims_uri",
-   "resource_set_registration_endpoint":"https://as.example.com/rs/rsrc_uri",
+   "resource_registration_endpoint":"https://as.example.com/rs/rsrc_uri",
    "introspection_endpoint":"https://as.example.com/rs/status_uri",
    "permission_registration_endpoint":"https://as.example.com/rs/perm_uri"
 }
@@ -651,7 +650,7 @@
 
           <t>In an ongoing fashion, the resource server registers any
           resources with the authorization server to put them under
-          protection, using the resource set registration endpoint of the
+          protection, using the resource registration endpoint of the
           protection API (see <xref target="OAuth-resource-reg" />).</t>
         </list></t>
 
@@ -837,7 +836,7 @@ Host: photoz.example.com
           description format specified in <xref
           target="OAuth-resource-reg" />, as follows. The object used in both
           forms has the following properties:<list style="hanging">
-              <t hangText="resource_set_id">REQUIRED. The identifier for a
+              <t hangText="resource_id">REQUIRED. The identifier for a
               resource to which this client is seeking access. The identifier
               MUST correspond to a resource that was previously
               registered.</t>
@@ -862,7 +861,7 @@ Authorization: Bearer 204c69636b6c69
 ...
 
 {  
-   "resource_set_id":"112210f47de98100",
+   "resource_id":"112210f47de98100",
    "scopes":[  
       "view",
       "http://photoz.example.com/dev/actions/print"
@@ -885,7 +884,7 @@ Authorization: Bearer 204c69636b6c69
 
 [  
    {  
-      "resource_set_id":"7b727369647d",
+      "resource_id":"7b727369647d",
       "scopes":[  
          "view",
          "crop",
@@ -893,7 +892,7 @@ Authorization: Bearer 204c69636b6c69
       ]
    },
    {  
-      "resource_set_id":"7b72736964327d",
+      "resource_id":"7b72736964327d",
       "scopes":[  
          "view",
          "layout",
@@ -901,7 +900,7 @@ Authorization: Bearer 204c69636b6c69
       ]
    },
    {  
-      "resource_set_id":"7b72736964337d",
+      "resource_id":"7b72736964337d",
       "scopes":[  
          "http://www.example.com/scopes/all"
       ]
@@ -965,8 +964,8 @@ Content-Type: application/json
           code and includes one of the following UMA error codes (see <xref
           target="uma-error-response" /> for more information about error
           codes and responses):<list style="hanging">
-              <t hangText="invalid_resource_set_id">At least one of the
-              provided resource identifiers was not found at the authorization
+              <t hangText="invalid_resource_id">At least one of the provided
+              resource identifiers was not found at the authorization
               server.</t>
 
               <t hangText="invalid_scope">At least one of the scopes included
@@ -2504,7 +2503,7 @@ Cache-Control: no-store
       <reference anchor="OAuth-resource-reg"
                  target="https://docs.kantarainitiative.org/uma/rec-oauth-resource-reg-v1_0_1.html">
         <front>
-          <title>OAuth 2.0 Resource Set Registration</title>
+          <title>OAuth 2.0 Resource Registration</title>
 
           <author initials="T." surname="Hardjono">
             <organization>IETF</organization>
