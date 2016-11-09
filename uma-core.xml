@@ -237,10 +237,10 @@
             the requesting party's behalf.</t>
 
             <t hangText="claim"><vspace />A statement of the value or values
-            of one or more identity attributes of a requesting party. A
-            requesting party may need to provide claims to an authorization
-            server in order to gain permission for access to a protected
-            resource.</t>
+            of one or more attributes of an entity. An authorization server
+            may need to collect and assess one or more claims of a requesting
+            party or client against the policy conditions of a resource owner
+            as part of protecting a resource.</t>
 
             <t hangText="protected resource">A digital resource to which a
             resource owner is able to control access grants. From the resource
@@ -284,11 +284,11 @@
             involves either claims pushed by the client or claims
             interactively gathered from the requesting party, or both.
             Authorization assessment involves assessing any claims and other
-            contextual factors against the resource owner's policy conditions
-            in order to mitigate access authorization risk. The two activities
-            alternate and the pair can repeat; either can come first. The
-            process concludes when the client definitively succeeds or fails
-            in obtaining an RPT.</t>
+            information in evidence against the resource owner's policy
+            conditions in order to mitigate access authorization risk. The two
+            activities alternate and the pair can repeat; either can come
+            first. The process concludes when the client definitively succeeds
+            or fails in obtaining an RPT.</t>
 
             <t hangText="permission">A scope of access over a particular
             resource at a particular resource server that is being requested
@@ -1215,9 +1215,8 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
           the details of the previously registered requested permission, maps
           the requested permission to operative resource owner policies based
           on the resource identifier and scopes associated with it,
-          potentially requests additional information and receives additional
-          information such as claims, and ultimately responds positively or
-          negatively to the request for authorization data.</t>
+          potentially requests and receives claims, and ultimately responds
+          positively or negatively to the request for authorization data.</t>
 
           <t>The authorization server bases the issuance of authorization data
           on resource owner policies. Thus, these policies function as
@@ -1231,13 +1230,19 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
           this specification.</t>
 
           <t>The authorization server evaluates the policies in light of
-          claims in evidence. These claims MAY have come from one or more of
-          three sources: pushed directly by the client using the <spanx
-          style="verb">claim_tokens</spanx> parameter during the just-previous
-          authorization process, gathered interactively at the requesting
-          party claims endpoint during the just-previous authorization
-          process, or represented by the PCT presented by the client in the
-          <spanx style="verb">pct</spanx> parameter.</t>
+          claims and any other information in evidence. The claims MAY have
+          come from one or more of three sources: pushed directly by the
+          client using the <spanx style="verb">claim_tokens</spanx> parameter
+          during the just-previous authorization process, gathered
+          interactively at the requesting party claims endpoint during the
+          just-previous authorization process, or represented by the PCT
+          presented by the client in the <spanx style="verb">pct</spanx>
+          parameter. The authorization server could have collected the
+          additional information by performing out-of-band client or
+          requesting party claim lookups in external repositories, or checking
+          a variety of other factors that are either dependent on client or
+          requesting party context (such as apparent IP address) or
+          independent of them (such as time of day).</t>
 
           <t>Since policies are out of band for UMA and the authorization
           server's policy expression and evaluation capabilities might take a
@@ -1381,7 +1386,7 @@ Content-Type: application/json
           attempt access to the protected resource another time. The sixth
           error response, <spanx style="verb">need_info</spanx>, begins or
           continues an authorization process loop that concludes only when the
-          client receives one of the other four errors or a success condition
+          client receives one of the other five errors or a success condition
           (as described in <xref target="give-rpt" />).</t>
 
           <figure>
@@ -1492,20 +1497,12 @@ Cache-Control: no-store
               request.</t>
             </list></t>
 
-          <t>The authorization server has many options for collecting
-          requesting party claims. For example, it could interact with an
-          end-user requesting party directly to gather claims, or accept
-          claims pushed by a client, or perform a lookup in some external
-          system. The process is extensible and can have dependencies on the
-          type of requesting party (for example, natural person or legal
-          person) or client (for example, browser, native app, or autonomously
-          running web service).</t>
-
-          <t>The client and authorization server next have options for two
-          nonexclusive claims collection patterns: push (see <xref
-          target="claim-push" />) and redirect (see <xref
-          target="claim-redirect" />). (See <xref target="sec-consid" /> for
-          important security considerations regarding claims collection.)</t>
+          <t>The authorization server has two options for collecting claims
+          through UMA mechanisms: accepting client-pushed claims (see <xref
+          target="claim-push" />) and interacting with an end-user requesting
+          party to gather claims (see <xref target="claim-redirect" />). See
+          <xref target="sec-consid" /> for important security considerations
+          regarding claims collection.</t>
         </section>
       </section>
 
@@ -1513,10 +1510,7 @@ Cache-Control: no-store
                title="Client Responds to Authorization Server's Request for Additional Information">
         <t>If the client received a <spanx style="verb">need_info</spanx>
         error in response to its request for authorization, it has the
-        opportunity to continue seeking authorization by engaging in follow-on
-        flows with the authorization server, either directly or through
-        redirection of an end-user requesting party. This process is sometimes
-        known as "trust elevation".</t>
+        opportunity to continue the authorization process.</t>
 
         <t>If an <spanx style="verb">error_details</spanx> object was also
         returned with the error, then the contents of that object indicate the
@@ -2190,9 +2184,9 @@ Cache-Control: no-store
               a reasonable degree of freshness (which would require a custom
               claims profile).</t>
 
-              <t>A stronger strategy is to "elevate trust" in the requesting
-              party by requiring a stronger authentication context, forcing
-              step-up authentication by the requesting party at run time.</t>
+              <t>A stronger strategy is to gather claims interactively from an
+              end-user requesting party that demonstrate that some
+              sufficiently strong level authentication was performed.</t>
 
               <t>The strongest strategy is to disallow <spanx
               style="verb">Bearer</spanx>-type RPTs within the UMA profile
@@ -2317,12 +2311,8 @@ Cache-Control: no-store
 
         <section anchor="trust-push"
                  title="Requirements for Trust When Clients Push Claim Tokens">
-          <t>In contrast to the threats discussed in <xref
-          target="redirect-threats" />, regarding the requesting party
-          redirection model for claims-gathering (see <xref
-          target="claim-redirect" />), this section discusses the threats
-          surrounding the model for claims-gathering where the client is the
-          direct source of claims (see <xref target="claim-push" />).</t>
+          <t>This section discusses the threats surrounding client claim
+          pushing (see <xref target="claim-push" />).</t>
 
           <t>Because claim tokens of any format typically contain audience
           restrictions and an authorization server would typically not be in
