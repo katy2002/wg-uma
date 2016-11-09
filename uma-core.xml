@@ -438,9 +438,9 @@
           token (RPT).</t>
 
           <t>In addition to the OAuth token endpoint being used for RPT
-          issuance, the authorization server MAY also provide a requesting
-          party claims endpoint for various types of direct interaction with
-          an end-user requesting party, which is somewhat analogous to the
+          issuance, the authorization server MAY also provide a claims
+          interaction endpoint for various types of direct interaction with an
+          end-user requesting party, which is somewhat analogous to the
           redirection URI defined in <xref target="RFC6749" /> for use by the
           resource owner; see <xref target="claim-redirect" /> for more
           information about this option.</t>
@@ -557,11 +557,11 @@
             that the UMA grant does not involve the client gathering the
             authorization of an end-user requesting party directly.</t>
 
-            <t hangText="requesting_party_claims_endpoint"><vspace />OPTIONAL.
-            A static endpoint URI at which the authorization server declares
+            <t hangText="claims_interaction_endpoint"><vspace />OPTIONAL. A
+            static endpoint URI at which the authorization server declares
             that it interacts with end-user requesting parties to gather
-            claims. If the authorization server also provides a requesting
-            party claims endpoint URI as part of its <spanx
+            claims. If the authorization server also provides a claims
+            interaction endpoint URI as part of its <spanx
             style="verb">redirect_user</spanx> hint in a <spanx
             style="verb">need_info</spanx> response to a client on
             authorization failure (see <xref
@@ -612,7 +612,7 @@
    "registration_endpoint":"https://as.example.com/dyn_client_reg_uri",
    "token_endpoint":"https://as.example.com/token_uri",
    "authorization_endpoint":"https://as.example.com/authz_uri",
-   "requesting_party_claims_endpoint":"https://as.example.com/rqp_claims_uri",
+   "claims_interaction_endpoint":"https://as.example.com/claims_uri",
    "resource_registration_endpoint":"https://as.example.com/rs/rsrc_uri",
    "introspection_endpoint":"https://as.example.com/rs/status_uri",
    "permission_registration_endpoint":"https://as.example.com/rs/perm_uri"
@@ -1234,7 +1234,7 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
           come from one or more of three sources: pushed directly by the
           client using the <spanx style="verb">claim_tokens</spanx> parameter
           during the just-previous authorization process, gathered
-          interactively at the requesting party claims endpoint during the
+          interactively at the claims interaction endpoint during the
           just-previous authorization process, or represented by the PCT
           presented by the client in the <spanx style="verb">pct</spanx>
           parameter. The authorization server could have collected the
@@ -1306,7 +1306,7 @@ Content-Type: application/json
                    title="Authorization Server Response to Client on Authorization Success with Persisted Claims Token">
             <t>The authorization server MAY return a PCT along with an RPT.
             The PCT represents claims collected during this authorization
-            process, either directly or through the requesting party claims
+            process, either directly or through the claims interaction
             endpoint. The PCT MUST be unguessable by an attacker. The PCT MUST
             NOT disclose claims from the requesting party directly to
             possessors of the PCT. Instead, such claims SHOULD be associated
@@ -1477,14 +1477,14 @@ Cache-Control: no-store
                   a URI.</t>
                 </list></t>
 
-              <t hangText="redirect_user">OPTIONAL. The requesting party
-              claims endpoint URI to which to redirect the end-user requesting
-              party at the authorization server to continue the process of
+              <t hangText="redirect_user">OPTIONAL. The claims interaction
+              endpoint URI to which to redirect the end-user requesting party
+              at the authorization server to continue the process of
               interactive claims gathering. For example, the authorization
               server may require the requesting party to fill out a CAPTCHA to
               help prove humanness. If the requesting party is not an
               end-user, then no client action would be possible on receiving
-              the hint. If a static requesting party claims endpoint was also
+              the hint. If a static claims interaction endpoint was also
               provided in the authorization server's configuration data, then
               this value overrides the static value. Providing a value in this
               response might be appropriate, for example, if the URI needs to
@@ -1586,14 +1586,14 @@ Authorization: Bearer jwfLG53^sad$#f
 
         <section anchor="claim-redirect"
                  title="Client Redirects Requesting Party to Authorization Server for Claims-Gathering">
-          <t>If the authorization server has declared a requesting party
-          claims endpoint in its configuration data, or if the authorization
-          server requires direct interaction with the requesting party as part
-          of its claims collection process (for example, as it might have
-          indicated through the <spanx style="verb">redirect_user</spanx> hint
+          <t>If the authorization server has declared a claims interaction
+          endpoint in its configuration data, or if the authorization server
+          requires direct interaction with the requesting party as part of its
+          claims collection process (for example, as it might have indicated
+          through the <spanx style="verb">redirect_user</spanx> hint
           illustrated in <xref target="authorization-failure" />), the client
           has the option to <spanx>redirect</spanx> an end-user requesting
-          party to the requesting party claims endpoint. In this case, the
+          party to the claims interaction endpoint. In this case, the
           authorization server might be a relying party in a federated
           identity interaction, or it might connect to a directory or other
           user repository, or even interact with the user in other ways, such
@@ -1602,8 +1602,8 @@ Authorization: Bearer jwfLG53^sad$#f
           requesting party back to the client.</t>
 
           <t>The client constructs the request URI by adding the following
-          parameters to the query component of the requesting party claims
-          endpoint URI using the <spanx
+          parameters to the query component of the claims interaction endpoint
+          URI using the <spanx
           style="verb">application/x-www-form-urlencoded</spanx> format:<list
               style="hanging">
               <t hangText="client_id">REQUIRED. The client's identifier issued
@@ -2147,22 +2147,21 @@ Cache-Control: no-store
           redirection flow as well.</t>
 
           <t>When a client redirects an end-user requesting party to the
-          requesting party claims endpoint, the client provides no a priori
-          context to the authorization server about which user is appearing at
-          the endpoint, other than implicitly through the permission ticket.
-          Since the authorization server is free to gather any claims it
-          wishes, the effect is to "late-bind" them to the permission ticket
-          and the state string provided by the client, with the effect of
-          enabling the authorization server not to trust client-asserted
-          claims. This is a desirable result and reflects one reason why the
-          authorization server might choose to demand use of the redirect flow
-          over the push flow. However, the client has the opportunity to
-          switch end-users -- say, enabling malicious end-user Carlos to
-          impersonate the original end-user Bob, who might be represented by a
-          PCT already in that client's possession and might even have
-          authorized the issuance of that PCT -- after the redirect completes
-          and before it returns to the RPT endpoint to seek authorization
-          data.</t>
+          claims interaction endpoint, the client provides no a priori context
+          to the authorization server about which user is appearing at the
+          endpoint, other than implicitly through the permission ticket. Since
+          the authorization server is free to gather any claims it wishes, the
+          effect is to "late-bind" them to the permission ticket and the state
+          string provided by the client, with the effect of enabling the
+          authorization server not to trust client-asserted claims. This is a
+          desirable result and reflects one reason why the authorization
+          server might choose to demand use of the redirect flow over the push
+          flow. However, the client has the opportunity to switch end-users --
+          say, enabling malicious end-user Carlos to impersonate the original
+          end-user Bob, who might be represented by a PCT already in that
+          client's possession and might even have authorized the issuance of
+          that PCT -- after the redirect completes and before it returns to
+          the RPT endpoint to seek authorization data.</t>
 
           <t>Another issue concerns the exposure of a <spanx
           style="verb">Bearer</spanx>-type RPT to a requesting party, which
