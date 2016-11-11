@@ -469,13 +469,14 @@
           <t>The authorization server has the opportunity to manage the
           validity periods of access tokens that it issues, their
           corresponding refresh tokens where applicable, the individual
-          permission components associated with RPTs where applicable, and
-          even the client credentials that it issues. Different time-to-live
-          strategies may be suitable for different resources and scopes of
-          access, and the authorization server has the opportunity to give the
-          resource owner control over lifetimes of tokens and permissions
-          issued on their behalf through policy. These options are all outside
-          the scope of this specification.</t>
+          permission components associated with RPTs where applicable, caching
+          periods for responses, and even the client credentials that it
+          issues. Different time-to-live strategies may be suitable for
+          different resources and scopes of access, and the authorization
+          server has the opportunity to give the resource owner control over
+          lifetimes of tokens and permissions issued on their behalf through
+          policy. These options are all outside the scope of this
+          specification.</t>
         </section>
       </section>
 
@@ -1137,26 +1138,37 @@ Content-Type: application/json
         its associated permissions indicating whether the client is authorized
         for access before taking next actions.</t>
 
-        <t>Depending the authorization server's support for either of the
-        following options, the resource server MAY validate a self-contained
-        RPT locally, or it MAY introspect the RPT at the authorization server
-        using the OAuth token introspection endpoint (defined by <xref
-        target="RFC7662" />) that is part of the protection API. In the latter
-        case, the authorization server's response contains a profiled and
-        extended version of the OAuth introspection object. A number of
-        security considerations around handling and interpreting the RPT can
-        be found throughout <xref
+        <t>Depending on the nature of the RPT as issued by the authorization
+        server and on operative caching parameters, the resource server MAY
+        take any of the following actions as appropriate to determine the
+        RPT's status:<list style="symbols">
+            <t>Validate the RPT locally if it is self-contained</t>
+
+            <t>Introspect the RPT at the authorization server using the OAuth
+            token introspection endpoint (defined by <xref
+            target="RFC7662" />) that is part of the protection API</t>
+
+            <t>Use a cached copy of the token introspection response if
+            allowed</t>
+          </list></t>
+
+        <t>In the case of token introspection, the authorization server's
+        response contains an extended version of the OAuth introspection
+        object. A number of security considerations around handling and
+        interpreting the RPT can be found throughout <xref
         target="getting-authz-accessing-resource" />, and in <xref
         target="sec-consid" />.</t>
 
         <t>The following sections describe the process when the resource
-        server introspects the RPT at the authorization server.</t>
+        server introspects the RPT at the authorization server and the form of
+        the introspection object.</t>
 
         <section anchor="token-introspection"
                  title="Resource Server Request to Token Introspection Endpoint">
           <t>The resource server's request for token introspection MUST use
           the OAuth token introspection endpoint (defined by <xref
-          target="RFC7662" />) and MUST be accompanied by a PAT. The PAT
+          target="RFC7662" />) declared by the authorization server in its
+          configuration document and MUST be accompanied by a PAT. The PAT
           provides resource-owner context to the authorization server.</t>
         </section>
 
@@ -1164,8 +1176,10 @@ Content-Type: application/json
                  title="Authorization Server Response to Resource Server on Token Introspection Success">
           <t>The authorization server's response to the resource server MUST
           use <xref target="RFC7662" />, responding with a JSON object with
-          the structure dictated by that specification, extended as follows.
-          If the <spanx style="verb">active</spanx> property has a Boolean
+          the structure dictated by that specification, extended as
+          follows.</t>
+
+          <t>If the <spanx style="verb">active</spanx> property has a Boolean
           value of <spanx style="verb">true</spanx>, then the JSON object MUST
           NOT contain a <spanx style="verb">scope</spanx> claim, and MUST
           contain an extension property with the name <spanx
