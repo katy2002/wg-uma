@@ -362,7 +362,7 @@
           protocol), for use by resource servers. The authorization server
           thus has an OAuth token endpoint and authorization endpoint. The
           authorization server MUST declare all of its protection API
-          endpoints in its configuration data (see <xref
+          endpoints in its configuration (see <xref
           target="am-endpoints" />).</t>
 
           <t>The protection API consists of three endpoints:<list
@@ -387,12 +387,6 @@
           requires higher privileges at this endpoint than provided by the
           PAT, the authorization server responds with an OAuth error.</t>
 
-          <t>The authorization server MUST support the OAuth bearer token
-          profile for PAT issuance, and MAY support other OAuth token
-          profiles. The authorization server MUST declare all supported token
-          profiles for PAT issuance in its configuration data.<xref
-          target="UMA-Impl" /> discusses grant options further.</t>
-
           <t>A PAT binds a resource owner, a resource server the owner uses
           for resource management, and an authorization server the owner uses
           for protection of resources at this resource server. It is not
@@ -404,9 +398,7 @@
           circumstances; for example, the client credentials grant is useful
           in the case of an organization acting as a resource owner, whereas
           an interactive grant type is typically more appropriate for
-          capturing the approval of an end-user resource owner. The
-          authorization server MUST declare all supported grant types for PAT
-          issuance in its configuration data.</t>
+          capturing the approval of an end-user resource owner.</t>
 
           <t>Note: The PAT is used in registering a requested permission (as
           described in <xref target="register-permission" />). One
@@ -488,114 +480,173 @@
       </section>
 
       <section anchor="am-endpoints"
-               title="Authorization Server Configuration Data">
-        <t>The authorization server MUST provide configuration data in a JSON
-        document that resides in an <spanx
-        style="verb">/uma2-configuration</spanx> directory at its well-known
-        <xref target="RFC5785" /> location. The configuration data documents
-        endpoints and major conformance options supported by the authorization
-        server.</t>
+               title="Authorization Server Configuration">
+        <t>The authorization server supplies configuration information in
+        order to document its endpoints and the major conformance options it
+        supports.</t>
 
-        <t>The configuration data has the following properties.<list
-            hangIndent="6" style="hanging">
-            <t hangText="issuer"><vspace />REQUIRED. A URI with no query or
-            fragment component that the authorization server asserts as its
-            issuer identifier. This value MUST be identical to the web
-            location of the configuration data minus the <spanx
-            style="verb">.well-known/uma2-configuration</spanx> path
-            components.</t>
+        <t>Where this specification does not already require optional features
+        to be documented, it is RECOMMENDED that authorization server
+        deployers document any profiled or extended features explicitly and
+        use extension configuration properties to indicate their usage.</t>
 
-            <t hangText="pat_grant_types_supported"><vspace />REQUIRED. OAuth
-            grant types supported by this authorization server in issuing
-            PATs. The property value is an array of string values, where each
-            string value (which MAY be a URI) is a grant type. Non-URI token
-            type strings defined by OAuth grant type-defining specifications
-            are privileged. For example, the type <spanx
-            style="verb">authorization_code</spanx> stands for the OAuth
-            authorization code grant type defined in <xref
-            target="RFC6749" />.</t>
+        <section anchor="config-properties" title="Configuration Properties">
+          <t>The authorization server has configuration properties as follows.
+          <list hangIndent="6" style="hanging">
+              <t hangText="issuer"><vspace />REQUIRED. A URI with no query or
+              fragment component that the authorization server asserts as its
+              issuer identifier. This value MUST be identical to the web
+              location of the configuration document minus the <spanx
+              style="verb">.well-known/uma2-configuration</spanx> path
+              components.</t>
 
-            <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
-            Claim token format profiles supported by this authorization
-            server. The property value is an array of string values, where
-            each string value MAY be a URI.</t>
+              <t hangText="pat_grant_types_supported"><vspace />REQUIRED.
+              OAuth grant types supported by this authorization server in
+              issuing PATs. The property value is an array of string values,
+              where each string value (which MAY be a URI) is a grant type.
+              Non-URI token type strings defined by OAuth grant type-defining
+              specifications are privileged. For example, the type <spanx
+              style="verb">authorization_code</spanx> stands for the OAuth
+              authorization code grant type defined in <xref
+              target="RFC6749" />.</t>
 
-            <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
-            profiles supported by this authorization server. The property
-            value is an array of string values, where each string value is a
-            URI identifying an UMA profile. Examples of UMA profiles are the
-            API extensibility profiles defined in <xref
-            target="comms-profiles" />.</t>
+              <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
+              Claim token format profiles supported by this authorization
+              server. The property value is an array of string values, where
+              each string value MAY be a URI.</t>
 
-            <t hangText="registration_endpoint"><vspace />OPTIONAL. The
-            endpoint to use for performing dynamic client registration in the
-            case of the use of <xref target="RFC7591" /> or<xref
-            target="OIDCDynClientReg" />. The presence of this property
-            indicates authorization server support for dynamic client
-            registration feature; its absence indicates a lack of support. If
-            the authorization server supports dynamic client registration, it
-            MUST allow client applications to register a <spanx
-            style="verb">claims_redirect_uri</spanx> metadata field, as
-            defined in <xref target="claim-redirect" />.</t>
+              <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
+              profiles supported by this authorization server. The property
+              value is an array of string values, where each string value is a
+              URI identifying an UMA profile. Examples of UMA profiles are the
+              API extensibility profiles defined in <xref
+              target="comms-profiles" />.</t>
 
-            <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint URI
-            at which the resource server is the authorization server for a PAT
-            on behalf of the resource owner (by requesting the OAuth scope
-            <spanx style="verb">uma_protection</spanx>) and at which the
-            client asks the authorization server for an RPT on behalf of the
-            requesting party using the UMA grant.</t>
+              <t hangText="registration_endpoint"><vspace />OPTIONAL. The
+              endpoint to use for performing dynamic client registration in
+              the case of the use of <xref target="RFC7591" /> or<xref
+              target="OIDCDynClientReg" />. The presence of this property
+              indicates authorization server support for dynamic client
+              registration feature; its absence indicates a lack of support.
+              If the authorization server supports dynamic client
+              registration, it MUST allow client applications to register a
+              <spanx style="verb">claims_redirect_uri</spanx> metadata field,
+              as defined in <xref target="claim-redirect" />.</t>
 
-            <t hangText="authorization_endpoint"><vspace />REQUIRED. The
-            endpoint URI at which the resource server gathers the
-            authorization of an end-user resource owner for PAT issuance. Note
-            that the UMA grant does not involve the client gathering the
-            authorization of an end-user requesting party directly.</t>
+              <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint
+              URI at which the resource server is the authorization server for
+              a PAT on behalf of the resource owner (by requesting the OAuth
+              scope <spanx style="verb">uma_protection</spanx>) and at which
+              the client asks the authorization server for an RPT on behalf of
+              the requesting party using the UMA grant.</t>
 
-            <t hangText="claims_interaction_endpoint"><vspace />OPTIONAL. A
-            static endpoint URI at which the authorization server declares
-            that it interacts with end-user requesting parties to gather
-            claims. If the authorization server also provides a claims
-            interaction endpoint URI as part of its <spanx
-            style="verb">redirect_user</spanx> hint in a <spanx
-            style="verb">need_info</spanx> response to a client on
-            authorization failure (see <xref
-            target="authorization-failure" />), that value overrides the one
-            provided in the configuration data. Providing the static endpoint
-            URI is useful for enabling interactive claims gathering prior to
-            pushed-claims flows, so that, for example, it is possible to
-            gather requesting party authorization for persisting all claims
-            subsequently collected.</t>
+              <t hangText="authorization_endpoint"><vspace />REQUIRED. The
+              endpoint URI at which the resource server gathers the
+              authorization of an end-user resource owner for PAT issuance.
+              Note that the UMA grant does not involve the client gathering
+              the authorization of an end-user requesting party directly.</t>
 
-            <t hangText="introspection_endpoint"><vspace />REQUIRED. The
-            endpoint URI at which the resource server introspects an RPT
-            presented to it by a client. Usage of this endpoint is defined by
-            <xref target="RFC7662" /> and <xref
-            target="token-introspection" />. A valid PAT MUST accompany
-            requests to this protected endpoint.</t>
+              <t hangText="claims_interaction_endpoint"><vspace />OPTIONAL. A
+              static endpoint URI at which the authorization server declares
+              that it interacts with end-user requesting parties to gather
+              claims. If the authorization server also provides a claims
+              interaction endpoint URI as part of its <spanx
+              style="verb">redirect_user</spanx> hint in a <spanx
+              style="verb">need_info</spanx> response to a client on
+              authorization failure (see <xref
+              target="authorization-failure" />), that value overrides the one
+              provided in this configuration property. Providing the static
+              endpoint URI is useful for enabling interactive claims gathering
+              prior to pushed-claims flows, so that, for example, it is
+              possible to gather requesting party authorization for persisting
+              all claims subsequently collected.</t>
 
-            <t hangText="resource_registration_endpoint"><vspace />REQUIRED.
-            The endpoint URI at which the resource server registers resources
-            to put them under authorization manager protection. Usage of this
-            endpoint is defined by <xref target="OAuth-resource-reg" /> and
-            <xref target="protecting-a-resource" />. A valid PAT MUST
-            accompany requests to this protected endpoint.</t>
+              <t hangText="introspection_endpoint"><vspace />REQUIRED. The
+              endpoint URI at which the resource server introspects an RPT
+              presented to it by a client. Usage of this endpoint is defined
+              by <xref target="RFC7662" /> and <xref
+              target="token-introspection" />. A valid PAT MUST accompany
+              requests to this protected endpoint.</t>
 
-            <t hangText="permission_registration_endpoint"><vspace />REQUIRED.
-            The endpoint URI at which the resource server registers a
-            requested permission that would suffice for a client's access
-            attempt. Usage of this endpoint is defined by <xref
-            target="register-permission" />. A valid PAT MUST accompany
-            requests to this protected endpoint.</t>
-          </list></t>
+              <t hangText="resource_registration_endpoint"><vspace />REQUIRED.
+              The endpoint URI at which the resource server registers
+              resources to put them under authorization manager protection.
+              Usage of this endpoint is defined by <xref
+              target="OAuth-resource-reg" /> and <xref
+              target="protecting-a-resource" />. A valid PAT MUST accompany
+              requests to this protected endpoint.</t>
 
-        <figure>
-          <preamble>Example of authorization server configuration data that
-          resides at <spanx
-          style="verb">https://example.com/.well-known/uma2-configuration</spanx>
-          (note the use of <spanx style="verb">https:</spanx> for endpoints
-          throughout):</preamble>
+              <t
+              hangText="permission_registration_endpoint"><vspace />REQUIRED.
+              The endpoint URI at which the resource server registers a
+              requested permission that would suffice for a client's access
+              attempt. Usage of this endpoint is defined by <xref
+              target="register-permission" />. A valid PAT MUST accompany
+              requests to this protected endpoint.</t>
+            </list></t>
+        </section>
 
-          <artwork><![CDATA[{  
+        <section title="Configuration Document">
+          <t>The authorization server MUST make its configuration properties
+          available in a JSON document at the path formed by concatenating the
+          string <spanx style="verb">/.well-known/uma2-configuration</spanx>
+          to the <spanx style="verb">issuer</spanx> configuration property
+          value as defined in <xref target="config-properties" />. The syntax
+          and semantics of <spanx style="verb">/.well-known</spanx> are
+          defined in <xref target="RFC5785" /> and apply to the <spanx
+          style="verb">issuer</spanx> value when it contains no path
+          component.</t>
+        </section>
+
+        <section title="Requests to Authorization Server for Configuration Document">
+          <t>Any entity, such as a resource server or client, seeking an
+          authorization server configuration document MUST query it using an
+          HTTP GET request.</t>
+
+          <figure>
+            <preamble>Example:</preamble>
+
+            <artwork><![CDATA[GET /.well-known/uma2-configuration HTTP/1.1
+Host: example.com
+}
+]]></artwork>
+          </figure>
+
+          <t>If the <spanx style="verb">issuer</spanx> value contains a path
+          component, the caller MUST remove any terminating slash before
+          appending <spanx
+          style="verb">/.well-known/uma2-configuration</spanx>.</t>
+
+          <figure>
+            <preamble>For example, the caller would make the following request
+            to the issuer <spanx
+            style="verb">https://example.com/issuer1</spanx>, since the <spanx
+            style="verb">issuer</spanx> value contains a path
+            component:</preamble>
+
+            <artwork><![CDATA[GET /issuer1/.well-known/uma2-configuration HTTP/1.1
+Host: example.com
+}
+]]></artwork>
+          </figure>
+        </section>
+
+        <section title="Authorization Server Response Containing Configuration Document">
+          <t>A successful authorization server response to a configuration
+          document query MUST use the HTTP 200 (OK) status code and return a
+          JSON object using the <spanx style="verb">application/json</spanx>
+          content type containing the configuration properties as defined in
+          <xref target="config-properties" />.</t>
+
+          <figure>
+            <preamble>Example (note the use of <spanx
+            style="verb">https:</spanx> for endpoints throughout):</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json
+...
+
+{  
    "issuer":"https://example.com",
    "pat_grant_types_supported":[  
       "authorization_code"
@@ -612,12 +663,8 @@
    "permission_registration_endpoint":"https://as.example.com/rs/perm_uri"
 }
 ]]></artwork>
-        </figure>
-
-        <t>Where this specification does not already require optional features
-        to be documented, it is RECOMMENDED that authorization server
-        deployers document any profiled or extended features explicitly and
-        use configuration data to indicate their usage.</t>
+          </figure>
+        </section>
       </section>
     </section>
 
@@ -625,7 +672,7 @@
       <t>The resource owner, resource server, and authorization server perform
       the following actions to put resources under protection. This list
       assumes that the resource server has discovered the authorization
-      server's configuration data and endpoints as needed.<list
+      server's configuration document and endpoints as needed.<list
           style="numbers">
           <t>The authorization server issues client credentials to the
           resource server. It is OPTIONAL for the client credentials to be
@@ -985,7 +1032,7 @@ Content-Type: application/json
           style="verb">WWW-Authenticate</spanx> header with the authentication
           scheme <spanx style="verb">UMA</spanx>, with the <spanx
           style="verb">issuer</spanx> URI from the authorization server's
-          configuration data in an <spanx style="verb">as_uri</spanx>
+          configuration document in an <spanx style="verb">as_uri</spanx>
           parameter and the just-received permission ticket in a <spanx
           style="verb">ticket</spanx> parameter.</t>
 
@@ -1221,7 +1268,7 @@ Cache-Control: no-store
             target="permission-success-to-client" />).</t>
 
             <t>This client has discovered the authorization server's
-            configuration data and endpoints as needed.</t>
+            configuration document and endpoints as needed.</t>
 
             <t>The client has obtained OAuth client credentials from the
             authorization server. It is OPTIONAL for the client credentials to
@@ -1563,10 +1610,10 @@ Cache-Control: no-store
               help prove humanness. If the requesting party is not an
               end-user, then no client action would be possible on receiving
               the hint. If a static claims interaction endpoint was also
-              provided in the authorization server's configuration data, then
-              this value overrides the static value. Providing a value in this
-              response might be appropriate, for example, if the URI needs to
-              be customized per requesting party.</t>
+              provided in the authorization server's configuration document,
+              then this value overrides the static value. Providing a value in
+              this response might be appropriate, for example, if the URI
+              needs to be customized per requesting party.</t>
 
               <t hangText="ticket">A permission ticket that allows the client
               to make further requests to the authorization server during this
@@ -1659,16 +1706,16 @@ Authorization: Bearer jwfLG53^sad$#f
           <t>This specification provides a framework for extensibility through
           claim token format profiling. The authorization server MAY support
           any number of claim token profiles, and SHOULD document the claim
-          token profiles it supports in its configuration data.</t>
+          token profiles it supports in its configuration document.</t>
         </section>
 
         <section anchor="claim-redirect"
                  title="Client Redirects Requesting Party to Authorization Server for Claims-Gathering">
           <t>If the authorization server has declared a claims interaction
-          endpoint in its configuration data, or if the authorization server
-          requires direct interaction with the requesting party as part of its
-          claims collection process (for example, as it might have indicated
-          through the <spanx style="verb">redirect_user</spanx> hint
+          endpoint in its configuration document, or if the authorization
+          server requires direct interaction with the requesting party as part
+          of its claims collection process (for example, as it might have
+          indicated through the <spanx style="verb">redirect_user</spanx> hint
           illustrated in <xref target="authorization-failure" />), the client
           has the option to <spanx>redirect</spanx> an end-user requesting
           party to the claims interaction endpoint. In this case, the
@@ -1965,7 +2012,7 @@ Cache-Control: no-store
         this profile MUST declare use of this profile by supplying its
         identifying URI for one of its <spanx
         style="verb">uma_profiles_supported</spanx> values in its
-        configuration data (see <xref target="am-endpoints" />).</t>
+        configuration document (see <xref target="am-endpoints" />).</t>
 
         <t>Same-entity communication or a tight integration of entities has
         the opportunity to make deployments more secure by reducing possible
@@ -2018,7 +2065,7 @@ Cache-Control: no-store
         this profile MUST declare use of this profile by supplying its
         identifying URI for one of its <spanx
         style="verb">uma_profiles_supported</spanx> values in its
-        configuration data (see <xref target="am-endpoints" />).</t>
+        configuration document (see <xref target="am-endpoints" />).</t>
 
         <t>Same-entity communication or a tight integration of entities has
         the opportunity to make deployments more secure by reducing possible
@@ -2069,7 +2116,7 @@ Cache-Control: no-store
         the resource interface extensibility profile MAY declare use of this
         profile by supplying its identifying URI for one of its <spanx
         style="verb">uma_profiles_supported</spanx> values in its
-        configuration data (see <xref target="am-endpoints" />).</t>
+        configuration document (see <xref target="am-endpoints" />).</t>
 
         <t>Same-entity communication or a tight integration of entities has
         the opportunity to make deployments more secure by reducing possible
