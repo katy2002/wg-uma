@@ -500,16 +500,6 @@
               style="verb">.well-known/uma2-configuration</spanx> path
               components.</t>
 
-              <t hangText="pat_grant_types_supported"><vspace />REQUIRED.
-              OAuth grant types supported by this authorization server in
-              issuing PATs. The property value is an array of string values,
-              where each string value (which MAY be a URI) is a grant type.
-              Non-URI token type strings defined by OAuth grant type-defining
-              specifications are privileged. For example, the type <spanx
-              style="verb">authorization_code</spanx> stands for the OAuth
-              authorization code grant type defined in <xref
-              target="RFC6749" />.</t>
-
               <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
               Claim token format profiles supported by this authorization
               server. The property value is an array of string values, where
@@ -648,9 +638,6 @@ Content-Type: application/json
 
 {  
    "issuer":"https://example.com",
-   "pat_grant_types_supported":[  
-      "authorization_code"
-   ],
    "claim_token_profiles_supported":[  
       "https://example.com/claims/formats/token1"
    ],
