@@ -158,10 +158,10 @@
           resources. To accomplish this, the authorization server presents a
           protection API ("B") to the resource server. This API is protected
           by OAuth (or an OAuth-based authentication protocol) and requires a
-          protection API token (PAT) for access. Out of band, the resource
-          owner configures the authorization server with policies associated
-          with the resources ("C") that the resource server registers for
-          protection.</t>
+          protection API access token (PAT) for access. Out of band, the
+          resource owner configures the authorization server with policies
+          associated with the resources ("C") that the resource server
+          registers for protection.</t>
 
           <t hangText="Get authorization">(Described in <xref
           target="getting-authz-accessing-resource" />.) The client approaches
@@ -303,10 +303,10 @@
             <t hangText="RPT endpoint">An endpoint at the authorization server
             that issues RPTs and permissions to the client.</t>
 
-            <t hangText="protection API token (PAT)">An OAuth access token
-            with the scope <spanx style="verb">uma_protection</spanx>, used by
-            the resource server at the protection API, consisting of the
-            resource registration, permission registration, and token
+            <t hangText="protection API access token (PAT)">An OAuth access
+            token with the scope <spanx style="verb">uma_protection</spanx>,
+            used by the resource server at the protection API, consisting of
+            the resource registration, permission registration, and token
             introspection endpoints.</t>
 
             <t hangText="persisted claims token (PCT)">A correlation handle
@@ -356,7 +356,7 @@
         target="comms-profiles" />.</t>
 
         <section anchor="protection-api"
-                 title="Protection API and Protection API Token">
+                 title="Protection API and Protection API Access Token">
           <t>The authorization server MUST present an HTTP-based protection
           API, protected by TLS and OAuth (or an OAuth-based authentication
           protocol), for use by resource servers. The authorization server
@@ -382,10 +382,10 @@
           API access, MUST be an OAuth client with client credentials and the
           ability to get an OAuth access token with at least the scope <spanx
           style="verb">uma_protection</spanx>. An access token with at least
-          this scope is called a protection API token (PAT). If a request to
-          an endpoint fails due to an invalid, missing, or expired PAT, or
-          requires higher privileges at this endpoint than provided by the
-          PAT, the authorization server responds with an OAuth error.</t>
+          this scope is called a protection API access token (PAT). If a
+          request to an endpoint fails due to an invalid, missing, or expired
+          PAT, or requires higher privileges at this endpoint than provided by
+          the PAT, the authorization server responds with an OAuth error.</t>
 
           <t>A PAT binds a resource owner, a resource server the owner uses
           for resource management, and an authorization server the owner uses
