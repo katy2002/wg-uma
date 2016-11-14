@@ -322,10 +322,9 @@
             the authorization server that allows the resource server to
             register resources for protection.</t>
 
-            <t hangText="permission registration registration endpoint">An
-            endpoint at the authorization server that allows the resource
-            server to request permissions for access to resources on behalf of
-            the client.</t>
+            <t hangText="permission endpoint">An endpoint at the authorization
+            server that allows the resource server to request permissions for
+            access to resources on behalf of the client.</t>
 
             <t hangText="token introspection endpoint">An endpoint at the
             authorization server that allows the resource server to query the
@@ -372,7 +371,7 @@
               <t>Resource registration endpoint as defined by <xref
               target="OAuth-resource-reg" /></t>
 
-              <t>Permission registration endpoint as defined by <xref
+              <t>Permission endpoint as defined by <xref
               target="register-permission" /></t>
 
               <t>Token introspection endpoint as defined by <xref
@@ -570,12 +569,11 @@
               target="protecting-a-resource" />. A valid PAT MUST accompany
               requests to this protected endpoint.</t>
 
-              <t
-              hangText="permission_registration_endpoint"><vspace />REQUIRED.
-              The endpoint URI at which the resource server requests
-              permissions on the client's behalf. Usage of this endpoint is
-              defined by <xref target="register-permission" />. A valid PAT
-              MUST accompany requests to this protected endpoint.</t>
+              <t hangText="permission_endpoint"><vspace />REQUIRED. The
+              endpoint URI at which the resource server requests permissions
+              on the client's behalf. Usage of this endpoint is defined by
+              <xref target="register-permission" />. A valid PAT MUST
+              accompany requests to this protected endpoint.</t>
             </list></t>
         </section>
 
@@ -650,7 +648,7 @@ Content-Type: application/json
    "claims_interaction_endpoint":"https://as.example.com/claims_uri",
    "resource_registration_endpoint":"https://as.example.com/rs/rsrc_uri",
    "introspection_endpoint":"https://as.example.com/rs/status_uri",
-   "permission_registration_endpoint":"https://as.example.com/rs/perm_uri"
+   "permission_endpoint":"https://as.example.com/rs/perm_uri"
 }
 ]]></artwork>
           </figure>
@@ -839,10 +837,10 @@ Host: photoz.example.com
         as determined through RPT status checking (see <xref
         target="check-rpt-status" />), then assuming the resource server
         chooses to respond to the client, it MUST use the protection API's
-        permission registration endpoint to request permissions with the
-        corresponding authorization server on the client's behalf. The extent
-        of the set of requested permissions MUST suffice for the extent of the
-        client's access attempt at that resource.</t>
+        permission endpoint to request permissions with the corresponding
+        authorization server on the client's behalf. The extent of the set of
+        requested permissions MUST suffice for the extent of the client's
+        access attempt at that resource.</t>
 
         <t>Note: The resource server is free to choose the extent of the
         requested permissions, as long as it minimally suffices for the access
@@ -858,13 +856,13 @@ Host: photoz.example.com
         the resource server to give to the client that represents the same
         extent of requested access that the resource server requested.</t>
 
-        <section title="Resource Server Request to Permission Registration Endpoint">
+        <section title="Resource Server Request to Permission Endpoint">
           <t>The resource server uses the POST method at the permission
-          registration endpoint. The body of the HTTP request message contains
-          a JSON object (for a request containing a single resource
-          identifier) or array (for a request containing more than one
-          resource identifier) providing the request, using a format derived
-          from the resource description format specified in <xref
+          endpoint. The body of the HTTP request message contains a JSON
+          object (for a request containing a single resource identifier) or
+          array (for a request containing more than one resource identifier)
+          providing the request, using a format derived from the resource
+          description format specified in <xref
           target="OAuth-resource-reg" />, as follows. The object used in both
           forms has the following properties:<list style="hanging">
               <t hangText="resource_id">REQUIRED. The identifier for a
@@ -882,8 +880,8 @@ Host: photoz.example.com
 
           <figure>
             <preamble>Example of an HTTP request for a single-resource-set
-            permission at the authorization server's permission registration
-            endpoint, with a PAT in the header:</preamble>
+            permission at the authorization server's permission endpoint, with
+            a PAT in the header:</preamble>
 
             <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
 Content-Type: application/json
@@ -903,8 +901,8 @@ Authorization: Bearer 204c69636b6c69
 
           <figure>
             <preamble>Example of an HTTP request for a multiple-resource-set
-            permission at the authorization server's permission registration
-            endpoint, with a PAT in the header:</preamble>
+            permission at the authorization server's permission endpoint, with
+            a PAT in the header:</preamble>
 
             <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
 Content-Type: application/json
