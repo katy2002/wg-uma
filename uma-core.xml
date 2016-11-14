@@ -1165,11 +1165,27 @@ Content-Type: application/json
 
         <section anchor="token-introspection"
                  title="Resource Server Request to Token Introspection Endpoint">
-          <t>The resource server's request for token introspection MUST use
-          the OAuth token introspection endpoint (defined by <xref
+          <t>The resource server's request for introspection of an RPT MUST
+          use the OAuth token introspection endpoint (defined by <xref
           target="RFC7662" />) declared by the authorization server in its
-          configuration document and MUST be accompanied by a PAT. The PAT
-          provides resource-owner context to the authorization server.</t>
+          configuration document. The authorization server MUST require
+          requests to this endpoint to be accompanied by a PAT. The PAT
+          provides resource-owner context to the authorization server as well
+          as demonstrating authorized access.</t>
+
+          <figure>
+            <preamble>Example of the resource server's request to the
+            authorization server for introspection of an RPT, with a PAT in
+            the header:</preamble>
+
+            <artwork><![CDATA[POST /rs/status_uri HTTP/1.1
+Host: as.example.com
+Authorization: Bearer 204c69636b6c69
+...
+token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
+}
+]]></artwork>
+          </figure>
         </section>
 
         <section anchor="uma-bearer-token-profile"
