@@ -870,9 +870,9 @@ Host: photoz.example.com
               on behalf of the client. The identifier MUST correspond to a
               resource that was previously registered.</t>
 
-              <t hangText="permission_scopes">REQUIRED. An array referencing
-              one or more identifiers of scopes to which the resource server
-              is requesting access for this resource on behalf of the client.
+              <t hangText="resource_scopes">REQUIRED. An array referencing one
+              or more identifiers of scopes to which the resource server is
+              requesting access for this resource on behalf of the client.
               Each scope identifier MUST correspond to a scope that was
               previously registered by this resource server for the referenced
               resource.</t>
@@ -891,7 +891,7 @@ Authorization: Bearer 204c69636b6c69
 
 {  
    "resource_id":"112210f47de98100",
-   "scopes":[  
+   "resource_scopes":[  
       "view",
       "http://photoz.example.com/dev/actions/print"
    ]
@@ -1192,11 +1192,11 @@ Content-Type: application/json
               identifier MUST correspond to a resource that was previously
               registered as protected.</t>
 
-              <t hangText="permission_scopes">REQUIRED. An array referencing
-              one or more strings representing scopes to which access was
-              granted for this resource. Each string MUST correspond to a
-              scope that was registered by this resource server for the
-              referenced resource.</t>
+              <t hangText="resource_scopes">REQUIRED. An array referencing one
+              or more strings representing scopes to which access was granted
+              for this resource. Each string MUST correspond to a scope that
+              was registered by this resource server for the referenced
+              resource.</t>
 
               <t hangText="exp">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
@@ -1236,7 +1236,7 @@ Cache-Control: no-store
    "permissions":[  
       {  
          "resource_id":"112210f47de98100",
-         "permission_scopes":[  
+         "resource_scopes":[  
             "view",
             "http://photoz.example.com/dev/actions/print"
          ],
