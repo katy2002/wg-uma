@@ -284,14 +284,15 @@
             first. The process concludes when the client definitively succeeds
             or fails in obtaining an RPT.</t>
 
-            <t hangText="permission">Authorized access over a particular
-            resource. A resource server registers a requested permission on
-            behalf of a client at an authorization server, receiving a
-            permission ticket in return, and an RPT is ultimately associated
-            with some number of granted permissions. In authorization policy
-            terminology, a permission is an entitlement that includes a
-            "subject" (requesting party), "verbs" (one or more scopes of
-            access), and an "object" (resource).</t>
+            <t hangText="permission">Authorized access to a particular
+            resource with one or more scopes. A resource server requests one
+            or more permissions on behalf of a client at an authorization
+            server, receiving a permission ticket representing the entire
+            requested set in return, and if an RPT is ultimately issued, it is
+            associated with some number of granted permissions. In
+            authorization policy terminology, a permission is an entitlement
+            that includes a "subject" (requesting party), "verbs" (one or more
+            scopes of access), and an "object" (resource).</t>
 
             <t hangText="permission ticket">A correlation handle that is
             conveyed from an authorization server to a resource server, from a
@@ -321,9 +322,10 @@
             the authorization server that allows the resource server to
             register resources for protection.</t>
 
-            <t hangText="permission registration endpoint">An endpoint at the
-            authorization server that allows the resource server to request
-            permission tickets.</t>
+            <t hangText="permission registration registration endpoint">An
+            endpoint at the authorization server that allows the resource
+            server to request permissions for access to resources on behalf of
+            the client.</t>
 
             <t hangText="token introspection endpoint">An endpoint at the
             authorization server that allows the resource server to query the
@@ -400,8 +402,8 @@
           an interactive grant type is typically more appropriate for
           capturing the approval of an end-user resource owner.</t>
 
-          <t>Note: The PAT is used in registering a requested permission (as
-          described in <xref target="register-permission" />). One
+          <t>Note: The PAT is used in requesting permission on the client's
+          behalf (as described in <xref target="register-permission" />). One
           circumstance precipitating this action is when the client has
           attempted access without an RPT (as described in <xref
           target="without-rpt" />). In order for the resource server to know
@@ -455,14 +457,15 @@
           authorization is for a client to attempt access to the resource
           server's API without an RPT (as described in <xref
           target="without-rpt" />), and the second is for the resource server
-          to register a requested permission at the authorization server,
-          which requires a PAT for authorization. In order for the resource
-          server to know which authorization server to approach and which PAT
-          (representing a resource owner) and resource identifier to supply,
-          the resource server's API needs be structured in such a way that it
-          can derive this information from the client's RPT-free access
-          attempt. In practice, this information likely needs to be passed
-          through the URI, headers, or body of the client's request.</t>
+          to request permissions at the authorization server on the client's
+          behalf, which requires a PAT for authorization. In order for the
+          resource server to know which authorization server to approach and
+          which PAT (representing a resource owner) and resource identifier to
+          supply, the resource server's API needs be structured in such a way
+          that it can derive this information from the client's RPT-free
+          access attempt. In practice, this information likely needs to be
+          passed through the URI, headers, or body of the client's
+          request.</t>
         </section>
 
         <section title="Time-to-Live Considerations">
@@ -569,11 +572,10 @@
 
               <t
               hangText="permission_registration_endpoint"><vspace />REQUIRED.
-              The endpoint URI at which the resource server registers a
-              requested permission that would suffice for a client's access
-              attempt. Usage of this endpoint is defined by <xref
-              target="register-permission" />. A valid PAT MUST accompany
-              requests to this protected endpoint.</t>
+              The endpoint URI at which the resource server requests
+              permissions on the client's behalf. Usage of this endpoint is
+              defined by <xref target="register-permission" />. A valid PAT
+              MUST accompany requests to this protected endpoint.</t>
             </list></t>
         </section>
 
@@ -701,9 +703,9 @@ Content-Type: application/json
 
       <t>Note: The PAT that the resource server uses to register resources
       must also be used later during client access attempts, for example, in
-      registering a requested permission on a client's behalf (as described in
-      <xref target="register-permission" />). One circumstance precipitating
-      this action is when the client has attempted access without an RPT (as
+      requesting permission on a client's behalf (as described in <xref
+      target="register-permission" />). One circumstance precipitating this
+      action is when the client has attempted access without an RPT (as
       described in <xref target="without-rpt" />). In order for the resource
       server to know which authorization server to approach and which PAT
       (representing a resource owner) and resource identifier to supply, the
@@ -755,20 +757,21 @@ Content-Type: application/json
           <t>If the client's request at the protected resource has no RPT, or
           has an invalid RPT or insufficient permissions associated with the
           RPT as determined through RPT status checking (see <xref
-          target="check-rpt-status" />), the resource server registers a
-          requested permission with the relevant authorization server (see
-          <xref target="register-permission" />), and responds to the client
-          with the resulting permission ticket and the authorization server's
-          location using a <spanx style="verb">WWW-Authenticate: UMA</spanx>
-          header (see <xref target="permission-success-to-client" />).</t>
+          target="check-rpt-status" />), the resource server requests
+          permissions on the client's behalf with the relevant authorization
+          server (see <xref target="register-permission" />), and responds to
+          the client with the resulting permission ticket and the
+          authorization server's location using a <spanx
+          style="verb">WWW-Authenticate: UMA</spanx> header (see <xref
+          target="permission-success-to-client" />).</t>
 
           <t>If the resource server fails to get a permission ticket, it
           responds to the client with a warning header instead (see <xref
           target="permission-failure-to-client" />).</t>
 
           <t>If the client receives a permission ticket and authorization
-          server location from the resource server, it requests permissions
-          from the authorization server (see <xref
+          server location from the resource server, it asks for an RPT from
+          the authorization server (see <xref
           target="seek-authorization" />).</t>
 
           <t>If the authorization request and any additional information
@@ -805,8 +808,8 @@ Host: photoz.example.com
 ]]></artwork>
           </figure>
 
-          <t>If the resource server chooses to respond, it next registers a
-          requested permission (see <xref
+          <t>If the resource server chooses to respond, it next requests one
+          or more permissions on the client's behalf (see <xref
           target="register-permission" />).</t>
         </section>
 
@@ -830,57 +833,57 @@ Host: photoz.example.com
       </section>
 
       <section anchor="register-permission"
-               title="Resource Server Registers Requested Permission With Authorization Server">
+               title="Resource Server Requests Permissions on Client's Behalf With Authorization Server">
         <t>If the client's request at the protected resource has no RPT, or
         has an invalid RPT or insufficient permissions associated with the RPT
         as determined through RPT status checking (see <xref
         target="check-rpt-status" />), then assuming the resource server
         chooses to respond to the client, it MUST use the protection API's
-        permission registration endpoint to register a requested permission
-        with the corresponding authorization server. The extent of the
-        requested permission MUST suffice for the extent of the client's
-        access attempt at that resource.</t>
+        permission registration endpoint to request permissions with the
+        corresponding authorization server on the client's behalf. The extent
+        of the set of requested permissions MUST suffice for the extent of the
+        client's access attempt at that resource.</t>
 
         <t>Note: The resource server is free to choose the extent of the
-        requested permission that it registers, as long as it minimally
-        suffices for the access attempted by the client. For example, it can
-        choose to register a permission that covers several scopes or a
-        resource that is greater in extent than the specific resource that the
-        client attempted to access.</t>
+        requested permissions, as long as it minimally suffices for the access
+        attempted by the client. For example, it can choose to request
+        permission for access to a single resource with several scopes, or a
+        set of permissions for multiple resources that together are greater in
+        extent, than the specific resource and scope that the client attempted
+        to access.</t>
 
         <t>The PAT provided in the API request enables the authorization
-        server to map the requested permission to the appropriate resource
-        owner. The authorization server returns a permission ticket in its
-        response for the resource server to give to the client that represents
-        the same extent of requested access that the resource server
-        registered.</t>
+        server to map the request to the appropriate resource owner. The
+        authorization server returns a permission ticket in its response for
+        the resource server to give to the client that represents the same
+        extent of requested access that the resource server requested.</t>
 
         <section title="Resource Server Request to Permission Registration Endpoint">
           <t>The resource server uses the POST method at the permission
           registration endpoint. The body of the HTTP request message contains
-          a JSON object (for a request containing a single resource) or array
-          (for a request containing more than one resource) providing the
-          requested permission, using a format derived from the resource
-          description format specified in <xref
+          a JSON object (for a request containing a single resource
+          identifier) or array (for a request containing more than one
+          resource identifier) providing the request, using a format derived
+          from the resource description format specified in <xref
           target="OAuth-resource-reg" />, as follows. The object used in both
           forms has the following properties:<list style="hanging">
               <t hangText="resource_id">REQUIRED. The identifier for a
-              resource to which this client is seeking access. The identifier
-              MUST correspond to a resource that was previously
-              registered.</t>
+              resource to which the resource server is requesting permission
+              on behalf of the client. The identifier MUST correspond to a
+              resource that was previously registered.</t>
 
               <t hangText="permission_scopes">REQUIRED. An array referencing
-              one or more identifiers of scopes to which access is needed for
-              this resource. Each scope identifier MUST correspond to a scope
-              that was registered by this resource server for the referenced
+              one or more identifiers of scopes to which the resource server
+              is requesting access for this resource on behalf of the client.
+              Each scope identifier MUST correspond to a scope that was
+              previously registered by this resource server for the referenced
               resource.</t>
             </list></t>
 
           <figure>
-            <preamble>Example of an HTTP request that registers a
-            single-resource-set requested permission at the authorization
-            server's permission registration endpoint, with a PAT in the
-            header:</preamble>
+            <preamble>Example of an HTTP request for a single-resource-set
+            permission at the authorization server's permission registration
+            endpoint, with a PAT in the header:</preamble>
 
             <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
 Content-Type: application/json
@@ -899,10 +902,9 @@ Authorization: Bearer 204c69636b6c69
           </figure>
 
           <figure>
-            <preamble>Example of an HTTP request that registers a
-            multiple-resource-set requested permission at the authorization
-            server's permission registration endpoint, with a PAT in the
-            header:</preamble>
+            <preamble>Example of an HTTP request for a multiple-resource-set
+            permission at the authorization server's permission registration
+            endpoint, with a PAT in the header:</preamble>
 
             <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
 Content-Type: application/json
@@ -941,7 +943,7 @@ Authorization: Bearer 204c69636b6c69
         <section anchor="ticket-management"
                  title="Permission Ticket Creation and Management">
           <t>The authorization server uses a permission ticket to maintain the
-          state of requested permission information, initially conveyed on the
+          state of a set of requested permissions, initially conveyed on the
           client's behalf by the resource server at attempted resource access
           time, for the period of time that the client continues to seek
           authorization for that attempted access.</t>
@@ -964,7 +966,7 @@ Authorization: Bearer 204c69636b6c69
           permission ticket management.</t>
         </section>
 
-        <section title="Authorization Server Response to Resource Server on Permission Registration Success">
+        <section title="Authorization Server Response to Resource Server on Permission Request Success">
           <t>If the authorization server is successful in creating a
           permission ticket in response to the resource server's request, it
           responds with an HTTP 201 (Created) status code and includes the
@@ -985,7 +987,7 @@ Content-Type: application/json
           </figure>
         </section>
 
-        <section title="Authorization Server Response to Resource Server on Permission Registration Failure">
+        <section title="Authorization Server Response to Resource Server on Permission Request Failure">
           <t>If the resource server's permission registration request is
           authenticated properly but fails due to other reasons, the
           authorization server responds with an HTTP 400 (Bad Request) status
@@ -998,7 +1000,7 @@ Content-Type: application/json
 
               <t hangText="invalid_scope">At least one of the scopes included
               in the request was not registered previously by this resource
-              server.</t>
+              server for the referenced resource.</t>
             </list></t>
         </section>
       </section>
@@ -1008,12 +1010,12 @@ Content-Type: application/json
         attempt, it has three possible paths.</t>
 
         <section anchor="permission-success-to-client"
-                 title="Resource Server Response to Client on Permission Registration Success">
+                 title="Resource Server Response to Client on Permission Request Success">
           <t>If the client's request at a protected resource has no RPT, or
           has an invalid RPT or insufficient permissions associated with the
           RPT as determined through RPT status checking (see <xref
           target="check-rpt-status" />), and the resource server successfully
-          registered a requested permission and received a permission ticket
+          requested one or more permissions and received a permission ticket
           (see <xref target="register-permission" />), then assuming the
           resource server chooses to respond to the client with an UMA
           response, it MUST provide a <spanx
@@ -1033,8 +1035,8 @@ Content-Type: application/json
 
           <figure>
             <preamble>Example of the resource server's response to a client
-            after having registered a requested permission and received a
-            ticket:</preamble>
+            after having requested one or more permissions and received a
+            permission ticket:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 401 Unauthorized
 WWW-Authenticate: UMA realm="example",
@@ -1068,15 +1070,15 @@ WWW-Authenticate: UMA realm="example",
         </section>
 
         <section anchor="permission-failure-to-client"
-                 title="Resource Server Response to Client on Permission Registration Failure">
+                 title="Resource Server Response to Client on Permission Request Failure">
           <t>If the client's request at the protected resource has no RPT, or
           has an invalid RPT or insufficient permissions associated with the
           RPT as determined through RPT status checking (see <xref
           target="check-rpt-status" />), and the resource server received an
           error of any kind from the authorization server when trying to
-          register a requested permission such that it did not receive a
-          permission ticket, then assuming the resource server chooses to
-          respond to the client, it is unable to create a <spanx
+          request permissions such that it did not receive a permission
+          ticket, then assuming the resource server chooses to respond to the
+          client, it is unable to create a <spanx
           style="verb">WWW-Authenticate: UMA</spanx> header and MUST include a
           header of the following form in its response to the client: <spanx
           style="verb">Warning: 199 - "UMA Authorization Server
@@ -1338,11 +1340,11 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
         <section anchor="authorization-assessment"
                  title="Authorization Assessment Process">
           <t>The authorization server uses the permission ticket to look up
-          the details of the previously registered requested permission, maps
-          the requested permission to operative resource owner policies based
-          on the resource identifier and scopes associated with it,
-          potentially requests and receives claims, and ultimately responds
-          positively or negatively to the request for permissions.</t>
+          the details of the previously requested set of permissions, maps the
+          permissions to operative resource owner policies based on the
+          resource identifier and scopes associated with it, potentially
+          requests and receives claims, and ultimately responds positively or
+          negatively to the request for permissions.</t>
 
           <t>The authorization server bases the issuance of permissions on
           resource owner policies. Thus, these policies function as
@@ -1384,14 +1386,14 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
 
           <t>The authorization server MUST use a default-deny authorization
           assessment model in adding permissions to RPTs, that is, "everything
-          that is not expressly allowed is forbidden" for resources that
-          resource servers have registered. Exercise caution in implementing
-          default-deny because corner cases can inadvertently result in
-          default-permit behavior. For example, it is insufficient simply to
-          assume that all resources have some non-zero set of claims required
-          for access, and then accept an empty set of supplied claims as
-          sufficient for access. See <xref target="UMA-Impl" /> for further
-          discussion.</t>
+          that is not expressly allowed is forbidden" for resources for which
+          resource servers have requested access permission on behalf of
+          clients. Exercise caution in implementing default-deny because
+          corner cases can inadvertently result in default-permit behavior.
+          For example, it is insufficient simply to assume that all resources
+          have some non-zero set of claims required for access, and then
+          accept an empty set of supplied claims as sufficient for access. See
+          <xref target="UMA-Impl" /> for further discussion.</t>
         </section>
 
         <section anchor="give-rpt"
@@ -1466,11 +1468,11 @@ Content-Type: application/json
 
         <section anchor="authorization-failure"
                  title="Authorization Server Response to Client on Authorization Failure">
-          <t>If the token request does is not sufficient for granting an RPT,
-          the authorization server responds using one of the following UMA
-          error codes and corresponding HTTP status codes (see <xref
-          target="uma-error-response" /> for more information about error
-          codes and responses):<list style="hanging">
+          <t>If the client's request to the token endpoint is not sufficient
+          for granting an RPT, the authorization server responds using one of
+          the following UMA error codes and corresponding HTTP status codes
+          (see <xref target="uma-error-response" /> for more information about
+          error codes and responses):<list style="hanging">
               <t hangText="invalid_ticket">The provided ticket was not found
               at the authorization server. The authorization server responds
               with the HTTP 400 (Bad Request) status code.</t>
@@ -1485,7 +1487,7 @@ Content-Type: application/json
 
               <t hangText="invalid_scope">At least one of the scopes included
               in the request does not match an available scope for any of the
-              resources associated with requested permission for the
+              resources associated with requested permissions for the
               permission ticket provided by the client. The authorization
               server responds with the HTTP 400 (Bad Request) status code.</t>
 
