@@ -2576,9 +2576,13 @@ Cache-Control: no-store
       specification:<list style="symbols">
           <t>Paul C. Bryan, ForgeRock US, Inc. (former editor)</t>
 
+          <t>Domenico Catalano, Oracle (former author)</t>
+
           <t>Mark Dobrinic, Cozmanova</t>
 
           <t>George Fletcher, AOL</t>
+
+          <t>Thomas Hardjono, MIT (former editor)</t>
 
           <t>Lukasz Moren, Cloud Identity Ltd</t>
 
