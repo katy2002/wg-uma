@@ -206,10 +206,7 @@
             <t hangText="User-Managed Access grant (UMA grant)"><vspace />An
             extension OAuth grant type defined by this specification as part
             of the overall authorization interface presented by the
-            authorization server. [DISCUSS: 153/154/ed: In this draft, the
-            &ldquo;UMA grant&rdquo; is just the client-AS interaction portion
-            of the entire &ldquo;authorization interface&rdquo;. Does this
-            work?]</t>
+            authorization server.</t>
 
             <t hangText="resource owner"><vspace />An entity capable of
             granting access to a protected resource, the "user" in
