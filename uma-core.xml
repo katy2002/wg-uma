@@ -48,142 +48,103 @@
     <date day="9" month="November" year="2016" />
 
     <abstract>
-      <t>User-Managed Access (UMA) 2.0 is a federated authorization framework
-      that defines an extension OAuth 2.0 grant type and uses OAuth and
-      federated identity technologies in various other ways. It defines how
-      resource owners can control protected-resource access by clients used by
-      arbitrary requesting parties, where the resources reside on any number
-      of resource servers, and where a centralized authorization server
-      governs access based on resource owner policies.</t>
+      <t>The User-Managed Access (UMA) 2.0 federated authorization framework
+      enables a resource owner to control resource access to requesting
+      parties through the clients they use in an asynchronous fashion, where
+      resources reside on any number of resource servers and a central
+      authorization server manages the resource owner's access grants over
+      time.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>User-Managed Access (UMA) 2.0 is a federated authorization framework
-      that defines an extension OAuth 2.0 <xref target="RFC6749" /> grant type
-      and uses OAuth and federated identity technologies in various other
-      ways. It defines how resource owners can control protected-resource
-      access by clients used by arbitrary requesting parties, where the
-      resources reside on any number of resource servers, and where a
-      centralized authorization server governs access based on resource owner
-      policies.</t>
+      <t>The User-Managed Access (UMA) 2.0 federated authorization framework
+      uses and extends OAuth 2.0 <xref target="RFC6749" />, along with
+      leveraging federated identity frameworks, in order to enable additions
+      to OAuth abilities as follows:<list style="symbols">
+          <t>The resource owner grants resource access to clients used by
+          entities that are in a <spanx>requesting party</spanx> role (see
+          <xref target="terminology" /> for a definition of this new role).
+          This enables party-to-party authorization, rather than just
+          authorization of application access.</t>
 
-      <t>UMA serves numerous use cases where a resource owner uses a dedicated
-      service to manage authorization for access to their resources,
-      potentially even without the run-time presence of the resource owner. A
-      typical example is the following: a web user (an end-user resource
-      owner) can authorize a web or native app (a client) to gain one-time or
-      ongoing access to a protected resource containing his home address
-      stored at a "personal data store" service (a resource server), by
-      telling the resource server to respect access entitlements issued by his
-      chosen cloud-based authorization service (an authorization server). The
-      requesting party operating the client might be the resource owner, where
-      the app is run by an e-commerce company that needs to know where to ship
-      a purchased item, or the requesting party might be resource owner's
-      friend who is using an online address book service to collect contact
-      information, or the requesting party might be a survey company that uses
-      an autonomous web service to compile population demographics. A variety
-      of use cases can be found in <xref target="UMA-usecases" /> and <xref
-      target="UMA-casestudies" />.</t>
+          <t>This specification defines an OAuth extension grant called the
+          UMA grant (see <xref target="seek-authorization" />), part of an
+          overall authorization interface presented to the client and
+          requesting party, that is asynchronous with respect to resource
+          owner interactions. This lets a resource owner configure an
+          authorization server with access grant rules (policies) at will,
+          rather than having to authorize access token issuance synchronously
+          just after authenticating.</t>
 
-      <t>Practical control of access among loosely coupled parties requires
-      more than just messaging protocols. This specification defines only the
-      "technical contract" between UMA-conforming entities. Work is ongoing to
-      define recommendations for developing agreements about the rights and
-      responsibilities of parties operating and using these entities on a
-      contractual or legal level (see, for example, <xref
-      target="UMA-obligations" />). Parties operating entities that claim to
-      be UMA-conforming should provide documentation of any rights and
-      obligations between and among them; see <xref
-      target="trust-considerations" /> for more information.</t>
-
-      <t>In enterprise settings, application access management sometimes
-      involves letting back-office applications serve only as policy
-      enforcement points (PEPs), depending entirely on access decisions coming
-      from a central policy decision point (PDP) to govern the access they
-      give to requesters. This separation eases auditing and allows policy
-      administration to scale in several dimensions. UMA makes use of a
-      separation similar to this, letting the resource owner serve as a policy
-      administrator crafting authorization strategies for resources under
-      their control.</t>
-
-      <t>In order to increase interoperable communication among the
-      authorization server, resource server, and client, UMA leverages two
-      purpose-built APIs related to the outsourcing of authorization,
-      themselves protected by OAuth (or an OAuth-based authentication
-      protocol) in embedded fashion.</t>
-
-      <t>The UMA protocol has three broad phases, as shown in <xref
-      target="UMA-phases" />.</t>
-
-      <figure align="center" anchor="UMA-phases">
-        <preamble>The Three Phases of the UMA Profile of OAuth</preamble>
-
-        <artwork><![CDATA[                                           +--------------+
-                                           |   resource   |
-          +---------manage (A)------------ |     owner    |
-          |                                +--------------+
-          |         Phase 1:                      |
-          |         protect a                control (C)
-          |         resource                      |
-          v                                       v
-   +------------+               +----------+--------------+
-   |            |               |protection|              |
-   |  resource  |               |   API    | authorization|
-   |   server   |<-protect (B)--|  (needs  |    server    |
-   |            |               |   PAT)   |              |
-   +------------+               +----------+--------------+
-   | protected  |                          | authorization|
-   | resource   |                          |     API      |
-   |(needs RPT) |                          |  (needs AAT) |
-   +------------+                          +--------------+
-          ^                                       |
-          |         Phases 2 and 3:         authorize (D)
-          |         get authorization,            |
-          |         access a resource             v
-          |                                +--------------+
-          +---------access (E)-------------|    client    |
-                                           +--------------+
-
-                                           requesting party
-]]></artwork>
-      </figure>
-
-      <t>The phases work as follows: <list style="hanging">
-          <t hangText="Protect a resource">(Described in <xref
-          target="protecting-a-resource" />.) The resource owner, who manages
-          digital resources at the resource server ("A"), introduces it to the
-          authorization server so that the latter can begin protecting the
-          resources. To accomplish this, the authorization server presents a
-          protection API ("B") to the resource server. This API is protected
-          by OAuth (or an OAuth-based authentication protocol) and requires a
-          protection API access token (PAT) for access. Out of band, the
-          resource owner configures the authorization server with policies
-          associated with the resources ("C") that the resource server
-          registers for protection.</t>
-
-          <t hangText="Get authorization">(Described in <xref
-          target="getting-authz-accessing-resource" />.) The client approaches
-          the resource server seeking access to an UMA-protected resource. In
-          order to access it successfully, the client must first use the UMA
-          grant (&ldquo;D&rdquo;) to obtain a requesting party token (RPT) on
-          behalf of the requesting party; as part of this process, the
-          requesting party may need to undergo a process of interactive trust
-          elevation, for example, supplying identity claims.</t>
-
-          <t hangText="Access a resource">(Described in <xref
-          target="getting-authz-accessing-resource" />.) The client
-          successfully presents to the resource server an RPT that has
-          sufficient authorization data associated with it, gaining access to
-          the desired resource ("E"). Phase 3 is effectively the "success
-          path" embedded within phase 2.</t>
+          <t>The relationship between an authorization server and resource
+          server is loosely coupled within a resource owner context through
+          the use of <xref target="OAuth-resource-reg" /> and an extension of
+          <xref target="RFC7662" />. Multiple resource servers can each
+          potentially be operated at a different domain while working with a
+          single authorization server potentially operated at yet a different
+          domain that acts on behalf of a resource owner. The loose coupling
+          enables a service ecosystem to automate protected-resource
+          registration and deregistration, and lets the resource owner
+          monitor, manage, and control access grant rules at a central service
+          location over time. The token introspection extension lets the
+          resource owner increase and decrease grants at a grain finer than a
+          whole access token.</t>
         </list></t>
 
-      <t>Implementers have the opportunity to develop profiles (see <xref
-      target="profiles" />) that specify and restrict various UMA protocol,
-      RPT, and identity claim format options, according to deployment and
+      <t>For example, a bank customer (resource owner) named Alice with a bank
+      account service (resource server) can use a dedicated sharing management
+      service (authorization server) to manage access by a spouse Bob, an
+      accounting professional Charline, and a tax professional David
+      (requesting parties), all using different client applications, to view
+      account data and even to give each of them differential access to
+      payment and withdrawal functions. Alice can use the same sharing
+      management service to give out "read", "write", or "comment" access to
+      documents residing in a cloud file system (a different resource server)
+      residing in a different domain to community members Erik and Frances
+      with whom she is working on a project. (A variety of use cases can be
+      found in <xref target="UMA-usecases" /> and <xref
+      target="UMA-casestudies" />.)</t>
+
+      <t>The federation of authorization in UMA results in a conceptual
+      separation of responsibilities: The resource server defines the
+      boundaries of a resource and its possible scopes of access; the resource
+      owner configures the authorization server to express access grant rules
+      that match up resources and scopes to a protection scheme; and the
+      authorization server executes those rules when clients attempt
+      protected-resource access on behalf of requesting parties, with an
+      ultimate result of access token and permission issuance or denial.</t>
+
+      <t>Practical control of access among loosely coupled parties typically
+      requires more than just messaging protocols. It is out of scope for this
+      specification to define more than just the "technical contract" between
+      UMA-conforming entities. The legally responsible parties representing
+      these entities may form contracts for, or there may be laws or
+      regulations governing, access-sharing relationships. Parties operating
+      entities that claim to be UMA-conforming should provide documentation of
+      any rights and obligations between and among them; see <xref
+      target="trust-considerations" /> for more information.</t>
+
+      <t>Note: The resource owner-authorization server interface is out of
+      scope of this specification, and as a result, a variety of flows are all
+      equally possible for the resource server and authorization server in
+      concert to provide to a resource owner, with particular consequences for
+      user experiences of end-user resource owners.</t>
+
+      <t>Implementers have the opportunity to develop extensions and profiles
+      (see <xref target="profiles" />) that specify and restrict various UMA
+      protocol and identity claim format options, according to deployment and
       usage conditions.</t>
+
+      <t>[tbs: Intro to high-level protocol flow]</t>
+
+      <figure align="center" anchor="UMA-phases">
+        <preamble>Main Protocol Flow</preamble>
+
+        <artwork><![CDATA[tbs
+]]></artwork>
+      </figure>
 
       <section title="Notational Conventions">
         <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
@@ -239,13 +200,12 @@
             party or client against the policy conditions of a resource owner
             as part of protecting a resource.</t>
 
-            <t hangText="protected resource">A digital resource to which a
-            resource owner is able to control access grants. From the resource
-            server's perspective, the resource might consist of one or
-            multiple parts, but it is managed as a single resource from the
-            perspective of UMA protection. In authorization policy
-            terminology, a resource is the "object" being protected. This term
-            derives from <xref target="OAuth-resource-reg" />.</t>
+            <t hangText="protected resource">A digital resource available
+            through an HTTP service to which a resource owner is able to
+            control access grants. From the resource server's internal
+            perspective, the resource might consist of one or multiple parts,
+            but it is managed as a single resource from the perspective of
+            protection.</t>
 
             <t hangText="scope">A bounded extent of access that is possible to
             perform on a protected resource. In authorization policy
@@ -298,9 +258,6 @@
             assess the correct policies to apply to a request for
             permissions.</t>
 
-            <t hangText="RPT endpoint">An endpoint at the authorization server
-            that issues RPTs and permissions to the client.</t>
-
             <t hangText="protection API access token (PAT)">An OAuth access
             token with the scope <spanx style="verb">uma_protection</spanx>,
             used by the resource server at the protection API, consisting of
@@ -315,9 +272,9 @@
             authorization server to persist this information across
             authorization processes.</t>
 
-            <t hangText="resource set registration endpoint">An endpoint at
-            the authorization server that allows the resource server to
-            register resources for protection.</t>
+            <t hangText="resource registration endpoint">An endpoint at the
+            authorization server that allows the resource server to register
+            resources for protection.</t>
 
             <t hangText="permission endpoint">An endpoint at the authorization
             server that allows the resource server to request permissions for
@@ -444,24 +401,24 @@
           credentials issued by the UMA authorization server protecting that
           resource.</t>
 
-          <t>The resource server MAY present to clients whatever HTTP-based
-          APIs or endpoints it wishes. To protect any of its resources
-          available in this fashion using UMA, it MUST require a client to
-          present a valid RPT with sufficient permissions for access.</t>
+          <t>The resource server MAY present to clients whatever digital
+          resources it wishes, in the form of an HTTP service (for example,
+          API endpoints). To protect any of its resources available in this
+          fashion using UMA, it MUST require a client to present a valid RPT
+          with sufficient permissions for access.</t>
 
           <t>Note: The first step in the process of gaining access
           authorization is for a client to attempt access to the resource
-          server's API without an RPT (as described in <xref
-          target="without-rpt" />), and the second is for the resource server
-          to request permissions at the authorization server on the client's
-          behalf, which requires a PAT for authorization. In order for the
-          resource server to know which authorization server to approach and
-          which PAT (representing a resource owner) and resource identifier to
-          supply, the resource server's API needs be structured in such a way
-          that it can derive this information from the client's RPT-free
-          access attempt. In practice, this information likely needs to be
-          passed through the URI, headers, or body of the client's
-          request.</t>
+          without an RPT (as described in <xref target="without-rpt" />), and
+          the second is for the resource server to request permissions at the
+          authorization server on the client's behalf, which requires a PAT
+          for authorization. In order for the resource server to know which
+          authorization server to approach and which PAT (representing a
+          resource owner) and resource identifier to supply, the resource
+          server's API needs be structured in such a way that it can derive
+          this information from the client's RPT-free access attempt. In
+          practice, this information likely needs to be passed through the
+          URI, headers, or body of the client's request.</t>
         </section>
 
         <section title="Time-to-Live Considerations">
