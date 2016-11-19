@@ -202,10 +202,7 @@
 
             <t hangText="protected resource">A digital resource available
             through an HTTP service to which a resource owner is able to
-            control access grants. From the resource server's internal
-            perspective, the resource might consist of one or multiple parts,
-            but it is managed as a single resource from the perspective of
-            protection.</t>
+            control access grants through an authorization server.</t>
 
             <t hangText="scope">A bounded extent of access that is possible to
             perform on a protected resource. In authorization policy
@@ -636,6 +633,14 @@ Content-Type: application/json
           protection, using the resource registration endpoint of the
           protection API (see <xref target="OAuth-resource-reg" />).</t>
         </list></t>
+
+      <t>A resource server MAY register and manage as a single protected
+      resource a set of digital data or API endpoints that, from its
+      perspective, consists of multiple parts, has dynamic elements such as
+      the capacity for querying or filtering, or otherwise has internal
+      complexity. It alone is responsible for maintaining the necessary
+      mappings between these internal representations and the single resource
+      identifier known to the authorization server.</t>
 
       <t>Note: The resource server is free to offer the option to protect any
       subset of the resource owner's resources using different authorization
