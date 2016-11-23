@@ -116,11 +116,11 @@
             access grants. Protection begins on successful registration and
             ends on successful deregistration. </t>
 
-            <t hangText="scope">A bounded extent of access to a resource.
-            Scopes are associated with particular resources rather than being
-            registered apart from resources. Scopes constitute the kinds of
-            access that can be granted to the resource. For example, a
-            resource representing a social status timeline API might have
+            <t hangText="scope">A bounded extent of access to a protected
+            resource. Scopes are associated with particular resources rather
+            than being registered apart from resources. Scopes constitute the
+            kinds of access that can be granted to the resource. For example,
+            a resource representing a social status timeline API might have
             scopes for adding an update or reading updates, whereas a resource
             representing a photo album might have scopes for viewing a
             slideshow or printing the album. The resource server registers
