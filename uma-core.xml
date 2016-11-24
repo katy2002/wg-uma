@@ -244,7 +244,7 @@
         to resource servers and an authorization interface to the requesting
         side, of which the UMA grant is a part.</t>
 
-        <t>The resource server presents a resource server interface to the
+        <t>The resource server presents a protected resource interface to the
         client (for more detail see <xref
         target="resource-server-interface" />), which enables for handling
         both initial resource requests by a client with no RPT and subsequent
@@ -324,12 +324,16 @@
           </list></t>
       </section>
 
-      <section title="Protocol Flow">
+      <section anchor="flow-sec" title="Protocol Flow">
         <t><xref target="protocol-flow" /> shows a sample high-level protocol
         flow that summarizes messaging options, illustrating success paths in
-        a context of maximum variety.</t>
+        a context of maximum variety. All messaging details appear in <xref
+        target="protecting-a-resource" /> and <xref
+        target="getting-authz-accessing-resource" />.</t>
 
         <figure anchor="protocol-flow">
+          <preamble>Protocol Flow Summary</preamble>
+
           <artwork><![CDATA[resource resource        authorization              client requesting
  owner    server             server                   |      party
    |        |1  Reg resources  |                      |        |
@@ -386,8 +390,8 @@
         actions (see <xref target="authorization-api" />).</t>
 
         <t>Steps 3, 6, 14, 17, and 18 (arrows with #) summarize communications
-        between the resource server and client that constitute the resource
-        server interface, and related resource server actions (see <xref
+        between the resource server and client that constitute the protected
+        resource interface, and related resource server actions (see <xref
         target="resource-server-interface" />).</t>
 
         <t>The authorization server MUST declare all of its endpoints in its
@@ -439,7 +443,11 @@
           credentials grant is useful in the case of an organization acting as
           a resource owner, whereas an interactive grant type is typically
           more appropriate for capturing the approval of an end-user resource
-          owner.</t>
+          owner. The introduction of the resource server to the authorization
+          server MAY involve a dynamic process (for example, a "NASCAR"-style
+          user interface presented to an end-user resource owner, or
+          alternatively a static process that may or may not directly involve
+          the resource owner.</t>
 
           <t>Note: The resource server MAY protect any subset of the resource
           owner's resources using different authorization servers or other
@@ -466,12 +474,12 @@
           <t>The authorization server's function is to perform authorization
           on behalf of the resource owner.</t>
 
-          <t>Formally, the authorization process is the process through which
-          the client attempts to obtain an RPT from the authorization server
-          in order to access a protected resource on behalf of a requesting
-          party. The process involves two activities: claims collection (part
-          of the messaging protocol defined by this specification) and
-          authorization assessment (discussed in <xref
+          <t>The authorization process is the process through which the client
+          attempts to obtain an RPT from the authorization server in order to
+          access a protected resource on behalf of a requesting party. The
+          process involves two activities: claims collection (part of the
+          messaging protocol defined by this specification) and authorization
+          assessment (discussed in <xref
           target="authorization-assessment" />). Claims collection involves
           either claims pushed by the client or claims interactively gathered
           from the requesting party, or both. Authorization assessment
@@ -485,6 +493,8 @@
           in <xref target="seek-authorization" />.</t>
 
           <figure anchor="authz-process">
+            <preamble>Authorization Process Flowchart</preamble>
+
             <artwork><![CDATA[                   start
          +---------->|
          |           >---------+
@@ -550,12 +560,12 @@
         </section>
 
         <section anchor="resource-server-interface"
-                 title="Resource Server Interface and Related Resource Server Actions">
+                 title="Protected Resource Interface and Related Resource Server Actions">
           <t>As noted in <xref target="fed-authz" />, the resource server MUST
           expose its protected resources through an HTTP service. The digital
           resources MAY take any form (for example, API endpoints).</t>
 
-          <t>Any one resource the resource server has registered for
+          <t>Any one resource that the resource server has registered for
           protection MAY consist, from the resource server's perspective, of
           multiple parts, or have dynamic elements such as the capacity for
           querying or filtering, or otherwise have internal complexity. It
@@ -793,19 +803,12 @@ Content-Type: application/json
       server's configuration document and endpoints as needed.<list
           style="numbers">
           <t>The authorization server issues client credentials to the
-          resource server. It is OPTIONAL for the client credentials to be
-          provided dynamically through <xref target="RFC7591" /> or <xref
-          target="OIDCDynClientReg" />; alternatively, they MAY use a static
-          process.</t>
+          resource server. It MAY provide them dynamically through <xref
+          target="RFC7591" /> or <xref target="OIDCDynClientReg" />, or
+          alternatively through a static process.</t>
 
-          <t>The resource server acquires a PAT (as defined in <xref
-          target="protection-api" />) from the authorization server. It is
-          OPTIONAL for the resource owner to introduce the resource server to
-          the authorization server dynamically (for example, through a
-          "NASCAR"-style user interface where the resource owner selects a
-          chosen authorization server); alternatively, they MAY use a static
-          process that may or may not directly involve the resource owner at
-          introduction time.</t>
+          <t>The resource server obtains a PAT from the authorization
+          server.</t>
 
           <t>In an ongoing fashion, the resource server registers any
           resources with the authorization server to put them under
@@ -817,8 +820,45 @@ Content-Type: application/json
     <section anchor="getting-authz-accessing-resource"
              title="Getting Authorization and Accessing a Resource">
       <t>The process of getting authorization and accessing a resource always
-      begins with the client attempting access at a protected resource
-      endpoint at the resource server.</t>
+      begins with the client attempting access at a protected resource at the
+      resource server.</t>
+
+      <t>In brief, the messaging process is as follows:<list style="symbols">
+          <t>The client attempts access to the protected resource.</t>
+
+          <t>If the client's request at the protected resource has no RPT, or
+          has an invalid RPT or insufficient permissions associated with the
+          RPT as determined through RPT status checking, the resource server
+          requests permissions on the client's behalf with the authorization
+          server, and responds to the client with the resulting permission
+          ticket and the authorization server's location using a <spanx
+          style="verb">WWW-Authenticate: UMA</spanx> header.</t>
+
+          <t>If the resource server fails to get a permission ticket, it
+          responds to the client with a warning header instead.</t>
+
+          <t>If the client receives a permission ticket and authorization
+          server location from the resource server, it enters into the
+          authorization process: Either asking for an RPT from the
+          authorization server, with or without pushing claims in the request,
+          or immediately redirecting the requesting party to the authorization
+          server for interactive claims gathering. After the latter process,
+          the requesting party is ultimately redirected back to the client to
+          enable an RPT request.</t>
+
+          <t>After performing authorization assessment of any claims collected
+          against the resource owner's operative policy conditions, the
+          authorization server responds to the client, either positively with
+          an RPT (and optional PCT) associated with some number of
+          permissions, negatively with one of four final error conditions, or
+          with a <spanx style="verb">need_info</spanx> error condition that
+          enables looping inside the authorization process.</t>
+
+          <t>The client attempts access to the protected resource, this time
+          with an RPT. If, as determined through RPT status checking, the RPT
+          is active and has sufficient permissions, the resource server gives
+          access to the resource.</t>
+        </list></t>
 
       <t>The recipient of each request message SHOULD respond unless it
       detects a security concern, such as a suspected denial of service attack
@@ -851,8 +891,7 @@ Host: photoz.example.com
                  title="Client Request to Resource Server With RPT">
           <figure>
             <preamble>Example of a client request at a protected resource
-            carrying an RPT using the UMA <spanx style="verb">Bearer</spanx>
-            RPT profile:</preamble>
+            carrying an RPT:</preamble>
 
             <artwork><![CDATA[GET /users/alice/album/photo.jpg HTTP/1.1
 Authorization: Bearer vF9dft4qmT
@@ -995,9 +1034,6 @@ Authorization: Bearer 204c69636b6c69
           the client presents the permission ticket either to the token
           endpoint or interactive claims endpoint; or when the permission
           ticket expires, whichever occurs first.</t>
-
-          <t>See <xref target="UMA-Impl" /> for more information about
-          permission ticket management.</t>
         </section>
 
         <section title="Authorization Server Response to Resource Server on Permission Request Success">
@@ -1109,9 +1145,9 @@ Warning: 199 - "UMA Authorization Server Unreachable"
           <t>The client's presentation of a valid RPT associated with
           sufficient permissions as determined through RPT status checking
           (see <xref target="check-rpt-status" />) indicates that the resource
-          owner's policies have been met for access to the protected resource.
-          The resource server MAY apply additional authorization controls when
-          determining how to respond.</t>
+          owner's policy conditions have been met for access to the protected
+          resource. The resource server MAY apply additional authorization
+          controls when determining how to respond.</t>
 
           <figure>
             <preamble>Example of the resource server's response to the
@@ -1364,7 +1400,7 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
         </section>
 
         <section anchor="authorization-assessment"
-                 title="Authorization Assessment Process">
+                 title="Authorization Assessment">
           <t>The authorization server uses the permission ticket to look up
           the details of the previously requested set of permissions, maps the
           permissions to operative resource owner policies based on the
