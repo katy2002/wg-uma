@@ -1244,10 +1244,10 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
           follows.</t>
 
           <t>If the <spanx style="verb">active</spanx> property has a Boolean
-          value of <spanx style="verb">true</spanx>, then the JSON object MUST
-          NOT contain a <spanx style="verb">scope</spanx> claim, and MUST
-          contain an extension property with the name <spanx
-          style="verb">permissions</spanx> that contains an array of zero or
+          value of <spanx style="verb">true</spanx>, then the introspection
+          object MUST NOT contain a <spanx style="verb">scope</spanx> claim,
+          and SHOULD contain an extension property with the name <spanx
+          style="verb">permissions</spanx> that contains an array of one or
           more values, each of which is an object consisting of these
           properties:<list style="hanging">
               <t hangText="resource_id">REQUIRED. A string that uniquely
@@ -1285,8 +1285,19 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
               former overrides the latter.</t>
             </list></t>
 
+          <t>For interoperability, the only circumstances in which the
+          introspection object should not contain the <spanx
+          style="verb">permissions</spanx> property are those where an UMA
+          extension has been defined and the authorization server uses the
+          <spanx style="verb">uma_profiles_supported</spanx> configuration
+          property to advertise its support of any alternative structures for
+          conveying the results of its authorization processes (see <xref
+          target="profiles" /> for more information).</t>
+
           <figure>
-            <preamble>Example:</preamble>
+            <preamble>Example of a response containing the introspection
+            object with the <spanx style="verb">permissions</spanx>
+            property:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
