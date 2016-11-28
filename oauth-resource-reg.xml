@@ -924,6 +924,14 @@ Content-Type: application/json
 Host: as.example.com
 ...]]></artwork>
       </figure>
+
+      <t>CopMonkey would respond as follows.</t>
+
+      <figure>
+        <artwork><![CDATA[HTTP/1.1 204 No content
+...
+]]></artwork>
+      </figure>
     </section>
 
     <section anchor="Acknowledgments" title="Acknowledgments">
