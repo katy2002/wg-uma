@@ -45,7 +45,7 @@
       </address>
     </author>
 
-    <date day="16" month="November" year="2016" />
+    <date day="27" month="November" year="2016" />
 
     <abstract>
       <t>This specification defines a method for an OAuth 2.0 resource server
@@ -114,7 +114,7 @@
             <t hangText="protected resource">A digital resource available
             through an HTTP service for which an authorization server manages
             access grants. Protection begins on successful registration and
-            ends on successful deregistration. </t>
+            ends on successful deregistration.</t>
 
             <t hangText="scope">A bounded extent of access to a protected
             resource. Scopes are associated with particular resources rather
