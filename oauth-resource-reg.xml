@@ -45,7 +45,7 @@
       </address>
     </author>
 
-    <date day="16" month="November" year="2016" />
+    <date day="27" month="November" year="2016" />
 
     <abstract>
       <t>This specification defines a method for an OAuth 2.0 resource server
@@ -111,19 +111,16 @@
         <t>This specification introduces the following new terms and
         enhancements of OAuth term definitions.<list hangIndent="6"
             style="hanging">
-            <t hangText="protected resource">A digital resource to which a
-            resource owner is able to control access grants. From the resource
-            server's internal perspective, the resource might consist of one
-            or multiple parts, but it is managed as a single resource from the
-            perspective of protection. An authorization server starts
-            protecting a resource on successful registration and the
-            protection ends on successful deregistration.</t>
+            <t hangText="protected resource">A digital resource available
+            through an HTTP service for which an authorization server manages
+            access grants. Protection begins on successful registration and
+            ends on successful deregistration.</t>
 
-            <t hangText="scope">A bounded extent of access to a resource.
-            Scopes are associated with particular resources rather than being
-            registered apart from resources. Scopes constitute the kinds of
-            access that can be granted to the resource. For example, a
-            resource representing a social status timeline API might have
+            <t hangText="scope">A bounded extent of access to a protected
+            resource. Scopes are associated with particular resources rather
+            than being registered apart from resources. Scopes constitute the
+            kinds of access that can be granted to the resource. For example,
+            a resource representing a social status timeline API might have
             scopes for adding an update or reading updates, whereas a resource
             representing a photo album might have scopes for viewing a
             slideshow or printing the album. The resource server registers
@@ -147,16 +144,23 @@
     </section>
 
     <section anchor="protecting-a-resource" title="Resource Registration">
-      <t>This specification defines a resource registration API. The endpoint
-      for this API SHOULD require some form of authentication to access this
+      <t>This specification defines a resource registration API. The
+      authorization server MUST use TLS protection over this endpoint, as
+      governed by <xref target="BCP195" />, which discusses deployment and
+      adoption characteristics of different TLS versions. The endpoint for
+      this API SHOULD require some form of authentication to access this
       endpoint, such as Client Authentication as described in <xref
       target="RFC6749" /> or a separate OAuth access token. The methods of
       managing and validating these authentication credentials are out of
       scope of this specification.</t>
 
-      <t>For any of the resource owner's resources this authorization server
-      needs to be aware of, the resource server MUST register these resources
-      at the authorization server's registration endpoint.</t>
+      <t>A resource server MAY register and manage as a single protected
+      resource a set of digital data or API endpoints that, from its
+      perspective, consists of multiple parts, has dynamic elements such as
+      the capacity for querying or filtering, or otherwise has internal
+      complexity. It alone is responsible for maintaining the necessary
+      mappings between these internal representations and the single resource
+      identifier known to the authorization server.</t>
 
       <t>Note: When a client attempts access to a presumptively protected
       resource without an access token, as occurs in <xref target="UMA" />,
@@ -173,9 +177,9 @@
         characteristics of a resource sufficiently for an authorization server
         to protect it. A resource description has the following
         properties:<list style="hanging">
-            <t hangText="name">REQUIRED. A human-readable string describing
+            <t hangText="name">OPTIONAL. A human-readable string describing
             the resource. The authorization server MAY use this name in any
-            user interface it presents to the resource owner, for example, for
+            user interface it presents to a resource owner, for example, for
             resource protection monitoring or policy setting.</t>
 
             <t hangText="uri">OPTIONAL. A URI that provides the network
@@ -198,7 +202,7 @@
             address", the value of this property could be an identifying URI
             for this claim. The authorization server MAY use this information
             in processing information about the resource or displaying
-            information about it in any user interface it presents to the
+            information about it in any user interface it presents to a
             resource owner.</t>
 
             <t hangText="scopes">REQUIRED. An array of strings indicating the
@@ -210,7 +214,7 @@
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource. The authorization server MAY use the
-            referenced icon in any user interface it presents to the resource
+            referenced icon in any user interface it presents to a resource
             owner, for example, for resource protection monitoring or policy
             setting.</t>
           </list></t>
@@ -244,22 +248,22 @@
           characteristics of a scope sufficiently for an authorization server
           to protect the resource with this scope. A scope description has the
           following properties:<list style="hanging">
-              <t hangText="name">REQUIRED. A human-readable string describing
+              <t hangText="name">OPTIONAL. A human-readable string describing
               the scope. The authorization server MAY use this name in any
-              user interface it presents to the resource owner, for example,
-              for resource protection monitoring or policy setting.</t>
+              user interface it presents to a resource owner, for example, for
+              resource protection monitoring or policy setting.</t>
 
               <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
               representing the scope. The authorization server MAY use the
-              referenced icon in any user interface it presents to the
-              resource owner, for example, for resource protection monitoring
-              or policy setting.</t>
+              referenced icon in any user interface it presents to a resource
+              owner, for example, for resource protection monitoring or policy
+              setting.</t>
             </list></t>
 
           <figure>
             <preamble>For example, this scope description characterizes a
             scope that involves viewing (vs., say, creating or editing in some
-            fashion): </preamble>
+            fashion):</preamble>
 
             <artwork><![CDATA[{  
    "name":"View",
@@ -586,7 +590,7 @@ Authorization: Bearer 204c69636b6c69
       registration is supported for resource servers as OAuth clients of the
       resource registration API, the authorization server must be extremely
       careful with any information supplied during resource registration that
-      may be displayed to the resource owner in a user interface or be used to
+      may be displayed to a resource owner in a user interface or be used to
       drive authorization server-based workflows.</t>
 
       <t>For example, a rogue resource server could register a resource or
@@ -923,6 +927,14 @@ Content-Type: application/json
 Host: as.example.com
 ...]]></artwork>
       </figure>
+
+      <t>CopMonkey would respond as follows.</t>
+
+      <figure>
+        <artwork><![CDATA[HTTP/1.1 204 No content
+...
+]]></artwork>
+      </figure>
     </section>
 
     <section anchor="Acknowledgments" title="Acknowledgments">
@@ -954,7 +966,20 @@ Host: as.example.com
   </middle>
 
   <back>
-    <references title="Normative References" />
+    <references title="Normative References">
+      <reference anchor="BCP195" target="https://tools.ietf.org/html/bcp195">
+        <front>
+          <title>Recommendations for Secure Use of Transport Layer Security
+          (TLS) and Datagram Transport Layer Security (DTLS)</title>
+
+          <author initials="Y." surname="Sheffer">
+            <organization />
+          </author>
+
+          <date day="" month="May" year="2015" />
+        </front>
+      </reference>
+    </references>
 
     <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
 
