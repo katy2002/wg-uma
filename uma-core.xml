@@ -48,20 +48,20 @@
     <date day="27" month="November" year="2016" />
 
     <abstract>
-      <t>The User-Managed Access (UMA) 2.0 federated authorization framework
-      enables a resource owner to control resource access by requesting
-      parties and their clients in an asynchronous fashion, where resources
-      reside on any number of resource servers and a central authorization
-      server manages the resource owner's access grants over time.</t>
+      <t>User-Managed Access (UMA) 2.0 makes use of OAuth 2.0 and related
+      standards to enable a resource owner to control protected resource
+      access by requesting parties and their clients in an asynchronous
+      fashion. Resources reside on any number of resource servers and a
+      central authorization server manages the resource owner's access grants
+      over time.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>The User-Managed Access (UMA) 2.0 federated authorization framework
-      builds on and extends OAuth 2.0 <xref target="RFC6749" />, along with
-      leveraging federated identity frameworks, in order to enable additions
-      to OAuth's abilities as follows:<list style="symbols">
+      <t>User-Managed Access (UMA) 2.0 makes use of OAuth 2.0 <xref
+      target="RFC6749" /> federated identity standards to enable additions to
+      OAuth's abilities as follows:<list style="symbols">
           <t>The resource owner grants resource access to clients used by
           entities that are in a <spanx>requesting party</spanx> role (see
           <xref target="terminology" /> for a definition of this new role).
@@ -78,17 +78,17 @@
           just after authenticating.</t>
 
           <t>The relationship between an authorization server and resource
-          server is loosely coupled within a resource owner context through
-          the use of <xref target="OAuth-resource-reg" /> and an extension of
-          <xref target="RFC7662" />. Multiple resource servers operating in
-          different domains can communicate with a single authorization server
-          operating in yet another domain that acts on behalf of a resource
-          owner. The loose coupling enables a service ecosystem to automate
-          resource protection, and lets the resource owner monitor, manage,
-          and control access grant rules at a central service location over
-          time. The token introspection extension lets the resource owner
-          increase and decrease grants at a grain finer than a whole access
-          token.</t>
+          server is loosely coupled, or federated, in a resource owner context
+          through the use of <xref target="OAuth-resource-reg" /> and an
+          extension of <xref target="RFC7662" />. Multiple resource servers
+          operating in different domains can communicate with a single
+          authorization server operating in yet another domain that acts on
+          behalf of a resource owner. This loose coupling enables a service
+          ecosystem to automate resource protection, and lets the resource
+          owner monitor, manage, and control access grant rules at a central
+          service location over time. The token introspection extension lets
+          the resource owner increase and decrease grants at a grain finer
+          than a whole access token.</t>
         </list></t>
 
       <t>For example, a bank customer (resource owner) named Alice with a bank
@@ -98,11 +98,11 @@
       (requesting parties), all using different client applications, to view
       account data and to give each of them differential access to payment and
       withdrawal functions. Alice can use the same sharing management service
-      to give out "read", "write", or "comment" access to documents residing
-      in a cloud file system (a different resource server) residing in a
-      different domain to friends Erik and Frances, with whom she is working
-      on a residential community project. (A variety of use cases can be found
-      in <xref target="UMA-usecases" /> and <xref
+      to give out "read", "edit", or "print" access to documents residing in a
+      cloud file system (a different resource server) residing in a different
+      domain to friends Erik and Frances, with whom she is working on a
+      residential community project. (A variety of use cases can be found in
+      <xref target="UMA-usecases" /> and <xref
       target="UMA-casestudies" />.)</t>
 
       <section anchor="terminology"
@@ -142,46 +142,52 @@
         <figure align="center" anchor="UMA-roles">
           <preamble>Roles and Communications</preamble>
 
-          <artwork><![CDATA[                                           +--------------+
-                                           |   resource   |
-          +----------manage (OOB)--------- |     owner    |
-          |                                +--------------+
-          |                                        |
-          |             protection              control
-          |                API                   (OOB)
-          |               token                    |
-          |               (PAT)                    |
-          v                                        v
-   +------------+               +----------+--------------+
-   |            |               |protection|              |
-   |  resource  |               |   API    | authorization|
-   |   server   |<---protect----|  (needs  |    server    |
-   |            |               |   PAT)   |              |
-   +------------+               +----------+--------------+
-   | protected  |                          | authorization|
-   | resource   |                          |   interface  |
-   |(needs RPT) |       requesting         |(PCT optional)|
-   +------------+         party            +--------------+
-          ^               token             ^(persisted ^
-          |               (RPT)             |  claims   |
-          |                                 |   token   |
-          |                                UMA  (PCT))  |
-          |                               grant         |
-          |                            +--------+    interact
-          +-------------access---------| client |       |
-                                       +--------+       |
-                                              +----------+
-                                              |requesting|
-                                              |  party   |
-                                              +----------+
+          <artwork><![CDATA[                                        +------------------+
+                                        |     resource     |
+       +- - - - - manage (OOS)- - - - - |       owner      |
+       |                                +------------------+
+       |                                          |
+       |             protection                control
+       |                API                     (OOS)
+       |               token
+       |               (PAT)                      |
+       v                                          v
++------------+               +----------+------------------+
+|            |               |protection|                  |
+|  resource  |               |   API    |   authorization  |
+|   server   |<---protect----| (needs   |      server      |
+|            |               |   PAT)   |                  |
++------------+               +----------+------------------+
+| protected  |                          |   authorization  |
+| resource   |                          |     interface    |
+|(needs RPT) |       requesting         |  (PCT optional)  |
++------------+         party            +------------------+
+       ^               token             ^  (persisted  ^
+       |               (RPT)             |    claims    |
+       |                                 |    token     |
+       |                                UMA   (PCT))    |
+       |                               grant            |
+       |                            +--------+      interact
+       +-------------access---------| client |          |
+                                    +--------+          |
+                                           +---------------+
+                                           |  requesting   |
+                                           |     party     |
+*OOS=out of scope                          +---------------+
 ]]></artwork>
         </figure>
 
         <t>The communications among the roles involve these concepts:<list
             hangIndent="6" style="hanging">
-            <t hangText="protected resource">A digital resource available
-            through an HTTP service to which a resource owner is able to
-            control access grants through an authorization server.</t>
+            <t hangText="resource">A digital resource available through an
+            HTTP service. See <xref target="fed-authz" /> for information
+            about UMA's relationship with HTTP, and <xref
+            target="resource-server-interface" /> for information about a
+            resource server's responsibility for resource complexity.</t>
+
+            <t hangText="protected resource">A resource to which a resource
+            owner is able to control access grants through an authorization
+            server.</t>
 
             <t hangText="scope">A bounded extent of access to a protected
             resource. Scopes are associated with particular resources.</t>
@@ -289,8 +295,8 @@
         this specification to define more than the "technical contract"
         between UMA-conforming entities. The legally responsible parties
         representing these entities may form contracts for, and laws and
-        regulations may govern, access-granting relationships. Parties
-        operating entities that claim to be UMA-conforming should provide
+        regulations may govern, access-granting relationships. Parties that
+        are operating entities claiming to be UMA-conforming should provide
         documentation of any rights and obligations between and among them;
         see <xref target="trust-considerations" /> for more information.</t>
 
@@ -336,11 +342,11 @@
 
           <artwork><![CDATA[resource resource        authorization              client requesting
  owner    server             server                   |      party
-   |        |1  Reg resources  |                      |        |
-   |        |<--------*------->|                      |        |
+   |        |1 Reg resources...|                      |        |
+   |        |*---------------->|                      |        |
    |2 Set policy conditions    |                      |        |
    |* - - - - - - - - - - - - >|                      |        |
-   |        |    Attempt resource access with no RPT 3|        |
+   |        |    Attempt resource access w/no token  3|        |
    |        |<---------------------------------------#|        |
    |        |4 Req permissions |                      |        |
    |        |*---------------->|                      |        |
@@ -402,12 +408,13 @@
         on behalf of that client at the authorization server. In order for the
         resource server to know which authorization server to approach and
         which PAT (representing a resource owner) and resource identifier to
-        supply in that request, the resource server's interface needs be
-        structured in such a way that it can derive this information from the
-        client's token-free access attempt. Either this information needs to
-        be passed through the URI, headers, or body of the client's request,
-        or the entire interface needs to be dedicated to the use of a single
-        resource owner.</t>
+        supply in that request, the API being accessed by the client needs to
+        be structured in such a way that the resource server can derive this
+        information from the client's token-free access attempt. Commonly,
+        this information can be passed through the URI, headers, or body of
+        the client's request. Alternatively, the entire interface could be
+        dedicated to the use of a single resource owner and protected by a
+        single authorization server.</t>
 
         <section anchor="protection-api"
                  title="Protection API and Related Resource Owner Actions">
@@ -495,33 +502,32 @@
           <figure anchor="authz-process">
             <preamble>Authorization Process Flowchart</preamble>
 
-            <artwork><![CDATA[                   start
-         +---------->|
-         |           >---------+
-         |           |         |
-         |           v         |
-         |      +----+---+     |
-         |      | collect|     |
-         |      | claims |     |
-         |      +--------+     |
-         |           |         |
-403 need_info        |<--------+
-         |           v
-         |     +-----+----+
-         |     | perform  |
-         |     |  authz   |
-         |     |assessment|
-         |     +----------+
-         |           |
-         |           |
-         |           v       +---. 200 OK RPT (PCT)
-         |          / \      |
-         |         /   \     +---. 400 invalid_ticket
-         |        /     \    |         expired_ticket
-         +-------[ authz ]---+         invalid_scope
-                  \  ?  /    |
-                   \   /     +---. 403 requested_submitted
-                    \_/
+            <artwork><![CDATA[                 start
+       +---------->|
+       |           >---------+
+       |           |         |
+       |           v         |
+       |      +--------+     |
+       |      | collect|     |
+       |      | claims |     |
+       |      +--------+     |
+       |           |         |
+403 need_info      |<--------+
+       |           v
+       |     +----------+
+       |     | perform  |
+       |     |  authz   |
+       |     |assessment|
+       |     +----------+
+       |          |                +---. 200 OK RPT (PCT)
+       |          v                |
+       |         / \               +---. 400 invalid_ticket
+       |        /   \              |---. 400 expired_ticket
+       |       / is  \             |---. 400 invalid_scope
+       +------[ authz ]----------->|
+               \  ?  /             +---. 403 request_submitted
+                \   /
+                 \_/
 ]]></artwork>
           </figure>
 
@@ -539,9 +545,9 @@
           party's behalf (rather than the resource owner's behalf, as in the
           case of grants defined in <xref target="RFC6749" />). The token
           endpoint handles client requests for, and issues, RPTs. The claims
-          interaction endpoint is analogous to OAuth's redirection URI, but it
-          is defined for use by the requesting party rather than the resource
-          owner.</t>
+          interaction endpoint plays a role in UMA somewhat similar to OAuth's
+          authorization endpoint, but it is defined for use by the requesting
+          party rather than the resource owner.</t>
 
           <t>It is OPTIONAL for the authorization server to issue a persisted
           claims token (PCT) to the client at the conclusion of the
@@ -562,17 +568,22 @@
         <section anchor="resource-server-interface"
                  title="Protected Resource Interface and Related Resource Server Actions">
           <t>As noted in <xref target="fed-authz" />, the resource server MUST
-          expose its protected resources through an HTTP service. The digital
-          resources MAY take any form (for example, API endpoints).</t>
+          expose its protected resources through an HTTP service unless the
+          appropriate extensibility profile is in use. The digital resources
+          MAY take any form (for example, API endpoints).</t>
 
-          <t>Any one resource that the resource server has registered for
-          protection MAY consist, from the resource server's perspective, of
-          multiple parts, or have dynamic elements such as the capacity for
-          querying or filtering, or otherwise have internal complexity. It
-          alone is responsible for maintaining the necessary mappings between
-          these complex representations (which might be expressed, for
-          example, as different requests coming from the client) and the
-          single resource identifier known to the authorization server.</t>
+          <t>The resource server MAY register for protection a single resource
+          that, from its perspective, has multiple parts, or has dynamic
+          elements such as the capacity for querying or filtering, or
+          otherwise has internal complexity. Note: The resource server alone
+          is responsible for maintaining the necessary mappings between any
+          such complexity (which might result, for example, in different
+          requests coming from the client) and a single resource identifier
+          known to the authorization server. Such complexity may also require
+          interpretation on the resource server's part when the client makes a
+          tokenless access attempt, in order to establish a resource
+          identifier, and therefore resource owner and authorization server,
+          of record before requesting permissions on the client's behalf.</t>
 
           <t>Once a resource is registered for protection, and until it has
           been deregistered, the resource server MUST require the client to
@@ -615,7 +626,7 @@
         requests to the authorization server that require use of the PAT
         spurred by requesting-side communications (requesting permissions and
         introspecting tokens), and potentially for other reasons, the resource
-        owner can frequently expected to be offline when the resource owner
+        owner can frequently expected to be offline when the resource server
         needs to use a PAT. Therefore, the authorization server needs to
         manage PAT issuance and expiration and any corresponding refresh token
         appropriately to ensure that the resource server has access as
@@ -630,8 +641,12 @@
 
         <t>Where this specification does not already require optional features
         to be documented, it is RECOMMENDED that authorization server
-        deployers document any profiled or extended features explicitly and
-        use extension configuration properties to indicate their usage.</t>
+        deployers document any profiled or extended features explicitly,
+        ideally by supplying the URI identifying each UMA profile and
+        extension in its <spanx style="verb">uma_profiles_supported</spanx>
+        and <spanx style="verb">claim_token_profiles_supported</spanx>
+        configuration properties, and by using extension configuration
+        properties to indicate specific usage details as necessary.</t>
 
         <section anchor="config-properties" title="Configuration Properties">
           <t>The authorization server has configuration properties as follows.
@@ -667,11 +682,11 @@
               as defined in <xref target="claim-redirect" />.</t>
 
               <t hangText="token_endpoint"><vspace />REQUIRED. The endpoint
-              URI at which the resource server is the authorization server for
-              a PAT on behalf of the resource owner (by requesting the OAuth
-              scope <spanx style="verb">uma_protection</spanx>) and at which
-              the client asks the authorization server for an RPT on behalf of
-              the requesting party using the UMA grant.</t>
+              URI at which the resource server asks the authorization server
+              for a PAT on behalf of the resource owner (by requesting the
+              OAuth scope <spanx style="verb">uma_protection</spanx>) and at
+              which the client asks the authorization server for an RPT on
+              behalf of the requesting party using the UMA grant.</t>
 
               <t hangText="authorization_endpoint"><vspace />REQUIRED. The
               endpoint URI at which the resource server gathers the
@@ -954,9 +969,9 @@ Host: photoz.example.com
             </list></t>
 
           <figure>
-            <preamble>Example of an HTTP request for a single-resource-set
-            permission at the authorization server's permission endpoint, with
-            a PAT in the header:</preamble>
+            <preamble>Example of an HTTP request for a single permission at
+            the authorization server's permission endpoint, with a PAT in the
+            header:</preamble>
 
             <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
 Content-Type: application/json
@@ -975,9 +990,9 @@ Authorization: Bearer 204c69636b6c69
           </figure>
 
           <figure>
-            <preamble>Example of an HTTP request for a multiple-resource-set
-            permission at the authorization server's permission endpoint, with
-            a PAT in the header:</preamble>
+            <preamble>Example of an HTTP request for multiple permissions at
+            the authorization server's permission endpoint, with a PAT in the
+            header:</preamble>
 
             <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
 Content-Type: application/json
@@ -1445,11 +1460,11 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
           requesting party context (such as apparent IP address) or
           independent of them (such as time of day).</t>
 
-          <t>Since policies are out of band for UMA and the authorization
-          server's policy expression and evaluation capabilities might take a
-          simple or arbitrarily complex form, its corresponding abilities to
-          combine or perform calculations over claim values might also
-          vary.</t>
+          <t>Since policies are out of scope for this specification and the
+          authorization server's policy expression and evaluation capabilities
+          might take a simple or arbitrarily complex form, its corresponding
+          abilities to combine or perform calculations over claim values might
+          also vary.</t>
 
           <t>Note: If the client incompletely satisfies any policy criteria,
           the authorization server is free either to partially fulfill the
@@ -2208,112 +2223,80 @@ Cache-Control: no-store
       </section>
     </section>
 
-    <section anchor="profiles" title="Specifying Additional Profiles">
-      <t>This specification defines a protocol that has optional features. For
-      implementation interoperability and to serve particular deployment
-      scenarios, including sector-specific ones such as healthcare or
-      e-government, third parties may want to define profiles of UMA that
+    <section anchor="profiles"
+             title="Specifying Additional Profiles and Extensions">
+      <t>This specification defines a protocol that has a variety of optional
+      features. For implementation interoperability and to serve particular
+      deployment scenarios, including sector-specific ones such as healthcare
+      or e-government, third parties may want to define profiles of UMA that
       restrict these options.</t>
 
-      <t>Further, this specification creates extensibility points for RPT
-      profiles and claim token profiles, and third parties may likewise want
-      to define their own. Different RPT profiles could be used, for example,
-      to change the dividing line between authorization server and resource
-      server responsibilities in controlling access. Different claim token
-      profiles could be used to customize sector-specific or
-      population-specific (such as individual vs. employee) claim types that
-      drive the types of policies resource owners could set.</t>
+      <t>Further, this specification builds in specific extensibility points
+      so that third parties can define profiles of companion technologies to
+      fit interoperably within the UMA framework. For example, third parties
+      can define claim token profiles (see <xref target="claim-push" />) using
+      whatever identity assertion or claim token technology is appropriate for
+      their ecosystems. Third parties can also build on the API extensibility
+      profiles (see <xref target="comms-profiles" />) to define their own "API
+      extension profiles".</t>
 
-      <t>It is not practical for this specification to standardize all desired
-      profiles. However, to serve overall interoperability goals, this section
-      provides guidelines for third parties that wish to specify UMA-related
-      profiles. In all cases, it is RECOMMENDED that profiles document the
-      following information:<list style="symbols">
-          <t>Specify a URI that uniquely identifies the profile.</t>
+      <t>Finally, this specification uses the natural extensibility within its
+      messaging formats, <spanx
+      style="verb">"application/x-www-form-urlencoded"</spanx> and JSON, to
+      enable third parties to define extensions that serve adjacent use cases.
+      For example, if necessary, it is possible to substitute a different
+      token introspection object structure to change the dividing line between
+      authorization server and resource server responsibilities in controlling
+      access.</t>
+
+      <t>It is not practical for this specification to standardize all such
+      variations of UMA. However, to serve overall interoperability goals,
+      this section provides guidelines for third parties that wish to specify
+      UMA-related profiles and extensions.</t>
+
+      <t>It is RECOMMENDED that authorization server deployers document any
+      profiled or extended features explicitly (see <xref
+      target="am-endpoints" /> for details).</t>
+
+      <t>In all cases, it is RECOMMENDED that profiles and extensions document
+      the following information:<list style="symbols">
+          <t>Specify a uniquely identifying URI.</t>
 
           <t>Identify the responsible author and provide postal or electronic
           contact information.</t>
 
-          <t>Supply references to any previously defined profiles that the
-          profile updates or obsoletes.</t>
+          <t>Supply references to any previous version that this version
+          updates or obsoletes.</t>
 
-          <t>Define any additional or changed error states.</t>
+          <t>Define any additional or changed error states, including, for for
+          claim token profiles, whether <spanx
+          style="verb">error_details</spanx> hints are modified.</t>
+
+          <t>Specify any modified or new interactions between endpoint
+          entities involved in the profile and any extension properties used
+          in messages.</t>
+
+          <t>For any new access token types, specify the keyword to be used in
+          HTTP Authorization headers.</t>
 
           <t>Specify any conformance and interoperability considerations.</t>
 
-          <t>Supply any security and privacy considerations additional to
-          <xref target="sec-consid" />.</t>
+          <t>Specify any security and privacy considerations additional to
+          <xref target="sec-consid" /> and <xref target="priv-consid" />.</t>
         </list></t>
-
-      <section anchor="uma-profiles" title="Specifying Profiles of UMA">
-        <t>It is RECOMMENDED that profiles of UMA additionally document the
-        following information:</t>
-
-        <t>
-          <list style="symbols">
-            <t>Specify the set of interactions between endpoint entities
-            involved in the profile, calling out any restrictions on ordinary
-            UMA operations and any extension properties used in message
-            formats.</t>
-          </list>
-        </t>
-
-        <t>See <xref target="comms-profiles" /> for examples.</t>
-      </section>
-
-      <section anchor="rpt-profiles" title="Specifying RPT Profiles">
-        <t>It is RECOMMENDED that RPT profiles additionally document the
-        following information:</t>
-
-        <t>
-          <list style="symbols">
-            <t>Specify the keyword to be used in HTTP Authorization headers
-            with tokens conforming to this profile.</t>
-
-            <t>Specify the syntax and semantics of the data that the
-            authorization server associates with the token.</t>
-
-            <t>Specify how the token data is associated with, contained
-            within, and/or retrieved by means of, the on-the-wire token
-            string.</t>
-
-            <t>Specify processing rules for token data.</t>
-
-            <t>Identify any restrictions on grant types to be used with the
-            token profile.</t>
-          </list>
-        </t>
-
-        <t>See <xref target="uma-bearer-token-profile" /> for an example.</t>
-      </section>
-
-      <section anchor="claim-profiles"
-               title="Specifying Claim Token Format Profiles">
-        <t>It is RECOMMENDED that claim token format profiles additionally
-        document the following information:<list style="symbols">
-            <t>Specify any related or additional <spanx
-            style="verb">error_details</spanx> hints.</t>
-
-            <t>Specify any constraints on the claim token format vs. a
-            standard definition for it in a specification.</t>
-
-            <t>Specify any mutual interpretation details of claim token
-            formats by authorization servers and clients.</t>
-          </list></t>
-      </section>
     </section>
 
     <section anchor="sec-consid" title="Security Considerations">
-      <t>As a profile of OAuth, this specification relies mainly on OAuth
-      security mechanisms as well as transport-level encryption. Thus,
-      implementers are strongly advised to read <xref target="BCP195" /> and
-      the security considerations in <xref target="RFC6749" /> (Section 10)
-      and <xref target="RFC6750" /> (Section 5) along with the security
-      considerations of any other OAuth token-defining specifications in use,
-      along with the entire <xref target="RFC6819" /> specification, and apply
-      the countermeasures described therein. As well, since this specification
-      builds on <xref target="OAuth-resource-reg" />, implementers should also
-      take into account the security considerations in that specification.</t>
+      <t>This specification relies mainly on OAuth 2.0 security mechanisms as
+      well as transport-level encryption. Thus, implementers are strongly
+      advised to read <xref target="BCP195" /> and the security considerations
+      in <xref target="RFC6749" /> (Section 10) and <xref target="RFC6750" />
+      (Section 5) along with the security considerations of any other OAuth
+      token-defining specifications in use, along with the entire <xref
+      target="RFC6819" /> specification, and apply the countermeasures
+      described therein. As well, implementers should take into account the
+      security considerations in all other normatively referenced
+      specifications.</t>
 
       <t>The following sections describe additional security
       considerations.</t>
@@ -2361,9 +2344,9 @@ Cache-Control: no-store
           that PCT -- after the redirect completes and before it returns to
           the token endpoint to seek permissions.</t>
 
-          <t>Another issue concerns the exposure of a <spanx
-          style="verb">Bearer</spanx>-type RPT to a requesting party, which
-          could maliciously pass the token to an unauthorized party.</t>
+          <t>Another issue concerns the exposure of an RPT to a requesting
+          party, which could maliciously pass the token to an unauthorized
+          party.</t>
 
           <t>To mitigate requesting-party switching and RPT exposure threats,
           consider the following strategies.<list style="symbols">
@@ -2496,7 +2479,7 @@ Cache-Control: no-store
 
       <section anchor="trust-considerations"
                title="Profiles and Trust Establishment">
-        <t>Parties operating and using UMA software entities have
+        <t>Parties that are operating and using UMA software entities have
         opportunities to establish agreements about the parties' rights and
         responsibilities on a legal or contractual level, along with common
         interpretations of UMA constructs for consistent and expected software
@@ -2542,7 +2525,7 @@ Cache-Control: no-store
     <section anchor="priv-consid" title="Privacy Considerations">
       <t>UMA has the following privacy considerations.</t>
 
-      <section title="Resource Set Information at the Authorization Server">
+      <section title="Resource Information at the Authorization Server">
         <t>The authorization server comes to be in possession of resource
         information that may reveal information about the resource owner,
         which the authorization server's trust relationship with the resource
@@ -2556,22 +2539,27 @@ Cache-Control: no-store
       <section anchor="rqp-privacy"
                title="Requesting Party Information at the Authorization Server">
         <t>The primary privacy duty of UMA's design is to the resource owner.
-        However, privacy considerations affect the requesting party as well.
-        This can be seen in the optional issuance of a PCT, which enables an
-        opportunity to optimize an access-seeking flow for a requesting party
-        through persisting a set of collected claims across authorization
-        processes, and can involve a requesting party's authorization for this
-        persistence. Claims are likely to contain personally identifiable and
-        possibly very sensitive information, and much like identity attributes
-        exchanged during single sign-on, the process of claim pushing in
-        particular will tend to be invisible to an end-user requesting party
-        if they have not consciously authorized the possibility. A requesting
-        party who provides claims to an authorization server once redirected
-        there is less susceptible to privacy-destroying behavior.</t>
+        However, privacy considerations affect the requesting party as well,
+        having to do with the nature of claims. Claims are likely to contain
+        personal, personally identifiable, and sensitive information,
+        particularly in the case of requesting parties who are end-users.</t>
+
+        <t>If the authorization server supports persisting claims for any
+        length of time (for example, to support issuance of PCTs), then it
+        SHOULD provide a secure and privacy-protected means of storing claim
+        data. It is also RECOMMENDED for the authorization server to use an
+        interactive claims-gathering flow to ask an end-user requesting party
+        for authorization to persist their claims before issuing a PCT. A
+        requesting party who provides claims to an authorization server once
+        having been redirected there is less susceptible to privacy-destroying
+        behavior. Otherwise, certain flows such as claim pushing and
+        interactive federated sign-in with automatic login will tend to be
+        invisible to the user if they have not consciously authorized the
+        possibility.</t>
       </section>
 
       <section title="Profiles and Trust Establishment">
-        <t>Parties operating and using UMA software entities have
+        <t>Parties that are operating and using UMA software entities have
         opportunities to establish agreements about mutual rights,
         responsibilities, and common interpretations of UMA constructs for
         consistent and expected software behavior. These agreements can be

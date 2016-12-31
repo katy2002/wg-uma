@@ -111,27 +111,15 @@
         <t>This specification introduces the following new terms and
         enhancements of OAuth term definitions.<list hangIndent="6"
             style="hanging">
-            <t hangText="protected resource">A digital resource available
-            through an HTTP service for which an authorization server manages
-            access grants. Protection begins on successful registration and
-            ends on successful deregistration.</t>
+            <t hangText="resource">A digital resource available through an
+            HTTP service.</t>
+
+            <t hangText="protected resource">A resource for which an
+            authorization server manages access grants. Protection begins on
+            successful registration and ends on successful deregistration.</t>
 
             <t hangText="scope">A bounded extent of access to a protected
-            resource. Scopes are associated with particular resources rather
-            than being registered apart from resources. Scopes constitute the
-            kinds of access that can be granted to the resource. For example,
-            a resource representing a social status timeline API might have
-            scopes for adding an update or reading updates, whereas a resource
-            representing a photo album might have scopes for viewing a
-            slideshow or printing the album. The resource server registers
-            resources and their scopes without respect to any particular
-            client.</t>
-
-            <t hangText="resource registration endpoint">An endpoint at the
-            authorization server that allows the resource server to register
-            resources for protection. The operations available at this
-            endpoint constitute the resource registration API (see <xref
-            target="reg-api" />).</t>
+            resource. Scopes are associated with particular resources.</t>
           </list></t>
       </section>
 
