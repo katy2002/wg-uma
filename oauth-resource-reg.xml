@@ -19,7 +19,7 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="OAuth RSR">OAuth 2.0 Resource Registration</title>
+    <title abbrev="OAuth RReg">OAuth 2.0 Resource Registration</title>
 
     <author fullname="Eve Maler" initials="E." role="editor" surname="Maler">
       <organization>ForgeRock</organization>
@@ -142,13 +142,13 @@
       managing and validating these authentication credentials are out of
       scope of this specification.</t>
 
-      <t>A resource server MAY register and manage as a single protected
-      resource a set of digital data or API endpoints that, from its
-      perspective, consists of multiple parts, has dynamic elements such as
-      the capacity for querying or filtering, or otherwise has internal
-      complexity. It alone is responsible for maintaining the necessary
-      mappings between these internal representations and the single resource
-      identifier known to the authorization server.</t>
+      <t>The resource server MAY register for protection a single resource
+      that, from its perspective, has multiple parts, or has dynamic elements
+      such as the capacity for querying or filtering, or otherwise has
+      internal complexity. Note: The resource server alone is responsible for
+      maintaining the necessary mappings between any such complexity (which
+      might result, for example, in different requests coming from the client)
+      and a single resource identifier known to the authorization server.</t>
 
       <t>Note: When a client attempts access to a presumptively protected
       resource without an access token, as occurs in <xref target="UMA" />,
