@@ -173,7 +173,7 @@
                                            +---------------+
                                            |  requesting   |
                                            |     party     |
-*OOS=out of scope                          +---------------+
+OOS=out of scope                           +---------------+
 ]]></artwork>
         </figure>
 
@@ -344,8 +344,8 @@
  owner    server             server                   |      party
    |        |1 Reg resources...|                      |        |
    |        |*---------------->|                      |        |
-   |2 Set policy conditions    |                      |        |
-   |* - - - - - - - - - - - - >|                      |        |
+   |2 Set policy conds (OOS)   |                      |        |
+   |- - - - - - - - - - - - - >|                      |        |
    |        |    Attempt resource access w/no token  3|        |
    |        |<---------------------------------------#|        |
    |        |4 Req permissions |                      |        |
@@ -370,6 +370,8 @@
    |        |                  |  Request RPT, send 12|        |
    |        |                  |     permission ticket|        |
    |        |                  |<--------------------=|        |
+   |        |   Perform authz 8|= - - -+              |        |
+   |        |        assessment|< - - -+              |        |
    |        |                  |13 Issue RPT with PCT |        |
    |        |                  |=-------------------->|        |
    |        |      Attempt resource access with RPT 14|        |
@@ -378,10 +380,11 @@
    |        |*---------------->|                      |        |
    |        |  Return object 16|                      |        |
    |        |<----------------*|                      |        |
-   |      17|# - - -+          |                      |        |
-   |  Assess|< - - -+          |                      |        |
-   | against|18 Return resource representation        |        |
-   | attempt|#--------------------------------------->|        |
+   |Token 17|# - - -+          |                      |        |
+   | assess-|< - - -+          |                      |        |
+   |    ment|18 Return resource representation        |        |
+   |        |#--------------------------------------->|        |
+                                                     OOS=out of scope
 ]]></artwork>
         </figure>
 
