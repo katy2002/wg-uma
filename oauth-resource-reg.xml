@@ -19,7 +19,7 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="OAuth RSR">OAuth 2.0 Resource Registration</title>
+    <title abbrev="OAuth RReg">OAuth 2.0 Resource Registration</title>
 
     <author fullname="Eve Maler" initials="E." role="editor" surname="Maler">
       <organization>ForgeRock</organization>
@@ -45,7 +45,7 @@
       </address>
     </author>
 
-    <date day="27" month="November" year="2016" />
+    <date day="1" month="January" year="2017" />
 
     <abstract>
       <t>This specification defines a method for an OAuth 2.0 resource server
@@ -111,27 +111,15 @@
         <t>This specification introduces the following new terms and
         enhancements of OAuth term definitions.<list hangIndent="6"
             style="hanging">
-            <t hangText="protected resource">A digital resource available
-            through an HTTP service for which an authorization server manages
-            access grants. Protection begins on successful registration and
-            ends on successful deregistration.</t>
+            <t hangText="resource">A digital resource available through an
+            HTTP service.</t>
+
+            <t hangText="protected resource">A resource for which an
+            authorization server manages access grants. Protection begins on
+            successful registration and ends on successful deregistration.</t>
 
             <t hangText="scope">A bounded extent of access to a protected
-            resource. Scopes are associated with particular resources rather
-            than being registered apart from resources. Scopes constitute the
-            kinds of access that can be granted to the resource. For example,
-            a resource representing a social status timeline API might have
-            scopes for adding an update or reading updates, whereas a resource
-            representing a photo album might have scopes for viewing a
-            slideshow or printing the album. The resource server registers
-            resources and their scopes without respect to any particular
-            client.</t>
-
-            <t hangText="resource registration endpoint">An endpoint at the
-            authorization server that allows the resource server to register
-            resources for protection. The operations available at this
-            endpoint constitute the resource registration API (see <xref
-            target="reg-api" />).</t>
+            resource. Scopes are associated with particular resources.</t>
           </list></t>
       </section>
 
@@ -154,13 +142,13 @@
       managing and validating these authentication credentials are out of
       scope of this specification.</t>
 
-      <t>A resource server MAY register and manage as a single protected
-      resource a set of digital data or API endpoints that, from its
-      perspective, consists of multiple parts, has dynamic elements such as
-      the capacity for querying or filtering, or otherwise has internal
-      complexity. It alone is responsible for maintaining the necessary
-      mappings between these internal representations and the single resource
-      identifier known to the authorization server.</t>
+      <t>The resource server MAY register for protection a single resource
+      that, from its perspective, has multiple parts, or has dynamic elements
+      such as the capacity for querying or filtering, or otherwise has
+      internal complexity. Note: The resource server alone is responsible for
+      maintaining the necessary mappings between any such complexity (which
+      might result, for example, in different requests coming from the client)
+      and a single resource identifier known to the authorization server.</t>
 
       <t>Note: When a client attempts access to a presumptively protected
       resource without an access token, as occurs in <xref target="UMA" />,
