@@ -60,8 +60,8 @@
   <middle>
     <section anchor="introduction" title="Introduction">
       <t>User-Managed Access (UMA) 2.0 makes use of OAuth 2.0 <xref
-      target="RFC6749" /> federated identity standards to enable additions to
-      OAuth's abilities as follows:<list style="symbols">
+      target="RFC6749" /> and related standards to enable additions to OAuth's
+      abilities as follows:<list style="symbols">
           <t>The resource owner grants resource access to clients used by
           entities that are in a <spanx>requesting party</spanx> role (see
           <xref target="terminology" /> for a definition of this new role).
@@ -182,7 +182,7 @@ OOS=out of scope                           +---------------+
             <t hangText="resource">A digital resource available through an
             HTTP service. See <xref target="fed-authz" /> for information
             about UMA's relationship with HTTP, and <xref
-            target="resource-server-interface" /> for information about a
+            target="resource-scope-interpretation" /> for information about a
             resource server's responsibility for resource complexity.</t>
 
             <t hangText="protected resource">A resource to which a resource
@@ -861,6 +861,10 @@ Content-Type: application/json
 
       <section anchor="client-attempts-tokenless-access"
                title="Client Attempts Access to Protected Resource With No Token">
+        <t>In this process, the client attempts access to a resource that the
+        resource server considers protected, without having presented a token
+        for authorized access.</t>
+
         <t>This process corresponds to step 3 in <xref
         target="protocol-flow" />. This process assumes that the resource
         server has already registered any relevant resources for protection
@@ -870,10 +874,6 @@ Content-Type: application/json
         already been defined at the authorization server. A variety of
         combinations of access attempt flows and resource owner policy
         condition-setting interfaces are possible.</t>
-
-        <t>In this process, the client attempts access to a resource that the
-        resource server considers protected, without having presented a token
-        for authorized access.</t>
 
         <t>After the client's access attempt, the resource server's next
         option to act is defined in <xref target="register-permission" />
@@ -1132,21 +1132,17 @@ Warning: 199 - "UMA Authorization Server Unreachable"
 
       <section anchor="seek-authorization"
                title="Authorization Process: The UMA Grant">
-        <t>This section is divided into two halves.</t>
+        <t>This section defines the extension OAuth grant called the UMA
+        grant. It defines forms of the client request (corresponding to steps
+        7 and 11 in <xref target="protocol-flow" />), redirect mechanisms for
+        requesting party interaction (step 10), the authorization server's
+        internal authorization assessment (step 8), and forms of the
+        authorization server response to the client request (steps 9 and 11).
+        See <xref target="authz-process" /> for a visual representation of the
+        authorization process. Section <xref target="uma-grant-type" />
+        defines the <spanx style="verb">grant_type</spanx> URI.</t>
 
-        <t>In the client's request process, the client seeks the authorization
-        server's authorization for access to the protected resource on the
-        requesting party's behalf, by requesting an RPT at the authorization
-        server's token endpoint and possibly, in embedded fashion, by
-        redirecting an end-user requesting party to the authorization server's
-        claims interaction endpoint.</t>
-
-        <t>The authorization process potentially includes looping through the
-        authorization seeking phase, and authorization server responses
-        potentially include hints as to what further requests should
-        contain.</t>
-
-        <t>This process assumes that:<list style="symbols">
+        <t>The process assumes that:<list style="symbols">
             <t>The client has obtained a permission ticket and an
             authorization server location from the resource server.</t>
 
@@ -1156,69 +1152,27 @@ Warning: 199 - "UMA Authorization Server Unreachable"
             <t>The client has obtained OAuth client credentials from the
             authorization server, either dynamically through <xref
             target="RFC7591" /> or <xref target="OIDCDynClientReg" />, or
-            alternatively through a static process.</t>
-
-            <t>The client has successfully used the client credentials grant
-            to obtain a valid access token for use in making calls to the
-            authorization server's token endpoint to request an RPT.</t>
+            alternatively through a static process, and is prepared to
+            authenticate itself to the token endpoint.</t>
           </list></t>
 
-        <t>This process corresponds to steps 7 and 10 in <xref
-        target="protocol-flow" />.</t>
-
-        <t>The client's request process has a variety of options in addition
-        to the basic action of requesting an RPT:<list style="symbols">
-            <t>Including an RPT with the RPT request: Including a previously
-            failed RPT gives the authorization server the option of updating
-            the existing RPT instead of issuing a new one.</t>
-
-            <t>Requesting specific scopes in the RPT request: The client can
-            request scopes in order to respond dynamically to a requesting
-            party's needs and its own capabilities.</t>
-
-            <t>Pushing claims along with the RPT request: This allows the
-            client to provide information already known about the requesting
-            party (or itself) to the authorization server. It can provide this
-            information after an authorization failure, or even on an initial
-            request for authorization as long as it is aware of the
-            authorization server's claim requirements.</t>
-
-            <t>Including a PCT with the RPT request: If the client has
-            obtained a PCT during a previous authorization process, including
-            it may shorten the current authorization process.</t>
-
-            <t>Enabling interactive claims-gathering: In some cases, only
-            interactively gathered claims from an individual might suffice, or
-            they may be needed to supplement other claims. This option is a
-            sub-flow </t>
-          </list></t>
+        <t>The client seeks the authorization server's authorization for
+        access to the protected resource on the requesting party's behalf, by
+        requesting an RPT at the authorization server's token endpoint and
+        possibly, in embedded fashion, by redirecting an end-user requesting
+        party to the authorization server's claims interaction endpoint. The
+        authorization process thus begun potentially includes looping through
+        the authorization seeking phase, and subsequent authorization server
+        responses potentially include hints as to what further requests should
+        contain.</t>
 
         <t>For interactive claims-gathering, the client SHOULD register a
         <spanx style="verb">claims_redirect_uri</spanx> (as defined in <xref
         target="claim-redirect" />) with the authorization server, either
         using a static process or through <xref target="RFC7591" /> or <xref
-        target="OIDCDynClientReg" />.</t>
-
-        <t>In the authorization server's response process, the authorization
-        server responds to the client's requests for access authorization and
-        redirects.</t>
-
-        <t>This process assumes that the client made a request for an RPT at
-        the token endpoint or has redirected a user agent to the claims
-        interaction endpoint. Elements of this process correspond to steps 8,
-        9, and 11 in <xref target="protocol-flow" />.</t>
-
-        <t>The first part of this process involves an internal assessment by
-        the authorization server. The second involves responding to the
-        client. If the RPT request succeeds, the authorization server has
-        several options:<list style="symbols">
-            <t>If the client provided an RPT in the request, it MAY return
-            that same RPT upgraded rather than returning a new RPT.</t>
-
-            <t>It MAY return a refresh token along with the RPT.</t>
-
-            <t>If MAY return a PCT along with the RPT.</t>
-          </list></t>
+        target="OIDCDynClientReg" />. The client MAY redirect a requesting for
+        interactive claims gathering prior to requesting an RPT at the token
+        endpoint.</t>
 
         <t>Unless the authorization server responds with an error, the
         client's next option to respond is defined in <xref
@@ -1236,16 +1190,25 @@ Warning: 199 - "UMA Authorization Server Unreachable"
 
               <t hangText="ticket">REQUIRED. The permission ticket.</t>
 
-              <t hangText="rpt">OPTIONAL. If the client had included an RPT in
-              its failed access attempt to the resource, it MAY include the
-              same RPT here.</t>
+              <t hangText="rpt">OPTIONAL. If the client included an RPT in its
+              failed access attempt to the resource, it MAY include the same
+              RPT here. This gives the authorization server the option of
+              updating the existing RPT instead of issuing a new one (see
+              <xref target="give-rpt" /> for the basic form of that
+              response).</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
-              representing the scopes that the client is requesting.</t>
+              representing the scopes that the client is requesting. This
+              allows the client to add dynamically to any scopes already under
+              consideration for authorization.</t>
 
               <t hangText="claim_tokens">OPTIONAL. Claims pushed directly from
-              the client to the authorization server. See <xref
-              target="claim-push" /> for more information.</t>
+              the client to the authorization server. This allows the client
+              to provide information already in its possession to the
+              authorization server. It MAY provide this information a first or
+              subsequent request to this endpoint. See <xref
+              target="claim-push" /> for the form of a client request with
+              pushed claims.</t>
 
               <t hangText="pct">OPTIONAL. If the authorization server
               previously returned a PCT along with an RPT, the client MAY
@@ -1256,16 +1219,18 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               effort to ensure that the requesting party using the client now
               is the same as the requesting party that was associated with the
               PCT when it was issued. See <xref target="sec-consid-pct" /> for
-              additional PCT security considerations.</t>
+              additional PCT security considerations. See <xref
+              target="saved-consent-token" /> for the form of the
+              authorization server's response with a PCT.</t>
             </list></t>
 
           <figure>
             <preamble>Example of a request message containing a permission
-            ticket:</preamble>
+            ticket and no optional parts:</preamble>
 
             <artwork><![CDATA[POST /token HTTP/1.1
 Host: as.example.com
-Authorization: Bearer jwfLG53^sad$#f
+Authorization: Basic jwfLG53^sad$#f
 ...
 grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket&
 ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
@@ -1323,18 +1288,18 @@ Authorization: Bearer jwfLG53^sad$#f
           </figure>
 
           <t>This specification provides a framework for extensibility through
-          claim token format profiling. The authorization server MAY support
-          any number of claim token profiles, and SHOULD document the claim
-          token profiles it supports in its configuration document.</t>
+          claim token format profiling (see <xref target="profiles" />). The
+          authorization server MAY support any number of claim token profiles,
+          and SHOULD document the claim token profiles it supports in its
+          configuration document.</t>
         </section>
 
         <section anchor="claim-redirect"
-                 title="Client Redirect of User Agent to Authorization Server for Interactive Claims-Gathering">
-          <t>The client redirects an end-user requesting party's user agent to
-          the claims interaction endpoint for whatever interactive
-          claims-gathering processes the authorization server requires, such
-          as presenting a questionnaire or a local or federated login
-          form.</t>
+                 title="Client Redirect of Requesting Party to Authorization Server for Interactive Claims-Gathering">
+          <t>The client redirects an end-user requesting party' to the claims
+          interaction endpoint for whatever interactive claims-gathering
+          processes the authorization server requires, such as presenting a
+          questionnaire or a local or federated login form.</t>
 
           <t>The client constructs the request URI by adding the following
           parameters to the query component of the claims interaction endpoint
@@ -1369,8 +1334,8 @@ Authorization: Bearer jwfLG53^sad$#f
               target="RFC3986" /> (Simple String Comparison).</t>
 
               <t hangText="ticket">REQUIRED. The latest permission ticket
-              associated with the client's current request an RPT for this
-              requesting party.</t>
+              associated with the client's current request for this requesting
+              party.</t>
 
               <t hangText="state">RECOMMENDED. An opaque value used by the
               client to maintain state between the request and callback. The
@@ -1378,6 +1343,12 @@ Authorization: Bearer jwfLG53^sad$#f
               user agent back to the client. The use of this parameter is for
               preventing cross-site request forgery.</t>
             </list></t>
+
+          <t>See <xref target="saved-consent-token" /> for authorization
+          server options for collecting authorization from the requesting
+          party while gathering claims interactively. See<xref
+          target="redirect-back" /> for the authorization server's mechanism
+          for redirecting the requesting party back to the client.</t>
 
           <figure>
             <preamble>Example of a request issued by a client application
@@ -1389,33 +1360,14 @@ Authorization: Bearer jwfLG53^sad$#f
 Host: as.example.com
 ]]></artwork>
           </figure>
-
-          <section anchor="interaction-consent"
-                   title="Authorization Server Gathers Requesting Party Authorization for Persisting Claims">
-            <t>As noted in <xref target="saved-consent-token" />, the
-            authorization server MAY choose to persist collected claims and
-            issue a PCT in order to optimize future authorization processes on
-            behalf of a requesting party. It MAY also gather authorization
-            from an end-user requesting party for persisting these claims, one
-            option being persisting this authorization in the form of an
-            actual claim itself.</t>
-
-            <t>The authorization server MAY combine authorization-gathering
-            interaction with other interactions as necessary, and in any
-            order. For example, the authorization server might present an
-            opportunity for the requesting party to create or manage a login
-            account for more persistent storage of gathered and pushed claims
-            over time.</t>
-          </section>
         </section>
 
-        <section title="Authorization Server Redirect of User Agent Back to Client After Interactive Claims-Gathering">
-          <t>After its interactive claims-gathering process completes, the
-          authorization server redirects the end-user requesting party back to
-          the client. At the conclusion of its interaction with the requesting
-          party, the authorization server returns the user agent to the
-          client, adding the following parameters to the query component of
-          the claims redirection URI using the <spanx
+        <section anchor="redirect-back"
+                 title="Authorization Server Redirect of Requesting Party Back to Client After Interactive Claims-Gathering">
+          <t>At the conclusion of its interaction with the requesting party,
+          the authorization server returns the requesting party to the client,
+          adding the following parameters to the query component of the claims
+          redirection URI using the <spanx
           style="verb">application/x-www-form-urlencoded</spanx> format:<list
               style="hanging">
               <t hangText="authorization_state">REQUIRED. Indicates that the
@@ -1454,6 +1406,11 @@ Host: as.example.com
               client provided in the request. It MUST be present if and only
               if the client provided it.</t>
             </list></t>
+
+          <t>Note: The purpose of the interaction is for the authorization
+          server to gather information for its own authorization assessment
+          purposes. This redirection does not involve sending any of the
+          information back to the client.</t>
 
           <t>The client MUST ignore unrecognized response parameters. If the
           request fails due to a missing, invalid, or mismatching claims
@@ -1557,16 +1514,12 @@ Host: client.example.com
           issuance of permissions (see <xref
           target="authorization-assessment" />), it returns an HTTP 200 (OK)
           status code with a response body containing the RPT with which it
-          has associated the requested permissions.</t>
-
-          <t>Note: The authorization server is free to choose to return either
-          the same RPT that appeared in the request or a new RPT, and it is
-          also free to choose to invalidate or retain the validity of the
-          original RPT or any permission that was previously added to that
-          RPT. To assist in client interoperability and token caching
-          expectations, it is RECOMMENDED that authorization servers document
-          their practices. <xref target="UMA-Impl" /> discusses the
-          implications.</t>
+          has associated the requested permissions. The authorization server
+          MAY return a refresh token. The authorization server MAY return a
+          PCT. If the client included an existing RPT in its request and the
+          authorization server issues a new RPT, the authorization server
+          SHOULD revoke the existing RPT, if possible, and the client MUST
+          discard its previous RPT.</t>
 
           <figure>
             <preamble>Example:</preamble>
@@ -1581,9 +1534,6 @@ Content-Type: application/json
 }
 ]]></artwork>
           </figure>
-
-          <t>The authorization server MAY include an OAuth refresh token with
-          the RPT.</t>
         </section>
 
         <section anchor="saved-consent-token"
@@ -1600,6 +1550,18 @@ Content-Type: application/json
           end-user requesting party interaction option. See <xref
           target="sec-consid-pct" /> for additional PCT security
           considerations.</t>
+
+          <t>The authorization server MAY choose to persist collected claims
+          and issue a PCT in order to optimize future authorization processes
+          on behalf of a requesting party. It MAY also gather authorization
+          from an end-user requesting party for persisting these claims, one
+          option being persisting this authorization in the form of an actual
+          claim itself. The authorization server MAY combine
+          authorization-gathering interaction with other interactions as
+          necessary, and in any order. For example, the authorization server
+          might present an opportunity for the requesting party to create or
+          manage a login account for more persistent storage of gathered and
+          pushed claims over time.</t>
 
           <t>The PCT MAY be included by the client in future requests to the
           token endpoint using the UMA grant type (see <xref
@@ -1659,9 +1621,7 @@ Content-Type: application/json
               MAY also respond with an <spanx
               style="verb">error_details</spanx> object that contains one or
               more sub-properties with hints about the nature of further
-              required information. The client then has the opportunity to
-              continue the authorization process (see <xref
-              target="need-info" />).</t>
+              required information.</t>
             </list></t>
 
           <t>The first five error responses end the current authorization
@@ -1814,7 +1774,7 @@ Host: photoz.example.com
         RPT brought to it by the client in an access attempt.</t>
 
         <t>This process assumes that the client's access attempt bore an RPT.
-        One version of this process corresponds to steps 13-14 in <xref
+        One version of this process corresponds to steps 14-15 in <xref
         target="protocol-flow" />.</t>
 
         <t>The resource server determines whether the RPT is active and, if
@@ -1835,7 +1795,7 @@ Host: photoz.example.com
             target="sec-consid" />.</t>
 
             <t>Use a cached copy of the token introspection response if
-            allowed.</t>
+            allowed (see Section 4 of <xref target="RFC7662" />).</t>
           </list></t>
 
         <t>After determining the RPT status, the resource server's next option
@@ -1965,7 +1925,7 @@ Cache-Control: no-store
 
         <t>This process assumes that the resource server has determined the
         status of the RPT. The success path of this process corresponds to
-        step 16 in <xref target="protocol-flow" />.</t>
+        steps 16-17 in <xref target="protocol-flow" />.</t>
 
         <t>The first part of this process is an internal assessment. The
         second is a response to the client.</t>
@@ -2448,7 +2408,7 @@ Cache-Control: no-store
         </section>
 
         <section anchor="sec-consid-pct"
-                 title="Requesting Party Claims and Persisted Claim Tokens">
+                 title="Requesting Party Claims and Persisted Claims Tokens">
           <t>A PCT is similar to a refresh token in that it carries extra
           power over the usage of an RPT. The authorization server and client
           MUST keep PCTs confidential in transit and storage, and MUST NOT
