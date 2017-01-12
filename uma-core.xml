@@ -389,22 +389,22 @@ OOS=out of scope                           +---------------+
    |        |                  |       for interactive|Redir...|
    |        |                  |      claims gathering|        |
    |        |                  |<---------------------|=------>|
-   |        |                  |   Request RPT, send 7|        |
+   |        |                  |  Request RPT, send 11|        |
    |        |                  |     permission ticket|        |
    |        |                  |<--------------------=|        |
    |        |   Authorization 8|= - - -+              |        |
    |        |        assessment|< - - -+              |        |
-   |        |                  |11 Issue RPT with PCT |        |
+   |        |                  |12 Issue RPT with PCT |        |
    |        |                  |=-------------------->|        |
-   |        |      Attempt resource access with RPT 12|        |
+   |        |      Attempt resource access with RPT 13|        |
    |        |<---------------------------------------#|        |
-   |        |13 Introspect RPT |                      |        |
+   |        |14 Introspect RPT |                      |        |
    |        |*---------------->|                      |        |
-   |        |  Return object 14|                      |        |
+   |        |  Return object 15|                      |        |
    |        |<----------------*|                      |        |
-   |Token 15|# - - -+          |                      |        |
+   |Token 16|# - - -+          |                      |        |
    | assess-|< - - -+          |                      |        |
-   |    ment|16 Return resource representation        |        |
+   |    ment|17 Return resource representation        |        |
    |        |#--------------------------------------->|        |
 ]]></artwork>
         </figure>
