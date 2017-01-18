@@ -584,12 +584,13 @@
 
           <t>The following conceptual variables are used in the subsequent
           authorization assessment calculation:<list style="hanging">
-              <t hangText="ClientRegistered">Scopes the client registered with
-              the authorization server, either dynamically or through some
-              static process. Note that in typical OAuth scope registrations
-              used today, such scopes are often not explicitly associated with
-              particular resources and so the authorization server might need
-              to apply a scope-to-resource interpretation process.</t>
+              <t hangText="ClientRegistered">Scopes for which the client
+              pre-registered with the authorization server, either dynamically
+              or through some static process. Note that in typical OAuth scope
+              registrations used today, such scopes are often not explicitly
+              associated with particular resources and so the authorization
+              server might need to apply a scope-to-resource interpretation
+              process.</t>
 
               <t hangText="ClientRequested">Scopes the client most recently
               requested at the token endpoint.</t>
@@ -610,9 +611,12 @@
 
           <t>The authorization server MUST apply the following authorization
           assessment calculation:<list style="numbers">
-              <t>Determine the set of requested scopes as follows:<spanx>
-              union ( intersection (ClientRequested, ClientRegistered),
-              PermissionTicket)</spanx>.</t>
+              <t>Determine the set of requested resource scopes as
+              follows:<spanx> RequestedScopes = union ( intersection
+              (ClientRequested, ClientRegistered), PermissionTicket)</spanx>.
+              Note that the client must have registered and requested at least
+              one scope in common to have any effect at all on the result
+              set.</t>
 
               <t>Determine all operative policy conditions for the resource
               identifiers associated with <spanx>PermissionTicket</spanx>.
@@ -2667,6 +2671,49 @@ Cache-Control: no-store
 
               <t>Specification document: <xref target="am-endpoints" /> in
               this document</t>
+            </list>
+          </t>
+        </section>
+      </section>
+
+      <section title="OAuth 2.0 Extension Grant Parameters Registration">
+        <t>This specification registers the parameters defined in <xref
+        target="uma-grant-type" />.</t>
+
+        <section title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>Grant type: <spanx
+              style="verb">urn:ietf:params:oauth:grant-type:uma-ticket</spanx></t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - wg-uma@kantarainitiative.org</t>
+
+              <t>Specification document: <xref target="uma-grant-type" /> in
+              this document</t>
+
+              <t>Parameters (usage locations are all on the token
+              endpoint):<list style="symbols">
+                  <t hangText="ticket">
+                    <spanx style="verb">ticket</spanx>
+                  </t>
+
+                  <t hangText="ticket">
+                    <spanx style="verb">rpt</spanx>
+
+                    
+                  </t>
+
+                  <t hangText="ticket">
+                    <spanx style="verb">claim_tokens</spanx>
+                  </t>
+
+                  <t hangText="ticket">
+                    <spanx style="verb">rpt</spanx>
+
+                    
+                  </t>
+                </list></t>
             </list>
           </t>
         </section>
