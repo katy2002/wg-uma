@@ -45,7 +45,7 @@
       </address>
     </author>
 
-    <date day="1" month="January" year="2017" />
+    <date day="11" month="January" year="2017" />
 
     <abstract>
       <t>This specification defines a method for an OAuth 2.0 resource server
@@ -586,12 +586,11 @@ Authorization: Bearer 204c69636b6c69
       <spanx style="verb">icon_uri</spanx>, enticing the resource owner to
       click on the icon during the policy setting process. The authorization
       server SHOULD check to see if all URIs defined in the <spanx
-      style="verb">icon_uri</spanx> and in the array of <spanx
-      style="verb">redirect_uris</spanx> resolve to valid web pages. Since
-      these are URI values that are intended to be displayed to the resource
-      owner in a policy-setting interface, the authorization server SHOULD
-      protect the resource owner from malicious content hosted at the URIs
-      where possible.</t>
+      style="verb">icon_uri</spanx> resolve to valid web pages. Since these
+      are URI values that are intended to be displayed to the resource owner
+      in a policy-setting interface, the authorization server SHOULD protect
+      the resource owner from malicious content hosted at the URIs where
+      possible.</t>
 
       <t>Additionally, a rogue resource server could supply misleading names
       for a resource or scope, or mislabel the type of a resource, leading a
