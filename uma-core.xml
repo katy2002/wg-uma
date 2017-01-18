@@ -507,7 +507,7 @@
 
         <section anchor="authorization-api"
                  title="UMA Grant and Related Authorization Server and Requesting Party Actions">
-          <t>The UMA grant consists of the following elements:<list
+          <t>The UMA grant consists of the following endpoints:<list
               style="symbols">
               <t>OAuth token endpoint as defined by <xref target="RFC6749" />
               and <xref target="seek-authorization" />. The token endpoint
@@ -582,7 +582,7 @@
               RPT or redirecting the requesting party.</t>
             </list></t>
 
-          <t>The following conceptual variables are used in the subsequent
+          <t>The following conceptual variables contribute to the subsequent
           authorization assessment calculation:<list style="hanging">
               <t hangText="ClientRegistered">Scopes for which the client
               pre-registered with the authorization server, either dynamically
@@ -599,24 +599,24 @@
               recent permission ticket presented by the client at the token
               endpoint.</t>
 
-              <t hangText="RequestedScope">The working set of requested
+              <t hangText="RequestedScope">Interim calculated set of requested
               scopes.</t>
 
               <t hangText="AllowedScopes">Scopes allowed by all operative
               policy conditions, based on claims and any other relevant
               information collected in this authorization process so far.</t>
 
-              <t hangText="GrantedScopes">Scopes to grant the client. </t>
+              <t hangText="GrantedScopes">Final calculated set of scopes to
+              grant the client. </t>
             </list></t>
 
           <t>The authorization server MUST apply the following authorization
           assessment calculation:<list style="numbers">
-              <t>Determine the set of requested resource scopes as
-              follows:<spanx> RequestedScopes = union ( intersection
-              (ClientRequested, ClientRegistered), PermissionTicket)</spanx>.
-              Note that the client must have registered and requested at least
-              one scope in common to have any effect at all on the result
-              set.</t>
+              <t>Determine the set of requested resource scopes as follows:
+              <spanx>RequestedScopes = union ( intersection (ClientRequested,
+              ClientRegistered), PermissionTicket)</spanx>. Note that the
+              client must have registered and requested at least one scope in
+              common to have any effect at all on the result set.</t>
 
               <t>Determine all operative policy conditions for the resource
               identifiers associated with <spanx>PermissionTicket</spanx>.
@@ -654,6 +654,10 @@
           evaluation capabilities might take a simple or arbitrarily complex
           form, its corresponding abilities to combine or perform calculations
           over claim values might also vary.</t>
+
+          <t>See <xref target="seek-authorization" /> for the grant type
+          mechanisms and message flows in which the authorization assessment
+          calculations and the authorization process phases are used.</t>
         </section>
 
         <section anchor="resource-server-interface"
