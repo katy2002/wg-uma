@@ -45,7 +45,7 @@
       </address>
     </author>
 
-    <date day="11" month="January" year="2017" />
+    <date day="17" month="January" year="2017" />
 
     <abstract>
       <t>User-Managed Access (UMA) 2.0 makes use of OAuth 2.0 and related
@@ -69,13 +69,13 @@
           of application access alone.</t>
 
           <t>This specification defines an OAuth extension grant called the
-          UMA grant (see <xref target="seek-authorization" />), part of an
-          overall authorization interface presented to the client and
-          requesting party, that is asynchronous with respect to resource
-          owner interactions. This lets a resource owner configure an
-          authorization server with access grant rules (policy conditions) at
-          will, rather than authorizing access token issuance synchronously
-          just after authenticating.</t>
+          UMA grant (see <xref target="seek-authorization" />). This grant
+          defines the interface to the client and requesting party and is
+          <spanx>asynchronous</spanx> with respect to resource owner
+          interactions. It lets a resource owner configure an authorization
+          server with access grant rules (policy conditions) at will, rather
+          than authorizing access token issuance synchronously just after
+          authenticating.</t>
 
           <t>The relationship between an authorization server and resource
           server is loosely coupled, or federated, in a resource owner context
@@ -144,13 +144,13 @@
 
           <artwork><![CDATA[                                        +------------------+
                                         |     resource     |
-       +- - - - - manage (OOS)- - - - - |       owner      |
+       +- - manage (out of scope) - - - |       owner      |
        |                                +------------------+
        |                                          |
        |             protection                control
-       |                API                     (OOS)
-       |               token
-       |               (PAT)                      |
+       |             API access            (out of scope)
+       |             token (PAT)
+       |                                          |
        v                                          v
 +------------+               +----------+------------------+
 |            |               |protection|                  |
@@ -158,22 +158,22 @@
 |   server   |<---protect----| (needs   |      server      |
 |            |               |   PAT)   |                  |
 +------------+               +----------+------------------+
-| protected  |                          |   authorization  |
-| resource   |                          |     interface    |
-|(needs RPT) |       requesting         |  (PCT optional)  |
-+------------+         party            +------------------+
-       ^               token             ^  (persisted  ^
-       |               (RPT)             |    claims    |
-       |                                 |    token     |
-       |                                UMA   (PCT))    |
-       |                               grant            |
-       |                            +--------+      interact
-       +-------------access---------| client |          |
-                                    +--------+          |
+| protected  |                          |        UMA       |
+| resource   |                          |       grant      |
+|(needs RPT) |                          |  (PCT optional)  |
++------------+                          +------------------+
+       ^             requesting          ^  persisted   ^
+       |             party token         |   claims     |
+       |               (RPT)             |    token     |
+       |                               push   (PCT)     |
+       |                              claims       interact
+       |                            +--------+        for
+       +-------------access---------| client |      claims
+                                    +--------+     gathering
                                            +---------------+
                                            |  requesting   |
                                            |     party     |
-OOS=out of scope                           +---------------+
+                                           +---------------+
 ]]></artwork>
         </figure>
 
@@ -235,20 +235,18 @@ OOS=out of scope                           +---------------+
 
         <t>A resource owner manages resources at any number of resource
         servers, and works with an authorization server to set policy
-        conditions that control access grants. The authorization server
-        presents a protection API (for more detail see <xref
-        target="protection-api" />) to the resource server to enable resource
-        protection. (Except for taking part in PAT issuance, the resource
-        owner's interactions with each server are out of scope of this
-        specification.)</t>
+        conditions that control access grants.</t>
 
-        <t>The authorization server presents an authorization interface to the
-        client and requesting party (for more detail see <xref
-        target="authorization-api" />), which allows for issuing grants to
-        those clients based on policy conditions, in the form of a requesting
-        party token (RPT). The authorization server presents a protection API
-        to resource servers and an authorization interface to the requesting
-        side, of which the UMA grant is a part.</t>
+        <t>The authorization server presents a protection API (for more detail
+        see <xref target="protection-api" />) to the resource server to enable
+        resource protection. (Except for taking part in PAT issuance, the
+        resource owner's interactions with each server are out of scope of
+        this specification.)</t>
+
+        <t>The authorization server supports the UMA grant type (for more
+        detail see <xref target="authorization-api" />) to enable issuing
+        grants to clients based on policy conditions in the form of a
+        requesting party token (RPT).</t>
 
         <t>The resource server presents a protected resource interface to the
         client (for more detail see <xref
@@ -417,8 +415,8 @@ OOS=out of scope                           +---------------+
 
         <t>Steps 7-12 (arrows with an equal sign (=); note that steps 7 and 8
         are repeated) summarize communications between the authorization
-        server and client that constitute the authorization interface and
-        related authorization server and requesting party actions (<xref
+        server and client that constitute the UMA grant and related
+        authorization server and requesting party actions (<xref
         target="authorization-api" /> provides a high-level definition).</t>
 
         <t>Steps 3, 6, 12, 15, and 16 (arrows with a number sign (#))
@@ -508,90 +506,158 @@ OOS=out of scope                           +---------------+
         </section>
 
         <section anchor="authorization-api"
-                 title="Authorization Interface and Related Authorization Server and Requesting Party Actions">
-          <t>The authorization server's function is to perform authorization
-          on behalf of the resource owner.</t>
-
-          <t>The authorization process is the process through which the client
-          attempts to obtain an RPT from the authorization server in order to
-          access a protected resource on behalf of a requesting party. The
-          process involves two activities: claims collection (part of the
-          messaging protocol defined by this specification) and authorization
-          assessment (discussed in <xref
-          target="authorization-assessment" />). Claims collection involves
-          either claims pushed by the client or claims interactively gathered
-          from the requesting party, or both. Authorization assessment
-          involves assessing any claims and other information in evidence
-          against the resource owner's policy conditions in order to mitigate
-          access authorization risk. The two activities alternate and the pair
-          can repeat; either can come first. The process concludes when the
-          client definitively succeeds or fails in obtaining an RPT. The
-          process is shown in <xref target="authz-process" />. The HTTP
-          responses and UMA error response codes shown are described further
-          in <xref target="seek-authorization" />.</t>
-
-          <figure anchor="authz-process">
-            <preamble>Authorization Process Flowchart</preamble>
-
-            <artwork><![CDATA[             start
-    +--------->|
-    |          +----------+
-    |          v          |
-    |     +---------+     |
-    |     | collect |     |
-    |     | claims  |     |
-    |     +---------+     |
-    |          |<---------+
-    |          v
-    |    +-----------+
-    |    |  perform  |
-    |    |   authz   |
-    |    | assessment|
-    |    +-----------+
-    |          |                +---. 200 OK RPT (PCT)
-   403        _v_               |
-need_info    /   \              +---. 400 invalid_ticket
-    |       / is  \             |---. 400 expired_ticket
-    |      /client \            |---. 400 invalid_scope
-    +-----[authz'ed?]---------->|
-           \       /            +---. 403 request_submitted
-            \     /
-             \___/
-]]></artwork>
-          </figure>
-
-          <t>The authorization interface consists of the following
-          elements:<list style="symbols">
+                 title="UMA Grant and Related Authorization Server and Requesting Party Actions">
+          <t>The UMA grant consists of the following endpoints:<list
+              style="symbols">
               <t>OAuth token endpoint as defined by <xref target="RFC6749" />
-              and <xref target="seek-authorization" /></t>
+              and <xref target="seek-authorization" />. The token endpoint
+              handles client requests for, and issues, RPTs. The UMA grant
+              type is defined for use on the requesting party's behalf rather
+              than the resource owner's behalf, as in the case of grants
+              defined in <xref target="RFC6749" />. </t>
 
               <t>OPTIONAL claims interaction endpoint as defined by <xref
-              target="claim-redirect" /></t>
+              target="claim-redirect" />. This endpoint plays a role in UMA
+              somewhat similar to OAuth's authorization endpoint, but it is
+              defined for use by the requesting party rather than the resource
+              owner. For interactive claims-gathering, the client SHOULD
+              register a <spanx style="verb">claims_redirect_uri</spanx> (as
+              defined in <xref target="claim-redirect" />) with the
+              authorization server, either using a static process or through
+              <xref target="RFC7591" /> or <xref
+              target="OIDCDynClientReg" />.</t>
             </list></t>
 
-          <t>The token endpoint provides the extension UMA grant interface
-          between the authorization server and client acting on the requesting
-          party's behalf (rather than the resource owner's behalf, as in the
-          case of grants defined in <xref target="RFC6749" />). The token
-          endpoint handles client requests for, and issues, RPTs. The claims
-          interaction endpoint plays a role in UMA somewhat similar to OAuth's
-          authorization endpoint, but it is defined for use by the requesting
-          party rather than the resource owner.</t>
-
           <t>It is OPTIONAL for the authorization server to issue a persisted
-          claims token (PCT) to the client at the conclusion of the
-          authorization process in order to optimize future RPT requests. The
-          PCT represents the set of claims collected by the authorization
-          server during the authorization process. It is intended to be used
-          when this client obtains a new RPT for this requesting party at this
-          authorization server, for the same or a different resource at the
-          same or a different resource server, available under the same or
-          different policies, controlled by the same or a different resource
-          owner.</t>
+          claims token (PCT) to the client when issuing an RPT in order to
+          optimize future RPT requests. The PCT represents the set of claims
+          collected by the authorization server during the authorization
+          process. It is intended to be used when this client obtains a new
+          RPT for this requesting party at this authorization server, for the
+          same or a different resource at the same or a different resource
+          server, available under the same or different policies, controlled
+          by the same or a different resource owner.</t>
 
           <t>A client seeking access to a protected resource needs OAuth
           client credentials issued by the authorization server protecting
           that resource.</t>
+
+          <t>The authorization server's function is to perform authorization
+          on behalf of the resource owner. The authorization process is the
+          process through which the client attempts to obtain an RPT from the
+          authorization server in order to access a protected resource on
+          behalf of a requesting party.</t>
+
+          <t>The authorization server conducts the authorization process in
+          three phases, with some variation possible in order and looping as
+          follows:<list style="symbols">
+              <t>A claims collection phase. Two kinds of claims collection are
+              possible: claims pushing by a client and interactive claims
+              gathering with an end-user requesting party. This phase MAY
+              occur first in the authorization process in the following
+              circumstances:<list style="symbols">
+                  <t>When the client redirects an end-user requesting party to
+                  the authorization server for interactive claims gathering as
+                  a first step. In order for this to happen, the client needs
+                  a permission ticket and for the authorization server to have
+                  statically declared a claims redirection endpoint in its
+                  configuration document.</t>
+
+                  <t>When the client requests an RPT at the token endpoint
+                  with pushed claims as a first step.</t>
+                </list></t>
+
+              <t>An authorization assessment phase. This phase involves
+              assembling and calculating over policy conditions, scopes,
+              claims, and other relevant information in evidence in order to
+              mitigate access authorization risk. This phase MAY occur first
+              in the authorization process when the client initially requests
+              an RPT at the token endpoint without pushing claims.</t>
+
+              <t>An authorization result phase. In this phase, the
+              authorization server either returns a success code, an RPT, and
+              an optional PCT, or an error code. If the error code is <spanx
+              style="verb">need_info</spanx>, the client has the opportunity
+              to loop within the same authorization process by requesting an
+              RPT or redirecting the requesting party.</t>
+            </list></t>
+
+          <t>The following conceptual variables contribute to the subsequent
+          authorization assessment calculation:<list style="hanging">
+              <t hangText="ClientRegistered">Scopes for which the client
+              pre-registered with the authorization server, either dynamically
+              or through some static process. Note that in typical OAuth scope
+              registrations used today, such scopes are often not explicitly
+              associated with particular resources and so the authorization
+              server might need to apply a scope-to-resource interpretation
+              process.</t>
+
+              <t hangText="ClientRequested">Scopes the client most recently
+              requested at the token endpoint.</t>
+
+              <t hangText="PermissionTicket">Scopes associated with the most
+              recent permission ticket presented by the client at the token
+              endpoint.</t>
+
+              <t hangText="RequestedScope">Interim calculated set of requested
+              scopes.</t>
+
+              <t hangText="AllowedScopes">Scopes allowed by all operative
+              policy conditions, based on claims and any other relevant
+              information collected in this authorization process so far.</t>
+
+              <t hangText="GrantedScopes">Final calculated set of scopes to
+              grant the client. </t>
+            </list></t>
+
+          <t>The authorization server MUST apply the following authorization
+          assessment calculation:<list style="numbers">
+              <t>Determine the set of requested resource scopes as follows:
+              <spanx>RequestedScopes = union ( intersection (ClientRequested,
+              ClientRegistered), PermissionTicket)</spanx>. Note that the
+              client must have registered and requested at least one scope in
+              common to have any effect at all on the result set.</t>
+
+              <t>Determine all operative policy conditions for the resource
+              identifiers associated with <spanx>PermissionTicket</spanx>.
+              Note: Policy conditions are out of scope ("scope" in the
+              ordinary English sense) for this specification.</t>
+
+              <t>Evaluate the RPT request and any claims and any other
+              relevant information collected in this authorization process so
+              far against the policy conditions. Potential sources of claims
+              include pushed claims, interactively gathered claims, and claims
+              associated with a client-provided PCT in the RPT request.</t>
+
+              <t>Determine the <spanx>AllowedScopes</spanx>.</t>
+
+              <t>Determine the client&rsquo;s authorized state by calculating
+              <spanx>GrantedScopes = intersection (RequestedScopes,
+              AllowedScopes)</spanx>. If the value is null, the result is
+              failure; if the value is non-null, the result is success and the
+              authorization server MUST subsequently issue an RPT containing
+              <spanx>GrantedScopes</spanx>.</t>
+            </list></t>
+
+          <t>The authorization server MUST use a default-deny authorization
+          assessment model in adding permissions to RPTs, that is, "everything
+          that is not expressly allowed is forbidden" for resources for which
+          resource servers have requested access permission on behalf of
+          clients. Exercise caution in implementing default-deny because
+          corner cases can inadvertently result in default-permit behavior.
+          For example, it is insufficient simply to assume that all resources
+          have some non-zero set of claims required for access, and then
+          accept an empty set of supplied claims as sufficient for access.</t>
+
+          <t>Note: Since policy conditions are out of scope for this
+          specification and the authorization server's policy expression and
+          evaluation capabilities might take a simple or arbitrarily complex
+          form, its corresponding abilities to combine or perform calculations
+          over claim values might also vary.</t>
+
+          <t>See <xref target="seek-authorization" /> for the grant type
+          mechanisms and message flows in which the authorization assessment
+          calculations and the authorization process phases are used.</t>
         </section>
 
         <section anchor="resource-server-interface"
@@ -1131,18 +1197,17 @@ Warning: 199 - "UMA Authorization Server Unreachable"
       </section>
 
       <section anchor="seek-authorization"
-               title="Authorization Process: The UMA Grant">
+               title="Client Seeks Authorization on Requesting Party's Behalf (UMA Grant)">
         <t>This section defines the extension OAuth grant called the UMA
         grant. It defines forms of the client request (corresponding to steps
         7 and 11 in <xref target="protocol-flow" />), redirect mechanisms for
-        requesting party interaction (step 10), the authorization server's
-        internal authorization assessment (step 8), and forms of the
-        authorization server response to the client request (steps 9 and 11).
-        See <xref target="authz-process" /> for a visual representation of the
+        requesting party interaction (step 10), and forms of the authorization
+        server response to the client request (steps 9 and 11). See <xref
+        target="authz-process" /> for a visual representation of the
         authorization process. Section <xref target="uma-grant-type" />
         defines the <spanx style="verb">grant_type</spanx> URI.</t>
 
-        <t>The process assumes that:<list style="symbols">
+        <t>The overall process assumes that:<list style="symbols">
             <t>The client has obtained a permission ticket and an
             authorization server location from the resource server.</t>
 
@@ -1159,20 +1224,23 @@ Warning: 199 - "UMA Authorization Server Unreachable"
         <t>The client seeks the authorization server's authorization for
         access to the protected resource on the requesting party's behalf, by
         requesting an RPT at the authorization server's token endpoint and
-        possibly, in embedded fashion, by redirecting an end-user requesting
-        party to the authorization server's claims interaction endpoint. The
-        authorization process thus begun potentially includes looping through
-        the authorization seeking phase, and subsequent authorization server
+        possibly by redirecting an end-user requesting party to the
+        authorization server's claims interaction endpoint. The authorization
+        process thus begun potentially includes looping through the
+        authorization seeking phase, and subsequent authorization server
         responses potentially include hints as to what further requests should
-        contain.</t>
+        contain. See <xref target="authorization-api" /> for information about
+        the authorization process and the REQUIRED authorization assessment
+        process (corresponding to step 8 in <xref
+        target="protocol-flow" />).</t>
 
-        <t>For interactive claims-gathering, the client SHOULD register a
-        <spanx style="verb">claims_redirect_uri</spanx> (as defined in <xref
-        target="claim-redirect" />) with the authorization server, either
-        using a static process or through <xref target="RFC7591" /> or <xref
-        target="OIDCDynClientReg" />. The client MAY redirect a requesting for
+        <t>The client MAY redirect an end-user requesting party for
         interactive claims gathering prior to requesting an RPT at the token
-        endpoint.</t>
+        endpoint. An initial client redirect of an end-user requesting party
+        to the claims interaction endpoint assumes, in addition to the
+        assumptions above, that the authorization server has statically
+        declared its claims interaction endpoint in its configuration
+        document.</t>
 
         <t>Unless the authorization server responds with an error, the
         client's next option to respond is defined in <xref
@@ -1452,60 +1520,6 @@ Host: as.example.com
 Host: client.example.com
 ]]></artwork>
           </figure>
-        </section>
-
-        <section anchor="authorization-assessment"
-                 title="Authorization Assessment">
-          <t>The authorization server uses the permission ticket to look up
-          the details of the previously requested set of permissions, maps the
-          permissions to operative policy conditions based on the resource
-          identifier and scopes associated with it, potentially requests and
-          receives claims and looks up any persisted claims, and ultimately
-          responds positively or negatively to the request for
-          permissions.</t>
-
-          <t>Note: A variety of flows and user interfaces for policy condition
-          setting are possible, and except for PAT issuance, the authorization
-          server-resource owner interface is out of scope for this
-          specification.</t>
-
-          <t>The authorization server evaluates the policies in light of
-          claims and any other information in evidence. The claims MAY have
-          come from one or more of three sources: pushed directly by the
-          client using the <spanx style="verb">claim_tokens</spanx> parameter
-          during the just-previous authorization process, gathered
-          interactively at the claims interaction endpoint during the
-          just-previous authorization process, or represented by the PCT
-          presented by the client in the <spanx style="verb">pct</spanx>
-          parameter. The authorization server could have collected the
-          additional information by performing out-of-band client or
-          requesting party claim lookups in external repositories, or checking
-          a variety of other factors that are either dependent on client or
-          requesting party context (such as apparent IP address) or
-          independent of them (such as time of day).</t>
-
-          <t>Since policy conditions are out of scope for this specification
-          and the authorization server's policy expression and evaluation
-          capabilities might take a simple or arbitrarily complex form, its
-          corresponding abilities to combine or perform calculations over
-          claim values might also vary.</t>
-
-          <t>Note: If the client incompletely satisfies any policy criteria,
-          the authorization server is free either to partially fulfill the
-          elements of that request, for example, granting authorization to
-          some scopes associated with a requested permission but not all, or
-          to reject the request.</t>
-
-          <t>The authorization server MUST use a default-deny authorization
-          assessment model in adding permissions to RPTs, that is, "everything
-          that is not expressly allowed is forbidden" for resources for which
-          resource servers have requested access permission on behalf of
-          clients. Exercise caution in implementing default-deny because
-          corner cases can inadvertently result in default-permit behavior.
-          For example, it is insufficient simply to assume that all resources
-          have some non-zero set of claims required for access, and then
-          accept an empty set of supplied claims as sufficient for access. See
-          <xref target="UMA-Impl" /> for further discussion.</t>
         </section>
 
         <section anchor="give-rpt"
@@ -2661,6 +2675,49 @@ Cache-Control: no-store
 
               <t>Specification document: <xref target="am-endpoints" /> in
               this document</t>
+            </list>
+          </t>
+        </section>
+      </section>
+
+      <section title="OAuth 2.0 Extension Grant Parameters Registration">
+        <t>This specification registers the parameters defined in <xref
+        target="uma-grant-type" />.</t>
+
+        <section title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>Grant type: <spanx
+              style="verb">urn:ietf:params:oauth:grant-type:uma-ticket</spanx></t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - wg-uma@kantarainitiative.org</t>
+
+              <t>Specification document: <xref target="uma-grant-type" /> in
+              this document</t>
+
+              <t>Parameters (usage locations are all on the token
+              endpoint):<list style="symbols">
+                  <t hangText="ticket">
+                    <spanx style="verb">ticket</spanx>
+                  </t>
+
+                  <t hangText="ticket">
+                    <spanx style="verb">rpt</spanx>
+
+                    
+                  </t>
+
+                  <t hangText="ticket">
+                    <spanx style="verb">claim_tokens</spanx>
+                  </t>
+
+                  <t hangText="ticket">
+                    <spanx style="verb">rpt</spanx>
+
+                    
+                  </t>
+                </list></t>
             </list>
           </t>
         </section>
