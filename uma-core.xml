@@ -231,6 +231,10 @@
             have provided authorization in some interactive fashion for the
             authorization server to persist this information across
             authorization processes.</t>
+
+            <t hangText="claim token">A package of one or more claims provided
+            directly, or "pushed", by the client to the authorization server
+            as part of its request for the RPT at the token endpoint.</t>
           </list></t>
 
         <t>A resource owner manages resources at any number of resource
@@ -514,7 +518,7 @@
               handles client requests for, and issues, RPTs. The UMA grant
               type is defined for use on the requesting party's behalf rather
               than the resource owner's behalf, as in the case of grants
-              defined in <xref target="RFC6749" />. </t>
+              defined in <xref target="RFC6749" />.</t>
 
               <t>OPTIONAL claims interaction endpoint as defined by <xref
               target="claim-redirect" />. This endpoint plays a role in UMA
@@ -607,7 +611,7 @@
               information collected in this authorization process so far.</t>
 
               <t hangText="GrantedScopes">Final calculated set of scopes to
-              grant the client. </t>
+              grant the client.</t>
             </list></t>
 
           <t>The authorization server MUST apply the following authorization
@@ -741,9 +745,9 @@
             components.</t>
 
             <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
-            Claim token format profiles supported by this authorization
-            server. The property value is an array of string values, where
-            each string value MAY be a URI.</t>
+            Claim token profiles supported by this authorization server. The
+            property value is an array of string values, where each string
+            value MAY be a URI.</t>
 
             <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
             profiles supported by this authorization server. The property
@@ -1356,7 +1360,7 @@ Authorization: Bearer jwfLG53^sad$#f
           </figure>
 
           <t>This specification provides a framework for extensibility through
-          claim token format profiling (see <xref target="profiles" />). The
+          claim token profiling (see <xref target="profiles" />). The
           authorization server MAY support any number of claim token profiles,
           and SHOULD document the claim token profiles it supports in its
           configuration document.</t>
@@ -2547,7 +2551,7 @@ Cache-Control: no-store
           client, it is RECOMMENDED to document how the client, authorization
           server, and any additional ecosystem entities and parties will
           establish a trust relationship and communicate any required keying
-          material in a claim token format profile, as described in <xref
+          material in a claim token profile, as described in <xref
           target="profiles" /> and <xref target="claim-profiles" />.
           Authorization servers are RECOMMENDED not to accept claim tokens
           pushed by untrusted clients and not to ignore audience restrictions
@@ -2704,8 +2708,6 @@ Cache-Control: no-store
 
                   <t hangText="ticket">
                     <spanx style="verb">rpt</spanx>
-
-                    
                   </t>
 
                   <t hangText="ticket">
@@ -2714,8 +2716,6 @@ Cache-Control: no-store
 
                   <t hangText="ticket">
                     <spanx style="verb">rpt</spanx>
-
-                    
                   </t>
                 </list></t>
             </list>
