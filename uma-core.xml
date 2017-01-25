@@ -87,8 +87,8 @@
           ecosystem to automate resource protection, and lets the resource
           owner monitor, manage, and control access grant rules at a central
           service location over time. The token introspection extension lets
-          the resource owner increase and decrease grants at a grain finer
-          than a whole access token.</t>
+          the resource owner set rules that increase and decrease grants at a
+          grain finer than a whole access token.</t>
         </list></t>
 
       <t>For example, a bank customer (resource owner) named Alice with a bank
@@ -190,7 +190,9 @@
             server.</t>
 
             <t hangText="scope">A bounded extent of access to a protected
-            resource. Scopes are associated with particular resources.</t>
+            resource. Scopes are associated with particular resources;
+            permissions are thus requested and granted in a "resource-primary"
+            fashion.</t>
 
             <t hangText="policy conditions">Access grant rules configured at
             an authorization server that effect resource protection.</t>
@@ -340,7 +342,7 @@
           responsibilities for resource and scope interpretation fall to the
           resource server.</t>
 
-          <t>The resource server MAY register for protection a single resource
+          <t>The resource server MAY register a single resource for protection
           that, from its perspective, has multiple parts, or has dynamic
           elements such as the capacity for querying or filtering, or
           otherwise has internal complexity. The resource server alone is
@@ -369,23 +371,23 @@
  owner    server             server                   |      party
    |Redir...|1 for PAT issuance|                      |        |
    |<-------|*---------------->|                      |        |
-   |        |2 Reg resources   |                      |        |
+   |        |2 Register resources (w/PAT)             |        |
    |        |*---------------->|                      |        |
    |        |    Attempt resource access w/no token  3|        |
    |        |<---------------------------------------#|        |
-   |        |4 Req permissions |                      |        |
+   |        |4 Request permission (w/PAT)             |        |
    |        |*---------------->|                      |        |
-   |        |Perm ticket      5|                      |        |
+   |        Permission ticket 5|                      |        |
    |        |<----------------*|                      |        |
-   |        |6 Return AS loc and permission ticket    |        |
+   |        |6 Return AS location, permission ticket  |        |
    |        |#--------------------------------------->|        |
-   |        |                  |  Req RPT, send perm 7|        |
+   |        |           Request RPT, send permission 7|        |
    |        |                  |   ticket, push claims|        |
    |        |                  |<--------------------=|        |
    |        |   Authorization 8|= - - -+              |        |
    |        |        assessment|< - - -+              |        |
-   |        |                  |9 Return need_info    |        |
-   |        |                  |with redirect_user    |        |
+   |        |                  |9 Return need_info w/ |        |
+   |        |                  |redirect_user, permission ticket
    |        |                  |=-------------------->|        |
    |        |                  |                      |10      |
    |        |                  |       for interactive|Redir...|
@@ -396,17 +398,17 @@
    |        |                  |<--------------------=|        |
    |        |   Authorization 8|= - - -+              |        |
    |        |        assessment|< - - -+              |        |
-   |        |                  |12 Issue RPT with PCT |        |
+   |        |                  |12 Issue RPT w/PCT (opt)       |
    |        |                  |=-------------------->|        |
-   |        |      Attempt resource access with RPT 13|        |
+   |        |         Attempt resource access w/RPT 13|        |
    |        |<---------------------------------------#|        |
-   |        |14 Introspect RPT |                      |        |
+   |        |14 Introspect RPT (w/PAT)                |        |
    |        |*---------------->|                      |        |
    |        |  Return object 15|                      |        |
    |        |<----------------*|                      |        |
    |Token 16|# - - -+          |                      |        |
-   | assess-|< - - -+          |                      |        |
-   |    ment|17 Return resource representation        |        |
+  assessment|< - - -+          |                      |        |
+   |        |17 Return resource representation        |        |
    |        |#--------------------------------------->|        |
 ]]></artwork>
         </figure>
@@ -450,7 +452,9 @@
           <t>The authorization server's protection API consists of three
           endpoints:<list style="symbols">
               <t>Resource registration endpoint as defined by <xref
-              target="OAuth-resource-reg" /></t>
+              target="OAuth-resource-reg" /> and profiled by this
+              specification, specifically regarding the mechanism of
+              authentication to the endpoint</t>
 
               <t>Permission endpoint as defined by <xref
               target="register-permission" /></t>
@@ -536,12 +540,11 @@
           <t>It is OPTIONAL for the authorization server to issue a persisted
           claims token (PCT) to the client when issuing an RPT in order to
           optimize future RPT requests. The PCT represents the set of claims
-          collected by the authorization server during the authorization
-          process. It is intended to be used when this client obtains a new
-          RPT for this requesting party at this authorization server, for the
-          same or a different resource at the same or a different resource
-          server, available under the same or different policies, controlled
-          by the same or a different resource owner.</t>
+          collected by the authorization server during current authorization
+          process. It is intended to be used when this client seeks an RPT for
+          this requesting party at this authorization server in a subsequent
+          authorization process, even if for a different resource or at a
+          different resource server entirely.</t>
 
           <t>A client seeking access to a protected resource needs OAuth
           client credentials issued by the authorization server protecting
@@ -586,9 +589,10 @@
               in <xref target="give-rpt" />), an RPT, and an optional PCT, or
               an error code (as defined in <xref
               target="authorization-failure" />). If the error code is <spanx
-              style="verb">need_info</spanx>, the client has the opportunity
-              to loop within the same authorization process by requesting an
-              RPT or redirecting the requesting party.</t>
+              style="verb">need_info</spanx>, the authorization server
+              provides a permission ticket once more, giving the client an
+              opportunity once again to loop within the same authorization
+              process to redirect the requesting party and request an RPT.</t>
             </list></t>
         </section>
 
@@ -767,7 +771,7 @@
 
           <artwork><![CDATA[GET /.well-known/uma2-configuration HTTP/1.1
 Host: example.com
-}
+
 ]]></artwork>
         </figure>
 
@@ -785,7 +789,7 @@ Host: example.com
 
           <artwork><![CDATA[GET /issuer1/.well-known/uma2-configuration HTTP/1.1
 Host: example.com
-}
+
 ]]></artwork>
         </figure>
       </section>
