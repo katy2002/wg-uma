@@ -30,10 +30,10 @@
     </author>
 
     <author fullname="Maciej Machulak" initials="M." surname="Machulak">
-      <organization>iWelcome</organization>
+      <organization>HSBC</organization>
 
       <address>
-        <email>maciej.machulak@iwelcome.com</email>
+        <email>maciej.machulak@gmail.com</email>
       </address>
     </author>
 
@@ -45,7 +45,7 @@
       </address>
     </author>
 
-    <date day="17" month="January" year="2017" />
+    <date day="24" month="January" year="2017" />
 
     <abstract>
       <t>This specification defines a method for an OAuth 2.0 resource server
