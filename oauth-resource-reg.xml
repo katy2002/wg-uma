@@ -193,11 +193,11 @@
             information about it in any user interface it presents to a
             resource owner.</t>
 
-            <t hangText="scopes">REQUIRED. An array of strings indicating the
-            available scopes for this resource. Any of the strings MAY be
-            either a plain string or a URI (see <xref
-            target="scope-interpretation" />). If a scope is a URI, then it
-            MUST resolve to a scope description document (see <xref
+            <t hangText="scopes">REQUIRED. An array of strings, serving as
+            scope identifiers, indicating the available scopes for this
+            resource. Any of the strings MAY be either a plain string or a URI
+            (see <xref target="scope-interpretation" />). If a scope is a URI,
+            then it MUST resolve to a scope description document (see <xref
             target="action-desc" />).</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
