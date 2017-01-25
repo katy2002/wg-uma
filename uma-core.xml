@@ -511,8 +511,9 @@
 
         <section anchor="authorization-api"
                  title="UMA Grant and Related Authorization Server and Requesting Party Actions">
-          <t>The UMA grant consists of the following endpoints:<list
-              style="symbols">
+          <t>The UMA grant (defined throughout <xref
+          target="seek-authorization" />) consists of the following
+          endpoints:<list style="symbols">
               <t>OAuth token endpoint as defined by <xref target="RFC6749" />
               and <xref target="seek-authorization" />. The token endpoint
               handles client requests for, and issues, RPTs. The UMA grant
@@ -571,97 +572,24 @@
                   with pushed claims as a first step.</t>
                 </list></t>
 
-              <t>An authorization assessment phase. This phase involves
+              <t>An authorization assessment phase (as defined in <xref
+              target="authorization-assessment" />). This phase involves
               assembling and calculating over policy conditions, scopes,
               claims, and other relevant information in evidence in order to
               mitigate access authorization risk. This phase MAY occur first
               in the authorization process when the client initially requests
               an RPT at the token endpoint without pushing claims.</t>
 
-              <t>An authorization result phase. In this phase, the
-              authorization server either returns a success code, an RPT, and
-              an optional PCT, or an error code. If the error code is <spanx
+              <t>An authorization result phase (as defined in <xref
+              target="authorization-assessment" />). In this phase, the
+              authorization server either returns a success code (as defined
+              in <xref target="give-rpt" />), an RPT, and an optional PCT, or
+              an error code (as defined in <xref
+              target="authorization-failure" />). If the error code is <spanx
               style="verb">need_info</spanx>, the client has the opportunity
               to loop within the same authorization process by requesting an
               RPT or redirecting the requesting party.</t>
             </list></t>
-
-          <t>The following conceptual variables contribute to the subsequent
-          authorization assessment calculation:<list style="hanging">
-              <t hangText="ClientRegistered">Scopes for which the client
-              pre-registered with the authorization server, either dynamically
-              or through some static process. Note that in typical OAuth scope
-              registrations used today, such scopes are often not explicitly
-              associated with particular resources and so the authorization
-              server might need to apply a scope-to-resource interpretation
-              process.</t>
-
-              <t hangText="ClientRequested">Scopes the client most recently
-              requested at the token endpoint.</t>
-
-              <t hangText="PermissionTicket">Scopes associated with the most
-              recent permission ticket presented by the client at the token
-              endpoint.</t>
-
-              <t hangText="RequestedScope">Interim calculated set of requested
-              scopes.</t>
-
-              <t hangText="AllowedScopes">Scopes allowed by all operative
-              policy conditions, based on claims and any other relevant
-              information collected in this authorization process so far.</t>
-
-              <t hangText="GrantedScopes">Final calculated set of scopes to
-              grant the client.</t>
-            </list></t>
-
-          <t>The authorization server MUST apply the following authorization
-          assessment calculation:<list style="numbers">
-              <t>Determine the set of requested resource scopes as follows:
-              <spanx>RequestedScopes = union ( intersection (ClientRequested,
-              ClientRegistered), PermissionTicket)</spanx>. Note that the
-              client must have registered and requested at least one scope in
-              common to have any effect at all on the result set.</t>
-
-              <t>Determine all operative policy conditions for the resource
-              identifiers associated with <spanx>PermissionTicket</spanx>.
-              Note: Policy conditions are out of scope ("scope" in the
-              ordinary English sense) for this specification.</t>
-
-              <t>Evaluate the RPT request and any claims and any other
-              relevant information collected in this authorization process so
-              far against the policy conditions. Potential sources of claims
-              include pushed claims, interactively gathered claims, and claims
-              associated with a client-provided PCT in the RPT request.</t>
-
-              <t>Determine the <spanx>AllowedScopes</spanx>.</t>
-
-              <t>Determine the client&rsquo;s authorized state by calculating
-              <spanx>GrantedScopes = intersection (RequestedScopes,
-              AllowedScopes)</spanx>. If the value is null, the result is
-              failure; if the value is non-null, the result is success and the
-              authorization server MUST subsequently issue an RPT containing
-              <spanx>GrantedScopes</spanx>.</t>
-            </list></t>
-
-          <t>The authorization server MUST use a default-deny authorization
-          assessment model in adding permissions to RPTs, that is, "everything
-          that is not expressly allowed is forbidden" for resources for which
-          resource servers have requested access permission on behalf of
-          clients. Exercise caution in implementing default-deny because
-          corner cases can inadvertently result in default-permit behavior.
-          For example, it is insufficient simply to assume that all resources
-          have some non-zero set of claims required for access, and then
-          accept an empty set of supplied claims as sufficient for access.</t>
-
-          <t>Note: Since policy conditions are out of scope for this
-          specification and the authorization server's policy expression and
-          evaluation capabilities might take a simple or arbitrarily complex
-          form, its corresponding abilities to combine or perform calculations
-          over claim values might also vary.</t>
-
-          <t>See <xref target="seek-authorization" /> for the grant type
-          mechanisms and message flows in which the authorization assessment
-          calculations and the authorization process phases are used.</t>
         </section>
 
         <section anchor="resource-server-interface"
@@ -1205,10 +1133,9 @@ Warning: 199 - "UMA Authorization Server Unreachable"
         <t>This section defines the extension OAuth grant called the UMA
         grant. It defines forms of the client request (corresponding to steps
         7 and 11 in <xref target="protocol-flow" />), redirect mechanisms for
-        requesting party interaction (step 10), and forms of the authorization
-        server response to the client request (steps 9 and 11). See <xref
-        target="authz-process" /> for a visual representation of the
-        authorization process. Section <xref target="uma-grant-type" />
+        requesting party interaction (step 10), authorization assessment (step
+        8), and forms of the authorization server response to the client
+        request (steps 9 and 11). Section <xref target="uma-grant-type" />
         defines the <spanx style="verb">grant_type</spanx> URI.</t>
 
         <t>The overall process assumes that:<list style="symbols">
@@ -1524,6 +1451,113 @@ Host: as.example.com
 Host: client.example.com
 ]]></artwork>
           </figure>
+        </section>
+
+        <section anchor="authorization-assessment"
+                 title="Authorization Assessment">
+          <t>When the authorization server has received a request for an RPT
+          from a client, it assesses whether the client is authorized to
+          receive the requested RPT.</t>
+
+          <t>The authorization server MUST apply the following conceptual
+          authorization assessment calculation in determining authorization
+          results. Note: As this calculation is internal to authorization
+          server operations, its particulars are out of scope for this
+          specification.</t>
+
+          <t>In this calculation, let a set called
+          <spanx>ClientRequested</spanx> stand for the scopes for which the
+          client pre-registered at the authorization server, either
+          dynamically or through some static process. Let a set called
+          <spanx>ClientRequested</spanx> stand for the scopes the client most
+          recently requested at the token endpoint. Let a set called
+          <spanx>PermissionTicket</spanx> stand for the scopes associated with
+          the most recent permission ticket presented by the client at the
+          token endpoint.<list style="numbers">
+              <t>Determine the set of requested scopes as follows:
+              <spanx>RequestedScopes = union ( intersection (ClientRequested,
+              ClientRegistered), PermissionTicket)</spanx>. Observe that this
+              logic requires the client to have registered and requested at
+              least one scope in common to have any effect on the result
+              set.</t>
+
+              <t>Determine all operative policy conditions for each resource
+              scope assocated with <spanx>RequestedScopes</spanx> and evaluate
+              it. Note: Policy conditions are out of scope (in the ordinary
+              English sense) for this specification. Potential sources of
+              claims include pushed claims, interactively gathered claims, and
+              claims associated with a client-provided PCT in the RPT
+              request.</t>
+
+              <t>For each scope that passes the evaluation, add it to a set
+              called <spanx>CandidateGrantedScopes</spanx>.</t>
+            </list></t>
+
+          <t>If the value of <spanx>CandidateGrantedScopes</spanx> is null,
+          the result is authorization failure and the authorization server
+          MUST subsequently issue one of the UMA error codes (<xref
+          target="authorization-failure" />). If the value is non-null and
+          <spanx>CandidateGrantedScopes equals RequestedScopes</spanx>, the
+          authorization server MUST subsequently respond with a success code
+          and issue an RPT (see <xref target="give-rpt" />). If the value is
+          non-null and <spanx>CandidateGrantedScopes less-than
+          RequestedScopes</spanx>, the authorization server MUST subsequently
+          issue either an RPT containing <spanx>CandidateGrantedScopes</spanx>
+          or one of the UMA error codes. The reason for the two options is
+          that granting only partial scopes may not be useful for the client's
+          and requesting party's purposes in seeking authorization for
+          access.</t>
+
+          <t>For example, assume a resource server has registered two
+          resources on behalf of a resource owner, <spanx
+          style="verb">rsid_1</spanx> with scopes <spanx
+          style="verb">view</spanx>, <spanx style="verb">link</spanx>, and
+          <spanx style="verb">download</spanx> and <spanx
+          style="verb">rsid_2</spanx> with scopes <spanx
+          style="verb">view</spanx>, <spanx style="verb">link</spanx>, <spanx
+          style="verb">download</spanx>, and <spanx
+          style="verb">print</spanx>, and the resource owner has set policy
+          conditions that allow access to <spanx style="verb">rsid_1</spanx>
+          only by requesting parties that can provide claims proving they are
+          family members, and that allow access to <spanx
+          style="verb">rsid_2</spanx> only by requesting parties that can
+          provide claims saying they agree not to download, sell, or market
+          any photo. The client has pre-registered with the authorization
+          server for <spanx style="verb">download</spanx> scope (so
+          <spanx>ClientRegistered</spanx> contains <spanx
+          style="verb">download</spanx>). The client attempts what the
+          resource server interprets as <spanx style="verb">view</spanx>
+          access to <spanx style="verb">rsid_1</spanx>. The resource server
+          chooses to request <spanx style="verb">view</spanx> and <spanx
+          style="verb">print</spanx> scopes on its behalf (so
+          <spanx>PermissionTicket</spanx> contains <spanx
+          style="verb">view</spanx> and <spanx style="verb">print</spanx>).
+          The client requests <spanx style="verb">download</spanx> scope while
+          requesting an RPT from the authorization server (so
+          <spanx>ClientRequested</spanx> contains <spanx
+          style="verb">download</spanx>, and the authorization server
+          determines that <spanx>RequestedScopes</spanx> contains <spanx
+          style="verb">view</spanx>, <spanx style="verb">print</spanx>, and
+          <spanx style="verb">print</spanx>). Based on the authorization
+          server's evaluation of policy conditions associated with these
+          scopes, <spanx>CandidateGrantedScopes</spanx> contains only <spanx
+          style="verb">view</spanx> and <spanx style="verb">print</spanx> and
+          not <spanx style="verb">download</spanx>, which is less than in
+          <spanx>RequestedScopes</spanx>. The authorization server has a
+          choice whether to issue an RPT in this case.</t>
+
+          <t>Note: While a reasonable approach for most scenarios is to
+          implement the classic security stance of default-deny ("everything
+          that is not expressly allowed is forbidden"), corner cases can
+          inadvertently result in default-permit behavior. For example, it is
+          insufficient simply to assume that all resources have some non-zero
+          set of claims required for access, and then accept an empty set of
+          supplied claims as sufficient for access.</t>
+
+          <t>Note: Since the authorization server's policy expression and
+          evaluation capabilities might take a simple or arbitrarily complex
+          form, its corresponding abilities to combine or perform calculations
+          over claims and their values might also vary.</t>
         </section>
 
         <section anchor="give-rpt"
@@ -2742,6 +2776,8 @@ Cache-Control: no-store
           <t>Christian Scholz, COMlounge GmbH (former editor)</t>
 
           <t>Mike Schwartz, Gluu</t>
+
+          <t>Cigdem Sengul, Nominet UK</t>
 
           <t>Jacek Szpot, Newcastle University</t>
         </list></t>
