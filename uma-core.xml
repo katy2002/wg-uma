@@ -749,8 +749,8 @@
             The endpoint URI at which the resource server registers resources
             to put them under authorization manager protection. Usage of this
             endpoint is defined by <xref target="OAuth-resource-reg" /> and
-            <xref target="protecting-a-resource" />. A valid PAT MUST
-            accompany requests to this protected endpoint.</t>
+            <xref target="register-resources" />. A valid PAT MUST accompany
+            requests to this protected endpoint.</t>
 
             <t hangText="permission_endpoint"><vspace />REQUIRED. The endpoint
             URI at which the resource server requests permissions on the
@@ -859,7 +859,8 @@ Content-Type: application/json
         target="protocol-flow" />.</t>
       </section>
 
-      <section title="Resource Server Registers Resources for Protection">
+      <section anchor="register-resources"
+               title="Resource Server Registers Resources for Protection">
         <t>In an ongoing fashion, the resource server registers any resources
         with the authorization server to put them under protection, using the
         resource registration endpoint of the protection API (as defined by
@@ -1613,8 +1614,8 @@ Content-Type: application/json
           Instead, such claims SHOULD be associated by reference to the PCT or
           expressed in an encrypted format that can be decrypted only by the
           authorization server that issued the PCT. See <xref
-          target="interaction-consent" /> for more information about the
-          end-user requesting party interaction option. See <xref
+          target="claim-redirect" /> for more information about the end-user
+          requesting party interaction option. See <xref
           target="sec-consid-pct" /> for additional PCT security
           considerations.</t>
 
@@ -1857,9 +1858,8 @@ Host: photoz.example.com
             authorization server's response contains an extended version of
             the OAuth introspection object. A number of security
             considerations around handling and interpreting the RPT can be
-            found throughout <xref
-            target="getting-authz-accessing-resource" />, and in <xref
-            target="sec-consid" />.</t>
+            found throughout <xref target="protocol-flow-details-sec" />, and
+            in <xref target="sec-consid" />.</t>
 
             <t>Use a cached copy of the token introspection response if
             allowed (see Section 4 of <xref target="RFC7662" />).</t>
@@ -2160,7 +2160,7 @@ Cache-Control: no-store
       independently implemented system entities, it is RECOMMENDED, for
       reasons of implementation interoperability, to define concrete extension
       profiles that build on these extensibility profiles (see <xref
-      target="uma-profiles" />).</t>
+      target="profiles" />).</t>
 
       <section anchor="alt-prot-profile"
                title="Protection API Extensibility Profile">
@@ -2601,10 +2601,9 @@ Cache-Control: no-store
           server, and any additional ecosystem entities and parties will
           establish a trust relationship and communicate any required keying
           material in a claim token profile, as described in <xref
-          target="profiles" /> and <xref target="claim-profiles" />.
-          Authorization servers are RECOMMENDED not to accept claim tokens
-          pushed by untrusted clients and not to ignore audience restrictions
-          found in claim tokens pushed by clients.</t>
+          target="profiles" />. Authorization servers are RECOMMENDED not to
+          accept claim tokens pushed by untrusted clients and not to ignore
+          audience restrictions found in claim tokens pushed by clients.</t>
 
           <t>In the special circumstance when an authorization server is
           colocated with an OpenID Provider for the requesting parties within
@@ -2857,6 +2856,7 @@ Cache-Control: no-store
           <date day="8" month="November" year="2014" />
         </front>
       </reference>
+
       &RFC2119;
 
       &RFC3986;
