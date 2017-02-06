@@ -1021,7 +1021,7 @@ Authorization: Bearer 204c69636b6c69
 [  
    {  
       "resource_id":"7b727369647d",
-      "scopes":[  
+      "resource_scopes":[  
          "view",
          "crop",
          "lightbox"
@@ -1029,7 +1029,7 @@ Authorization: Bearer 204c69636b6c69
    },
    {  
       "resource_id":"7b72736964327d",
-      "scopes":[  
+      "resource_scopes":[  
          "view",
          "layout",
          "print"
@@ -1037,7 +1037,7 @@ Authorization: Bearer 204c69636b6c69
    },
    {  
       "resource_id":"7b72736964337d",
-      "scopes":[  
+      "resource_scopes":[  
          "http://www.example.com/scopes/all"
       ]
    }
