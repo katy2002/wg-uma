@@ -1507,7 +1507,7 @@ Host: client.example.com
           specification.</t>
 
           <t>In this calculation, let a set called
-          <spanx>ClientRequested</spanx> stand for the scopes for which the
+          <spanx>ClientRegistered</spanx> stand for the scopes for which the
           client pre-registered at the authorization server, either
           dynamically or through some static process. Let a set called
           <spanx>ClientRequested</spanx> stand for the scopes the client most
@@ -1570,7 +1570,8 @@ Host: client.example.com
           resource server interprets as <spanx style="verb">view</spanx>
           access to <spanx style="verb">rsid_1</spanx>. The resource server
           chooses to request <spanx style="verb">view</spanx> and <spanx
-          style="verb">print</spanx> scopes on its behalf (so
+          style="verb">print</spanx> scopes for <spanx
+          style="verb">rsid_1</spanx> on its behalf (so
           <spanx>PermissionTicket</spanx> contains <spanx
           style="verb">view</spanx> and <spanx style="verb">print</spanx>).
           The client requests <spanx style="verb">download</spanx> scope while
@@ -1579,7 +1580,7 @@ Host: client.example.com
           style="verb">download</spanx>, and the authorization server
           determines that <spanx>RequestedScopes</spanx> contains <spanx
           style="verb">view</spanx>, <spanx style="verb">print</spanx>, and
-          <spanx style="verb">print</spanx>). Based on the authorization
+          <spanx style="verb">download</spanx>). Based on the authorization
           server's evaluation of policy conditions associated with these
           scopes, <spanx>CandidateGrantedScopes</spanx> contains only <spanx
           style="verb">view</spanx> and <spanx style="verb">print</spanx> and
