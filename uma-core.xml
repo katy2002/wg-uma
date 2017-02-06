@@ -568,7 +568,7 @@
           behalf of a requesting party.</t>
 
           <t>The authorization server conducts the authorization process in
-          three phases, with some variation possible in order and looping as
+          three phases, with some variation in order and looping possible as
           follows:<list style="symbols">
               <t>A claims collection phase. Two kinds of claims collection are
               possible: claims pushing by a client and interactive claims
@@ -1429,10 +1429,11 @@ Host: as.example.com
               if the client provided it.</t>
             </list></t>
 
-          <t>Note: The purpose of the interaction is for the authorization
-          server to gather information for its own authorization assessment
-          purposes. This redirection does not involve sending any of the
-          information back to the client.</t>
+          <t>Note: Interactive claim gathering processes are out of scope for
+          this specification. The purpose of the interaction is for the
+          authorization server to gather information for its own authorization
+          assessment purposes. This redirection does not involve sending any
+          of the information back to the client.</t>
 
           <t>The client MUST ignore unrecognized response parameters. If the
           request fails due to a missing, invalid, or mismatching claims
@@ -1581,6 +1582,14 @@ Host: client.example.com
           evaluation capabilities might take a simple or arbitrarily complex
           form, its corresponding abilities to combine or perform calculations
           over claims and their values might also vary.</t>
+
+          <t>Note: Claims and other information gathered during one
+          authorization process may become out of date in terms of their
+          relevance for future authorization processes. The authorization
+          server should use caution and attempt to manage freshness
+          characteristics wherever a PCT or other persistently stored
+          representation of information is used as input to policy
+          evaluations, even including policy conditions themselves.</t>
         </section>
 
         <section anchor="give-rpt"
