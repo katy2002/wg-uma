@@ -557,10 +557,6 @@
           authorization process, even if for a different resource or at a
           different resource server entirely.</t>
 
-          <t>A client seeking access to a protected resource needs OAuth
-          client credentials issued by the authorization server protecting
-          that resource.</t>
-
           <t>The authorization server's function is to perform authorization
           on behalf of the resource owner. The authorization process is the
           process through which the client attempts to obtain an RPT from the
