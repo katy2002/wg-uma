@@ -893,11 +893,7 @@ Content-Type: application/json
         option to act is defined in <xref target="register-permission" />
         (requesting permissions, which involves the authorization server), and
         its next option to respond to the client is defined in <xref
-        target="rs-tokenless-response" />. Because the resource server is
-        responsible for its own resource semantics and structure, it may need
-        to map the client's access attempt to a suitable resource identifier
-        (and thus resource owner and authorization server) before
-        proceeding.</t>
+        target="rs-tokenless-response" />.</t>
 
         <figure>
           <preamble>Example of a client request at a protected resource
@@ -921,15 +917,24 @@ Host: photoz.example.com
         permissions associated with the RPT). The success path of this process
         corresponds to steps 4 and 5 in <xref target="protocol-flow" />.</t>
 
-        <t>The extent of the set of requested permissions MUST suffice for the
-        extent of the client's access attempt at that resource. For example,
-        the resource server can request a single permission with multiple
-        scopes where one of them includes the scope attempted, or multiple
-        permissions where one of them is the resource attempted.</t>
+        <t>The resource server requests one or more permissions (resource
+        identifiers and corresponding scopes) with the authorization server on
+        the client's behalf. Because the resource server is responsible for
+        its own resource semantics and structure, the process of choosing what
+        permissions to request may require mapping the client's access attempt
+        to its own desired resource identifier(s), and their resource owner
+        and authorization server, before proceeding. </t>
+
+        <t>The resource server MAY request permissions that would not suffice
+        for the extent of the client's access attempt at that resource.
+        However, doing so may result in excessive error communications among
+        the entities later.</t>
 
         <t>The PAT provided in the API request enables the authorization
         server to map the resource server's request to the appropriate
-        resource owner.</t>
+        resource owner. It is only possible to request permissions for access
+        to the resources of one resource owner, protected by one authorization
+        server, at a time.</t>
 
         <t>In its response, the authorization server returns a permission
         ticket for the resource server to give to the client that represents
@@ -937,9 +942,10 @@ Host: photoz.example.com
 
         <t>After this process, if the resource server was requesting
         permissions due to a tokenless access attempt, its next option is
-        defined in <xref target="rs-tokenless-response" />. If it was
-        requesting permissions due to an access attempt with an RPT, its next
-        option is defined in <xref target="rs-rpt-response" />.</t>
+        defined in <xref target="rs-tokenless-response" />. (If it was
+        requesting permissions due to an access attempt with an RPT, defined
+        in <xref target="client-rpt-attempt" />, its next option is defined in
+        <xref target="rs-rpt-response" />.)</t>
 
         <section title="Resource Server Request to Permission Endpoint">
           <t>The resource server uses the POST method at the permission
