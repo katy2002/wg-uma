@@ -436,7 +436,7 @@
         authorization server and requesting party actions (<xref
         target="authorization-api" /> provides a high-level definition).</t>
 
-        <t>Steps 3, 6, 12, 15, and 16 (arrows with a number sign (#))
+        <t>Steps 3, 6, 13, 16, and 17 (arrows with a number sign (#))
         summarize communications between the resource server and client that
         constitute the protected resource interface and related resource
         server actions (<xref target="resource-server-interface" /> provides a
