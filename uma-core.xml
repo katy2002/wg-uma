@@ -424,7 +424,7 @@
 ]]></artwork>
         </figure>
 
-        <t>Steps 1, 2, 4-5, and 13-14 (arrows with an asterisk (*)) summarize
+        <t>Steps 1, 2, 4-5, and 14-15 (arrows with an asterisk (*)) summarize
         communications between the authorization server and resource server
         that constitute the protection API and related resource owner actions
         (<xref target="protection-api" /> provides a high-level
