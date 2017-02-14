@@ -213,12 +213,6 @@
             used by the resource server at the authorization server's
             protection API.</t>
 
-            <t hangText="claim"><vspace />A statement of the value or values
-            of one or more attributes of an entity. An authorization server
-            typically needs to collect and assess one or more claims of a
-            requesting party or client against the policy conditions of a
-            resource owner as part of protecting a resource.</t>
-
             <t hangText="permission">Authorized access to a particular
             resource with one or more scopes. A resource server requests one
             or more permissions on behalf of a client at an authorization
@@ -237,6 +231,16 @@
             assess the correct policy conditions to apply to a request for
             permissions.</t>
 
+            <t hangText="claim"><vspace />A statement of the value or values
+            of one or more attributes of an entity. An authorization server
+            typically needs to collect and assess one or more claims of a
+            requesting party or client against the policy conditions of a
+            resource owner as part of protecting a resource.</t>
+
+            <t hangText="claim token">A package of one or more claims provided
+            directly, or "pushed", by the client to the authorization server
+            as part of its request for the RPT at the token endpoint.</t>
+
             <t hangText="persisted claims token (PCT)">A correlation handle
             issued by an authorization server that represents a set of claims
             collected during one authorization process to be used during
@@ -244,10 +248,6 @@
             have provided authorization in some interactive fashion for the
             authorization server to persist this information across
             authorization processes.</t>
-
-            <t hangText="claim token">A package of one or more claims provided
-            directly, or "pushed", by the client to the authorization server
-            as part of its request for the RPT at the token endpoint.</t>
           </list></t>
 
         <t>A resource owner manages resources at any number of resource
@@ -936,7 +936,7 @@ Host: photoz.example.com
         its own resource semantics and structure, the process of choosing what
         permissions to request may require mapping the client's access attempt
         to its own desired resource identifier(s), and their resource owner
-        and authorization server, before proceeding. </t>
+        and authorization server, before proceeding.</t>
 
         <t>The resource server MAY request permissions that would not suffice
         for the extent of the client's access attempt at that resource.
