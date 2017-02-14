@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <?xml-stylesheet type='text/xsl' href='http://xml2rfc.tools.ietf.org/authoring/rfc2629.xslt' ?>
 <!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
-"http://xml2rfc.tools.ietf.org/authoring/rfc2629.dtd">
+"http://xml2rfc.tools.ietf.org/authoring/rfc2629.dtd" [
+<!ENTITY RFC6749 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749.xml">
+<!ENTITY RFC7662 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7662.xml">
+<!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC7159 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY RFC2616 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml">
+<!ENTITY RFC7591 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7591.xml">
+<!ENTITY RFC5785 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5785.xml">
+<!ENTITY RFC3986 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC6750 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6750.xml">
+<!ENTITY RFC6819 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6819.xml">
+]>
 <rfc category="std" docName="uma-core" id="kantara" ipr="kantara"
      target="draft" version="2.0">
   <?xml-stylesheet texttype='text/xsl' href='rfc2629.xslt' ?>
@@ -45,7 +56,7 @@
       </address>
     </author>
 
-    <date day="24" month="January" year="2017" />
+    <date day="6" month="February" year="2017" />
 
     <abstract>
       <t>User-Managed Access (UMA) 2.0 makes use of OAuth 2.0 and related
@@ -413,7 +424,7 @@
 ]]></artwork>
         </figure>
 
-        <t>Steps 1, 2, 4-5, and 13-14 (arrows with an asterisk (*)) summarize
+        <t>Steps 1, 2, 4-5, and 14-15 (arrows with an asterisk (*)) summarize
         communications between the authorization server and resource server
         that constitute the protection API and related resource owner actions
         (<xref target="protection-api" /> provides a high-level
@@ -425,7 +436,7 @@
         authorization server and requesting party actions (<xref
         target="authorization-api" /> provides a high-level definition).</t>
 
-        <t>Steps 3, 6, 12, 15, and 16 (arrows with a number sign (#))
+        <t>Steps 3, 6, 13, 16, and 17 (arrows with a number sign (#))
         summarize communications between the resource server and client that
         constitute the protected resource interface and related resource
         server actions (<xref target="resource-server-interface" /> provides a
@@ -546,10 +557,6 @@
           authorization process, even if for a different resource or at a
           different resource server entirely.</t>
 
-          <t>A client seeking access to a protected resource needs OAuth
-          client credentials issued by the authorization server protecting
-          that resource.</t>
-
           <t>The authorization server's function is to perform authorization
           on behalf of the resource owner. The authorization process is the
           process through which the client attempts to obtain an RPT from the
@@ -557,13 +564,13 @@
           behalf of a requesting party.</t>
 
           <t>The authorization server conducts the authorization process in
-          three phases, with some variation possible in order and looping as
+          three phases, with some variation in order and looping possible as
           follows:<list style="symbols">
-              <t>A claims collection phase. Two kinds of claims collection are
-              possible: claims pushing by a client and interactive claims
-              gathering with an end-user requesting party. This phase MAY
-              occur first in the authorization process in the following
-              circumstances:<list style="symbols">
+              <t>A claims collection phase. Two kinds of claims collection
+              involving UMA flows are possible: claims pushing by a client and
+              interactive claims gathering with an end-user requesting party.
+              This phase MAY occur first in the authorization process in the
+              following circumstances:<list style="symbols">
                   <t>When the client redirects an end-user requesting party to
                   the authorization server for interactive claims gathering as
                   a first step. In order for this to happen, the client needs
@@ -572,7 +579,7 @@
                   configuration document.</t>
 
                   <t>When the client requests an RPT at the token endpoint
-                  with pushed claims as a first step.</t>
+                  with pushed claims as its first step.</t>
                 </list></t>
 
               <t>An authorization assessment phase (as defined in <xref
@@ -580,8 +587,9 @@
               assembling and calculating over policy conditions, scopes,
               claims, and other relevant information in evidence in order to
               mitigate access authorization risk. This phase MAY occur first
-              in the authorization process when the client initially requests
-              an RPT at the token endpoint without pushing claims.</t>
+              in the authorization process when the client requests an RPT at
+              the token endpoint as its first step without pushing any
+              claims.</t>
 
               <t>An authorization result phase (as defined in <xref
               target="authorization-assessment" />). In this phase, the
@@ -590,10 +598,26 @@
               an error code (as defined in <xref
               target="authorization-failure" />). If the error code is <spanx
               style="verb">need_info</spanx>, the authorization server
-              provides a permission ticket once more, giving the client an
-              opportunity once again to loop within the same authorization
-              process to redirect the requesting party and request an RPT.</t>
+              provides a permission ticket, giving the client an opportunity
+              once again to loop within the same authorization process to
+              redirect the requesting party and request an RPT.</t>
             </list></t>
+
+          <t>Some choices of phase order, claim collection, and the <spanx
+          style="verb">error_details</spanx> structure inside <spanx
+          style="verb">need_info</spanx> may tend to be suited for particular
+          deployment ecosystems. For example, where no pre-established
+          relationship is expected between the resource owner's authorization
+          server and the requesting party, initial redirecting party
+          redirection and a <spanx style="verb">redirect_user</spanx> hint may
+          be most practical, at which point the authorization server might
+          either authenticate the requesting party locally or serve as a
+          relying party for a remote identity provider. On the other hand, in
+          an ecosystem where a common authorization server also functions as
+          an identity provider for all resource owners and requesting parties,
+          it may be most practical for the client to push claim tokens sourced
+          from that central server itself with a pre-negotiated format and
+          contents.</t>
         </section>
 
         <section anchor="resource-server-interface"
@@ -738,8 +762,8 @@
             The endpoint URI at which the resource server registers resources
             to put them under authorization manager protection. Usage of this
             endpoint is defined by <xref target="OAuth-resource-reg" /> and
-            <xref target="protecting-a-resource" />. A valid PAT MUST
-            accompany requests to this protected endpoint.</t>
+            <xref target="register-resources" />. A valid PAT MUST accompany
+            requests to this protected endpoint.</t>
 
             <t hangText="permission_endpoint"><vspace />REQUIRED. The endpoint
             URI at which the resource server requests permissions on the
@@ -848,7 +872,8 @@ Content-Type: application/json
         target="protocol-flow" />.</t>
       </section>
 
-      <section title="Resource Server Registers Resources for Protection">
+      <section anchor="register-resources"
+               title="Resource Server Registers Resources for Protection">
         <t>In an ongoing fashion, the resource server registers any resources
         with the authorization server to put them under protection, using the
         resource registration endpoint of the protection API (as defined by
@@ -881,11 +906,7 @@ Content-Type: application/json
         option to act is defined in <xref target="register-permission" />
         (requesting permissions, which involves the authorization server), and
         its next option to respond to the client is defined in <xref
-        target="rs-tokenless-response" />. Because the resource server is
-        responsible for its own resource semantics and structure, it may need
-        to map the client's access attempt to a suitable resource identifier
-        (and thus resource owner and authorization server) before
-        proceeding.</t>
+        target="rs-tokenless-response" />.</t>
 
         <figure>
           <preamble>Example of a client request at a protected resource
@@ -909,15 +930,24 @@ Host: photoz.example.com
         permissions associated with the RPT). The success path of this process
         corresponds to steps 4 and 5 in <xref target="protocol-flow" />.</t>
 
-        <t>The extent of the set of requested permissions MUST suffice for the
-        extent of the client's access attempt at that resource. For example,
-        the resource server can request a single permission with multiple
-        scopes where one of them includes the scope attempted, or multiple
-        permissions where one of them is the resource attempted.</t>
+        <t>The resource server requests one or more permissions (resource
+        identifiers and corresponding scopes) with the authorization server on
+        the client's behalf. Because the resource server is responsible for
+        its own resource semantics and structure, the process of choosing what
+        permissions to request may require mapping the client's access attempt
+        to its own desired resource identifier(s), and their resource owner
+        and authorization server, before proceeding. </t>
+
+        <t>The resource server MAY request permissions that would not suffice
+        for the extent of the client's access attempt at that resource.
+        However, doing so may result in excessive error communications among
+        the entities later.</t>
 
         <t>The PAT provided in the API request enables the authorization
         server to map the resource server's request to the appropriate
-        resource owner.</t>
+        resource owner. It is only possible to request permissions for access
+        to the resources of one resource owner, protected by one authorization
+        server, at a time.</t>
 
         <t>In its response, the authorization server returns a permission
         ticket for the resource server to give to the client that represents
@@ -925,9 +955,10 @@ Host: photoz.example.com
 
         <t>After this process, if the resource server was requesting
         permissions due to a tokenless access attempt, its next option is
-        defined in <xref target="rs-tokenless-response" />. If it was
-        requesting permissions due to an access attempt with an RPT, its next
-        option is defined in <xref target="rs-rpt-response" />.</t>
+        defined in <xref target="rs-tokenless-response" />. (If it was
+        requesting permissions due to an access attempt with an RPT, defined
+        in <xref target="client-rpt-attempt" />, its next option is defined in
+        <xref target="rs-rpt-response" />.)</t>
 
         <section title="Resource Server Request to Permission Endpoint">
           <t>The resource server uses the POST method at the permission
@@ -986,7 +1017,7 @@ Authorization: Bearer 204c69636b6c69
 [  
    {  
       "resource_id":"7b727369647d",
-      "scopes":[  
+      "resource_scopes":[  
          "view",
          "crop",
          "lightbox"
@@ -994,7 +1025,7 @@ Authorization: Bearer 204c69636b6c69
    },
    {  
       "resource_id":"7b72736964327d",
-      "scopes":[  
+      "resource_scopes":[  
          "view",
          "layout",
          "print"
@@ -1002,7 +1033,7 @@ Authorization: Bearer 204c69636b6c69
    },
    {  
       "resource_id":"7b72736964337d",
-      "scopes":[  
+      "resource_scopes":[  
          "http://www.example.com/scopes/all"
       ]
    }
@@ -1139,8 +1170,8 @@ Warning: 199 - "UMA Authorization Server Unreachable"
         7 and 11 in <xref target="protocol-flow" />), redirect mechanisms for
         requesting party interaction (step 10), authorization assessment (step
         8), and forms of the authorization server response to the client
-        request (steps 9 and 11). Section <xref target="uma-grant-type" />
-        defines the <spanx style="verb">grant_type</spanx> URI.</t>
+        request (steps 9 and 11). <xref target="uma-grant-type" /> defines the
+        <spanx style="verb">grant_type</spanx> URI.</t>
 
         <t>The overall process assumes that:<list style="symbols">
             <t>The client has obtained a permission ticket and an
@@ -1210,8 +1241,8 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               to provide information already in its possession to the
               authorization server. It MAY provide this information a first or
               subsequent request to this endpoint. See <xref
-              target="claim-push" /> for the form of a client request with
-              pushed claims.</t>
+              target="claim-push" /> for providing pushed claims in claim
+              tokens.</t>
 
               <t hangText="pct">OPTIONAL. If the authorization server
               previously returned a PCT along with an RPT, the client MAY
@@ -1243,10 +1274,11 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
         </section>
 
         <section anchor="claim-push"
-                 title="Client Request to Authorization Server for RPT With Pushed Claims">
-          <t>The client supplies claim tokens in the body of the request
-          message by providing the <spanx style="verb">claim_tokens</spanx>
-          property as follows:<list style="hanging">
+                 title="Client Push of Claims to Authorization Server in Claim Tokens">
+          <t>In order to push claims to the authorization server, the client
+          provides the <spanx style="verb">claim_tokens</spanx> property in
+          the body of its request message to the token endpoint as
+          follows:<list style="hanging">
               <t hangText="claim_tokens">REQUIRED. An array of objects with
               the following properties:<list style="hanging">
                   <t hangText="format">REQUIRED. A string specifying the
@@ -1410,10 +1442,11 @@ Host: as.example.com
               if the client provided it.</t>
             </list></t>
 
-          <t>Note: The purpose of the interaction is for the authorization
-          server to gather information for its own authorization assessment
-          purposes. This redirection does not involve sending any of the
-          information back to the client.</t>
+          <t>Note: Interactive claim gathering processes are out of scope for
+          this specification. The purpose of the interaction is for the
+          authorization server to gather information for its own authorization
+          assessment purposes. This redirection does not involve sending any
+          of the information back to the client.</t>
 
           <t>The client MUST ignore unrecognized response parameters. If the
           request fails due to a missing, invalid, or mismatching claims
@@ -1470,7 +1503,7 @@ Host: client.example.com
           specification.</t>
 
           <t>In this calculation, let a set called
-          <spanx>ClientRequested</spanx> stand for the scopes for which the
+          <spanx>ClientRegistered</spanx> stand for the scopes for which the
           client pre-registered at the authorization server, either
           dynamically or through some static process. Let a set called
           <spanx>ClientRequested</spanx> stand for the scopes the client most
@@ -1533,7 +1566,8 @@ Host: client.example.com
           resource server interprets as <spanx style="verb">view</spanx>
           access to <spanx style="verb">rsid_1</spanx>. The resource server
           chooses to request <spanx style="verb">view</spanx> and <spanx
-          style="verb">print</spanx> scopes on its behalf (so
+          style="verb">print</spanx> scopes for <spanx
+          style="verb">rsid_1</spanx> on its behalf (so
           <spanx>PermissionTicket</spanx> contains <spanx
           style="verb">view</spanx> and <spanx style="verb">print</spanx>).
           The client requests <spanx style="verb">download</spanx> scope while
@@ -1542,7 +1576,7 @@ Host: client.example.com
           style="verb">download</spanx>, and the authorization server
           determines that <spanx>RequestedScopes</spanx> contains <spanx
           style="verb">view</spanx>, <spanx style="verb">print</spanx>, and
-          <spanx style="verb">print</spanx>). Based on the authorization
+          <spanx style="verb">download</spanx>). Based on the authorization
           server's evaluation of policy conditions associated with these
           scopes, <spanx>CandidateGrantedScopes</spanx> contains only <spanx
           style="verb">view</spanx> and <spanx style="verb">print</spanx> and
@@ -1562,6 +1596,14 @@ Host: client.example.com
           evaluation capabilities might take a simple or arbitrarily complex
           form, its corresponding abilities to combine or perform calculations
           over claims and their values might also vary.</t>
+
+          <t>Note: Claims and other information gathered during one
+          authorization process may become out of date in terms of their
+          relevance for future authorization processes. The authorization
+          server should use caution and attempt to manage freshness
+          characteristics wherever a PCT or other persistently stored
+          representation of information is used as input to policy
+          evaluations, even including policy conditions themselves.</t>
         </section>
 
         <section anchor="give-rpt"
@@ -1602,8 +1644,8 @@ Content-Type: application/json
           Instead, such claims SHOULD be associated by reference to the PCT or
           expressed in an encrypted format that can be decrypted only by the
           authorization server that issued the PCT. See <xref
-          target="interaction-consent" /> for more information about the
-          end-user requesting party interaction option. See <xref
+          target="claim-redirect" /> for more information about the end-user
+          requesting party interaction option. See <xref
           target="sec-consid-pct" /> for additional PCT security
           considerations.</t>
 
@@ -1846,9 +1888,8 @@ Host: photoz.example.com
             authorization server's response contains an extended version of
             the OAuth introspection object. A number of security
             considerations around handling and interpreting the RPT can be
-            found throughout <xref
-            target="getting-authz-accessing-resource" />, and in <xref
-            target="sec-consid" />.</t>
+            found throughout <xref target="protocol-flow-details-sec" />, and
+            in <xref target="sec-consid" />.</t>
 
             <t>Use a cached copy of the token introspection response if
             allowed (see Section 4 of <xref target="RFC7662" />).</t>
@@ -2149,7 +2190,7 @@ Cache-Control: no-store
       independently implemented system entities, it is RECOMMENDED, for
       reasons of implementation interoperability, to define concrete extension
       profiles that build on these extensibility profiles (see <xref
-      target="uma-profiles" />).</t>
+      target="profiles" />).</t>
 
       <section anchor="alt-prot-profile"
                title="Protection API Extensibility Profile">
@@ -2590,10 +2631,9 @@ Cache-Control: no-store
           server, and any additional ecosystem entities and parties will
           establish a trust relationship and communicate any required keying
           material in a claim token profile, as described in <xref
-          target="profiles" /> and <xref target="claim-profiles" />.
-          Authorization servers are RECOMMENDED not to accept claim tokens
-          pushed by untrusted clients and not to ignore audience restrictions
-          found in claim tokens pushed by clients.</t>
+          target="profiles" />. Authorization servers are RECOMMENDED not to
+          accept claim tokens pushed by untrusted clients and not to ignore
+          audience restrictions found in claim tokens pushed by clients.</t>
 
           <t>In the special circumstance when an authorization server is
           colocated with an OpenID Provider for the requesting parties within
@@ -2847,31 +2887,31 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
+      &RFC2119;
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3986"?>
+      &RFC3986;
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5785"?>
+      &RFC5785;
 
       <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6415"?>
 
       <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6711"?>
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
+      &RFC6749;
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
+      &RFC6750;
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6819"?>
+      &RFC6819;
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7159"?>
+      &RFC7159;
 
       <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7519"?>
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7591"?>
+      &RFC7591;
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7662"?>
+      &RFC7662;
 
-      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2616"?>
+      &RFC2616;
     </references>
 
     <references title="Informative References">
