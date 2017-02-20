@@ -464,6 +464,10 @@
 ]]></artwork>
         </figure>
 
+        <t>The authorization server presents a configuration document
+        discovery endpoint used by both the resource server and the client, as
+        defined by <xref target="config-doc-discovery-endpoint" />.</t>
+
         <t>Steps 1, 2, 4-5, and 14-15 (arrows with an asterisk (*)) summarize
         communications between the authorization server and resource server
         that constitute the protection API and related resource owner actions
@@ -798,14 +802,16 @@
           </list></t>
       </section>
 
-      <section title="Configuration Document">
+      <section anchor="config-doc-discovery-endpoint"
+               title="Configuration Document and Discovery Endpoint">
         <t>The authorization server MUST make its configuration properties
-        available in a JSON document at the path formed by concatenating the
-        string <spanx style="verb">/.well-known/uma2-configuration</spanx> to
-        the <spanx style="verb">issuer</spanx> configuration property value as
-        defined in <xref target="config-properties" />. The syntax and
-        semantics of <spanx style="verb">/.well-known</spanx> are defined in
-        <xref target="RFC5785" /> and apply to the <spanx
+        available in a JSON document at a discovery endpoint formed by
+        concatenating the string <spanx
+        style="verb">/.well-known/uma2-configuration</spanx> to the <spanx
+        style="verb">issuer</spanx> configuration property value as defined in
+        <xref target="config-properties" />. The syntax and semantics of
+        <spanx style="verb">/.well-known</spanx> are defined in <xref
+        target="RFC5785" /> and apply to the <spanx
         style="verb">issuer</spanx> value when it contains no path
         component.</t>
       </section>
