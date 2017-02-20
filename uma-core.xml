@@ -1378,11 +1378,14 @@ Authorization: Bearer jwfLG53^sad$#f
           <t>The client redirects an end-user requesting party' to the claims
           interaction endpoint for whatever interactive claims-gathering
           processes the authorization server requires, such as presenting a
-          questionnaire or a local or federated login form. One motivation for
-          such redirection could have been receipt of an authorization failure
-          response containing an <spanx style="verb">error_details</spanx>
-          structure with a <spanx style="verb">redirect_user</spanx> hint (see
-          <xref target="authorization-failure" />).</t>
+          questionnaire, a local or federated login form, or an opportunity to
+          authorize persistent storage of claims for use in later
+          authorization processes (the latter potentially being associated
+          with a PCT). One motivation for such redirection could have been
+          receipt of an authorization failure response containing an <spanx
+          style="verb">error_details</spanx> structure with a <spanx
+          style="verb">redirect_user</spanx> hint (see <xref
+          target="authorization-failure" />).</t>
 
           <t>The client constructs the request URI by adding the following
           parameters to the query component of the claims interaction endpoint
@@ -1427,11 +1430,9 @@ Authorization: Bearer jwfLG53^sad$#f
               preventing cross-site request forgery.</t>
             </list></t>
 
-          <t>See <xref target="saved-consent-token" /> for authorization
-          server options for collecting authorization from the requesting
-          party while gathering claims interactively. See<xref
-          target="redirect-back" /> for the authorization server's mechanism
-          for redirecting the requesting party back to the client.</t>
+          <t>See <xref target="redirect-back" /> for the authorization
+          server's mechanism for redirecting the requesting party back to the
+          client.</t>
 
           <figure>
             <preamble>Example of a request issued by a client application
