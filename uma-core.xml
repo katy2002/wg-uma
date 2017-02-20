@@ -369,10 +369,10 @@
           requires interpretation by the resource server in order to establish
           a suitable resource identifier, resource owner, and authorization
           server. <xref target="flow-summary-sec" /> discusses relevant
-          requirements on the API to be protected given this resource server
+          requirements on the protected resources given this resource server
           task, and <xref target="register-permission" /> discusses how the
-          resource server can communicate permission expectations to the
-          client.</t>
+          resource server should communicate expectations regarding permission
+          requests to the client.</t>
 
           <t>For its part, in order for the client to have a scope considered
           by the authorization server as part of authorization assessment, it
