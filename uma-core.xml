@@ -294,18 +294,22 @@
             its possible scopes of access by virtue of being the publisher of
             the API being protected.</t>
 
-            <t>The resource owner configures the authorization server to
-            express policy conditions that match up resources and scopes to a
+            <t>The resource owner works with the authorization server to set
+            policy conditions that match up resources and scopes to a
             protection scheme.</t>
 
-            <t>The authorization server executes centralized policy condition
-            rules when clients attempt protected-resource access on behalf of
-            the requesting party, with an ultimate result of RPT and
-            permission issuance or denial.</t>
+            <t>The client represents the requesting party in attempting
+            resource access, requesting RPTs, and potentially requesting
+            authorization for specific scopes during the latter activity.</t>
+
+            <t>The authorization server executes centralized policy conditions
+            when clients attempt protected-resource access on behalf of the
+            requesting party, with an ultimate result of RPT and permission
+            issuance or denial.</t>
           </list></t>
 
         <t>Practical control of access among loosely coupled parties typically
-        requires more than just messaging protocols. It is out of scope for
+        requires more than just messaging protocols. It is out of scope of
         this specification to define more than the "technical contract"
         between UMA-conforming entities. The legally responsible parties
         representing these entities may form contracts for, and laws and
@@ -348,10 +352,9 @@
         <section anchor="resource-scope-interpretation"
                  title="Resource and Scope Interpretation">
           <t>The resource server is privy to information about resource
-          semantics and structure, only a limited subset of which is exposed
-          through resource registration and API documentation. Thus, certain
-          responsibilities for resource and scope interpretation fall to the
-          resource server.</t>
+          semantics and structure, of which it exposes only a subset through
+          resource registration and API documentation. Thus, it is responsible
+          for certain resource and scope interpretation tasks.</t>
 
           <t>The resource server MAY register a single resource for protection
           that, from its perspective, has multiple parts, or has dynamic
@@ -359,11 +362,48 @@
           otherwise has internal complexity. The resource server alone is
           responsible for maintaining any required mappings between internal
           representations and the resource identifiers and scopes known to the
-          authorization server. Because access attempts on resources by
-          clients are resource identifier-unaware, the process of making a
-          permission request may also require interpretation by the resource
-          server in order to establish a suitable resource identifier,
-          resource owner, and authorization server.</t>
+          authorization server.</t>
+
+          <t>Because access attempts on resources by clients are resource
+          identifier-unaware, the process of making a permission request also
+          requires interpretation by the resource server in order to establish
+          a suitable resource identifier, resource owner, and authorization
+          server. <xref target="flow-summary-sec" /> discusses relevant
+          requirements on the API to be protected given this resource server
+          task, and <xref target="register-permission" /> discusses how the
+          resource server can communicate permission expectations to the
+          client.</t>
+
+          <t>For its part, in order for the client to have a scope considered
+          by the authorization server as part of authorization assessment, it
+          MUST pre-register for the scope at the authorization server (at
+          which point the client acts on its own behalf) and also request the
+          scope during an RPT request at the token endpoint (at which point it
+          acts on the requesting party's behalf).</t>
+        </section>
+
+        <section title="Policy and Time-to-Live Management">
+          <t>A variety of authorization, security, and time-to-live policies
+          could be managed on a per-resource owner basis or a
+          per-authorization server basis, as the parties see fit. Validity
+          periods of PATs, RPTs, refresh tokens, permissions, caching periods
+          for responses, and even OAuth client credentials are all subject to
+          management. Different time-to-live strategies may be suitable for
+          different resources and scopes of access. These options are all
+          outside the scope of this specification; where deployment ecosystems
+          using independent implementations seek a consistent high level of
+          security, profiling is RECOMMENDED (see <xref
+          target="profiles" />).</t>
+
+          <t>Note: Because the resource owner interaction to authorize
+          issuance of the PAT is asynchronous with respect to the resource
+          server's use of the PAT for requesting permissions and introspecting
+          tokens, and potentially for other reasons, the resource owner can
+          frequently expected to be offline when the resource server needs to
+          use the PAT. Therefore, the authorization server needs to manage PAT
+          issuance and expiration and any corresponding refresh token
+          appropriately to ensure that the resource server has access as
+          needed.</t>
         </section>
       </section>
 
@@ -487,15 +527,17 @@
           endpoint than provided by the PAT, the authorization server responds
           with an OAuth error.</t>
 
-          <t>The issuance of a PAT represents the authorization of the
-          resource owner for the resource server to use the authorization
-          server for protecting the resources that this resource server
-          registers for protection. Any OAuth authorization grant type might
-          be appropriate depending on circumstances; for example, the client
-          credentials grant is useful in the case of an organization acting as
-          a resource owner, whereas an interactive grant type is typically
-          more appropriate for capturing the approval of an end-user resource
-          owner.</t>
+          <t>The PAT binds the resource owner, the resource server used for
+          resource management, and the authorization server used for
+          protection of those resources. The issuance of the PAT represents
+          the authorization of the resource owner for the resource server to
+          use the authorization server for protecting those resources. Using a
+          different OAuth authorization grant type for PAT issuance may be
+          appropriate depending on the type of resource owner; for example,
+          the client credentials grant is useful in the case of an
+          organization acting as a resource owner, whereas an interactive
+          grant type is typically more appropriate for capturing the approval
+          of an end-user resource owner.</t>
 
           <t>Note: Except for PAT issuance, the resource owner-authorization
           server and resource owner-resource server interfaces are out of
@@ -513,15 +555,14 @@
           Additionally, the choice of protection regimes MAY be made
           explicitly by the resource owner or implicitly by the resource
           server. Any such partitioning by the resource server or owner is out
-          of scope for this specification.</t>
+          of scope of this specification.</t>
 
           <t>Note: Because the resource server is responsible for managing
           internal resource complexity and because the resource owner-resource
-          server interface is out of scope for this specification, the
-          resource server is fully responsible for managing the process and
-          timing of registering resources, maintaining the registration of
-          resources, and deregistering resources at the authorization
-          server.</t>
+          server interface is out of scope of this specification, the resource
+          server is fully responsible for managing the process and timing of
+          registering resources, maintaining the registration of resources,
+          and deregistering resources at the authorization server.</t>
         </section>
 
         <section anchor="authorization-api"
@@ -548,23 +589,31 @@
               target="OIDCDynClientReg" />.</t>
             </list></t>
 
+          <t>The authorization server's function is to perform authorization
+          on behalf of some set of one or more resource owners. The RPT
+          resulting from successful authorization binds the requesting party,
+          the client, the authorization server, the resource server, and the
+          resource owner.</t>
+
+          <t>The authorization process is the process through which the client
+          attempts to obtain an RPT from the authorization server in order to
+          access a protected resource on behalf of a requesting party. The
+          client and resource server both have opportunities to influence the
+          set of permissions ultimately requested as part of the RPT request.
+          The client also has an opportunity to seek upgrading of an existing
+          RPT by providing that RPT on its request.</t>
+
           <t>It is OPTIONAL for the authorization server to issue a persisted
           claims token (PCT) to the client when issuing an RPT in order to
           optimize future RPT requests. The PCT represents the set of claims
           collected by the authorization server during current authorization
-          process. It is intended to be used when this client seeks an RPT for
-          this requesting party at this authorization server in a subsequent
-          authorization process, even if for a different resource or at a
-          different resource server entirely.</t>
-
-          <t>The authorization server's function is to perform authorization
-          on behalf of the resource owner. The authorization process is the
-          process through which the client attempts to obtain an RPT from the
-          authorization server in order to access a protected resource on
-          behalf of a requesting party.</t>
+          process. It is intended to be used by the same authorization server
+          as appropriate when this client seeks an RPT for this requesting
+          party in a subsequent authorization process, even if for a different
+          resource or at a different resource server entirely.</t>
 
           <t>The authorization server conducts the authorization process in
-          three phases, with some variation in order and looping possible as
+          three phases, with some potential variation in order and looping as
           follows:<list style="symbols">
               <t>A claims collection phase. Two kinds of claims collection
               involving UMA flows are possible: claims pushing by a client and
@@ -603,9 +652,9 @@
               redirect the requesting party and request an RPT.</t>
             </list></t>
 
-          <t>Some choices of phase order, claim collection, and the <spanx
-          style="verb">error_details</spanx> structure inside <spanx
-          style="verb">need_info</spanx> may tend to be suited for particular
+          <t>Some choices of phase order, claim collection, and use of the
+          <spanx style="verb">error_details</spanx> structure inside <spanx
+          style="verb">need_info</spanx> might be best suited for particular
           deployment ecosystems. For example, where no pre-established
           relationship is expected between the resource owner's authorization
           server and the requesting party, initial redirecting party
@@ -633,7 +682,7 @@
           access.</t>
 
           <t>Note: The following aspects of the resource service-client
-          relationship are out of scope for this specification:<list
+          relationship are out of scope of this specification:<list
               style="symbols">
               <t>How the client acquired knowledge of the resource server's
               interface and the specific endpoint of the desired protected
@@ -649,30 +698,6 @@
               to retrieve a protected higher-resolution version.</t>
             </list></t>
         </section>
-      </section>
-
-      <section title="Time-to-Live Considerations">
-        <t>The authorization server has the opportunity to manage the validity
-        periods of access tokens that it issues, their corresponding refresh
-        tokens where applicable, the individual permission components
-        associated with RPTs where applicable, caching periods for responses,
-        and even the OAuth client credentials that it issues. Different
-        time-to-live strategies may be suitable for different resources and
-        scopes of access, and the authorization server has the opportunity to
-        give the resource owner control over lifetimes of tokens and
-        permissions issued on their behalf through policy. These options are
-        all outside the scope of this specification.</t>
-
-        <t>Note: Because of the asynchronous nature of resource owner
-        interactions (to authorize issuance of the PAT) and resource server
-        requests to the authorization server that require use of the PAT
-        spurred by requesting-side communications (requesting permissions and
-        introspecting tokens), and potentially for other reasons, the resource
-        owner can frequently expected to be offline when the resource server
-        needs to use a PAT. Therefore, the authorization server needs to
-        manage PAT issuance and expiration and any corresponding refresh token
-        appropriately to ensure that the resource server has access as
-        needed.</t>
       </section>
     </section>
 
@@ -938,10 +963,22 @@ Host: photoz.example.com
         to its own desired resource identifier(s), and their resource owner
         and authorization server, before proceeding.</t>
 
-        <t>The resource server MAY request permissions that would not suffice
-        for the extent of the client's access attempt at that resource.
-        However, doing so may result in excessive error communications among
-        the entities later.</t>
+        <t>The resource server SHOULD request a permission that is appropriate
+        for the client&rsquo;s access attempt. The resource server MAY request
+        multiple permissions, and any permission MAY have zero scopes
+        associated with it. Requesting multiple permissions may be
+        appropriate, for example, in cases where the resource server expects
+        the requesting party to need access to several related resources if
+        they need access to any one of the resources. Requesting a permission
+        with no scopes may be appropriate, for example, in cases where an
+        access attempt involves an API call that is ambiguous without further
+        context (role-based scopes such as <spanx style="verb">user</spanx>
+        and <spanx style="verb">admin</spanx> may have this ambiguous quality,
+        and nn explicit client request for a particular scope at the token
+        endpoint later can clarify the desired access). The resource server
+        SHOULD document its intended pattern of permission requests in order
+        to assist the client in pre-registering for and requesting appropriate
+        scopes at the authorization server.</t>
 
         <t>The PAT provided in the API request enables the authorization
         server to map the resource server's request to the appropriate
@@ -1224,25 +1261,32 @@ Warning: 199 - "UMA Authorization Server Unreachable"
 
               <t hangText="ticket">REQUIRED. The permission ticket.</t>
 
-              <t hangText="rpt">OPTIONAL. If the client included an RPT in its
-              failed access attempt to the resource, it MAY include the same
-              RPT here. This gives the authorization server the option of
-              updating the existing RPT instead of issuing a new one (see
-              <xref target="give-rpt" /> for the basic form of that
-              response).</t>
+              <t hangText="rpt">OPTIONAL. If the client wants to manage a
+              single RPT for this combination of requesting party,
+              authorization server, resource server, and putative resource
+              owner, it MAY include the RPT here. (Note: Since a resource's
+              location might not publicly reveal its resource owner, a client
+              might not be aware of the specific resource owner associated
+              with an RPT.) This gives the authorization server the option of
+              upgrading the existing RPT instead of issuing a new one (see
+              <xref target="authorization-assessment" /> for more about this
+              option).</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
-              representing the scopes that the client is requesting. This
-              allows the client to add dynamically to any scopes already under
-              consideration for authorization.</t>
+              representing requested scopes. For any requested scope to be
+              considered, the client MUST have pre-registered the same scope
+              with the authorization server. The client should consult the
+              resource server&rsquo;s API documentation for details about
+              permissions and their scopes expected to be included in
+              permission requests.</t>
 
               <t hangText="claim_tokens">OPTIONAL. Claims pushed directly from
               the client to the authorization server. This allows the client
-              to provide information already in its possession to the
-              authorization server. It MAY provide this information a first or
-              subsequent request to this endpoint. See <xref
-              target="claim-push" /> for providing pushed claims in claim
-              tokens.</t>
+              to provide information relevant to the authorization process
+              already in its possession to the authorization server. It MAY
+              provide this information on a first or subsequent request to
+              this endpoint. See <xref target="claim-push" /> for information
+              on providing pushed claims in claim tokens.</t>
 
               <t hangText="pct">OPTIONAL. If the authorization server
               previously returned a PCT along with an RPT, the client MAY
@@ -1254,8 +1298,8 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               is the same as the requesting party that was associated with the
               PCT when it was issued. See <xref target="sec-consid-pct" /> for
               additional PCT security considerations. See <xref
-              target="saved-consent-token" /> for the form of the
-              authorization server's response with a PCT.</t>
+              target="give-rpt" /> for the form of the authorization server's
+              response with a PCT.</t>
             </list></t>
 
           <figure>
@@ -1334,7 +1378,11 @@ Authorization: Bearer jwfLG53^sad$#f
           <t>The client redirects an end-user requesting party' to the claims
           interaction endpoint for whatever interactive claims-gathering
           processes the authorization server requires, such as presenting a
-          questionnaire or a local or federated login form.</t>
+          questionnaire or a local or federated login form. One motivation for
+          such redirection could have been receipt of an authorization failure
+          response containing an <spanx style="verb">error_details</spanx>
+          structure with a <spanx style="verb">redirect_user</spanx> hint (see
+          <xref target="authorization-failure" />).</t>
 
           <t>The client constructs the request URI by adding the following
           parameters to the query component of the claims interaction endpoint
@@ -1442,7 +1490,7 @@ Host: as.example.com
               if the client provided it.</t>
             </list></t>
 
-          <t>Note: Interactive claim gathering processes are out of scope for
+          <t>Note: Interactive claim gathering processes are out of scope of
           this specification. The purpose of the interaction is for the
           authorization server to gather information for its own authorization
           assessment purposes. This redirection does not involve sending any
@@ -1491,18 +1539,18 @@ Host: client.example.com
         </section>
 
         <section anchor="authorization-assessment"
-                 title="Authorization Assessment">
+                 title="Authorization Assessment and Results Determination">
           <t>When the authorization server has received a request for an RPT
           from a client, it assesses whether the client is authorized to
-          receive the requested RPT.</t>
+          receive the requested RPT and determines the results.</t>
 
           <t>The authorization server MUST apply the following conceptual
           authorization assessment calculation in determining authorization
           results. Note: As this calculation is internal to authorization
-          server operations, its particulars are out of scope for this
+          server operations, its particulars are out of scope of this
           specification.</t>
 
-          <t>In this calculation, let a set called
+          <t>In this assessment calculation, let a set called
           <spanx>ClientRegistered</spanx> stand for the scopes for which the
           client pre-registered at the authorization server, either
           dynamically or through some static process. Let a set called
@@ -1512,77 +1560,124 @@ Host: client.example.com
           the most recent permission ticket presented by the client at the
           token endpoint.<list style="numbers">
               <t>Determine the set of requested scopes as follows:
-              <spanx>RequestedScopes = union ( intersection (ClientRequested,
-              ClientRegistered), PermissionTicket)</spanx>. Observe that this
-              logic requires the client to have registered and requested at
-              least one scope in common to have any effect on the result
-              set.</t>
+              <spanx>RequestedScopes = PermissionTicket &#8746;
+              (ClientRequested &#8745; ClientRegistered)</spanx>.</t>
 
-              <t>Determine all operative policy conditions for each resource
+              <t>Determine all operative policy conditions, and claims and
+              other relevant information serving as input to them, for each
               scope assocated with <spanx>RequestedScopes</spanx> and evaluate
-              it. Note: Policy conditions are out of scope (in the ordinary
-              English sense) for this specification. Potential sources of
-              claims include pushed claims, interactively gathered claims, and
-              claims associated with a client-provided PCT in the RPT
-              request.</t>
+              its authorization status. Note: Claims and other information
+              gathered during one authorization process may become out of date
+              in terms of their relevance for future authorization processes.
+              The authorization server is responsible for managing such
+              relevance wherever information associated with a PCT, or other
+              persistently stored information, is used as input to
+              authorization, including policy conditions themselves. Note:
+              Since the authorization server's policy expression and
+              evaluation capabilities are out of scope, any one implementation
+              might take a simple or arbitrarily complex form, with varying
+              abilities to combine or perform calculations over claims and
+              their values. For example, logical operations such as accepting
+              "either claim value A or B" as correct may be possible.</t>
 
               <t>For each scope that passes the evaluation, add it to a set
               called <spanx>CandidateGrantedScopes</spanx>.</t>
             </list></t>
 
-          <t>If the value of <spanx>CandidateGrantedScopes</spanx> is null,
-          the result is authorization failure and the authorization server
-          MUST subsequently issue one of the UMA error codes (<xref
-          target="authorization-failure" />). If the value is non-null and
-          <spanx>CandidateGrantedScopes equals RequestedScopes</spanx>, the
-          authorization server MUST subsequently respond with a success code
-          and issue an RPT (see <xref target="give-rpt" />). If the value is
-          non-null and <spanx>CandidateGrantedScopes less-than
-          RequestedScopes</spanx>, the authorization server MUST subsequently
-          issue either an RPT containing <spanx>CandidateGrantedScopes</spanx>
-          or one of the UMA error codes. The reason for the two options is
-          that granting only partial scopes may not be useful for the client's
-          and requesting party's purposes in seeking authorization for
-          access.</t>
+          <t>In the authorization results phase, the authorization server
+          examines the <spanx>CandidateGrantedScopes</spanx> set to determine
+          whether to issue an RPT and what permissions should be associated
+          with it. There are three cases.</t>
 
-          <t>For example, assume a resource server has registered two
-          resources on behalf of a resource owner, <spanx
-          style="verb">rsid_1</spanx> with scopes <spanx
-          style="verb">view</spanx>, <spanx style="verb">link</spanx>, and
-          <spanx style="verb">download</spanx> and <spanx
-          style="verb">rsid_2</spanx> with scopes <spanx
-          style="verb">view</spanx>, <spanx style="verb">link</spanx>, <spanx
-          style="verb">download</spanx>, and <spanx
-          style="verb">print</spanx>, and the resource owner has set policy
-          conditions that allow access to <spanx style="verb">rsid_1</spanx>
-          only by requesting parties that can provide claims proving they are
-          family members, and that allow access to <spanx
-          style="verb">rsid_2</spanx> only by requesting parties that can
-          provide claims saying they agree not to download, sell, or market
-          any photo. The client has pre-registered with the authorization
-          server for <spanx style="verb">download</spanx> scope (so
-          <spanx>ClientRegistered</spanx> contains <spanx
-          style="verb">download</spanx>). The client attempts what the
-          resource server interprets as <spanx style="verb">view</spanx>
-          access to <spanx style="verb">rsid_1</spanx>. The resource server
-          chooses to request <spanx style="verb">view</spanx> and <spanx
-          style="verb">print</spanx> scopes for <spanx
-          style="verb">rsid_1</spanx> on its behalf (so
-          <spanx>PermissionTicket</spanx> contains <spanx
-          style="verb">view</spanx> and <spanx style="verb">print</spanx>).
-          The client requests <spanx style="verb">download</spanx> scope while
-          requesting an RPT from the authorization server (so
-          <spanx>ClientRequested</spanx> contains <spanx
-          style="verb">download</spanx>, and the authorization server
-          determines that <spanx>RequestedScopes</spanx> contains <spanx
-          style="verb">view</spanx>, <spanx style="verb">print</spanx>, and
-          <spanx style="verb">download</spanx>). Based on the authorization
-          server's evaluation of policy conditions associated with these
-          scopes, <spanx>CandidateGrantedScopes</spanx> contains only <spanx
-          style="verb">view</spanx> and <spanx style="verb">print</spanx> and
-          not <spanx style="verb">download</spanx>, which is less than in
-          <spanx>RequestedScopes</spanx>. The authorization server has a
-          choice whether to issue an RPT in this case.</t>
+          <t>In the first case, if the value of
+          <spanx>CandidateGrantedScopes</spanx> is null, the result is
+          authorization failure and the authorization server MUST subsequently
+          issue one of the UMA error codes (<xref
+          target="authorization-failure" />).</t>
+
+          <t>In the remaining two cases, the authorization server's next
+          action depends on whether the client provided an RPT on its request
+          message and whether the authorization server itself is capable of
+          upgrading RPTs. It is RECOMMENDED for the authorization server to
+          document its practices regarding RPT upgrades and to act
+          consistently with respect to RPT upgrades so as to enable clients to
+          manage tokens efficiently. In both cases, if the client submitted an
+          RPT in its request and the authorization server decides to upgrade
+          the RPT it is issuing, it adds the permissions from the client's
+          previous RPT to the RPT it is about to issue, setting the value of
+          the <spanx style="verb">upgraded</spanx> property in its response
+          containing the upgraded RPT to <spanx style="verb">true</spanx>.</t>
+
+          <t>If the value is non-null and <spanx>CandidateGrantedScopes =
+          RequestedScopes</spanx>, then the authorization server MUST
+          subsequently respond with a success code and issue an RPT, applying
+          the RPT upgrade actions as appropriate.</t>
+
+          <t>If the value is non-null and <spanx>CandidateGrantedScopes
+          less-than RequestedScopes</spanx>, the authorization server MUST
+          subsequently issue either an RPT containing
+          <spanx>CandidateGrantedScopes</spanx>, applying the RPT upgrade
+          actions as appropriate, or one of the UMA error codes. The reason
+          for the two options is that granting only partial scopes may not be
+          useful for the client's and requesting party's purposes in seeking
+          authorization for access.</t>
+
+          <t>For example: <list style="symbols">
+              <t>Assume a resource server has registered two resources on
+              behalf of a resource owner, <spanx style="verb">photo1</spanx>
+              with scopes <spanx style="verb">view</spanx>, <spanx
+              style="verb">link</spanx>, and <spanx
+              style="verb">download</spanx> and <spanx
+              style="verb">photo2</spanx> with scopes <spanx
+              style="verb">view</spanx>, <spanx style="verb">link</spanx>,
+              <spanx style="verb">download</spanx>, and <spanx
+              style="verb">print</spanx>.</t>
+
+              <t>The resource owner has set policy conditions that allow
+              access to <spanx style="verb">photo1</spanx> only by requesting
+              parties that can provide claims proving they are family members,
+              and that allow access to <spanx style="verb">photo2</spanx> only
+              by requesting parties that can provide claims saying they agree
+              not to download, sell, or market any photo.</t>
+
+              <t>The client has pre-registered with the authorization server
+              for <spanx style="verb">download</spanx> scope (so
+              <spanx>ClientRegistered</spanx> contains <spanx
+              style="verb">download</spanx>).</t>
+
+              <t>The client attempts what the resource server interprets as
+              <spanx style="verb">view</spanx> access to <spanx
+              style="verb">photo1</spanx>.</t>
+
+              <t>The resource server chooses to request a permission for
+              <spanx style="verb">view</spanx> and <spanx
+              style="verb">print</spanx> scopes for <spanx
+              style="verb">photo1</spanx> on the client's behalf (so
+              <spanx>PermissionTicket</spanx> contains <spanx
+              style="verb">view</spanx> and <spanx
+              style="verb">print</spanx>).</t>
+
+              <t>The client requests <spanx style="verb">download</spanx>
+              scope on the requesting party's behalf while requesting an RPT
+              from the authorization server (so <spanx>ClientRequested</spanx>
+              contains <spanx style="verb">download</spanx>).</t>
+
+              <t>The authorization server determines that
+              <spanx>RequestedScopes</spanx> contains <spanx
+              style="verb">view</spanx>, <spanx style="verb">print</spanx>,
+              and <spanx style="verb">download</spanx>.</t>
+
+              <t>Based on the authorization server's evaluation of policy
+              conditions associated with these scopes,
+              <spanx>CandidateGrantedScopes</spanx> contains only <spanx
+              style="verb">view</spanx> and <spanx style="verb">print</spanx>
+              and not <spanx style="verb">download</spanx> (the dynamically
+              requested scope), which is less than in
+              <spanx>RequestedScopes</spanx>.</t>
+
+              <t>The authorization server has a choice whether to issue an RPT
+              in this case.</t>
+            </list></t>
 
           <t>Note: While a reasonable approach for most scenarios is to
           implement the classic security stance of default-deny ("everything
@@ -1591,19 +1686,6 @@ Host: client.example.com
           insufficient simply to assume that all resources have some non-zero
           set of claims required for access, and then accept an empty set of
           supplied claims as sufficient for access.</t>
-
-          <t>Note: Since the authorization server's policy expression and
-          evaluation capabilities might take a simple or arbitrarily complex
-          form, its corresponding abilities to combine or perform calculations
-          over claims and their values might also vary.</t>
-
-          <t>Note: Claims and other information gathered during one
-          authorization process may become out of date in terms of their
-          relevance for future authorization processes. The authorization
-          server should use caution and attempt to manage freshness
-          characteristics wherever a PCT or other persistently stored
-          representation of information is used as input to policy
-          evaluations, even including policy conditions themselves.</t>
         </section>
 
         <section anchor="give-rpt"
@@ -1613,11 +1695,38 @@ Host: client.example.com
           target="authorization-assessment" />), it returns an HTTP 200 (OK)
           status code with a response body containing the RPT with which it
           has associated the requested permissions. The authorization server
-          MAY return a refresh token. The authorization server MAY return a
-          PCT. If the client included an existing RPT in its request and the
+          MAY return a refresh token.</t>
+
+          <t>If the client included an existing RPT in its request and the
           authorization server issues a new RPT, the authorization server
           SHOULD revoke the existing RPT, if possible, and the client MUST
           discard its previous RPT.</t>
+
+          <t>The authorization server MAY add the following properties to its
+          response:<list style="hanging">
+              <t hangText="pct">OPTIONAL. A correlation handle representing
+              claims and other information collected during this authorization
+              process, which the client is able to present later in order to
+              optimize future authorization processes on behalf of a
+              requesting party. The PCT MUST be unguessable by an attacker.
+              The PCT MUST NOT disclose claims from the requesting party
+              directly to possessors of the PCT. Instead, such claims SHOULD
+              be associated by reference to the PCT or expressed in an
+              encrypted format that can be decrypted only by the authorization
+              server that issued the PCT. See <xref target="claim-redirect" />
+              for more information about the end-user requesting party
+              interaction option. See <xref target="sec-consid-pct" /> for
+              additional PCT security considerations.</t>
+
+              <t hangText="upgraded">OPTIONAL. Boolean value. If the client
+              submits an RPT in the request and the authorization server
+              includes the permissions of the RPT from the request as part of
+              the newly issued RPT, then it MUST set this value to <spanx
+              style="verb">true</spanx>. If it sets the value to <spanx
+              style="verb">false</spanx> or the value is absent, the client
+              MUST act as if the newly issued RPT does not include the
+              permissions associated with the RPT from the request.</t>
+            </list></t>
 
           <figure>
             <preamble>Example:</preamble>
@@ -1632,41 +1741,10 @@ Content-Type: application/json
 }
 ]]></artwork>
           </figure>
-        </section>
-
-        <section anchor="saved-consent-token"
-                 title="Authorization Server Response to Client on Authorization Success With PCT">
-          <t>The authorization server MAY return a PCT along with an RPT. The
-          PCT represents claims collected during this authorization process,
-          either directly or through the claims interaction endpoint. The PCT
-          MUST be unguessable by an attacker. The PCT MUST NOT disclose claims
-          from the requesting party directly to possessors of the PCT.
-          Instead, such claims SHOULD be associated by reference to the PCT or
-          expressed in an encrypted format that can be decrypted only by the
-          authorization server that issued the PCT. See <xref
-          target="claim-redirect" /> for more information about the end-user
-          requesting party interaction option. See <xref
-          target="sec-consid-pct" /> for additional PCT security
-          considerations.</t>
-
-          <t>The authorization server MAY choose to persist collected claims
-          and issue a PCT in order to optimize future authorization processes
-          on behalf of a requesting party. It MAY also gather authorization
-          from an end-user requesting party for persisting these claims, one
-          option being persisting this authorization in the form of an actual
-          claim itself. The authorization server MAY combine
-          authorization-gathering interaction with other interactions as
-          necessary, and in any order. For example, the authorization server
-          might present an opportunity for the requesting party to create or
-          manage a login account for more persistent storage of gathered and
-          pushed claims over time.</t>
-
-          <t>The PCT MAY be included by the client in future requests to the
-          token endpoint using the UMA grant type (see <xref
-          target="uma-grant-type" />).</t>
 
           <figure>
-            <preamble>Example:</preamble>
+            <preamble>Example with a PCT and an <spanx
+            style="verb">upgraded</spanx> property in the response:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
@@ -1675,7 +1753,8 @@ Content-Type: application/json
 {  
    "access_token":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
    "token_type":"Bearer",
-   "pct":"c2F2ZWRjb25zZW50"
+   "pct":"c2F2ZWRjb25zZW50",
+   "upgraded":true
 }
 ]]></artwork>
           </figure>
@@ -2042,10 +2121,9 @@ Cache-Control: no-store
           <t>The purpose of this assessment is to determine sufficiency of
           authorization. The resource server MAY apply additional
           authorization controls when determining how to respond. For example,
-          if the resource owner's policy conditions at the authorization
-          server have led to issuance of an RPT with sufficient permissions
-          for a particular case, the resource server deployer can choose to
-          bar access to certain additional requesting parties.</t>
+          even if an RPT provides sufficient permissions for a particular
+          case, the resource server deployer can choose to bar access to
+          certain additional requesting parties.</t>
 
           <t>To ensure the integrity of the ecosystem in which the resource
           server, authorization server, and resource owner are participating,
