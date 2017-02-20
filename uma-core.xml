@@ -908,13 +908,17 @@ Content-Type: application/json
         <t>In an ongoing fashion, the resource server registers any resources
         with the authorization server to put them under protection, using the
         resource registration endpoint of the protection API (as defined by
-        <xref target="OAuth-resource-reg" />; see Section 7 in that
-        specification for a worked example).</t>
+        <xref target="OAuth-resource-reg" />; see that specification for a
+        worked example).</t>
 
         <t>This process assumes that the resource server has discovered the
         authorization server's configuration document and endpoints as needed.
         This process corresponds to step 2 in <xref
         target="protocol-flow" />.</t>
+
+        <t>Note: No specific timing of initial registration is mandated, but a
+        typical choice is just before a resource owner needs to set policy
+        conditions at the authorization server.</t>
       </section>
 
       <section anchor="client-attempts-tokenless-access"
