@@ -1637,12 +1637,12 @@ Host: client.example.com
               <t>Assume a resource server has registered two resources on
               behalf of a resource owner, <spanx style="verb">photo1</spanx>
               with scopes <spanx style="verb">view</spanx>, <spanx
-              style="verb">link</spanx>, and <spanx
+              style="verb">print</spanx>, and <spanx
               style="verb">download</spanx> and <spanx
               style="verb">photo2</spanx> with scopes <spanx
-              style="verb">view</spanx>, <spanx style="verb">link</spanx>,
+              style="verb">view</spanx>, <spanx style="verb">print</spanx>,
               <spanx style="verb">download</spanx>, and <spanx
-              style="verb">print</spanx>.</t>
+              style="verb">link</spanx>.</t>
 
               <t>The resource owner has set policy conditions that allow
               access to <spanx style="verb">photo1</spanx> only by requesting
