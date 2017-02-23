@@ -464,10 +464,6 @@
 ]]></artwork>
         </figure>
 
-        <t>The authorization server presents a configuration document
-        discovery endpoint used by both the resource server and the client, as
-        defined by <xref target="config-doc-discovery-endpoint" />.</t>
-
         <t>Steps 1, 2, 4-5, and 14-15 (arrows with an asterisk (*)) summarize
         communications between the authorization server and resource server
         that constitute the protection API and related resource owner actions
@@ -486,8 +482,12 @@
         server actions (<xref target="resource-server-interface" /> provides a
         high-level definition).</t>
 
-        <t>The authorization server MUST declare all of its endpoints in its
-        configuration document (see <xref target="am-endpoints" />).</t>
+        <t>The authorization server presents a configuration document
+        discovery endpoint used by both the resource server and the client, as
+        defined by <xref target="config-doc-discovery-endpoint" />. The
+        authorization server MUST declare all of its endpoints, other than the
+        configuration document discovery endpoint itself, in the configuration
+        document (see <xref target="am-endpoints" />).</t>
 
         <t>Note: In step 3, the client attempts access to a protected resource
         with no token, and in step 4, the resource server requests permissions
@@ -916,9 +916,8 @@ Content-Type: application/json
         This process corresponds to step 2 in <xref
         target="protocol-flow" />.</t>
 
-        <t>Note: No specific timing of initial registration is mandated, but a
-        typical choice is just before a resource owner needs to set policy
-        conditions at the authorization server.</t>
+        <t>See <xref target="UMA-Impl" /> for a discussion of timing of
+        resource registration.</t>
       </section>
 
       <section anchor="client-attempts-tokenless-access"
@@ -984,7 +983,7 @@ Host: photoz.example.com
         access attempt involves an API call that is ambiguous without further
         context (role-based scopes such as <spanx style="verb">user</spanx>
         and <spanx style="verb">admin</spanx> may have this ambiguous quality,
-        and nn explicit client request for a particular scope at the token
+        and an explicit client request for a particular scope at the token
         endpoint later can clarify the desired access). The resource server
         SHOULD document its intended pattern of permission requests in order
         to assist the client in pre-registering for and requesting appropriate
@@ -1271,16 +1270,14 @@ Warning: 199 - "UMA Authorization Server Unreachable"
 
               <t hangText="ticket">REQUIRED. The permission ticket.</t>
 
-              <t hangText="rpt">OPTIONAL. If the client wants to manage a
-              single RPT for this combination of requesting party,
-              authorization server, resource server, and putative resource
-              owner, it MAY include the RPT here. (Note: Since a resource's
-              location might not publicly reveal its resource owner, a client
-              might not be aware of the specific resource owner associated
-              with an RPT.) This gives the authorization server the option of
-              upgrading the existing RPT instead of issuing a new one (see
-              <xref target="authorization-assessment" /> for more about this
-              option).</t>
+              <t hangText="rpt">OPTIONAL. Supplying the existing RPT gives the
+              authorization server the option of upgrading the RPT instead of
+              issuing a new one (see <xref
+              target="authorization-assessment" /> for more about this
+              option). Note: An RPT is bound to a specific resource owner, but
+              it is out of scope of this specification for a protected
+              resource's location to reveal the resource owner's identity to
+              the client.</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
               representing requested scopes. For any requested scope to be
@@ -1490,11 +1487,10 @@ Host: as.example.com
                   specification.</t>
                 </list></t>
 
-              <t hangText="ticket">OPTIONAL. A permission ticket that allows
+              <t hangText="ticket">REQUIRED. A permission ticket that allows
               the client to make further requests to the authorization server
-              during this attempted authorization. The value of this
-              permission ticket MUST NOT be the same as the one the client
-              used to make its request.</t>
+              during this attempted authorization. The value MUST NOT be the
+              same as the one the client used to make its request.</t>
 
               <t hangText="state">OPTIONAL. The same state value that the
               client provided in the request. It MUST be present if and only
@@ -1598,42 +1594,41 @@ Host: client.example.com
           <t>In the authorization results phase, the authorization server
           examines the <spanx>CandidateGrantedScopes</spanx> set to determine
           whether to issue an RPT and what permissions should be associated
-          with it. There are three cases.</t>
+          with it.<list style="symbols">
+              <t>If the value of <spanx>CandidateGrantedScopes</spanx> is
+              null, the result is authorization failure and the authorization
+              server MUST subsequently issue one of the error codes (<xref
+              target="authorization-failure" />).</t>
 
-          <t>In the first case, if the value of
-          <spanx>CandidateGrantedScopes</spanx> is null, the result is
-          authorization failure and the authorization server MUST subsequently
-          issue one of the UMA error codes (<xref
-          target="authorization-failure" />).</t>
+              <t>If the value is non-null and <spanx>CandidateGrantedScopes =
+              RequestedScopes</spanx>, then the authorization server MUST
+              subsequently respond with a success code and issue an RPT
+              (upgrading as appropriate; see below).</t>
 
-          <t>In the remaining two cases, the authorization server's next
-          action depends on whether the client provided an RPT on its request
-          message and whether the authorization server itself is capable of
-          upgrading RPTs. It is RECOMMENDED for the authorization server to
-          document its practices regarding RPT upgrades and to act
-          consistently with respect to RPT upgrades so as to enable clients to
-          manage tokens efficiently. In both cases, if the client submitted an
-          RPT in its request and the authorization server decides to upgrade
-          the RPT it is issuing, it adds the permissions from the client's
-          previous RPT to the RPT it is about to issue, setting the value of
-          the <spanx style="verb">upgraded</spanx> property in its response
-          containing the upgraded RPT to <spanx style="verb">true</spanx>.</t>
+              <t>If the value is non-null and <spanx>CandidateGrantedScopes
+              less-than RequestedScopes</spanx>, the authorization server MUST
+              subsequently issue either an RPT containing
+              <spanx>CandidateGrantedScopes</spanx> (upgrading as appropriate;
+              see below), or one of the error codes. The reason for the two
+              options is that granting only partial scopes may not be useful
+              for the client's and requesting party's purposes in seeking
+              authorization for access.</t>
+            </list></t>
 
-          <t>If the value is non-null and <spanx>CandidateGrantedScopes =
-          RequestedScopes</spanx>, then the authorization server MUST
-          subsequently respond with a success code and issue an RPT, applying
-          the RPT upgrade actions as appropriate.</t>
+          <t>The authorization server MAY implement RPT upgrading. It is
+          RECOMMENDED for the authorization server to document its practices
+          regarding RPT upgrades and to act consistently with respect to RPT
+          upgrades so as to enable clients to manage tokens efficiently. If
+          the authorization server has implemented RPT upgrading, the client
+          has submitted an RPT in its request, and the result is success, the
+          authorization server adds the permissions from the client's previous
+          RPT to the RPT it is about to issue, setting the value of the <spanx
+          style="verb">upgraded</spanx> property in its response containing
+          the upgraded RPT to <spanx style="verb">true</spanx> (see <xref
+          target="give-rpt" />).</t>
 
-          <t>If the value is non-null and <spanx>CandidateGrantedScopes
-          less-than RequestedScopes</spanx>, the authorization server MUST
-          subsequently issue either an RPT containing
-          <spanx>CandidateGrantedScopes</spanx>, applying the RPT upgrade
-          actions as appropriate, or one of the UMA error codes. The reason
-          for the two options is that granting only partial scopes may not be
-          useful for the client's and requesting party's purposes in seeking
-          authorization for access.</t>
-
-          <t>For example: <list style="symbols">
+          <t>The following example illustrates authorization assessment and
+          partial results: <list style="symbols">
               <t>Assume a resource server has registered two resources on
               behalf of a resource owner, <spanx style="verb">photo1</spanx>
               with scopes <spanx style="verb">view</spanx>, <spanx
@@ -1708,11 +1703,6 @@ Host: client.example.com
           has associated the requested permissions. The authorization server
           MAY return a refresh token.</t>
 
-          <t>If the client included an existing RPT in its request and the
-          authorization server issues a new RPT, the authorization server
-          SHOULD revoke the existing RPT, if possible, and the client MUST
-          discard its previous RPT.</t>
-
           <t>The authorization server MAY add the following properties to its
           response:<list style="hanging">
               <t hangText="pct">OPTIONAL. A correlation handle representing
@@ -1738,6 +1728,13 @@ Host: client.example.com
               MUST act as if the newly issued RPT does not include the
               permissions associated with the RPT from the request.</t>
             </list></t>
+
+          <t>If the authorization server is upgrading an RPT, and the RPT
+          string is new rather than repeating the RPT provided by the client
+          in the request, then the authorization server SHOULD revoke the
+          existing RPT, if possible, and the client MUST discard its previous
+          RPT. If the authorization server does not upgrade the RPT but issues
+          a new RPT, the client MAY retain the existing RPT.</t>
 
           <figure>
             <preamble>Example:</preamble>
@@ -1775,9 +1772,14 @@ Content-Type: application/json
                  title="Authorization Server Response to Client on Authorization Failure">
           <t>If the client's request to the token endpoint is not sufficient
           for granting an RPT, the authorization server responds using one of
-          the following UMA error codes and corresponding HTTP status codes
-          (see <xref target="uma-error-response" /> for more information about
-          error codes and responses):<list style="hanging">
+          the following error codes and corresponding HTTP status codes. The
+          first five error responses end the current authorization process;
+          the client is free to attempt access to the protected resource
+          another time. The sixth error response, <spanx
+          style="verb">need_info</spanx>, begins or continues an authorization
+          process loop that concludes only when the client receives one of the
+          other five errors or a success condition (as described in <xref
+          target="give-rpt" />).<list style="hanging">
               <t hangText="invalid_ticket">The provided ticket was not found
               at the authorization server. The authorization server responds
               with the HTTP 400 (Bad Request) status code.</t>
@@ -1806,19 +1808,74 @@ Content-Type: application/json
               additional information in order to determine whether the client
               is authorized to have these permissions. The authorization
               server responds with the HTTP 403 (Forbidden) status code. It
-              MAY also respond with an <spanx
-              style="verb">error_details</spanx> object that contains one or
-              more sub-properties with hints about the nature of further
-              required information.</t>
-            </list></t>
+              MUST include a <spanx style="verb">ticket</spanx> object, and it
+              MAY also include an <spanx style="verb">error_details</spanx>
+              object that contains one or more sub-properties with hints about
+              further required information.<list style="hanging">
+                  <t hangText="ticket">REQUIRED. A permission ticket that
+                  allows the client to make further requests to the
+                  authorization server during this attempted authorization.
+                  The value MUST NOT be the same as the one the client used to
+                  make its request.</t>
 
-          <t>The first five error responses end the current authorization
-          process; the client is free to attempt access to the protected
-          resource another time. The sixth error response, <spanx
-          style="verb">need_info</spanx>, begins or continues an authorization
-          process loop that concludes only when the client receives one of the
-          other five errors or a success condition (as described in <xref
-          target="give-rpt" />).</t>
+                  <t hangText="error_details">OPTIONAL. Provides hints about
+                  information the authorization server needs to perform
+                  authorization assessment. On receiving such hints, the
+                  client has the opportunity to engage, or engage the
+                  requesting party, in claims collection flows. At least one
+                  of the <spanx style="verb">required_claims</spanx> or <spanx
+                  style="verb">redirect_user</spanx> sub-properties MUST be
+                  supplied.<list style="hanging">
+                      <t hangText="required_claims">An array containing
+                      objects that describe the required claims, with the
+                      following properties:<list style="hanging">
+                          <t hangText="name">OPTIONAL. A string (which MAY be
+                          a URI) representing the name of the claim; the "key"
+                          in a key-value pair.</t>
+
+                          <t hangText="friendly_name">OPTIONAL. A string that
+                          provides a more human-readable form of the
+                          attribute's name, which may be useful as a "display
+                          name" for use in user interfaces in cases where the
+                          actual name is complex or opaque, such as an OID or
+                          a UUID.</t>
+
+                          <t hangText="claim_type">OPTIONAL. A string,
+                          indicating the expected interpretation of the
+                          provided claim value. The string MAY be a URI.</t>
+
+                          <t hangText="claim_token_format">OPTIONAL. An array
+                          of strings specifying a set of acceptable formats
+                          for a token pushed by the client containing this
+                          claim (see <xref target="claim-push" />). Any one of
+                          the referenced formats would satisfy the
+                          authorization server's requirements. Each string MAY
+                          be a URI.</t>
+
+                          <t hangText="issuer">OPTIONAL. An array of strings
+                          specifying a set of acceptable issuing authorities
+                          for the claim. Any one of the referenced authorities
+                          would satisfy the authorization server's
+                          requirements. Each string MAY be a URI.</t>
+                        </list></t>
+
+                      <t hangText="redirect_user">OPTIONAL. The claims
+                      interaction endpoint URI to which to redirect the
+                      end-user requesting party at the authorization server to
+                      continue the process of interactive claims gathering.
+                      For example, the authorization server may require the
+                      requesting party to fill out a CAPTCHA to help prove
+                      humanness. If the requesting party is not an end-user,
+                      then no client action would be possible on receiving the
+                      hint. If a static claims interaction endpoint was also
+                      provided in the authorization server's configuration
+                      document, then this value overrides the static value.
+                      Providing a value in this response might be appropriate,
+                      for example, if the URI needs to be customized per
+                      requesting party.</t>
+                    </list></t>
+                </list></t>
+            </list></t>
 
           <figure>
             <preamble>Example when the ticket has expired:</preamble>
@@ -1846,6 +1903,7 @@ Cache-Control: no-store
 
 {  
    "error":"need_info",
+   "ticket":"ZXJyb3JfZGV0YWlscw==",
    "error_details":{  
       "required_claims":[  
          {  
@@ -1865,68 +1923,6 @@ Cache-Control: no-store
 }
 ]]></artwork>
           </figure>
-
-          <t>The <spanx style="verb">error_details</spanx> object is OPTIONAL
-          for the authorization server to provide. It provides hints about
-          additional requirements regarding information the authorization
-          server needs about the requesting party. On receiving such hints,
-          the client has the opportunity to engage, or engage the requesting
-          party, with the authorization server in claims collection flows of
-          various types. The <spanx style="verb">error_details</spanx>
-          sub-property MAY contain the following parameters, where at least
-          one of <spanx style="verb">required_claims</spanx> or <spanx
-          style="verb">redirect_user</spanx> MUST be supplied.<list
-              style="hanging">
-              <t hangText="required_claims">An array containing objects that
-              describe characteristics of the required claims, with the
-              following properties:<list style="hanging">
-                  <t hangText="name">OPTIONAL. A string (which MAY be a URI)
-                  representing the name of the claim; the "key" in a key-value
-                  pair.</t>
-
-                  <t hangText="friendly_name">OPTIONAL. A string that provides
-                  a more human-readable form of the attribute's name, which
-                  may be useful as a "display name" for use in user interfaces
-                  in cases where the actual name is complex or opaque, such as
-                  an OID or a UUID.</t>
-
-                  <t hangText="claim_type">OPTIONAL. A string, indicating the
-                  expected interpretation of the provided claim value. The
-                  string MAY be a URI.</t>
-
-                  <t hangText="claim_token_format">OPTIONAL. An array of
-                  strings specifying a set of acceptable formats for a token
-                  pushed by the client containing this claim (see <xref
-                  target="claim-push" />). Any one of the referenced formats
-                  would satisfy the authorization server's requirements. Each
-                  string MAY be a URI.</t>
-
-                  <t hangText="issuer">OPTIONAL. An array of strings
-                  specifying a set of acceptable issuing authorities for the
-                  claim. Any one of the referenced authorities would satisfy
-                  the authorization server's requirements. Each string MAY be
-                  a URI.</t>
-                </list></t>
-
-              <t hangText="redirect_user">OPTIONAL. The claims interaction
-              endpoint URI to which to redirect the end-user requesting party
-              at the authorization server to continue the process of
-              interactive claims gathering. For example, the authorization
-              server may require the requesting party to fill out a CAPTCHA to
-              help prove humanness. If the requesting party is not an
-              end-user, then no client action would be possible on receiving
-              the hint. If a static claims interaction endpoint was also
-              provided in the authorization server's configuration document,
-              then this value overrides the static value. Providing a value in
-              this response might be appropriate, for example, if the URI
-              needs to be customized per requesting party.</t>
-
-              <t hangText="ticket">A permission ticket that allows the client
-              to make further requests to the authorization server during this
-              attempted authorization. The value of this permission ticket
-              MUST NOT be the same as the one the client used to make its
-              request.</t>
-            </list></t>
         </section>
       </section>
 
@@ -2192,48 +2188,35 @@ Content-Type: application/json
       </section>
     </section>
 
-    <section anchor="errors" title="Error Messages">
-      <t>Both OAuth and UMA errors can occur.</t>
+    <section anchor="uma-error-response" title="UMA Error Responses">
+      <t>If a request triggers no OAuth error, but is invalid for another
+      reason as defined throughout this specification, the authorization
+      server or resource server responds with an UMA error, sometimes along
+      with a specified HTTP status code, by supplying the following properties
+      in a JSON-encoded object in the body of the HTTP response: <list
+          style="hanging">
+          <t hangText="error">REQUIRED. A single error code. Values for this
+          property are defined throughout this specification.</t>
 
-      <section anchor="oauth-error-response" title="OAuth Error Responses">
-        <t>As described in <xref target="protection-api" />, the protection
-        API requires a PAT for access. PATs are simply OAuth access tokens
-        with appropriate scope. If a request to an endpoint in this API fails
-        due to an invalid, missing, or expired access token, or requires
-        higher privileges at this endpoint than provided by the token
-        supplied, the authorization server responds with an OAuth error.</t>
-      </section>
+          <t hangText="error_description">OPTIONAL. Human-readable text
+          providing additional information.</t>
 
-      <section anchor="uma-error-response" title="UMA Error Responses">
-        <t>If a request triggers no OAuth error, but is invalid for another
-        reason as defined throughout this specification, the authorization
-        server or resource server responds with an UMA error, sometimes along
-        with a specified HTTP status code, by supplying the following
-        properties in a JSON-encoded object in the body of the HTTP response:
-        <list style="hanging">
-            <t hangText="error">REQUIRED. A single error code. Values for this
-            property are defined throughout this specification.</t>
+          <t hangText="error_uri">OPTIONAL. A URI identifying a human-readable
+          web page with information about the error.</t>
+        </list></t>
 
-            <t hangText="error_description">OPTIONAL. Human-readable text
-            providing additional information.</t>
+      <t>The following is a common error code that applies to several
+      UMA-specified request messages: <list style="hanging">
+          <t hangText="invalid_request">The request is missing a required
+          parameter, includes an invalid parameter value, includes a parameter
+          more than once, or is otherwise malformed. The authorization server
+          MUST respond with the HTTP 400 (Bad Request) status code.</t>
+        </list></t>
 
-            <t hangText="error_uri">OPTIONAL. A URI identifying a
-            human-readable web page with information about the error.</t>
-          </list></t>
+      <figure>
+        <preamble>For example:</preamble>
 
-        <t>The following is a common error code that applies to several
-        UMA-specified request messages: <list style="hanging">
-            <t hangText="invalid_request">The request is missing a required
-            parameter, includes an invalid parameter value, includes a
-            parameter more than once, or is otherwise malformed. The
-            authorization server MUST respond with the HTTP 400 (Bad Request)
-            status code.</t>
-          </list></t>
-
-        <figure>
-          <preamble>For example:</preamble>
-
-          <artwork><![CDATA[HTTP/1.1 400 Bad Request
+        <artwork><![CDATA[HTTP/1.1 400 Bad Request
 Content-Type: application/json
 Cache-Control: no-store
 ...
@@ -2244,8 +2227,7 @@ Cache-Control: no-store
    "error_uri":"https://as.example.com/errors/bad_uma_request"
 }
 ]]></artwork>
-        </figure>
-      </section>
+      </figure>
     </section>
 
     <section anchor="comms-profiles" title="Profiles for API Extensibility">
@@ -2882,11 +2864,44 @@ Cache-Control: no-store
                   </t>
 
                   <t hangText="ticket">
-                    <spanx style="verb">rpt</spanx>
+                    <spanx style="verb">pct</spanx>
+                  </t>
+
+                  <t hangText="ticket">
+                    <spanx style="verb">upgraded</spanx>
                   </t>
                 </list></t>
             </list>
           </t>
+        </section>
+
+        <section title="Error Responses">
+          <t>The UMA grant specifies the following additional error responses,
+          as defined in <xref target="authorization-failure" />:<list
+              style="symbols">
+              <t>
+                <spanx style="verb">invalid_ticket</spanx>
+              </t>
+
+              <t>
+                <spanx style="verb">expired_ticket</spanx>
+              </t>
+
+              <t>
+                <spanx style="verb">not_authorized</spanx>
+              </t>
+
+              <t>
+                <spanx style="verb">request_submitted</spanx>
+              </t>
+
+              <t>
+                <spanx style="verb">need_info</spanx>
+              </t>
+            </list></t>
+
+          <t>It uses the existing <spanx style="verb">invalid_scope</spanx>
+          error response in a constrained sense.</t>
         </section>
       </section>
     </section>
