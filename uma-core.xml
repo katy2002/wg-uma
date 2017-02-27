@@ -1729,6 +1729,13 @@ Host: client.example.com
               permissions associated with the RPT from the request.</t>
             </list></t>
 
+          <t>The authorization server MAY include any of the parameters
+          defined in Section 5.1 of <xref target="RFC6749" /> on its response,
+          except that it is NOT RECOMMENDED to include the <spanx
+          style="verb">scope</spanx> parameter. This is because RPTs are
+          associated with scopes that are associated with specific
+          resources.</t>
+
           <t>If the authorization server is upgrading an RPT, and the RPT
           string is new rather than repeating the RPT provided by the client
           in the request, then the authorization server SHOULD revoke the
