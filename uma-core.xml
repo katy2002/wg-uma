@@ -2788,7 +2788,7 @@ Cache-Control: no-store
         <section title="Registry Contents">
           <t>
             <list style="symbols">
-              <t>Claim name: permissions</t>
+              <t>Claim name: <spanx style="verb">permissions</spanx></t>
 
               <t>Claim description: Array of objects, each describing a set of
               scoped, time-limitable entitlements to a resource</t>
@@ -2803,9 +2803,31 @@ Cache-Control: no-store
         </section>
       </section>
 
+      <section title="Well-Known URI Registration">
+        <t>This specification registers the well-known URI defined in <xref
+        target="am-endpoints" />, as required by Section 5.1 of <xref
+        target="RFC5785" />.</t>
+
+        <section title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>URI suffix: <spanx
+              style="verb">uma2-configuration</spanx></t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - staff@kantarainitiative.org</t>
+
+              <t>Specification document: <xref
+              target="config-doc-discovery-endpoint" /> in this document</t>
+            </list>
+          </t>
+        </section>
+      </section>
+
       <section title="OAuth Token Introspection Response Registration">
         <t>This specification registers the claim defined in <xref
-        target="uma-bearer-token-profile" />.</t>
+        target="uma-bearer-token-profile" />, as required by Section 3.1 of
+        <xref target="RFC7662" />.</t>
 
         <section title="Registry Contents">
           <t>
@@ -2825,28 +2847,10 @@ Cache-Control: no-store
         </section>
       </section>
 
-      <section title="Well-Known URI Registration">
-        <t>This specification registers the well-known URI defined in <xref
-        target="am-endpoints" />.</t>
-
-        <section title="Registry Contents">
-          <t>
-            <list style="symbols">
-              <t>URI suffix: uma2-configuration</t>
-
-              <t>Change controller: Kantara Initiative User-Managed Access
-              Work Group - staff@kantarainitiative.org</t>
-
-              <t>Specification document: <xref target="am-endpoints" /> in
-              this document</t>
-            </list>
-          </t>
-        </section>
-      </section>
-
       <section title="OAuth 2.0 Extension Grant Parameters Registration">
         <t>This specification registers the parameters defined in <xref
-        target="uma-grant-type" />.</t>
+        target="uma-grant-type" />, as required by Section 11.2 of <xref
+        target="RFC6749" />.</t>
 
         <section title="Registry Contents">
           <t>
@@ -2939,7 +2943,8 @@ Cache-Control: no-store
 
       <section title="OAuth 2.0 Extensions Error Registration">
         <t>This specification registers the errors defined in <xref
-        target="authorization-failure" />.</t>
+        target="authorization-failure" />, as required by Section 11.4 of
+        <xref target="RFC6749" />.</t>
 
         <section title="Registry Contents">
           <t>
