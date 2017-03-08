@@ -2603,28 +2603,6 @@ Cache-Control: no-store
     <section anchor="IANA" title="IANA Considerations">
       <t>This document makes the following requests of IANA.</t>
 
-      <section title="JSON Web Token Claims Registration">
-        <t>This specification registers the claim defined in <xref
-        target="uma-bearer-token-profile" />.</t>
-
-        <section title="Registry Contents">
-          <t>
-            <list style="symbols">
-              <t>Claim name: <spanx style="verb">permissions</spanx></t>
-
-              <t>Claim description: Array of objects, each describing a set of
-              scoped, time-limitable entitlements to a resource</t>
-
-              <t>Change controller: Kantara Initiative User-Managed Access
-              Work Group - wg-uma@kantarainitiative.org</t>
-
-              <t>Specification document: <xref
-              target="uma-bearer-token-profile" /> in this document</t>
-            </list>
-          </t>
-        </section>
-      </section>
-
       <section title="Well-Known URI Registration">
         <t>This specification registers the well-known URI defined in <xref
         target="am-endpoints" />, as required by Section 5.1 of <xref
@@ -2641,6 +2619,29 @@ Cache-Control: no-store
 
               <t>Specification document: <xref
               target="config-doc-discovery-endpoint" /> in this document</t>
+            </list>
+          </t>
+        </section>
+      </section>
+
+      <section title="JSON Web Token Claims Registration">
+        <t>This specification registers the claim defined in <xref
+        target="uma-bearer-token-profile" />, as required by <xref
+        target="OIDCCore" />.</t>
+
+        <section title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>Claim name: <spanx style="verb">permissions</spanx></t>
+
+              <t>Claim description: Array of objects, each describing a set of
+              scoped, time-limitable entitlements to a resource</t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - wg-uma@kantarainitiative.org</t>
+
+              <t>Specification document: <xref
+              target="uma-bearer-token-profile" /> in this document</t>
             </list>
           </t>
         </section>
