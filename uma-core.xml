@@ -56,7 +56,7 @@
       </address>
     </author>
 
-    <date day="26" month="February" year="2017" />
+    <date day="7" month="March" year="2017" />
 
     <abstract>
       <t>User-Managed Access (UMA) 2.0 makes use of OAuth 2.0 and related
@@ -326,9 +326,8 @@
           <t>This specification is designed for use with HTTP <xref
           target="RFC2616" />, and for interoperability and security in the
           context of loosely coupled services and applications operated by
-          independent parties in multiple domains. Unless one or more of the
-          profiles defined in <xref target="comms-profiles" /> are in use, the
-          following are REQUIRED:<list style="symbols">
+          independent parties in multiple domains. The following are
+          REQUIRED:<list style="symbols">
               <t>The authorization server MUST expose its endpoints over
               HTTP.</t>
 
@@ -347,6 +346,11 @@
               <t>The resource server MUST expose its protected resources
               through an HTTP service.</t>
             </list></t>
+
+          <t>The use of UMA over any protocol other than HTTP is undefined. In
+          such circumstances, it is RECOMMENDED to define profiles or
+          extensions to achieve interoperability among independent
+          implementations (see <xref target="profiles" />).</t>
         </section>
 
         <section anchor="resource-scope-interpretation"
@@ -729,17 +733,10 @@
             style="verb">.well-known/uma2-configuration</spanx> path
             components.</t>
 
-            <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
-            Claim token profiles supported by this authorization server. The
-            property value is an array of string values, where each string
-            value MAY be a URI.</t>
-
             <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
             profiles supported by this authorization server. The property
             value is an array of string values, where each string value is a
-            URI identifying an UMA profile. Examples of UMA profiles are the
-            API extensibility profiles defined in <xref
-            target="comms-profiles" />.</t>
+            URI identifying an UMA profile.</t>
 
             <t hangText="registration_endpoint"><vspace />OPTIONAL. The
             endpoint to use for performing dynamic client registration in the
@@ -1365,7 +1362,7 @@ Authorization: Bearer jwfLG53^sad$#f
    "ticket":"016f84e8-f9b9-11e0-bd6f-0021cc6004de",
    "claim_tokens":[  
       {  
-         "format":"http://openid.net/specs/openid-connect-core-1_0.html#HybridIDToken",
+         "format":"http://openid.net/specs/openid-connect-core-1_0.html#IDToken",
          "token":"..."
       }
    ]
@@ -1373,10 +1370,9 @@ Authorization: Bearer jwfLG53^sad$#f
 ]]></artwork>
           </figure>
 
-          <t>This specification provides a framework for extensibility through
-          claim token profiling (see <xref target="profiles" />). The
-          authorization server MAY support any number of claim token profiles,
-          and SHOULD document the claim token profiles it supports in its
+          <t>This specification provides a way to define profiles of claim
+          token formats for use with UMA (see <xref target="profiles" />). The
+          authorization server SHOULD document the profiles it supports in its
           configuration document.</t>
         </section>
 
@@ -1701,7 +1697,8 @@ Host: client.example.com
           target="authorization-assessment" />), it returns an HTTP 200 (OK)
           status code with a response body containing the RPT with which it
           has associated the requested permissions. The authorization server
-          MAY return a refresh token.</t>
+          MAY return a refresh token. See <xref target="refresh" /> for more
+          information about refreshing an RPT.</t>
 
           <t>The authorization server MAY add the following properties to its
           response:<list style="hanging">
@@ -1799,9 +1796,7 @@ Content-Type: application/json
               in the request does not match an available scope for any of the
               resources associated with requested permissions for the
               permission ticket provided by the client. The authorization
-              server responds with the HTTP 400 (Bad Request) status code.
-              This error code is an extended version defined for use with the
-              UMA grant.</t>
+              server responds with the HTTP 400 (Bad Request) status code.</t>
 
               <t hangText="not_authorized">The client is not authorized to
               have these permissions added. The authorization server responds
@@ -2197,9 +2192,19 @@ Content-Type: application/json
           authorization server) before proceeding.</t>
         </section>
       </section>
+
+      <section anchor="refresh" title="Authorization Server Refreshes RPT">
+        <t>As noted in <xref target="give-rpt" />, when issuing an RPT, the
+        authorization server MAY also issue a refresh token.</t>
+
+        <t>If, during a request to refresh an access token, the client
+        includes the <spanx style="verb">scope</spanx> parameter and provides
+        a refresh token that the authorization server provided at the same
+        time as issuing an RPT, the effect is undefined.</t>
+      </section>
     </section>
 
-    <section anchor="uma-error-response" title="UMA Error Responses">
+    <section anchor="uma-error-response" title="Error Responses">
       <t>If a request triggers no OAuth error, but is invalid for another
       reason as defined throughout this specification, the authorization
       server or resource server responds with an UMA error, sometimes along
@@ -2241,213 +2246,17 @@ Cache-Control: no-store
       </figure>
     </section>
 
-    <section anchor="comms-profiles" title="Profiles for API Extensibility">
-      <t>In some circumstances, it may be desirable to couple UMA software
-      entity roles tightly. For example, an authorization server application
-      might also need to act as a client application in order to retrieve
-      protected resources so that it can present to resource owners a
-      dashboard-like user interface that accurately guides the setting of
-      policy; it might need to access itself-as-authorization server for that
-      purpose. For another example, the same organization might operate both
-      an authorization server and a resource server that communicate only with
-      each other behind a firewall, and it might seek more efficient
-      communication methods between them.</t>
-
-      <t>In other circumstances, it may be desirable to bind UMA flows to
-      transport mechanisms other than HTTP even if entities remain loosely
-      coupled. For example, in Internet of Things scenarios, Constrained
-      Application Protocol (CoAP) may be preferred over HTTP.</t>
-
-      <t>This section defines profiles that allow inter-role communications
-      channels and methods to vary in these circumstances. This specification
-      still REQUIRES authorization servers to issue PATs, and RPTs and
-      associate permissions with RPTs, and REQUIRES resource servers not to
-      give access in the case of an invalid RPT or an RPT associated with
-      insufficient authorization. This is because, although tokens might not
-      always appear on the wire in the normal fashion, the tokens may
-      represent sets of expected behaviors of additional parties unable to
-      take part in these optimization opportunities.</t>
-
-      <t>Where alternate communications channels are being used between
-      independently implemented system entities, it is RECOMMENDED, for
-      reasons of implementation interoperability, to define concrete extension
-      profiles that build on these extensibility profiles (see <xref
-      target="profiles" />).</t>
-
-      <section anchor="alt-prot-profile"
-               title="Protection API Extensibility Profile">
-        <t>This section defines a profile for UMA where the authorization
-        server and resource server roles either reside in the same system
-        entity or otherwise have a privileged or specialized communications
-        channel between them. Following is a summary:<list style="symbols">
-            <t>Identifying URI:
-            https://docs.kantarainitiative.org/uma/profiles/prot-ext-1.0</t>
-
-            <t>Profile author and contact information: Mark Dobrinic
-            (mdobrinic@cozmanova.com)</t>
-
-            <t>Updates or obsoletes: None; this profile is new.</t>
-
-            <t>Security considerations: See below.</t>
-
-            <t>Privacy considerations: See below.</t>
-
-            <t>Error states: None additional.</t>
-          </list></t>
-
-        <t>Using this profile, the resource server MAY use means other than
-        the HTTP-based protection API that is protected by TLS and OAuth (or
-        an OAuth-based authentication protocol) to communicate with the
-        authorization server in all respects, including using software
-        interfaces and methods rather than network interfaces and APIs. The
-        authorization server MUST still issue PATs and RPTs and associate
-        permissions with RPTs, and the resource server still MUST NOT give
-        clients access in the case of invalid RPTs or RPTs that are associated
-        with insufficient permissions. Interactions with entities other than
-        the authorization server or resource server MUST be preserved exactly
-        as they would have if either of them were using standardized UMA APIs,
-        unless other extensibility profiles are also in use.</t>
-
-        <t>An authorization server using any of the opportunities afforded by
-        this profile MUST declare use of this profile by supplying its
-        identifying URI for one of its <spanx
-        style="verb">uma_profiles_supported</spanx> values in its
-        configuration document (see <xref target="am-endpoints" />).</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the opportunity to make deployments more secure by reducing possible
-        attack vectors. However, if the entities do not use TLS but
-        communicate across a transport layer, it is RECOMMENDED to use an
-        alternate means of transport-layer security, for example, using DTLS
-        in the case of a CoAP-based UMA profile.</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the potential to compromise privacy by promoting the freer exchange of
-        personal information within a deployment ecosystem. It is RECOMMENDED
-        to account for privacy impacts in each deployment scenario.</t>
-      </section>
-
-      <section anchor="alt-authz-profile"
-               title="Authorization API Extensibility Profile">
-        <t>This section defines a profile for UMA where the authorization
-        server and client roles either reside in the same system entity or
-        otherwise have a privileged or specialized communications channel
-        between them. Following is a summary:<list style="symbols">
-            <t>Identifying URI:
-            https://docs.kantarainitiative.org/uma/profiles/authz-ext-1.0</t>
-
-            <t>Profile author and contact information: Mark Dobrinic
-            (mdobrinic@cozmanova.com)</t>
-
-            <t>Updates or obsoletes: None; this profile is new.</t>
-
-            <t>Security considerations: See below.</t>
-
-            <t>Privacy considerations: See below.</t>
-
-            <t>Error states: None additional.</t>
-          </list></t>
-
-        <t>Using this profile, the client MAY use means other than the
-        HTTP-based authorization API that is protected by TLS and OAuth (or an
-        OAuth-based authentication protocol) to communicate with the
-        authorization server in all respects, including using software
-        interfaces and methods rather than network interfaces and APIs. The
-        authorization server MUST still issue PATs and RPTs and associate
-        permissions with RPTs, and the resource server still MUST NOT give
-        clients access in the case of invalid RPTs or RPTs that are associated
-        with insufficient permissions. Interactions with entities other than
-        the authorization server or client MUST be preserved exactly as they
-        would have if either of them were using standardized UMA APIs, unless
-        other extensibility profiles are also in use.</t>
-
-        <t>An authorization server using any of the opportunities afforded by
-        this profile MUST declare use of this profile by supplying its
-        identifying URI for one of its <spanx
-        style="verb">uma_profiles_supported</spanx> values in its
-        configuration document (see <xref target="am-endpoints" />).</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the opportunity to make deployments more secure by reducing possible
-        attack vectors. However, if the entities do not use TLS but
-        communicate across a transport layer, it is RECOMMENDED to use an
-        alternate means of transport-layer security, for example, using DTLS
-        in the case of a CoAP-based UMA profile.</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the potential to compromise privacy by promoting the freer exchange of
-        personal information within a deployment ecosystem. It is RECOMMENDED
-        to account for privacy impacts in each deployment scenario.</t>
-      </section>
-
-      <section anchor="alt-resource-profile"
-               title="Resource Interface Extensibility Profile">
-        <t>This section defines a profile for UMA where the resource server
-        and client roles either reside in the same system entity or otherwise
-        have a privileged or specialized communications channel between them.
-        Following is a summary:<list style="symbols">
-            <t>Identifying URI:
-            https://docs.kantarainitiative.org/uma/profiles/rsrc-ext-1.0</t>
-
-            <t>Profile author and contact information: Mark Dobrinic
-            (mdobrinic@cozmanova.com)</t>
-
-            <t>Updates or obsoletes: None; this profile is new.</t>
-
-            <t>Security considerations: See below.</t>
-
-            <t>Privacy considerations: See below.</t>
-
-            <t>Error states: None additional.</t>
-          </list></t>
-
-        <t>Using this profile, the resource server MAY use means other than an
-        HTTP-based resource interface to communicate with the authorization
-        server in all respects, including using software interfaces and
-        methods rather than network interfaces and APIs. The resource server
-        still MUST NOT give clients access in the case of invalid RPTs or RPTs
-        that are associated with insufficient permissions. Interactions with
-        entities other than the resource server or client MUST be preserved
-        exactly as they would have if either of them were using standardized
-        UMA APIs, unless other extensibility profiles are also in use.</t>
-
-        <t>An authorization server involved in deployments where resource
-        servers and clients are known to be using opportunities afforded by
-        the resource interface extensibility profile MAY declare use of this
-        profile by supplying its identifying URI for one of its <spanx
-        style="verb">uma_profiles_supported</spanx> values in its
-        configuration document (see <xref target="am-endpoints" />).</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the opportunity to make deployments more secure by reducing possible
-        attack vectors. However, if the entities do not use TLS but
-        communicate across a transport layer, it is RECOMMENDED to use an
-        alternate means of transport-layer security, for example, using DTLS
-        in the case of a CoAP-based UMA profile.</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the potential to compromise privacy by promoting the freer exchange of
-        personal information within a deployment ecosystem. It is RECOMMENDED
-        to account for privacy impacts in each deployment scenario.</t>
-      </section>
-    </section>
-
     <section anchor="profiles"
              title="Specifying Additional Profiles and Extensions">
-      <t>This specification defines a protocol that has a variety of optional
-      features. For implementation interoperability and to serve particular
+      <t>For implementation interoperability and to serve particular
       deployment scenarios, including sector-specific ones such as healthcare
       or e-government, third parties may want to define profiles of UMA that
-      restrict these options.</t>
+      restrict its available options.</t>
 
-      <t>Further, this specification builds in specific extensibility points
-      so that third parties can define profiles of companion technologies to
-      fit interoperably within the UMA framework. For example, third parties
-      can define claim token profiles (see <xref target="claim-push" />) using
-      whatever identity assertion or claim token technology is appropriate for
-      their ecosystems. Third parties can also build on the API extensibility
-      profiles (see <xref target="comms-profiles" />) to define their own "API
-      extension profiles".</t>
+      <t>Further, third parties may want to define profiles of companion
+      technologies to fit interoperably within the UMA framework, for example,
+      claim token formats suitable for claim pushing (see <xref
+      target="claim-push" />) or protocol alternatives to HTTP.</t>
 
       <t>Finally, this specification uses the natural extensibility within its
       messaging formats, <spanx
@@ -2477,21 +2286,20 @@ Cache-Control: no-store
           <t>Supply references to any previous version that this version
           updates or obsoletes.</t>
 
-          <t>Define any additional or changed error states, including, for for
-          claim token profiles, whether <spanx
-          style="verb">error_details</spanx> hints are modified.</t>
+          <t>Define any additional or changed error states, including, for
+          claim token formats, whether <spanx
+          style="verb">error_details</spanx> hints are modified or
+          extended.</t>
 
           <t>Specify any modified or new interactions between endpoint
-          entities involved in the profile and any extension properties used
-          in messages.</t>
+          entities and any extension properties used in messages.</t>
 
           <t>For any new access token types, specify the keyword to be used in
           HTTP Authorization headers.</t>
 
           <t>Specify any conformance and interoperability considerations.</t>
 
-          <t>Specify any security and privacy considerations additional to
-          <xref target="sec-consid" /> and <xref target="priv-consid" />.</t>
+          <t>Specify any additional security and privacy considerations.</t>
         </list></t>
     </section>
 
@@ -2795,28 +2603,6 @@ Cache-Control: no-store
     <section anchor="IANA" title="IANA Considerations">
       <t>This document makes the following requests of IANA.</t>
 
-      <section title="JSON Web Token Claims Registration">
-        <t>This specification registers the claim defined in <xref
-        target="uma-bearer-token-profile" />.</t>
-
-        <section title="Registry Contents">
-          <t>
-            <list style="symbols">
-              <t>Claim name: <spanx style="verb">permissions</spanx></t>
-
-              <t>Claim description: Array of objects, each describing a set of
-              scoped, time-limitable entitlements to a resource</t>
-
-              <t>Change controller: Kantara Initiative User-Managed Access
-              Work Group - wg-uma@kantarainitiative.org</t>
-
-              <t>Specification document: <xref
-              target="uma-bearer-token-profile" /> in this document</t>
-            </list>
-          </t>
-        </section>
-      </section>
-
       <section title="Well-Known URI Registration">
         <t>This specification registers the well-known URI defined in <xref
         target="am-endpoints" />, as required by Section 5.1 of <xref
@@ -2833,6 +2619,29 @@ Cache-Control: no-store
 
               <t>Specification document: <xref
               target="config-doc-discovery-endpoint" /> in this document</t>
+            </list>
+          </t>
+        </section>
+      </section>
+
+      <section title="JSON Web Token Claims Registration">
+        <t>This specification registers the claim defined in <xref
+        target="uma-bearer-token-profile" />, as required by <xref
+        target="OIDCCore" />.</t>
+
+        <section title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>Claim name: <spanx style="verb">permissions</spanx></t>
+
+              <t>Claim description: Array of objects, each describing a set of
+              scoped, time-limitable entitlements to a resource</t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - wg-uma@kantarainitiative.org</t>
+
+              <t>Specification document: <xref
+              target="uma-bearer-token-profile" /> in this document</t>
             </list>
           </t>
         </section>
@@ -2961,22 +2770,6 @@ Cache-Control: no-store
         <xref target="RFC6749" />.</t>
 
         <section title="Registry Contents">
-          <t>
-            <list style="symbols">
-              <t>Error name: <spanx style="verb">invalid_scope</spanx></t>
-
-              <t>Change controller: Kantara Initiative User-Managed Access
-              Work Group - staff@kantarainitiative.org</t>
-
-              <t>Specification document: <xref target="uma-grant-type" /> in
-              this document (definition replaces the original definition in
-              <xref target="RFC6749" />)</t>
-
-              <t>Error usage location: authorization server response, token
-              endpoint</t>
-            </list>
-          </t>
-
           <t>
             <list style="symbols">
               <t>Error name: <spanx style="verb">not_authorized</spanx> (note:

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <?xml-styleshet type='text/xsl' href='http://xml2rfc.tools.ietf.org/authoring/rfc2629.xslt' ?>
 <!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
-"http://xml2rfc.tools.ietf.org/authoring/rfc2629.dtd">
+"http://xml2rfc.tools.ietf.org/authoring/rfc2629.dtd" [
+<!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC7159 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY RFC6749 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749.xml">
+<!ENTITY RFC7591 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7591.xml">
+]>
 <rfc category="std" docName="oauth-resource-reg" id="kantara" ipr="kantara"
      target="draft" version="2.0">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -45,7 +50,7 @@
       </address>
     </author>
 
-    <date day="24" month="January" year="2017" />
+    <date day="7" month="March" year="2017" />
 
     <abstract>
       <t>This specification defines a method for an OAuth 2.0 resource server
@@ -93,10 +98,10 @@
         </list></t>
 
       <section title="Notational Conventions">
-        <t>The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT',
-        'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this
-        document are to be interpreted as described in <xref
-        target="RFC2119" />.</t>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+        "OPTIONAL" in this document are to be interpreted as described in
+        <xref target="RFC2119" />.</t>
 
         <t>Unless otherwise noted, all protocol properties and values are case
         sensitive. JSON <xref target="RFC7159" /> data structures defined by
@@ -165,10 +170,16 @@
         characteristics of a resource sufficiently for an authorization server
         to protect it. A resource description has the following
         properties:<list style="hanging">
-            <t hangText="name">OPTIONAL. A human-readable string describing
-            the resource. The authorization server MAY use this name in any
-            user interface it presents to a resource owner, for example, for
+            <t hangText="name">OPTIONAL. A human-readable string naming the
+            resource. The authorization server MAY use this name in any user
+            interface it presents to a resource owner, for example, for
             resource protection monitoring or policy setting.</t>
+
+            <t hangText="description">OPTIONAL. A human-readable string
+            describing the resource at greater length. The authorization
+            server MAY use this description in any user interface it presents
+            to a resource owner, for example, for resource protection
+            monitoring or policy setting.</t>
 
             <t hangText="uri">OPTIONAL. A URI that provides the network
             location for the resource being registered. For example, if the
@@ -196,9 +207,7 @@
             <t hangText="scopes">REQUIRED. An array of strings, serving as
             scope identifiers, indicating the available scopes for this
             resource. Any of the strings MAY be either a plain string or a URI
-            (see <xref target="scope-interpretation" />). If a scope is a URI,
-            then it MUST resolve to a scope description document (see <xref
-            target="action-desc" />).</t>
+            (see <xref target="scope-interpretation" />).</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource. The authorization server MAY use the
@@ -206,6 +215,13 @@
             owner, for example, for resource protection monitoring or policy
             setting.</t>
           </list></t>
+
+        <t>The resource server MAY encode human-readable strings using the
+        pattern described in Section 2.2 of <xref target="RFC7591" /> for
+        representing multiple languages and scripts, where language tags are
+        added delimited by a "#" character. It is OPTIONAL for the
+        authorization server to make use of this pattern, if present in
+        registered resources, for run-time dynamic string display effects.</t>
 
         <figure>
           <preamble>For example, this description characterizes a resource (a
@@ -236,10 +252,16 @@
           characteristics of a scope sufficiently for an authorization server
           to protect the resource with this scope. A scope description has the
           following properties:<list style="hanging">
-              <t hangText="name">OPTIONAL. A human-readable string describing
-              the scope. The authorization server MAY use this name in any
-              user interface it presents to a resource owner, for example, for
+              <t hangText="name">OPTIONAL. A human-readable string naming the
+              scope. The authorization server MAY use this name in any user
+              interface it presents to a resource owner, for example, for
               resource protection monitoring or policy setting.</t>
+
+              <t hangText="description">OPTIONAL. A human-readable string
+              describing the resource at greater length. The authorization
+              server MAY use this description in any user interface it
+              presents to a resource owner, for example, for resource
+              protection monitoring or policy setting.</t>
 
               <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
               representing the scope. The authorization server MAY use the
@@ -247,6 +269,13 @@
               owner, for example, for resource protection monitoring or policy
               setting.</t>
             </list></t>
+
+          <t>The resource server MAY encode human-readable strings using the
+          pattern described in Section 2.2 of <xref target="RFC7591" /> for
+          representing multiple languages and scripts, where language tags are
+          added delimited by a "#" character. It is OPTIONAL for the
+          authorization server to make use of this pattern, if present in
+          registered scopes, for run-time dynamic string display effects.</t>
 
           <figure>
             <preamble>For example, this scope description characterizes a
@@ -517,8 +546,8 @@ Authorization: Bearer 204c69636b6c69
         <section anchor="list-resource-sets"
                  title="List Resource Descriptions">
           <t>Lists all previously registered resource identifiers for this
-          user using the GET method. The authorization server MUST return the
-          list in the form of a JSON array of <spanx
+          resource owner using the GET method. The authorization server MUST
+          return the list in the form of a JSON array of <spanx
           style="verb">{_id}</spanx> string values.</t>
 
           <t>The resource server uses this method as a first step in checking
@@ -591,6 +620,12 @@ Authorization: Bearer 204c69636b6c69
       in a policy-setting interface, the authorization server SHOULD protect
       the resource owner from malicious content hosted at the URIs where
       possible.</t>
+
+      <t>The authorization server SHOULD also sanitize any display input
+      sourced from resource description documents and scope description
+      documents to mitigate cross-site scripting risks. One approach is to use
+      existing libraries that clean HTML and other types of text
+      fragments.</t>
 
       <t>Additionally, a rogue resource server could supply misleading names
       for a resource or scope, or mislabel the type of a resource, leading a
@@ -966,13 +1001,15 @@ Host: as.example.com
           <date day="" month="May" year="2015" />
         </front>
       </reference>
+
+      &RFC2119;
+
+      &RFC6749;
+
+      &RFC7159;
+
+      &RFC7591;
     </references>
-
-    <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
-
-    <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
-
-    <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7159"?>
 
     <references title="Informative References">
       <reference anchor="OpenIDConnect"
