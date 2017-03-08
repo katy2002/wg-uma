@@ -2766,6 +2766,20 @@ Cache-Control: no-store
         possibility.</t>
       </section>
 
+      <section title="Resource Owner Information at the Resource Server">
+        <t>Since the initial request for a resource is made in an unauthorized
+        and unauthenticated context, such requests are by definition open to
+        all users. The response of that request includes a pointer to the
+        authorization server to query for an access token and present claims.
+        If it is known out of band that authorization server is owned and
+        controlled by a single user, or visiting the authorization server
+        contains other identifying information, then an unauthenticated and
+        unauthorized client would be able to tell which resource owner is
+        associated with a given resource. Other information about the resource
+        owner, such as organizational affiliation or group membership, may be
+        gained from this transaction as well.</t>
+      </section>
+
       <section title="Profiles and Trust Establishment">
         <t>Parties that are operating and using UMA software entities have
         opportunities to establish agreements about mutual rights,
