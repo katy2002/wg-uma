@@ -326,9 +326,8 @@
           <t>This specification is designed for use with HTTP <xref
           target="RFC2616" />, and for interoperability and security in the
           context of loosely coupled services and applications operated by
-          independent parties in multiple domains. Unless one or more of the
-          profiles defined in <xref target="comms-profiles" /> are in use, the
-          following are REQUIRED:<list style="symbols">
+          independent parties in multiple domains. The following are
+          REQUIRED:<list style="symbols">
               <t>The authorization server MUST expose its endpoints over
               HTTP.</t>
 
@@ -347,6 +346,11 @@
               <t>The resource server MUST expose its protected resources
               through an HTTP service.</t>
             </list></t>
+
+          <t>The use of UMA over any protocol other than HTTP is undefined. In
+          such circumstances, it is RECOMMENDED to define profiles or
+          extensions to achieve interoperability among independent
+          implementations (see <xref target="profiles" />).</t>
         </section>
 
         <section anchor="resource-scope-interpretation"
@@ -2250,197 +2254,6 @@ Cache-Control: no-store
 }
 ]]></artwork>
       </figure>
-    </section>
-
-    <section anchor="comms-profiles" title="Profiles for API Extensibility">
-      <t>In some circumstances, it may be desirable to couple UMA software
-      entity roles tightly. For example, an authorization server application
-      might also need to act as a client application in order to retrieve
-      protected resources so that it can present to resource owners a
-      dashboard-like user interface that accurately guides the setting of
-      policy; it might need to access itself-as-authorization server for that
-      purpose. For another example, the same organization might operate both
-      an authorization server and a resource server that communicate only with
-      each other behind a firewall, and it might seek more efficient
-      communication methods between them.</t>
-
-      <t>In other circumstances, it may be desirable to bind UMA flows to
-      transport mechanisms other than HTTP even if entities remain loosely
-      coupled. For example, in Internet of Things scenarios, Constrained
-      Application Protocol (CoAP) may be preferred over HTTP.</t>
-
-      <t>This section defines profiles that allow inter-role communications
-      channels and methods to vary in these circumstances. This specification
-      still REQUIRES authorization servers to issue PATs, and RPTs and
-      associate permissions with RPTs, and REQUIRES resource servers not to
-      give access in the case of an invalid RPT or an RPT associated with
-      insufficient authorization. This is because, although tokens might not
-      always appear on the wire in the normal fashion, the tokens may
-      represent sets of expected behaviors of additional parties unable to
-      take part in these optimization opportunities.</t>
-
-      <t>Where alternate communications channels are being used between
-      independently implemented system entities, it is RECOMMENDED, for
-      reasons of implementation interoperability, to define concrete extension
-      profiles that build on these extensibility profiles (see <xref
-      target="profiles" />).</t>
-
-      <section anchor="alt-prot-profile"
-               title="Protection API Extensibility Profile">
-        <t>This section defines a profile for UMA where the authorization
-        server and resource server roles either reside in the same system
-        entity or otherwise have a privileged or specialized communications
-        channel between them. Following is a summary:<list style="symbols">
-            <t>Identifying URI:
-            https://docs.kantarainitiative.org/uma/profiles/prot-ext-1.0</t>
-
-            <t>Profile author and contact information: Mark Dobrinic
-            (mdobrinic@cozmanova.com)</t>
-
-            <t>Updates or obsoletes: None; this profile is new.</t>
-
-            <t>Security considerations: See below.</t>
-
-            <t>Privacy considerations: See below.</t>
-
-            <t>Error states: None additional.</t>
-          </list></t>
-
-        <t>Using this profile, the resource server MAY use means other than
-        the HTTP-based protection API that is protected by TLS and OAuth (or
-        an OAuth-based authentication protocol) to communicate with the
-        authorization server in all respects, including using software
-        interfaces and methods rather than network interfaces and APIs. The
-        authorization server MUST still issue PATs and RPTs and associate
-        permissions with RPTs, and the resource server still MUST NOT give
-        clients access in the case of invalid RPTs or RPTs that are associated
-        with insufficient permissions. Interactions with entities other than
-        the authorization server or resource server MUST be preserved exactly
-        as they would have if either of them were using standardized UMA APIs,
-        unless other extensibility profiles are also in use.</t>
-
-        <t>An authorization server using any of the opportunities afforded by
-        this profile MUST declare use of this profile by supplying its
-        identifying URI for one of its <spanx
-        style="verb">uma_profiles_supported</spanx> values in its
-        configuration document (see <xref target="am-endpoints" />).</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the opportunity to make deployments more secure by reducing possible
-        attack vectors. However, if the entities do not use TLS but
-        communicate across a transport layer, it is RECOMMENDED to use an
-        alternate means of transport-layer security, for example, using DTLS
-        in the case of a CoAP-based UMA profile.</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the potential to compromise privacy by promoting the freer exchange of
-        personal information within a deployment ecosystem. It is RECOMMENDED
-        to account for privacy impacts in each deployment scenario.</t>
-      </section>
-
-      <section anchor="alt-authz-profile"
-               title="Authorization API Extensibility Profile">
-        <t>This section defines a profile for UMA where the authorization
-        server and client roles either reside in the same system entity or
-        otherwise have a privileged or specialized communications channel
-        between them. Following is a summary:<list style="symbols">
-            <t>Identifying URI:
-            https://docs.kantarainitiative.org/uma/profiles/authz-ext-1.0</t>
-
-            <t>Profile author and contact information: Mark Dobrinic
-            (mdobrinic@cozmanova.com)</t>
-
-            <t>Updates or obsoletes: None; this profile is new.</t>
-
-            <t>Security considerations: See below.</t>
-
-            <t>Privacy considerations: See below.</t>
-
-            <t>Error states: None additional.</t>
-          </list></t>
-
-        <t>Using this profile, the client MAY use means other than the
-        HTTP-based authorization API that is protected by TLS and OAuth (or an
-        OAuth-based authentication protocol) to communicate with the
-        authorization server in all respects, including using software
-        interfaces and methods rather than network interfaces and APIs. The
-        authorization server MUST still issue PATs and RPTs and associate
-        permissions with RPTs, and the resource server still MUST NOT give
-        clients access in the case of invalid RPTs or RPTs that are associated
-        with insufficient permissions. Interactions with entities other than
-        the authorization server or client MUST be preserved exactly as they
-        would have if either of them were using standardized UMA APIs, unless
-        other extensibility profiles are also in use.</t>
-
-        <t>An authorization server using any of the opportunities afforded by
-        this profile MUST declare use of this profile by supplying its
-        identifying URI for one of its <spanx
-        style="verb">uma_profiles_supported</spanx> values in its
-        configuration document (see <xref target="am-endpoints" />).</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the opportunity to make deployments more secure by reducing possible
-        attack vectors. However, if the entities do not use TLS but
-        communicate across a transport layer, it is RECOMMENDED to use an
-        alternate means of transport-layer security, for example, using DTLS
-        in the case of a CoAP-based UMA profile.</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the potential to compromise privacy by promoting the freer exchange of
-        personal information within a deployment ecosystem. It is RECOMMENDED
-        to account for privacy impacts in each deployment scenario.</t>
-      </section>
-
-      <section anchor="alt-resource-profile"
-               title="Resource Interface Extensibility Profile">
-        <t>This section defines a profile for UMA where the resource server
-        and client roles either reside in the same system entity or otherwise
-        have a privileged or specialized communications channel between them.
-        Following is a summary:<list style="symbols">
-            <t>Identifying URI:
-            https://docs.kantarainitiative.org/uma/profiles/rsrc-ext-1.0</t>
-
-            <t>Profile author and contact information: Mark Dobrinic
-            (mdobrinic@cozmanova.com)</t>
-
-            <t>Updates or obsoletes: None; this profile is new.</t>
-
-            <t>Security considerations: See below.</t>
-
-            <t>Privacy considerations: See below.</t>
-
-            <t>Error states: None additional.</t>
-          </list></t>
-
-        <t>Using this profile, the resource server MAY use means other than an
-        HTTP-based resource interface to communicate with the authorization
-        server in all respects, including using software interfaces and
-        methods rather than network interfaces and APIs. The resource server
-        still MUST NOT give clients access in the case of invalid RPTs or RPTs
-        that are associated with insufficient permissions. Interactions with
-        entities other than the resource server or client MUST be preserved
-        exactly as they would have if either of them were using standardized
-        UMA APIs, unless other extensibility profiles are also in use.</t>
-
-        <t>An authorization server involved in deployments where resource
-        servers and clients are known to be using opportunities afforded by
-        the resource interface extensibility profile MAY declare use of this
-        profile by supplying its identifying URI for one of its <spanx
-        style="verb">uma_profiles_supported</spanx> values in its
-        configuration document (see <xref target="am-endpoints" />).</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the opportunity to make deployments more secure by reducing possible
-        attack vectors. However, if the entities do not use TLS but
-        communicate across a transport layer, it is RECOMMENDED to use an
-        alternate means of transport-layer security, for example, using DTLS
-        in the case of a CoAP-based UMA profile.</t>
-
-        <t>Same-entity communication or a tight integration of entities has
-        the potential to compromise privacy by promoting the freer exchange of
-        personal information within a deployment ecosystem. It is RECOMMENDED
-        to account for privacy impacts in each deployment scenario.</t>
-      </section>
     </section>
 
     <section anchor="profiles"
