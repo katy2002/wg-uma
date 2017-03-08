@@ -1701,7 +1701,8 @@ Host: client.example.com
           target="authorization-assessment" />), it returns an HTTP 200 (OK)
           status code with a response body containing the RPT with which it
           has associated the requested permissions. The authorization server
-          MAY return a refresh token.</t>
+          MAY return a refresh token. See <xref target="refresh" /> for more
+          information about refreshing an RPT.</t>
 
           <t>The authorization server MAY add the following properties to its
           response:<list style="hanging">
@@ -2196,6 +2197,16 @@ Content-Type: application/json
           suitable resource identifier (and thus resource owner and
           authorization server) before proceeding.</t>
         </section>
+      </section>
+
+      <section anchor="refresh" title="Authorization Server Refreshes RPT">
+        <t>As noted in <xref target="give-rpt" />, when issuing an RPT, the
+        authorization server MAY also issue a refresh token.</t>
+
+        <t>If, during a request to refresh an access token, the client
+        includes the <spanx style="verb">scope</spanx> parameter and provides
+        a refresh token that the authorization server provided at the same
+        time as issuing an RPT, the effect is undefined.</t>
       </section>
     </section>
 
