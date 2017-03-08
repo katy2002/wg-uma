@@ -2210,7 +2210,7 @@ Content-Type: application/json
       </section>
     </section>
 
-    <section anchor="uma-error-response" title="UMA Error Responses">
+    <section anchor="uma-error-response" title="Error Responses">
       <t>If a request triggers no OAuth error, but is invalid for another
       reason as defined throughout this specification, the authorization
       server or resource server responds with an UMA error, sometimes along
