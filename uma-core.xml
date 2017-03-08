@@ -1796,9 +1796,7 @@ Content-Type: application/json
               in the request does not match an available scope for any of the
               resources associated with requested permissions for the
               permission ticket provided by the client. The authorization
-              server responds with the HTTP 400 (Bad Request) status code.
-              This error code is an extended version defined for use with the
-              UMA grant.</t>
+              server responds with the HTTP 400 (Bad Request) status code.</t>
 
               <t hangText="not_authorized">The client is not authorized to
               have these permissions added. The authorization server responds
@@ -2771,22 +2769,6 @@ Cache-Control: no-store
         <xref target="RFC6749" />.</t>
 
         <section title="Registry Contents">
-          <t>
-            <list style="symbols">
-              <t>Error name: <spanx style="verb">invalid_scope</spanx></t>
-
-              <t>Change controller: Kantara Initiative User-Managed Access
-              Work Group - staff@kantarainitiative.org</t>
-
-              <t>Specification document: <xref target="uma-grant-type" /> in
-              this document (definition replaces the original definition in
-              <xref target="RFC6749" />)</t>
-
-              <t>Error usage location: authorization server response, token
-              endpoint</t>
-            </list>
-          </t>
-
           <t>
             <list style="symbols">
               <t>Error name: <spanx style="verb">not_authorized</spanx> (note:
