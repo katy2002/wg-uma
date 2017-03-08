@@ -207,9 +207,7 @@
             <t hangText="scopes">REQUIRED. An array of strings, serving as
             scope identifiers, indicating the available scopes for this
             resource. Any of the strings MAY be either a plain string or a URI
-            (see <xref target="scope-interpretation" />). If a scope is a URI,
-            then it MUST resolve to a scope description document (see <xref
-            target="action-desc" />).</t>
+            (see <xref target="scope-interpretation" />).</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource. The authorization server MAY use the
@@ -277,8 +275,7 @@
           representing multiple languages and scripts, where language tags are
           added delimited by a "#" character. It is OPTIONAL for the
           authorization server to make use of this pattern, if present in
-          registered resources, for run-time dynamic string display
-          effects.</t>
+          registered scopes, for run-time dynamic string display effects.</t>
 
           <figure>
             <preamble>For example, this scope description characterizes a
