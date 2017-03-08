@@ -592,6 +592,12 @@ Authorization: Bearer 204c69636b6c69
       the resource owner from malicious content hosted at the URIs where
       possible.</t>
 
+      <t>The authorization server SHOULD also sanitize any display input
+      sourced from resource description documents and scope description
+      documents to mitigate cross-site scripting risks. One approach is to use
+      existing libraries that clean HTML and other types of text
+      fragments.</t>
+
       <t>Additionally, a rogue resource server could supply misleading names
       for a resource or scope, or mislabel the type of a resource, leading a
       resource owner to set policy incorrectly.</t>
