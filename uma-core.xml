@@ -733,17 +733,10 @@
             style="verb">.well-known/uma2-configuration</spanx> path
             components.</t>
 
-            <t hangText="claim_token_profiles_supported"><vspace />OPTIONAL.
-            Claim token profiles supported by this authorization server. The
-            property value is an array of string values, where each string
-            value MAY be a URI.</t>
-
             <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
             profiles supported by this authorization server. The property
             value is an array of string values, where each string value is a
-            URI identifying an UMA profile. Examples of UMA profiles are the
-            API extensibility profiles defined in <xref
-            target="comms-profiles" />.</t>
+            URI identifying an UMA profile.</t>
 
             <t hangText="registration_endpoint"><vspace />OPTIONAL. The
             endpoint to use for performing dynamic client registration in the
@@ -1369,7 +1362,7 @@ Authorization: Bearer jwfLG53^sad$#f
    "ticket":"016f84e8-f9b9-11e0-bd6f-0021cc6004de",
    "claim_tokens":[  
       {  
-         "format":"http://openid.net/specs/openid-connect-core-1_0.html#HybridIDToken",
+         "format":"http://openid.net/specs/openid-connect-core-1_0.html#IDToken",
          "token":"..."
       }
    ]
@@ -1377,10 +1370,9 @@ Authorization: Bearer jwfLG53^sad$#f
 ]]></artwork>
           </figure>
 
-          <t>This specification provides a framework for extensibility through
-          claim token profiling (see <xref target="profiles" />). The
-          authorization server MAY support any number of claim token profiles,
-          and SHOULD document the claim token profiles it supports in its
+          <t>This specification provides a way to define profiles of claim
+          token formats for use with UMA (see <xref target="profiles" />). The
+          authorization server SHOULD document the profiles it supports in its
           configuration document.</t>
         </section>
 
@@ -2258,20 +2250,15 @@ Cache-Control: no-store
 
     <section anchor="profiles"
              title="Specifying Additional Profiles and Extensions">
-      <t>This specification defines a protocol that has a variety of optional
-      features. For implementation interoperability and to serve particular
+      <t>For implementation interoperability and to serve particular
       deployment scenarios, including sector-specific ones such as healthcare
       or e-government, third parties may want to define profiles of UMA that
-      restrict these options.</t>
+      restrict its available options.</t>
 
-      <t>Further, this specification builds in specific extensibility points
-      so that third parties can define profiles of companion technologies to
-      fit interoperably within the UMA framework. For example, third parties
-      can define claim token profiles (see <xref target="claim-push" />) using
-      whatever identity assertion or claim token technology is appropriate for
-      their ecosystems. Third parties can also build on the API extensibility
-      profiles (see <xref target="comms-profiles" />) to define their own "API
-      extension profiles".</t>
+      <t>Further, third parties may want to define profiles of companion
+      technologies to fit interoperably within the UMA framework, for example,
+      claim token formats suitable for claim pushing (see <xref
+      target="claim-push" />) or protocol alternatives to HTTP.</t>
 
       <t>Finally, this specification uses the natural extensibility within its
       messaging formats, <spanx
@@ -2301,21 +2288,20 @@ Cache-Control: no-store
           <t>Supply references to any previous version that this version
           updates or obsoletes.</t>
 
-          <t>Define any additional or changed error states, including, for for
-          claim token profiles, whether <spanx
-          style="verb">error_details</spanx> hints are modified.</t>
+          <t>Define any additional or changed error states, including, for
+          claim token formats, whether <spanx
+          style="verb">error_details</spanx> hints are modified or
+          extended.</t>
 
           <t>Specify any modified or new interactions between endpoint
-          entities involved in the profile and any extension properties used
-          in messages.</t>
+          entities and any extension properties used in messages.</t>
 
           <t>For any new access token types, specify the keyword to be used in
           HTTP Authorization headers.</t>
 
           <t>Specify any conformance and interoperability considerations.</t>
 
-          <t>Specify any security and privacy considerations additional to
-          <xref target="sec-consid" /> and <xref target="priv-consid" />.</t>
+          <t>Specify any additional security and privacy considerations.</t>
         </list></t>
     </section>
 
