@@ -546,8 +546,8 @@ Authorization: Bearer 204c69636b6c69
         <section anchor="list-resource-sets"
                  title="List Resource Descriptions">
           <t>Lists all previously registered resource identifiers for this
-          user using the GET method. The authorization server MUST return the
-          list in the form of a JSON array of <spanx
+          resource owner using the GET method. The authorization server MUST
+          return the list in the form of a JSON array of <spanx
           style="verb">{_id}</spanx> string values.</t>
 
           <t>The resource server uses this method as a first step in checking
