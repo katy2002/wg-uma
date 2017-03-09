@@ -2497,11 +2497,9 @@ Cache-Control: no-store
         behavior. These agreements can be used to improve the parties'
         respective security postures, and written profiles are a key mechanism
         for conveying and enforcing these agreements. <xref
-        target="profiles" /> discusses profiling. <xref
-        target="comms-profiles" /> discusses profiling for extensibility.
-        Finally, see <xref target="UMA-legal" /> to learn about tools to
-        assist in the legal and contractual elements of deploying UMA-enabled
-        services.</t>
+        target="profiles" /> discusses profiling. See <xref
+        target="UMA-legal" /> to learn about tools to assist in the legal and
+        contractual elements of deploying UMA-enabled services.</t>
 
         <section anchor="trust-push"
                  title="Requirements for Trust When Clients Push Claim Tokens">
