@@ -181,20 +181,6 @@
             to a resource owner, for example, for resource protection
             monitoring or policy setting.</t>
 
-            <t hangText="uri">OPTIONAL. A URI that provides the network
-            location for the resource being registered. For example, if the
-            resource corresponds to a digital photo, the value of this
-            property could be an HTTP-based URI identifying the location of
-            the photo on the web. The authorization server MAY use this
-            information in various ways, for example, to inform clients about
-            a resource's location as a discovery function. Note: When a client
-            attempts access to a presumptively protected resource without an
-            access token, the resource server needs to ascertain the
-            authorization server and resource identifier associated with that
-            resource without any context to guide it. In practice, this likely
-            means that the URI reference used by the client needs to be unique
-            per resource.</t>
-
             <t hangText="type">OPTIONAL. A string identifying the semantics of
             the resource. For example, if the resource is an identity claim
             that leverages standardized claim semantics for "verified email
