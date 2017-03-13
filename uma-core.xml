@@ -1089,7 +1089,8 @@ Authorization: Bearer 204c69636b6c69
           references data held on the server or by including data within the
           ticket itself.</t>
 
-          <t>Permission tickets MUST be single-use.</t>
+          <t>Permission tickets MUST be single-use. This prevents
+          susceptibility to a session fixation attack.</t>
 
           <t>The authorization server MUST invalidate a permission ticket when
           the client presents the permission ticket to either the token
