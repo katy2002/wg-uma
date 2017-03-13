@@ -842,8 +842,9 @@ Host: example.com
         <xref target="config-properties" />.</t>
 
         <figure>
-          <preamble>Example (note the use of <spanx
-          style="verb">https:</spanx> for endpoints throughout):</preamble>
+          <preamble>Example of a configuration document returned in response
+          to a query (note the use of <spanx style="verb">https:</spanx> for
+          endpoints throughout):</preamble>
 
           <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
@@ -851,13 +852,38 @@ Content-Type: application/json
 
 {  
    "issuer":"https://example.com",
-   "registration_endpoint":"https://as.example.com/dyn_client_reg_uri",
-   "token_endpoint":"https://as.example.com/token_uri",
-   "authorization_endpoint":"https://as.example.com/authz_uri",
-   "claims_interaction_endpoint":"https://as.example.com/claims_uri",
-   "resource_registration_endpoint":"https://as.example.com/rs/rsrc_uri",
-   "introspection_endpoint":"https://as.example.com/rs/status_uri",
-   "permission_endpoint":"https://as.example.com/rs/perm_uri"
+   "registration_endpoint":"https://as.example.com/dyn_client_reg",
+   "token_endpoint":"https://as.example.com/token",
+   "authorization_endpoint":"https://as.example.com/authz",
+   "claims_interaction_endpoint":"https://as.example.com/claims",
+   "resource_registration_endpoint":"https://as.example.com/rs/rsrc",
+   "introspection_endpoint":"https://as.example.com/rs/status",
+   "permission_endpoint":"https://as.example.com/rs/perm"
+}
+]]></artwork>
+        </figure>
+
+        <figure>
+          <preamble>Example of a configuration document response containing
+          the <spanx style="verb">uma_profiles_supported</spanx> configuration
+          property indicating that the authorization server supports an UMA
+          profile related to the OpenID Connect-based claim token
+          format:</preamble>
+
+          <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json
+...
+
+{  
+   "issuer":"https://example.com",
+   "uma_profiles_supported":"http://openid.net/specs/openid-connect-core-1_0.html#IDToken",
+   "registration_endpoint":"https://as.example.com/dyn_client_reg",
+   "token_endpoint":"https://as.example.com/token",
+   "authorization_endpoint":"https://as.example.com/authz",
+   "claims_interaction_endpoint":"https://as.example.com/claims",
+   "resource_registration_endpoint":"https://as.example.com/rs/rsrc",
+   "introspection_endpoint":"https://as.example.com/rs/status",
+   "permission_endpoint":"https://as.example.com/rs/perm"
 }
 ]]></artwork>
         </figure>
@@ -1019,7 +1045,7 @@ Host: photoz.example.com
             the authorization server's permission endpoint, with a PAT in the
             header:</preamble>
 
-            <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
+            <artwork><![CDATA[POST /host/rsrc HTTP/1.1
 Content-Type: application/json
 Host: as.example.com
 Authorization: Bearer 204c69636b6c69
@@ -1040,7 +1066,7 @@ Authorization: Bearer 204c69636b6c69
             the authorization server's permission endpoint, with a PAT in the
             header:</preamble>
 
-            <artwork><![CDATA[POST /host/rsrc_uri HTTP/1.1
+            <artwork><![CDATA[POST /host/rsrc HTTP/1.1
 Content-Type: application/json
 Host: as.example.com
 Authorization: Bearer 204c69636b6c69
@@ -1919,7 +1945,7 @@ Cache-Control: no-store
             ]
          }
       ],
-      "redirect_user":"https://as.example.com/rqp_claims_uri?id=2346576421"
+      "redirect_user":"https://as.example.com/rqp_claims?id=2346576421"
    }
 }
 ]]></artwork>
@@ -2005,7 +2031,7 @@ Host: photoz.example.com
             authorization server for introspection of an RPT, with a PAT in
             the header:</preamble>
 
-            <artwork><![CDATA[POST /rs/status_uri HTTP/1.1
+            <artwork><![CDATA[POST /rs/status HTTP/1.1
 Host: as.example.com
 Authorization: Bearer 204c69636b6c69
 ...
