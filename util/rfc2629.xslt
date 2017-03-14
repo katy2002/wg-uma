@@ -3946,7 +3946,7 @@
           <xsl:choose>
             <xsl:when test="position() = 2">
               <tr>
-                <td class="left kantara">Contributors:</td>
+                <td class="left kantara">Authors:</td>
                 <td class="left kantara"><xsl:value-of select="$contributor"/></td>
               </tr>
             </xsl:when>
