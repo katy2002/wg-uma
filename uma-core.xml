@@ -150,9 +150,7 @@
         <t><xref target="UMA-roles" /> shows the communications among the
         roles at a high level.</t>
 
-        <figure align="center" anchor="UMA-roles">
-          <preamble>Roles and Communications</preamble>
-
+        <figure align="center" anchor="UMA-roles" title="Roles and Communications">
           <artwork><![CDATA[                                        +------------------+
                                         |     resource     |
        +- - manage (out of scope) - - - |       owner      |
@@ -413,8 +411,7 @@
         specifications of messaging flows and options that correspond to all
         possible success and failure paths.</t>
 
-        <figure anchor="protocol-flow">
-          <preamble>Protocol Flow Summary</preamble>
+        <figure anchor="protocol-flow" title="Protocol Flow Summary">
 
           <artwork><![CDATA[resource resource        authorization             client requesting
  owner    server             server                   |      party
