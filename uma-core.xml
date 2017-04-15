@@ -150,7 +150,8 @@
         <t><xref target="UMA-roles" /> shows the communications among the
         roles at a high level.</t>
 
-        <figure align="center" anchor="UMA-roles" title="Roles and Communications">
+        <figure align="center" anchor="UMA-roles"
+                title="Roles and Communications">
           <artwork><![CDATA[                                        +------------------+
                                         |     resource     |
        +- - manage (out of scope) - - - |       owner      |
@@ -412,7 +413,6 @@
         possible success and failure paths.</t>
 
         <figure anchor="protocol-flow" title="Protocol Flow Summary">
-
           <artwork><![CDATA[resource resource        authorization             client requesting
  owner    server             server                   |      party
    |Redir...|1 for PAT issuance|                      |        |
@@ -2409,12 +2409,7 @@ Cache-Control: no-store
 
               <t>A stronger strategy is to gather claims interactively from an
               end-user requesting party that demonstrate that some
-              sufficiently strong level authentication was performed.</t>
-
-              <t>The strongest strategy is to disallow bearer-type RPTs, by
-              providing or requiring a holder-of-key approach. In this way,
-              the wielder of the access token must engage in a live session
-              for proof-of-possession.</t>
+              sufficiently strong level of authentication was performed.</t>
             </list></t>
         </section>
 
@@ -2439,69 +2434,77 @@ Cache-Control: no-store
         </section>
       </section>
 
-      <section anchor="sec-consid-oauth-oidc"
-               title="OAuth- and OpenID Connect-Related Security Considerations">
-        <t>This section discusses security considerations related to UMA's use
-        of OAuth and OpenID Connect.</t>
+      <section title="Strengthening RPT Protection Using Proof of Possession">
+        <t>After the client's access attempt on a protected resource, assuming
+        the client sent an RPT of the bearer style such as those defined by
+        <xref target="RFC6750" />, the resource server will have received from
+        the client the entire secret portion of the token. This specification
+        assumes only bearer-type tokens because they are the only type
+        standardized as of this writing. However, to strengthen protection for
+        RPTs using a proof-of-possession approach, the resource server could
+        receive an RPT that consists of only a cryptographically signed token
+        identifier, and then to validate the signature, it could submit the
+        token identifier to the token introspection endpoint to obtain the
+        necessary key information. The details of this usage are out of scope
+        of this specification.</t>
+      </section>
 
-        <section title="Strengthening Client Authentication Using OpenID Connect">
-          <t>Along with requiring TLS, UMA requires OAuth, or any OAuth-based
-          authentication protocol, as the security mechanism for its
-          protection API. The resource server thus acts in the role of an
-          OAuth client at the authorization server's protection API. While it
-          is possible to use any profile of OAuth for this protection, it is
-          RECOMMENDED for the authorization server to use OpenID Connect, and
-          to use its mechanisms for stronger client authentication at the
-          token endpoint, in order to strengthen the authentication of OAuth
-          clients. Section 16 of <xref target="OIDCCore" /> provides more
-          information on OpenID Connect security considerations.</t>
-        </section>
+      <section title="Strengthening Client Authentication Using OpenID Connect">
+        <t>Along with requiring TLS, UMA requires OAuth, or any OAuth-based
+        authentication protocol, as the security mechanism for its protection
+        API. The resource server thus acts in the role of an OAuth client at
+        the authorization server's protection API. While it is possible to use
+        any profile of OAuth for this protection, it is RECOMMENDED for the
+        authorization server to use OpenID Connect, and to use its mechanisms
+        for stronger client authentication at the token endpoint, in order to
+        strengthen the authentication of OAuth clients. Section 16 of <xref
+        target="OIDCCore" /> provides more information on OpenID Connect
+        security considerations.</t>
+      </section>
 
-        <section title="Interacting with Resource Owners and Requesting Parties Using OAuth's Implicit Grant Type">
-          <t>Clients using the OAuth implicit grant type carry particular
-          vulnerabilities in OAuth, and using OpenID Connect is of no help in
-          this circumstance. This is true where a resource server is used as
-          an OAuth client for obtaining a PAT on a resource owner's behalf,
-          and also where an authorization server is gathering claims from a
-          requesting party through OAuth.</t>
+      <section title="Interacting with Resource Owners and Requesting Parties Using OAuth's Implicit Grant Type">
+        <t>Clients using the OAuth implicit grant type carry particular
+        vulnerabilities in OAuth, and using OpenID Connect is of no help in
+        this circumstance. This is true where a resource server is used as an
+        OAuth client for obtaining a PAT on a resource owner's behalf, and
+        also where an authorization server is gathering claims from a
+        requesting party through OAuth.</t>
 
-          <t>For example, an "implicit client" might require the retrieval of
-          PATs more frequently, for each browser on each platform. An attacker
-          can initiate a spear phishing attack on the resource owner with a
-          link to a malicious website, relying on the resource owner to
-          authenticate to the authorization server through an email-based
-          identity provider in order to receive the PAT. The site can
-          impersonate the resource owner using the browser client's client ID
-          in an OpenID Connect implicit request to the authorization server.
-          If the resource owner had previously authorized a PAT to be issued,
-          this attempt will likely succeed. The subsequently issued PAT could
-          be used for resource registration and other protection API
-          tasks.</t>
+        <t>For example, an "implicit client" might require the retrieval of
+        PATs more frequently, for each browser on each platform. An attacker
+        can initiate a spear phishing attack on the resource owner with a link
+        to a malicious website, relying on the resource owner to authenticate
+        to the authorization server through an email-based identity provider
+        in order to receive the PAT. The site can impersonate the resource
+        owner using the browser client's client ID in an OpenID Connect
+        implicit request to the authorization server. If the resource owner
+        had previously authorized a PAT to be issued, this attempt will likely
+        succeed. The subsequently issued PAT could be used for resource
+        registration and other protection API tasks.</t>
 
-          <t>A number of mitigation strategies are possible.<list
-              style="symbols">
-              <t>The authorization server could penalize or disallow use of
-              the implicit grant flow. This could be done at a variety of
-              levels:<list style="symbols">
-                  <t>Enabling resource owners to define policies controlling
-                  the use of such clients</t>
+        <t>A number of mitigation strategies are possible.<list
+            style="symbols">
+            <t>The authorization server could penalize or disallow use of the
+            implicit grant flow. This could be done at a variety of
+            levels:<list style="symbols">
+                <t>Enabling resource owners to define policies controlling the
+                use of such clients</t>
 
-                  <t>Setting system-default policies controlling their use</t>
+                <t>Setting system-default policies controlling their use</t>
 
-                  <t>Participating in mutual agreements with other parties,
-                  for example, through the definition and mandated use of
-                  profiles, that admit only suitably secure client
-                  applications to interact with service operators</t>
-                </list></t>
+                <t>Participating in mutual agreements with other parties, for
+                example, through the definition and mandated use of profiles,
+                that admit only suitably secure client applications to
+                interact with service operators</t>
+              </list></t>
 
-              <t>The authorization server could support dynamic client
-              registration at the client instance level, such that each
-              instance receives a unique client_id and secret. The client can
-              then use the authorization code flow and have at least some form
-              of client authentication. However, this is easier for a mobile
-              app than for a browser-based HTML app.</t>
-            </list></t>
-        </section>
+            <t>The authorization server could support dynamic client
+            registration at the client instance level, such that each instance
+            receives a unique client_id and secret. The client can then use
+            the authorization code flow and have at least some form of client
+            authentication. However, this is easier for a mobile app than for
+            a browser-based HTML app.</t>
+          </list></t>
       </section>
 
       <section anchor="cred-guessing" title="Credentials-Guessing">
