@@ -621,7 +621,7 @@
                   the authorization server for interactive claims gathering as
                   its first step after receiving a permission ticket. For this
                   to happen, the client needs the authorization server to have
-                  statically declared a claims redirection endpoint in its
+                  statically declared a claims interaction endpoint in its
                   configuration document.</t>
 
                   <t>When the client requests an RPT at the token endpoint
@@ -1282,7 +1282,9 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               <t hangText="grant_type">REQUIRED. MUST be the value <spanx
               style="verb">urn:ietf:params:oauth:grant-type:uma-ticket</spanx>.</t>
 
-              <t hangText="ticket">REQUIRED. The permission ticket.</t>
+              <t hangText="ticket">REQUIRED. The most recent permission ticket
+              received by the client as part of this authorization
+              process.</t>
 
               <t hangText="rpt">OPTIONAL. Supplying an existing RPT gives the
               authorization server the option of upgrading that RPT instead of
@@ -1371,11 +1373,11 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
                   and authorization server are assumed to have a prior
                   relationship that establishes how to interpret these
                   features. For example, if the referenced format equates to
-                  SAML 2.0 assertions and the claim token contains audience
-                  restrictions, it is the joint responsibility of the client
-                  and authorization server to determine the proper audience
-                  values that enable successful token consumption (see for
-                  <xref target="trust-push" /> relevant security
+                  OpenID Connect ID tokens and the claim token contains
+                  audience restrictions, it is the joint responsibility of the
+                  client and authorization server to determine the proper
+                  audience values that enable successful token consumption
+                  (see for <xref target="trust-push" /> relevant security
                   considerations).</t>
                 </list></t>
             </list></t>
@@ -1387,7 +1389,8 @@ ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
 Host: www.example.com
 Authorization: Bearer jwfLG53^sad$#f
 ...
-
+grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket&
+ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de&
 {  
    "rpt":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
    "ticket":"016f84e8-f9b9-11e0-bd6f-0021cc6004de",
@@ -1450,9 +1453,9 @@ Authorization: Bearer jwfLG53^sad$#f
               performed as described in Section 6.2.1 of <xref
               target="RFC3986" /> (Simple String Comparison).</t>
 
-              <t hangText="ticket">REQUIRED. The latest permission ticket
-              associated with the client's current request for this requesting
-              party.</t>
+              <t hangText="ticket">REQUIRED. The most recent permission ticket
+              received by the client as part of this authorization
+              process.</t>
 
               <t hangText="state">RECOMMENDED. An opaque value used by the
               client to maintain state between the request and callback. The
@@ -1524,7 +1527,7 @@ Host: as.example.com
             (line breaks are shown only for display convenience):</preamble>
 
             <artwork><![CDATA[GET /redirect_claims?&state=abc
-&authorization_state=claims_submitted HTTP/1.1
+&ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s HTTP/1.1
 Host: client.example.com
 ]]></artwork>
           </figure>
@@ -1877,7 +1880,7 @@ Content-Type: application/json
 
           <figure>
             <preamble>Example when the ticket has expired or the client's
-            request has failed outright:</preamble>
+            request for authorization has failed outright:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 400 Bad Request
 Content-Type: application/json
@@ -1944,7 +1947,7 @@ Cache-Control: no-store
           carrying an RPT:</preamble>
 
           <artwork><![CDATA[GET /users/alice/album/photo.jpg HTTP/1.1
-Authorization: Bearer vF9dft4qmT
+Authorization: Bearer sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
 Host: photoz.example.com
 ...
 ]]></artwork>
