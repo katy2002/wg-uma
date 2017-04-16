@@ -602,11 +602,12 @@
           <t>It is OPTIONAL for the authorization server to issue a persisted
           claims token (PCT) to the client when issuing an RPT in order to
           optimize a future RPT request. The PCT represents the set of claims
-          collected by the authorization server during current authorization
-          process. It is intended to be used at the same authorization server
-          as appropriate when the same client seeks an RPT for the same
-          requesting party in a subsequent authorization process, even if for
-          a different resource or at a different resource server entirely.</t>
+          collected by the authorization server during the current
+          authorization process. It is intended to be used at the same
+          authorization server as appropriate when the same client seeks an
+          RPT for the same requesting party in a subsequent authorization
+          process, even if for a different resource or at a different resource
+          server entirely.</t>
 
           <t>The authorization server conducts the authorization process in
           three phases, with some potential variation in order and looping as
@@ -643,9 +644,10 @@
               in <xref target="give-rpt" />), an RPT, and an optional PCT, or
               an error code (as defined in <xref
               target="authorization-failure" />). If the error code is <spanx
-              style="verb">need_info</spanx>, the authorization server
+              style="verb">need_info</spanx> or <spanx
+              style="verb">request_submitted</spanx>, the authorization server
               provides a permission ticket, giving the client an opportunity
-              once again to loop within the same authorization process.</t>
+              to continue within the same authorization process.</t>
             </list></t>
 
           <t>Different choices of phase order, claim collection style, and use
@@ -1477,41 +1479,15 @@ Host: as.example.com
 
         <section anchor="redirect-back"
                  title="Authorization Server Redirect of Requesting Party Back to Client After Interactive Claims-Gathering">
-          <t>At the conclusion of its interaction with the requesting party,
-          the authorization server returns the requesting party to the client,
-          adding the following parameters to the query component of the claims
-          redirection URI using the <spanx
+          <t>At the conclusion of a successful interaction with the requesting
+          party, the authorization server returns the requesting party to the
+          client, adding the following parameters to the query component of
+          the claims redirection URI using the <spanx
           style="verb">application/x-www-form-urlencoded</spanx> format:<list
               style="hanging">
-              <t hangText="authorization_state">REQUIRED. Indicates that the
-              authorization server completed its claims-gathering interaction
-              with the requesting party with the indicated state:<list
-                  style="hanging">
-                  <t hangText="claims_submitted">The client is free to return
-                  to the token endpoint to seek permissions once again.</t>
-
-                  <t hangText="not_authorized">The client is not authorized to
-                  have the desired permissions added.</t>
-
-                  <t hangText="need_info">The authorization server needs
-                  additional information in order to determine whether the
-                  client is authorized to have these permissions. This
-                  response directs the client to return to the token endpoint,
-                  where it might be provided with <spanx
-                  style="verb">error_details</spanx> hints about additional
-                  information needed.</t>
-
-                  <t hangText="request_submitted">The authorization server
-                  requires intervention by the resource owner to determine
-                  whether permissions can be added. Further immediate
-                  interaction between the client, requesting party, and
-                  authorization server is out of scope of this
-                  specification.</t>
-                </list></t>
-
               <t hangText="ticket">REQUIRED. A permission ticket that allows
               the client to make further requests to the authorization server
-              during this attempted authorization. The value MUST NOT be the
+              during this authorization process. The value MUST NOT be the
               same as the one the client used to make its request.</t>
 
               <t hangText="state">OPTIONAL. The same state value that the
@@ -1519,7 +1495,7 @@ Host: as.example.com
               if the client provided it.</t>
             </list></t>
 
-          <t>Note: Interactive claim gathering processes are out of scope of
+          <t>Note: Interactive claims-gathering processes are out of scope of
           this specification. The purpose of the interaction is for the
           authorization server to gather information for its own authorization
           assessment purposes. This redirection does not involve sending any
@@ -1535,31 +1511,13 @@ Host: as.example.com
           redirection URI, or if the client identifier is missing or invalid,
           the authorization server SHOULD inform the requesting party of the
           error and MUST NOT automatically redirect the user agent to the
-          invalid redirection URI. If the request fails for reasons other than
-          a missing or invalid claims redirection URI, the authorization
-          server informs the client by adding an <spanx
-          style="verb">error</spanx> parameter to the query component of the
-          claims redirection URI using the <spanx
-          style="verb">application/x-www-form-urlencoded</spanx> format,
-          containing one of the following ASCII error codes:<list
-              style="hanging">
-              <t hangText="invalid_request">The request is missing a required
-              parameter, includes an invalid parameter value (such as an
-              invalid or expired ticket), includes a parameter more than once,
-              or is otherwise malformed.</t>
+          invalid redirection URI.</t>
 
-              <t hangText="server_error">The authorization server encountered
-              an unexpected condition that prevented it from fulfilling the
-              request. (This error code is needed because an HTTP 500
-              (Internal Server Error) status code cannot be returned to the
-              client via an HTTP redirect.)</t>
-
-              <t hangText="temporarily_unavailable">The authorization server
-              is currently unable to handle the request due to a temporary
-              overloading or maintenance of the server. (This error code is
-              needed because an HTTP 503 (Service Unavailable) status code
-              cannot be returned to the client via an HTTP redirect.)</t>
-            </list></t>
+          <t>If the request fails for reasons other than a missing or invalid
+          claims redirection URI, the authorization server informs the client
+          by adding an <spanx style="verb">error</spanx> parameter to the
+          query component of the claims redirection URI as defined by Section
+          4.1.2.1 of <xref target="RFC6749" />.</t>
 
           <figure>
             <preamble>Example of a response issued by an authorization server
@@ -1817,7 +1775,8 @@ Content-Type: application/json
           described in <xref target="give-rpt" />).<list style="hanging">
               <t hangText="invalid_grant">If the provided ticket was not found
               at the authorization server, or the provided ticket has expired,
-              or if any other original reasons to use this error response are
+              or the client is not authorized to have these permissions added,
+              or any other original reasons to use this error response are
               found as defined in <xref target="RFC6749" />, the authorization
               server responds with the HTTP 400 (Bad Request) status code.</t>
 
@@ -1827,16 +1786,21 @@ Content-Type: application/json
               permission ticket provided by the client. The authorization
               server responds with the HTTP 400 (Bad Request) status code.</t>
 
-              <t hangText="not_authorized">The client is not authorized to
-              have these permissions added. The authorization server responds
-              with the HTTP 403 (Forbidden) status code. This error code is
-              unique to the UMA grant.</t>
-
               <t hangText="request_submitted">The authorization server
               requires intervention by the resource owner to determine whether
               the client is authorized to have these permissions. The
               authorization server responds with the HTTP 403 (Forbidden)
-              status code. This error code is unique to the UMA grant.</t>
+              status code. This error code is unique to the UMA grant. It MUST
+              include a <spanx style="verb">ticket</spanx> object.<list
+                  style="hanging">
+                  <t hangText="ticket">REQUIRED. A permission ticket that
+                  allows the client to make a further request to the
+                  authorization server's token endpoint as part of this same
+                  authorization process, likely some time later in "polling"
+                  fashion, when the resource owner might have completed some
+                  approval (or denial) action. The value MUST NOT be the same
+                  as the one the client used to make its request.</t>
+                </list></t>
 
               <t hangText="need_info">The authorization server needs
               additional information in order to determine whether the client
@@ -1847,17 +1811,19 @@ Content-Type: application/json
               object. This error code is unique to the UMA grant.<list
                   style="hanging">
                   <t hangText="ticket">REQUIRED. A permission ticket that
-                  allows the client to make further requests to the
-                  authorization server during this attempted authorization.
-                  The value MUST NOT be the same as the one the client used to
-                  make its request.</t>
+                  allows the client to make a further request to the
+                  authorization server's token endpoint as part of this same
+                  authorization process, potentially immediately. The value
+                  MUST NOT be the same as the one the client used to make its
+                  request.</t>
 
                   <t hangText="error_details">OPTIONAL. Provides hints about
                   information the authorization server needs to perform
                   authorization assessment. On receiving such hints, the
                   client has the opportunity to engage, or engage the
                   requesting party, in claims collection flows. At least one
-                  of its sub-properties MUST be supplied.<list style="hanging">
+                  of its two sub-properties MUST be supplied.<list
+                      style="hanging">
                       <t hangText="required_claims">An array containing
                       objects that describe the required claims, with the
                       following properties:<list style="hanging">
@@ -1910,7 +1876,8 @@ Content-Type: application/json
             </list></t>
 
           <figure>
-            <preamble>Example when the ticket has expired:</preamble>
+            <preamble>Example when the ticket has expired or the client's
+            request has failed outright:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 400 Bad Request
 Content-Type: application/json
@@ -2809,23 +2776,7 @@ Cache-Control: no-store
         <xref target="RFC6749" />.</t>
 
         <section title="Registry Contents">
-          <t>
-            <list style="symbols">
-              <t>Error name: <spanx style="verb">not_authorized</spanx> (note:
-              this error is distinct from <spanx
-              style="verb">unauthorized_client</spanx>; it refers to the
-              authorization status of the requesting side)</t>
-
-              <t>Change controller: Kantara Initiative User-Managed Access
-              Work Group - staff@kantarainitiative.org</t>
-
-              <t>Specification document: <xref target="uma-grant-type" /> in
-              this document</t>
-
-              <t>Error usage location: authorization server response, token
-              endpoint</t>
-            </list>
-          </t>
+          <t />
 
           <t>
             <list style="symbols">
