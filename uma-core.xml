@@ -1304,14 +1304,6 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               permissions and their scopes expected to be included in
               permission requests.</t>
 
-              <t hangText="claim_tokens">OPTIONAL. Claims pushed directly from
-              the client to the authorization server. This allows the client
-              to provide information relevant to the authorization process
-              already in its possession to the authorization server. It MAY
-              provide this information on a first or subsequent request to
-              this endpoint. See <xref target="claim-push" /> for information
-              on providing pushed claims in claim tokens.</t>
-
               <t hangText="pct">OPTIONAL. If the authorization server
               previously returned a PCT along with an RPT, the client MAY
               include the PCT in order to optimize the process of seeking a
@@ -1324,83 +1316,60 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               additional PCT security considerations. See <xref
               target="give-rpt" /> for the form of the authorization server's
               response with a PCT.</t>
+
+              <t hangText="claim_token_format">OPTIONAL. If this parameter is
+              used, it MUST appear together with the <spanx
+              style="verb">claim_token</spanx> parameter. A string specifying
+              the format of the claim token in which the client is directly
+              pushing claims to the authorization server. The string MAY be a
+              URI.</t>
+
+              <t hangText="claim_token">OPTIONAL. If this parameter is used,
+              it MUST appear together with the <spanx
+              style="verb">claim_token_format</spanx> parameter. A string
+              containing directly pushed claim information in the indicated
+              format, base64url encoded if it is not already so encoded. The
+              client MAY provide this information on a first or subsequent
+              request to this endpoint. The client and authorization should
+              have pre-negotiated any claim token format features that require
+              special interpretation. For example, if the referenced format
+              equates to OpenID Connect ID tokens and the claim token contains
+              audience restrictions, the client and authorization server
+              should together determine the proper audience values that enable
+              successful token consumption (see <xref target="trust-push" />
+              relevant security considerations).</t>
             </list></t>
 
           <figure>
-            <preamble>Example of a request message containing a permission
-            ticket and no optional parts:</preamble>
+            <preamble>Example of a request message with no optional parameters
+            (line breaks are shown only for display convenience):</preamble>
 
             <artwork><![CDATA[POST /token HTTP/1.1
 Host: as.example.com
 Authorization: Basic jwfLG53^sad$#f
 ...
-grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket&
-ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
+grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
+&ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
 ]]></artwork>
           </figure>
 
           <figure>
-            <preamble>Example of a request message containing a permission
-            ticket and an RPT for upgrading:</preamble>
+            <preamble>Example of a request message that includes a scope being
+            sought that was previously registered with the authorization
+            server, a previous RPT for upgrading, and a PCT and a claim token
+            for consideration in the authorization process:</preamble>
 
             <artwork><![CDATA[POST /token HTTP/1.1
 Host: as.example.com
 Authorization: Basic jwfLG53^sad$#f
 ...
-grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket&
-ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
+grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
+&ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de
+&scope=read
 &rpt=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
-]]></artwork>
-          </figure>
-        </section>
-
-        <section anchor="claim-push"
-                 title="Client Push of Claims to Authorization Server in Claim Tokens">
-          <t>In order to push claims to the authorization server, the client
-          provides the <spanx style="verb">claim_tokens</spanx> property in
-          the body of its request message to the token endpoint as
-          follows:<list style="hanging">
-              <t hangText="claim_tokens">REQUIRED. An array of objects with
-              the following properties:<list style="hanging">
-                  <t hangText="format">REQUIRED. A string specifying the
-                  format of the accompanying claim tokens. The string MAY be a
-                  URI.</t>
-
-                  <t hangText="token">REQUIRED. A string containing the claim
-                  information in the indicated format, base64url encoded if it
-                  is not already so encoded. If claim token format features
-                  are included that require special interpretation, the client
-                  and authorization server are assumed to have a prior
-                  relationship that establishes how to interpret these
-                  features. For example, if the referenced format equates to
-                  OpenID Connect ID tokens and the claim token contains
-                  audience restrictions, it is the joint responsibility of the
-                  client and authorization server to determine the proper
-                  audience values that enable successful token consumption
-                  (see for <xref target="trust-push" /> relevant security
-                  considerations).</t>
-                </list></t>
-            </list></t>
-
-          <figure>
-            <preamble>Example:</preamble>
-
-            <artwork><![CDATA[POST /token HTTP/1.1
-Host: www.example.com
-Authorization: Bearer jwfLG53^sad$#f
-...
-grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket&
-ticket=016f84e8-f9b9-11e0-bd6f-0021cc6004de&
-{  
-   "rpt":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
-   "ticket":"016f84e8-f9b9-11e0-bd6f-0021cc6004de",
-   "claim_tokens":[  
-      {  
-         "format":"http://openid.net/specs/openid-connect-core-1_0.html#IDToken",
-         "token":"..."
-      }
-   ]
-}
+&pct=c2F2ZWRjb25zZW50
+&claim_token_format=http%3A%2F%2Fopenid.net%2Fspecs%2Fopenid-connect-core-1_0.html%23IDToken
+&claim_token=eyj0...
 ]]></artwork>
           </figure>
 
@@ -2266,7 +2235,7 @@ Cache-Control: no-store
       <t>Further, third parties may want to define profiles of companion
       technologies to fit interoperably within the UMA framework, for example,
       claim token formats suitable for claim pushing (see <xref
-      target="claim-push" />) or protocol alternatives to HTTP.</t>
+      target="uma-grant-type" />) or protocol alternatives to HTTP.</t>
 
       <t>Finally, this specification uses the natural extensibility within its
       messaging formats, <spanx
