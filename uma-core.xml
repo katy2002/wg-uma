@@ -1817,8 +1817,8 @@ Content-Type: application/json
                           <t hangText="claim_token_format">OPTIONAL. An array
                           of strings specifying a set of acceptable formats
                           for a token pushed by the client containing this
-                          claim (see <xref target="claim-push" />). Any one of
-                          the referenced formats would satisfy the
+                          claim (see <xref target="uma-grant-type" />). Any
+                          one of the referenced formats would satisfy the
                           authorization server's requirements. Each string MAY
                           be a URI.</t>
 
@@ -2490,7 +2490,7 @@ Cache-Control: no-store
         <section anchor="trust-push"
                  title="Requirements for Trust When Clients Push Claim Tokens">
           <t>This section discusses the threats surrounding client claim
-          pushing (see <xref target="claim-push" />).</t>
+          pushing (see <xref target="uma-grant-type" />).</t>
 
           <t>Because claim tokens of any format typically contain audience
           restrictions and an authorization server would typically not be in
