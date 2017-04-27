@@ -47,19 +47,19 @@
 
   <middle>
     <section anchor="introduction" title="Introduction">
-      <t>This specification extends and complements <xref
-      target="UMAticket" /> to loosely couple, or federate, the authorization
-      process. This enables multiple resource servers operating in different
-      domains to communicate with a single authorization server operating in
-      yet another domain that acts on behalf of a resource owner. A service
-      ecosystem can thus automate resource protection, and the resource owner
-      can monitor and control authorization grant rules at a central service
-      location over time. Further, with the use of token introspection,
-      authorization grants can increase and decrease at the level of
-      individual resources and scopes.</t>
+      <t>This specification extends and complements <xref target="UMAGrant" />
+      to loosely couple, or federate, the authorization process. This enables
+      multiple resource servers operating in different domains to communicate
+      with a single authorization server operating in yet another domain that
+      acts on behalf of a resource owner. A service ecosystem can thus
+      automate resource protection, and the resource owner can monitor and
+      control authorization grant rules at a central service location over
+      time. Further, with the use of token introspection, authorization grants
+      can increase and decrease at the level of individual resources and
+      scopes.</t>
 
       <t>Building on the example provided in the introduction in <xref
-      target="UMAticket" />, bank customer (resource owner) Alice has a bank
+      target="UMAGrant" />, bank customer (resource owner) Alice has a bank
       account service (resource server), a cloud file system (different
       resource server hosted elsewhere), and a dedicated sharing management
       service (authorization server) hosted by the bank. She can manage access
@@ -71,7 +71,7 @@
       project. Alice can use the same sharing management service to monitor
       and control these different levels of access.</t>
 
-      <t>This specification, together with <xref target="UMAticket" />,
+      <t>This specification, together with <xref target="UMAGrant" />,
       constitutes UMA 2.0. This specification is OPTIONAL to use with the UMA
       grant, but if it is used, the authorization server and resource server
       MUST use it in its entirety.</t>
@@ -92,7 +92,7 @@
       </section>
 
       <section anchor="abstract-flow" title="Abstract Flow">
-        <t>The UMA grant defined in <xref target="UMAticket" /> enhances the
+        <t>The UMA grant defined in <xref target="UMAGrant" /> enhances the
         abstract protocol flow of OAuth. This specification enhances the UMA
         grant by defining formal communications between the UMA-enabled
         authorization server and resource server as they act on behalf of the
@@ -142,7 +142,7 @@
         </figure>
 
         <t>This specification uses all of the terms and concepts in <xref
-        target="UMAticket" />. This figure introduces the following new
+        target="UMAGrant" />. This figure introduces the following new
         concepts: <list hangIndent="6" style="hanging">
             <t hangText="protection API">The API presented by the
             authorization server to the resource server, defined in this
@@ -165,7 +165,7 @@
         protocol other than HTTP is undefined. In such circumstances, it is
         RECOMMENDED to define profiles or extensions to achieve
         interoperability among independent implementations (see Section 4 of
-        <xref target="UMAticket" />).</t>
+        <xref target="UMAGrant" />).</t>
 
         <t>The authorization server MUST use TLS protection over its
         protection API endpoints, as governed by <xref target="BCP195" />,
@@ -175,11 +175,11 @@
         <t>The authorization server MUST use OAuth and require a PAT to secure
         its protection API endpoints.</t>
 
-        <t>As defined in <xref target="UMAticket" />, the resource owner --
-        the entity here authorizing PAT issuance -- MAY be an end-user
-        (natural person) or a non-human entity treated as a person for limited
-        legal purposes (legal person), such as a corporation. A PAT is unique
-        to a resource owner, resource server used for resource management, and
+        <t>As defined in <xref target="UMAGrant" />, the resource owner -- the
+        entity here authorizing PAT issuance -- MAY be an end-user (natural
+        person) or a non-human entity treated as a person for limited legal
+        purposes (legal person), such as a corporation. A PAT is unique to a
+        resource owner, resource server used for resource management, and
         authorization server used for protection of those resources. The
         issuance of the PAT represents the authorization of the resource owner
         for the resource server to use the authorization server for protecting
@@ -239,7 +239,7 @@
         a legal or contractual level, and parties operating entities claiming
         to be UMA-conforming should provide documentation of rights and
         obligations between and among them. See Section 4 of <xref
-        target="UMAticket" /> for more information.</t>
+        target="UMAGrant" /> for more information.</t>
 
         <section anchor="ttl"
                  title="Policy Setting and Time-to-Live Management">
@@ -265,7 +265,7 @@
           outside the scope of this specification; where deployment ecosystems
           using independent implementations seek a consistent high level of
           security, profiling is RECOMMENDED (see Section 4 of <xref
-          target="UMAticket" />).</t>
+          target="UMAGrant" />).</t>
         </section>
       </section>
 
@@ -315,7 +315,7 @@
           <t>A permission is authorized access to a particular resource with
           one or more scopes bound to that resource. The concept of
           permissions is used in authorization assessment, results
-          calculation, and RPT issuance in <xref target="UMAticket" />. This
+          calculation, and RPT issuance in <xref target="UMAGrant" />. This
           concept takes on greater significance in relation to the protection
           API.</t>
 
@@ -341,7 +341,7 @@
 
     <section anchor="as-config" title="Authorization Server Metadata">
       <t>This specification makes use of the authorization server discovery
-      document structure and endpoint defined in <xref target="UMAticket" />.
+      document structure and endpoint defined in <xref target="UMAGrant" />.
       The resource server uses this discovery document to discover the
       endpoints it needs.</t>
 
@@ -369,8 +369,8 @@
       features it supports explicitly, ideally by supplying the URI
       identifying each UMA profile and extension in its <spanx
       style="verb">uma_profiles_supported</spanx> metadata field (defined in
-      <xref target="UMAticket" />), and by using extension metadata to
-      indicate specific usage details as necessary.</t>
+      <xref target="UMAGrant" />), and by using extension metadata to indicate
+      specific usage details as necessary.</t>
     </section>
 
     <section anchor="resource-registration-endpoint"
@@ -1099,7 +1099,7 @@ Host: as.example.com
       request one or more permissions (resource identifiers and corresponding
       scopes) with the authorization server on the client's behalf, and to
       receive a permission ticket in return, in order to respond as indicated
-      in Section 3.2 of <xref target="UMAticket" />. The resource server uses
+      in Section 3.2 of <xref target="UMAGrant" />. The resource server uses
       this endpoint on the following occasions:<list style="symbols">
           <t>After the client's initial resource request without a token</t>
 
@@ -1424,7 +1424,7 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
           authorization servers using the <spanx
           style="verb">uma_profiles_supported</spanx> metadata field to
           advertise their support of any alternative structures (see Section 4
-          of <xref target="UMAticket" />).</t>
+          of <xref target="UMAGrant" />).</t>
 
           <figure>
             <preamble>Example of a response containing the introspection
@@ -1475,7 +1475,7 @@ Cache-Control: no-store
 
     <section anchor="sec-consid" title="Security Considerations">
       <t>This specification inherits the security considerations of <xref
-      target="UMAticket" /> and has the following additional security
+      target="UMAGrant" /> and has the following additional security
       considerations.</t>
 
       <section title="Interacting with Resource Owners and Requesting Parties Using OAuth's Implicit Grant Type">
@@ -1526,7 +1526,7 @@ Cache-Control: no-store
 
     <section anchor="priv-consid" title="Privacy Considerations">
       <t>This specification inherits the privacy considerations of <xref
-      target="UMAticket" /> and has the following additional privacy
+      target="UMAGrant" /> and has the following additional privacy
       considerations.</t>
 
       <section title="Resource Information at the Authorization Server">
@@ -1687,7 +1687,7 @@ Cache-Control: no-store
         </front>
       </reference>
 
-      <reference anchor="UMAticket"
+      <reference anchor="UMAGrant"
                  target="https://docs.kantarainitiative.org/uma/ed/oauth-uma-ticket-2.0-00.html">
         <front>
           <title>User-Managed Access (UMA) Grant for OAuth 2.0
