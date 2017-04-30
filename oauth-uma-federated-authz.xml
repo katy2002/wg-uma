@@ -25,8 +25,8 @@
   <?rfc subcompact='no' ?>
 
   <front>
-    <title abbrev="UMA Core">Federated Authorization for User-Managed Access
-    (UMA) 2.0</title>
+    <title abbrev="">Federated Authorization for User-Managed Access (UMA)
+    2.0</title>
 
     <author fullname="Eve Maler" initials="E." role="editor" surname="Maler">
       <organization>ForgeRock</organization>
@@ -36,7 +36,15 @@
       </address>
     </author>
 
-    <date day="27" month="April" year="2017" />
+    <author fullname="Maciej Machulak" initials="M." surname="Machulak">
+      <organization>Self</organization>
+    </author>
+
+    <author fullname="Justin Richer" initials="J." surname="Richer">
+      <organization>Self</organization>
+    </author>
+
+    <date day="30" month="April" year="2017" />
 
     <abstract>
       <t>This specification defines a means for an UMA-enabled authorization
@@ -82,11 +90,11 @@
         "OPTIONAL" in this document are to be interpreted as described in
         <xref target="RFC2119" />.</t>
 
-        <t>Unless otherwise noted, all protocol properties and values are case
-        sensitive. JSON <xref target="RFC7159" /> data structures defined by
-        this specification MAY contain extension properties that are not
+        <t>Unless otherwise noted, all parameter names and values are case
+        sensitive. JSON <xref target="RFC7159" /> data structures defined in
+        this specification MAY contain extension parameters that are not
         defined in this specification. Any entity receiving or retrieving a
-        JSON data structure SHOULD ignore extension properties it is unable to
+        JSON data structure SHOULD ignore extension parameters it is unable to
         understand. Extension names that are unprotected from collisions are
         outside the scope of this specification.</t>
       </section>
@@ -104,8 +112,8 @@
         federated authorization, is shown in <xref
         target="abstract-flow-fig" />.</t>
 
-        <figure align="center" anchor="abstract-flow-fig"
-                title="Federated Authorization Enhancements to the UMA Grant Flow">
+        <figure anchor="abstract-flow-fig"
+                title="Federated Authorization Enhancements to UMA Grant Flow">
           <artwork><![CDATA[                                             +------------------+
                                              |     resource     |
        +------------manage (out of scope)----|       owner      |
@@ -247,8 +255,8 @@
           specification.</t>
 
           <t>Except for PAT issuance, the resource owner-authorization server
-          and resource owner-resource server interfaces are out of scope of
-          this specification. A variety of flows and user interfaces for
+          and resource owner-resource server interfaces are outside the scope
+          of this specification. A variety of flows and user interfaces for
           policy condition setting involving user agents for both of these
           servers are possible, each with different privacy consequences for
           end-user resource owners. Some elements of the protection API enable
@@ -270,28 +278,31 @@
       </section>
 
       <section title="Protection API Summary">
-        <t>The protection API defines and uses the following endpoints:<list
+        <t>The protection API defines the following endpoints:<list
             style="symbols">
             <t>Resource registration endpoint as defined in <xref
             target="resource-registration-endpoint" />. The API available at
-            this endpoint enables the resource server to put resources under
-            the protection of an authorization server on behalf of the
-            resource owner and manage them over time. The resource server uses
-            this endpoint in an ongoing fashion, but generally registers a
-            resource initially during the request-to-grant phase.</t>
+            this endpoint provides a means for the resource server to put
+            resources under the protection of an authorization server on
+            behalf of the resource owner and manage them over time. The
+            resource server uses this endpoint in an ongoing fashion, but
+            generally registers a resource initially during the
+            request-to-grant phase.</t>
 
             <t>Permission endpoint as defined in <xref
-            target="permission-endpoint" />. This endpoint enables the
-            resource server to request a set of one or more permissions on
-            behalf of the client based on the client's resource request when
-            that request is unaccompanied by a token or is accompanied by an
-            RPT that is insufficient for access to that resource. The resource
-            server uses this endpoint during the request-to-grant phase.</t>
+            target="permission-endpoint" />. This endpoint provides a means
+            for the resource server to request a set of one or more
+            permissions on behalf of the client based on the client's resource
+            request when that request is unaccompanied by a token or is
+            accompanied by an RPT that is insufficient for access to that
+            resource. The resource server uses this endpoint during the
+            request-to-grant phase.</t>
 
             <t>OPTIONAL token introspection endpoint as defined in <xref
             target="RFC7662" /> as extended in <xref
-            target="introspection-endpoint" />. The resource server uses this
-            endpoint during the grant-to-resource phase.</t>
+            target="introspection-endpoint" />. This endpoint provides a means
+            for the resource server to introspect the RPT. The resource server
+            uses this endpoint during the grant-to-resource phase.</t>
           </list></t>
 
         <t>Use of these endpoints assumes that the resource server has
@@ -309,32 +320,29 @@
         PAT in a way that ensures this outcome.</t>
 
         <t>The authorization server MUST declare its endpoints in the
-        configuration document (see <xref target="as-config" />).</t>
+        discovery document (see <xref target="as-config" />).</t>
 
         <section title="Permissions">
-          <t>A permission is authorized access to a particular resource with
-          one or more scopes bound to that resource. The concept of
-          permissions is used in authorization assessment, results
-          calculation, and RPT issuance in <xref target="UMAGrant" />. This
-          concept takes on greater significance in relation to the protection
-          API.</t>
+          <t>A permission is (requested or granted) authorized access to a
+          particular resource with one or more scopes bound to that resource.
+          The concept of permissions is used in authorization assessment,
+          results calculation, and RPT issuance in <xref target="UMAGrant" />.
+          This concept takes on greater significance in relation to the
+          protection API.</t>
 
-          <t>First, the resource server's resource registration operations at
-          the authorization server result in a set of resource owner-specific
-          resource identifiers.</t>
-
-          <t>Second, when the client makes a tokenless (or failed-token)
-          resource request, the resource server is responsible for
-          interpreting that request and mapping it to a choice of
+          <t>The resource server's resource registration operations at the
+          authorization server result in a set of resource owner-specific
+          resource identifiers. When the client makes a tokenless (or
+          failed-token) resource request, the resource server is responsible
+          for interpreting that request and mapping it to a choice of
           authorization server, resource owner, resource identifier(s), and
           set of scopes for each identifier, in order to request one or more
-          permissions and obtain a permission ticket on the client's
-          behalf.</t>
-
-          <t>Finally, when the client has made a resource request accompanied
-          by an RPT and token introspection is in use, it reveals the
-          structure of permissions in the returned token introspection object,
-          including expiration of individual permissions.</t>
+          permissions -- resource identifiers and a set of scopes -- and
+          obtain a permission ticket on the client's behalf. Finally, when the
+          client has made a resource request accompanied by an RPT and token
+          introspection is in use, it reveals the structure of permissions in
+          the returned token introspection object, potentially including
+          expiration of individual permissions.</t>
         </section>
       </section>
     </section>
@@ -345,7 +353,7 @@
       The resource server uses this discovery document to discover the
       endpoints it needs.</t>
 
-      <t>In addition to the metadata defined by that specification and <xref
+      <t>In addition to the metadata defined in that specification and <xref
       target="OAuthMeta" />, this specification defines the following metadata
       for inclusion in the discovery document:<list style="hanging">
           <t hangText="permission_endpoint"><vspace />REQUIRED. The endpoint
@@ -367,10 +375,10 @@
 
       <t>The authorization server SHOULD document any profiled or extended
       features it supports explicitly, ideally by supplying the URI
-      identifying each UMA profile and extension in its <spanx
-      style="verb">uma_profiles_supported</spanx> metadata field (defined in
-      <xref target="UMAGrant" />), and by using extension metadata to indicate
-      specific usage details as necessary.</t>
+      identifying each UMA profile and extension as an <spanx
+      style="verb">uma_profiles_supported</spanx> metadata array value
+      (defined in <xref target="UMAGrant" />), and by using extension metadata
+      to indicate specific usage details as necessary.</t>
     </section>
 
     <section anchor="resource-registration-endpoint"
@@ -457,7 +465,7 @@
         <t>A resource description is a JSON document that describes the
         characteristics of a resource sufficiently for an authorization server
         to protect it. A resource description has the following
-        properties:<list style="hanging">
+        parameters:<list style="hanging">
             <t hangText="scopes">REQUIRED. An array of strings, serving as
             scope identifiers, indicating the available scopes for this
             resource. Any of the strings MAY be either a plain string or a
@@ -490,7 +498,7 @@
             <t hangText="type">OPTIONAL. A string identifying the semantics of
             the resource. For example, if the resource is an identity claim
             that leverages standardized claim semantics for "verified email
-            address", the value of this property could be an identifying URI
+            address", the value of this parameter could be an identifying URI
             for this claim. The authorization server MAY use this information
             in processing information about the resource or displaying
             information about it in any user interface it presents to a
@@ -526,7 +534,7 @@
           <t>A scope description is a JSON document that describes the
           characteristics of a scope sufficiently for an authorization server
           to protect the resource with this scope. A scope description has the
-          following properties:<list style="hanging">
+          following parameters:<list style="hanging">
               <t hangText="description">OPTIONAL. A human-readable string
               describing the resource at length. The authorization server MAY
               use this description in any user interface it presents to a
@@ -595,13 +603,13 @@
           </list></t>
 
         <t>Within the JSON body of a successful response, the authorization
-        server includes common properties, possibly in addition to
-        method-specific properties, as follows:<list style="hanging">
+        server includes common parameters, possibly in addition to
+        method-specific parameters, as follows:<list style="hanging">
             <t hangText="_id">REQUIRED (except for the List method). A string
             value repeating the authorization server-defined identifier for
             the web resource corresponding to the resource. Its appearance in
-            the body makes it readily available as an object identifier for
-            various resource management tasks.</t>
+            the body makes it readily available as an identifier for various
+            protected-resource management tasks.</t>
 
             <t hangText="user_access_policy_uri">OPTIONAL. A URI that allows
             the resource server to redirect an end-user resource owner to a
@@ -619,13 +627,13 @@
         then the authorization server instead responds with an error message
         by including one of the following error codes with the response (see
         <xref target="errors" />):<list style="hanging">
-            <t hangText="unsupported_method_type">The resource server request
-            used an unsupported HTTP method. The authorization server MUST
-            respond with the HTTP 405 (Method Not Allowed) status code.</t>
-
             <t hangText="not_found">The resource requested from the
             authorization server cannot be found. The authorization server
             MUST respond with HTTP 404 (Not Found) status code.</t>
+
+            <t hangText="unsupported_method_type">The resource server request
+            used an unsupported HTTP method. The authorization server MUST
+            respond with the HTTP 405 (Method Not Allowed) status code.</t>
           </list></t>
 
         <section anchor="create-rreg" title="Create Resource Description">
@@ -633,7 +641,7 @@
           the POST method. If the request is successful, the resource is
           thereby registered and the authorization server MUST respond with a
           status message that includes an <spanx style="verb">_id</spanx>
-          property.</t>
+          parameter.</t>
 
           <figure>
             <preamble>Form of a create request, with an access token in the
@@ -676,7 +684,7 @@ Location: /rs/KX3A-39WE
           method. If the request is successful, the authorization server MUST
           respond with a status message that includes a body containing the
           referenced resource description, along with an <spanx
-          style="verb">_id</spanx> property.</t>
+          style="verb">_id</spanx> parameter.</t>
 
           <figure>
             <preamble>Form of a read request, with an access token in the
@@ -710,7 +718,7 @@ Content-Type: application/json
           </figure>
 
           <t>If the referenced resource does not exist, the authorization
-          server MUST produce an error response with an error property value
+          server MUST produce an error response with an error parameter value
           of <spanx style="verb">not_found</spanx>, as defined in <xref
           target="reg-api" />.</t>
         </section>
@@ -721,7 +729,7 @@ Content-Type: application/json
           a complete replacement of the previous resource description, using
           the PUT method. If the request is successful, the authorization
           server MUST respond with a status message that includes an <spanx
-          style="verb">_id</spanx> property.</t>
+          style="verb">_id</spanx> parameter.</t>
 
           <figure>
             <preamble>Form of an update request, with an access token in the
@@ -779,7 +787,7 @@ Authorization: Bearer 204c69636b6c69
           </figure>
 
           <t>If the referenced resource does not exist, the authorization
-          server MUST produce an error response with an error property value
+          server MUST produce an error response with an error parameter value
           of <spanx style="verb">not_found</spanx>, as defined in <xref
           target="reg-api" />.</t>
         </section>
@@ -863,7 +871,7 @@ Authorization: Bearer 204c69636b6c69
         documents. The alternative would have been simple scope strings
         without the additional user interface data.)</t>
 
-        <t>The "name" property values in the scope descriptions are intended
+        <t>The "name" parameter values in the scope descriptions are intended
         to be seen by Alice when she maps authorization constraints to
         specific resources and scopes while visiting ShareHub, such that Alice
         would see the strings "View Photo and Related Info" and "Print Photo",
@@ -904,7 +912,7 @@ Authorization: Bearer 204c69636b6c69
         this photo (internal only; Photoz is the only application that knows
         how to map a particular photo to a particular resource). Photoz also
         prepares the following resource description, which is specific to
-        Alice and her photo. The "name" property value is intended to be seen
+        Alice and her photo. The "name" parameter value is intended to be seen
         by Alice in mapping authorization policies to specific resources and
         scopes when she visits ShareHub. Alice would see the string "Steve the
         puppy!", likely accompanied by the referenced icon, in the ShareHub
@@ -1095,7 +1103,7 @@ Host: as.example.com
     </section>
 
     <section anchor="permission-endpoint" title="Permission Endpoint">
-      <t>The permission endpoint defines a way for the resource server to
+      <t>The permission endpoint defines a means for the resource server to
       request one or more permissions (resource identifiers and corresponding
       scopes) with the authorization server on the client's behalf, and to
       receive a permission ticket in return, in order to respond as indicated
@@ -1116,7 +1124,7 @@ Host: as.example.com
 client             server                server
   |       (in request-to-grant phase)      |
   |                  |                     |
-  |1 Request resource (no token or         |
+  |Request resource (no token or           |
   |insufficient token)                     |
   |--------------------------------------->|
   |                  |                     |
@@ -1180,12 +1188,12 @@ client             server                server
       <section title="Resource Server Request to Permission Endpoint">
         <t>The resource server uses the POST method at the permission
         endpoint. The body of the HTTP request message contains a JSON object
-        (for a request containing a single resource identifier) or array (for
-        a request containing more than one resource identifier) providing the
-        request, using a format derived from the resource description format
-        specified in <xref target="resource-set-desc" />, as follows. The
-        object used in both forms has the following properties:<list
-            style="hanging">
+        (for a request containing a single resource identifier) or array of
+        objects (for a request containing more than one resource identifier)
+        providing the request, using a format derived from the resource
+        description format specified in <xref target="resource-set-desc" />,
+        as follows. The object used in both forms has the following
+        parameters:<list style="hanging">
             <t hangText="resource_id">REQUIRED. The identifier for a resource
             to which the resource server is requesting permission on behalf of
             the client. The identifier MUST correspond to a resource that was
@@ -1263,7 +1271,7 @@ Authorization: Bearer 204c69636b6c69
         <t>If the authorization server is successful in creating a permission
         ticket in response to the resource server's request, it responds with
         an HTTP 201 (Created) status code and includes the <spanx
-        style="verb">ticket</spanx> property in the JSON-formatted body.</t>
+        style="verb">ticket</spanx> parameter in the JSON-formatted body.</t>
 
         <figure>
           <preamble>For example:</preamble>
@@ -1308,13 +1316,13 @@ Content-Type: application/json
           <t>Validate the RPT locally if it is self-contained.</t>
 
           <t>Introspect the RPT at the authorization server using the OAuth
-          token introspection endpoint (defined by <xref target="RFC7662" />
-          and this section) that is part of the protection API. The
-          authorization server's response contains an extended version of the
-          OAuth introspection object. If the authorization server supports
-          this specification's version of the token introspection endpoint, it
-          MUST declare the endpoint in its discovery document (see <xref
-          target="as-config" />).</t>
+          token introspection endpoint (defined <xref target="RFC7662" /> and
+          this section) that is part of the protection API. The authorization
+          server's response contains an extended version of the introspection
+          response. If the authorization server supports this specification's
+          version of the token introspection endpoint, it MUST declare the
+          endpoint in its discovery document (see <xref target="as-config" />)
+          and support this extended version of the response.</t>
 
           <t>Use a cached copy of the token introspection response if allowed
           (see Section 4 of <xref target="RFC7662" />).</t>
@@ -1323,7 +1331,7 @@ Content-Type: application/json
       <t>The use of the token introspection endpoint is illustrated in <xref
       target="token-introspection-endpoint-fig" />.</t>
 
-      <figure align="center" anchor="token-introspection-endpoint-fig"
+      <figure anchor="token-introspection-endpoint-fig"
               title="Token Introspection Endpoint">
         <artwork><![CDATA[               authorization            resource
 client             server                server
@@ -1376,13 +1384,13 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
           the structure dictated by that specification, extended as
           follows.</t>
 
-          <t>If the <spanx style="verb">active</spanx> property has a Boolean
-          value of <spanx style="verb">true</spanx>, then the introspection
-          object MUST NOT contain a <spanx style="verb">scope</spanx> claim,
-          and SHOULD contain an extension property with the name <spanx
-          style="verb">permissions</spanx> that contains an array of one or
-          more values, each of which is an object consisting of these
-          properties:<list style="hanging">
+          <t>If the introspection object's <spanx style="verb">active</spanx>
+          parameter has a Boolean value of <spanx style="verb">true</spanx>,
+          then the object MUST NOT contain a <spanx style="verb">scope</spanx>
+          parameter, and SHOULD contain an extension parameter named <spanx
+          style="verb">permissions</spanx> that contains an array of objects,
+          each one (representing a single permission) containing these
+          parameters:<list style="hanging">
               <t hangText="resource_id">REQUIRED. A string that uniquely
               identifies the protected resource, access to which has been
               granted to this client on behalf of this requesting party. The
@@ -1397,7 +1405,7 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
 
               <t hangText="exp">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
-              permission will expire. If the property is absent, the
+              permission will expire. If the parameter is absent, the
               permission does not expire. If the token-level <spanx
               style="verb">exp</spanx> value pre-dates a permission-level
               <spanx style="verb">exp</spanx> value, the former overrides the
@@ -1419,17 +1427,17 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
             </list></t>
 
           <t>For interoperability, if the introspection object does not
-          contain the <spanx style="verb">permissions</spanx> property, then
+          contain the <spanx style="verb">permissions</spanx> parameter, then
           an UMA extension SHOULD be defined as appropriate, with supporting
-          authorization servers using the <spanx
-          style="verb">uma_profiles_supported</spanx> metadata field to
-          advertise their support of any alternative structures (see Section 4
-          of <xref target="UMAGrant" />).</t>
+          authorization servers using <spanx
+          style="verb">uma_profiles_supported</spanx> metadata to advertise
+          their support of any alternative structure (see Section 4 of <xref
+          target="UMAGrant" />).</t>
 
           <figure>
             <preamble>Example of a response containing the introspection
-            object with the <spanx style="verb">permissions</spanx>
-            property:</preamble>
+            object with the <spanx style="verb">permissions</spanx> parameter
+            containing a single permission:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
@@ -1460,10 +1468,10 @@ Cache-Control: no-store
     <section anchor="errors" title="Error Messages">
       <t>If a request is successfully authenticated, but is invalid for
       another reason, the authorization server produces an error response by
-      adding the following properties to the entity body of the HTTP
+      adding the following parameters to the entity body of the HTTP
       response:<list style="hanging">
           <t hangText="error">REQUIRED. A single error code. Values for this
-          property are defined throughout this specification.</t>
+          parameter are defined throughout this specification.</t>
 
           <t hangText="error_description">OPTIONAL. Human-readable text
           providing additional information.</t>
@@ -1478,7 +1486,7 @@ Cache-Control: no-store
       target="UMAGrant" /> and has the following additional security
       considerations.</t>
 
-      <section title="Interacting with Resource Owners and Requesting Parties Using OAuth's Implicit Grant Type">
+      <section title="Interacting with Resource Owners Using OAuth's Implicit Grant Type">
         <t>Clients using the OAuth implicit grant type carry particular
         vulnerabilities in OAuth, and using OpenID Connect is of no help in
         this circumstance. This is true where a resource server is used as an
@@ -1590,8 +1598,8 @@ Cache-Control: no-store
             <list style="symbols">
               <t>Claim name: <spanx style="verb">permissions</spanx></t>
 
-              <t>Claim description: Array of objects, each describing a set of
-              scoped, time-limitable entitlements to a resource</t>
+              <t>Claim description: Array of objects, each describing a
+              scoped, time-limitable permission for a resource</t>
 
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - wg-uma@kantarainitiative.org</t>
@@ -1613,8 +1621,8 @@ Cache-Control: no-store
             <list style="symbols">
               <t>Claim name: <spanx style="verb">permissions</spanx></t>
 
-              <t>Claim description: array of objects, each describing a set of
-              scoped, time-limitable entitlements to a resource</t>
+              <t>Claim description: array of objects, each describing a
+              scoped, time-limitable permission for a resource</t>
 
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - staff@kantarainitiative.org</t>
