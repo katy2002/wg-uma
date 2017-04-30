@@ -38,10 +38,18 @@
 
     <author fullname="Maciej Machulak" initials="M." surname="Machulak">
       <organization>Self</organization>
+
+      <address>
+        <email>maciej.machulak@gmail.com</email>
+      </address>
     </author>
 
     <author fullname="Justin Richer" initials="J." surname="Richer">
-      <organization>Self</organization>
+      <organization>Bespoke Engineering</organization>
+
+      <address>
+        <email>justin@bspk.io</email>
+      </address>
     </author>
 
     <date day="30" month="April" year="2017" />

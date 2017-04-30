@@ -42,10 +42,18 @@
 
     <author fullname="Maciej Machulak" initials="M." surname="Machulak">
       <organization>Self</organization>
+
+      <address>
+        <email>maciej.machulak@gmail.com</email>
+      </address>
     </author>
 
     <author fullname="Justin Richer" initials="J." surname="Richer">
-      <organization>Self</organization>
+      <organization>Bespoke Engineering</organization>
+
+      <address>
+        <email>justin@bspk.io</email>
+      </address>
     </author>
 
     <date day="30" month="April" year="2017" />
@@ -642,7 +650,7 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
           server's subsequent issuance of a PCT. Interactions could also
           involve further redirection, for example, for federated (such as
           social) authentication at a remote identity provider, and other
-          federated claims gathering. </t>
+          federated claims gathering.</t>
 
           <t>Redirecting the requesting party to the authorization server is
           one option for the client in beginning to engage with the
