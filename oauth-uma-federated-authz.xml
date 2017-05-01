@@ -1704,7 +1704,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMAGrant"
-                 target="https://docs.kantarainitiative.org/uma/ed/oauth-uma-ticket-2.0-00.html">
+                 target="https://docs.kantarainitiative.org/uma/ed/oauth-uma-grant-2.0-03.html">
         <front>
           <title>User-Managed Access (UMA) Grant for OAuth 2.0
           Authorization</title>
