@@ -144,96 +144,59 @@
       </section>
 
       <section anchor="high-level-flow" title="Abstract Flow">
-        <t>The UMA grant enhances the abstract protocol flow of OAuth, as
-        shown in <xref target="ticket-enhancements" />.<list style="symbols">
-            <t>In the request-to-grant phase, the resource request is made by
-            the requesting party rather than the resource owner.</t>
+        <t>The UMA grant enhances the abstract protocol flow of OAuth.</t>
 
-            <t>In the grant-to-token phase, authorization is granted by a
-            somewhat more complex process, described in <xref
-            target="authorization-process" />, that allows for the resource
-            owner not to be present (as this is an asynchronous grant).</t>
-
-            <t>The token-to-resource phase is unchanged.</t>
-          </list></t>
-
-        <t>The step numbers shown in the figure correspond to those in the
-        more detailed sequence diagram in <xref target="protocol-flow" />.</t>
-
-        <figure anchor="ticket-enhancements"
-                title="UMA Enhancements to OAuth Abstract Protocol Flow">
-          <artwork><![CDATA[+--------+   (Request-to-grant phase)  +-------------+
-|        |                             |             | }  Replaces
-|        |-- A Authorization request ->| Requesting  | }  resource
-|        |<- B  Authorization grant  --|    party    | }    owner
-|        |                             |             | } (steps 1-2)
-|        |                             +-------------+
-|        |
-|        |    (Grant-to-token phase)   +-------------+
-|        |                             |               }Authorization
-|        |-- C  Authorization grant  ->|Authorization| }   process
-| Client |<- D     Access token      --|    Server   | } gives grant
-|        |                             |             | } (steps 3-9)
-|        |                             +-------------+
-|        |
-|        |  (Token-to-resource phase)  +-------------+
-|        |                             |             | }
-|        |-- E     Access token      ->|   Resource  | }    Same
-|        |<- F  Protected resource   --|    Server   | }(steps 10-11)
-|        |                             |             | }
-+--------+                             +-------------+
-]]></artwork>
-        </figure>
-
-        <t><xref target="protocol-flow" /> shows an example flow. In the
-        request-to-grant phase (steps 1-2), the client MUST request the
-        resource initially with no token and get a permission ticket before
-        proceeding. In the grant-to-token phase (steps 3-9; note that step 4
-        is repeated), the steps chosen illustrate maximum variety.</t>
+        <t><xref target="protocol-flow" /> shows an example flow. The steps
+        and artifacts chosen in this figure show a high degree of variety for
+        illustration purposes.</t>
 
         <figure anchor="protocol-flow" title="Example Flow">
-          <artwork><![CDATA[    requesting           authorization      resource   resource
-      party    client        server          server     owner
-        |        |             |(ex. Set policy conditions)
-        |        |             |<- - - - - - - - - - - - -|
-        |        |             |               |          |
-        |        |1 Request resource (no token)|          | } Request-
-        |        |---------------------------->|          | }   to-
-        |        |2 AS location, permission ticket        | }  grant
-        |        |<----------------------------|          | }  phase
-        |        |             |               |          |
-        |        |3 Request RPT, send ticket,  |          | }
-        |        |(ex.) push claim token       |          | }
-        |        |------------>|               |          | }
-        |        |       +-----|4 Authorization|          | }
-        |        |       +---->|assessment     |          | }
-        |        |             |               |          | }
-        |        |5 (ex.) need_info error, rotated        | }
-        |        |ticket, redirect_user hint   |          | }
-        |        |<------------|               |          | }
-        |        |6 (ex.) Redirect for         |          | }
-        |        |interactive claims gathering |          | }
-        |<-------|             |               |          | }
-        |--------------------->|               |          | }  Grant-
-        |        |7 (ex.) Redirect back, send  |          | }   to-
-        |         rotated ticket               |          | }  token
-        |<---------------------|               |          | }  phase
-        |------->|             |               |          | }
-        |        |             |(ex. Set policy conditions) }
-        |        |             |<- - - - - - - - - - - - -| }
-        |        |             |               |          | }
-        |        |8 (ex.) Re-request RPT, send |          | }
-        |        |ticket       |               |          | }
-        |        |       +-----|4 Authorization|          | }
-        |        |       +---->|assessment     |          | }
-        |        |             |               |          | }
-        |        |9 Issue RPT with (ex.) PCT   |          | }
-        |        |<------------|               |          | }
-        |        |             |               |          |
-        |        |10 Request resource with RPT |          | }  Token-
-        |        |---------------------------->|          | }   to-
-        |        |11 Protected resource        |          | }resource
-        |        |<----------------------------|          | }  phase
+          <artwork><![CDATA[requesting                             authorization resource resource
+  party        client                      server     server   owner
+    |            |                           |          |        |
+    |            |                           |(May set policy    |
+    |            |                           |conditions anytime)|
+    |            |                           |< - - - - - - - - -|
+    |            |Resource request (no access token)    |        |
+    |            |------------------------------------->|        |
+    |            |401 response with new permission      |        |
+    |            |ticket, AS location        |          |        |
+    |            |<-------------------------------------|        |
+    |            |Authz request with ticket, |          |        |
+    |            |claim token (push claims)  |          |        |
+    |            |-------------------------->|          |        |
+    |            |                      +----|Authz     |        |
+    |            |                      +--->|assessment|        |
+    |            |403 response with rotated  |          |        |
+    |            |ticket, need_info error,   |          |        |
+    |            |redirect_user hint         |          |        |
+    |            |<--------------------------|          |        |
+    |Redirect    |                           |          |        |
+    |user with   |                           |          |        |
+    |ticket      |                           |          |        |
+    |<-----------|                           |          |        |
+    |Follow redirect to AS                   |          |        |
+    |--------------------------------------->|          |        |
+    |(Interactive claims gathering)          |          |        |
+    |<- - - - - - - - - - - - - - - - - - - >|          |        |
+    |Redirect back with rotated ticket       |          |        |
+    |<---------------------------------------|          |        |
+    |Follow      |                           |          |        |
+    |redirect to |                           |          |        |
+    |client      |                           |          |        |
+    |----------->|                           |          |        |
+    |            |Authz request with ticket  |          |        |
+    |            |-------------------------->|          |        |
+    |            |                      +----|Authz     |        |
+    |            |                      +--->|assessment|        |
+    |            |Authz response with access |          |        |
+    |            |token (RPT) and PCT        |          |        |
+    |            |<--------------------------|          |        |
+    |            |Resource request with access token    |        |
+    |            |(RPT)                      |          |        |
+    |            |------------------------------------->|        |
+    |            |Protected resource         |          |        |
+    |            |<-------------------------------------|        |
 ]]></artwork>
         </figure>
 
@@ -253,7 +216,7 @@
             resource with one or more scopes bound to that resource. A
             permission ticket represents some number of requested permissions.
             An RPT represents some number of granted permissions. The client
-            is not aware of the permissions concept.</t>
+            is not aware of the permission concept.</t>
 
             <t hangText="persisted claims token (PCT)">A correlation handle
             issued by an authorization server that represents a set of claims
@@ -262,10 +225,20 @@
             process.</t>
 
             <t hangText="claim">A statement of the value or values of one or
-            more attributes of an entity. An authorization server typically
-            needs to collect and assess one or more claims of a requesting
-            party or client against the policy conditions of a resource owner
-            as part of protecting a resource.</t>
+            more attributes of an entity. The authorization server typically
+            needs to collect and assess one or more claims of the requesting
+            party or client against policy conditions as part of protecting a
+            resource. The two methods available for UMA claims collection are
+            claim pushing and interactive claims gathering. Note: Claims
+            collection might involve authentication for unique user
+            identification, but depending on policy conditions might
+            additionally or instead involve the collection of non-uniquely
+            identifying attributes, authorization for some action (for
+            example, see <xref target="redirect-back" />), or other statements
+            of agreement.</t>
+
+            <t hangText="claim token">A package of claims provided directly by
+            the client to the authorization server through claim pushing.</t>
 
             <t hangText="authorization process">The process through which the
             client requests an RPT from the authorization server.</t>
@@ -292,14 +265,12 @@
           <t>The authorization server conducts the authorization process in
           three phases, with some potential variation in order and looping as
           follows:<list style="symbols">
-              <t>A claims collection phase. This is an UMA-based process to
-              collect information to support policy evaluation. Two kinds of
-              claims collection are possible: claims pushing by a client (as
-              defined in <xref target="uma-grant-type" />) and interactive
-              claims gathering with an end-user requesting party (as defined
-              in <xref target="claim-redirect" />). This phase occurs first in
-              the authorization process in the following circumstances:<list
-                  style="symbols">
+              <t>An UMA-based claims collection phase. Claims pushing by a
+              client is defined in <xref target="uma-grant-type" />, and
+              interactive claims gathering with an end-user requesting party
+              is defined in <xref target="claim-redirect" />. This phase
+              occurs first in the authorization process in the following
+              circumstances:<list style="symbols">
                   <t>When the client redirects an end-user requesting party to
                   the authorization server for interactive claims gathering as
                   its first step after receiving a permission ticket. For this
