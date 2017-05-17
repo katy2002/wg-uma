@@ -8,8 +8,8 @@
 <!ENTITY RFC2616 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml">
 <!ENTITY RFC7591 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7591.xml">
 ]>
-<rfc category="std" docName="uma-core" id="kantara" ipr="kantara"
-     target="draft" version="2.0">
+<rfc category="std" docName="oauth-uma-federated-authz" id="kantara"
+     ipr="kantara" target="draft" version="2.0">
   <?xml-stylesheet texttype='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
