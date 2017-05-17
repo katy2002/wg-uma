@@ -387,9 +387,12 @@
           fashion.</t>
 
           <t hangText="uma_profiles_supported"><vspace />OPTIONAL. UMA
-          profiles supported by this authorization server. The value is an
-          array of string values, where each string value is a URI identifying
-          an UMA profile.</t>
+          profiles and extensions supported by this authorization server. The
+          value is an array of string values, where each string value is a URI
+          identifying an UMA profile or extension. As discussed in <xref
+          target="profiles" />, it is RECOMMENDED for an authorization server
+          supporting a profile or extension related to UMA to supply the
+          specification's identifying URI (if any) here.</t>
         </list></t>
 
       <t>Following are additional requirements related to metadata:<list
@@ -400,12 +403,6 @@
           style="verb">claims_redirect_uri</spanx> metadata, as defined in
           <xref target="claim-redirect" />.</t>
         </list></t>
-
-      <t>The authorization server SHOULD document any profiled or extended
-      features it supports explicitly, ideally by supplying the URI
-      identifying each UMA profile and extension in <spanx
-      style="verb">uma_profiles_supported</spanx> metadata, and by using
-      extension metadata to indicate specific usage details as necessary.</t>
     </section>
 
     <section anchor="protocol-flow-details-sec" title="Flow Details">
@@ -421,9 +418,8 @@
         <t>Note: This process does not assume that any relevant policy
         conditions have already been defined at the authorization server.</t>
 
-        <t>Note: How the resource server arranges for resources to be
-        protected in the context of a resource owner is outside the scope of
-        this specification, but it may be useful to consult <xref
+        <t>Note: For an example of how the resource server can put resources
+        under the protection of an authorization server, see <xref
         target="UMAFedAuthz" />.</t>
 
         <figure>
@@ -453,10 +449,8 @@ Host: photoz.example.com
           parameter and the permission ticket in a <spanx
           style="verb">ticket</spanx> parameter.</t>
 
-          <t>Note: How the resource server arranges to obtain the permission
-          ticket from the authorization server is outside the scope of this
-          specification, but it may be useful to consult <xref
-          target="UMAFedAuthz" />.</t>
+          <t>Note: For an example of how the resource server can obtain the
+          permission ticket, see <xref target="UMAFedAuthz" />.</t>
 
           <figure>
             <preamble>For example:</preamble>
@@ -895,9 +889,9 @@ Host: client.example.com
               scopes for <spanx style="verb">photo1</spanx> on the client's
               behalf (so <spanx>PermissionTicket</spanx> contains <spanx
               style="verb">view</spanx> and <spanx
-              style="verb">print</spanx>). Note: <xref target="UMAFedAuthz" />
-              describes how the resource server MAY obtain the permission
-              ticket from the authorization server.</t>
+              style="verb">print</spanx>). For an example of how the resource
+              server can obtain the permission ticket, see <xref
+              target="UMAFedAuthz" />.</t>
 
               <t>The client requests <spanx style="verb">download</spanx>
               scope on the requesting party's behalf while requesting an RPT
@@ -968,9 +962,12 @@ Host: client.example.com
           <t>The authorization server MAY include any of the parameters
           defined in Section 5.1 of <xref target="RFC6749" /> on its response,
           except that it is NOT RECOMMENDED to include the <spanx
-          style="verb">scope</spanx> parameter. This is because RPTs are
-          associated with scopes that are associated with specific
-          resources.</t>
+          style="verb">scope</spanx> parameter. This is because for an RPT's
+          permissions, each scope is associated with a specific resource, even
+          though the client is unaware of this association. Note: The outcome
+          of authorization assessment may result in expiration periods for
+          RPTs, permissions, and refresh tokens that can affect the client's
+          later requests for refreshing the RPT.</t>
 
           <t>If the authorization server is upgrading an RPT, and the RPT
           string is new rather than repeating the RPT provided by the client
@@ -1188,10 +1185,6 @@ Host: photoz.example.com
         <t>The resource server responds to the client's RPT-accompanied
         resource request.</t>
 
-        <t>Note: How the resource server validates the RPT is outside the
-        scope of this specification, but it may be useful to consult <xref
-        target="UMAFedAuthz" />.</t>
-
         <t>If the resource access request fails, the resource server responds
         as if the request were unaccompanied by a token, as defined in <xref
         target="rs-tokenless-response" />.</t>
@@ -1199,9 +1192,9 @@ Host: photoz.example.com
         <t>The resource server MUST NOT give access in the case of an invalid
         RPT or an RPT associated with insufficient authorization.</t>
 
-        <t>Note: <xref target="UMAFedAuthz" /> describes how the resource
-        server MAY introspect the token at the authorization server
-        preparatory to responding to the client's request.</t>
+        <t>For an example of how the resource server can introspect the token
+        and its permissions at the authorization server prior to responding to
+        the client's request, see <xref target="UMAFedAuthz" />.</t>
 
         <t>This process concludes the UMA grant flow.</t>
       </section>
@@ -1210,12 +1203,16 @@ Host: photoz.example.com
         <t>As noted in <xref target="give-rpt" />, when issuing an RPT, the
         authorization server MAY also issue a refresh token.</t>
 
-        <t>Having received a refresh token from the authorization server, the
-        client MAY use the refresh token grant to attempt to refresh an
-        expired RPT. However, if the client includes the <spanx
-        style="verb">scope</spanx> parameter when providing a refresh token,
-        the effect is undefined. This is because the client is not aware of
-        the specific resources to which scopes have been bound.</t>
+        <t>Having previously received a refresh token from the authorization
+        server, the client MAY use the refresh token grant to attempt to
+        refresh an expired RPT. If the client includes the <spanx
+        style="verb">scope</spanx> parameter in its request, the authorization
+        server MAY limit the scopes in the permissions associated with any
+        resulting refreshed RPT to the scopes requested by the client.</t>
+
+        <t>The authorization server MUST NOT treat the client's request to
+        refresh an RPT as if it were a request for a new RPT requiring an
+        authorization assessment calculation.</t>
       </section>
 
       <section anchor="token-revocation"
@@ -1232,47 +1229,34 @@ Host: photoz.example.com
       </section>
     </section>
 
-    <section anchor="profiles"
-             title="Specifying Additional Profiles and Extensions">
-      <t>For implementation interoperability and to serve particular
-      deployment scenarios, third parties may want to define profiles of UMA
-      that restrict its available options. Further, third parties may want to
-      define profiles of companion technologies to fit interoperably within
-      the UMA framework, for example, claim token formats suitable for claim
-      pushing (see <xref target="uma-grant-type" />) or protocol alternatives
-      to HTTP. Finally, it is possible to use the natural extensibility within
-      this specification's messaging formats to enable third parties to define
-      extensions that serve adjacent use cases.</t>
+    <section anchor="profiles" title="Profiles and Extensions">
+      <t>An UMA profile restricts UMA's available options. An UMA extension
+      defines how to use UMA's extensibility points. The two can be combined.
+      Some reasons for creating profiles and extensions include:<list
+          style="symbols">
+          <t>A profile restricting options in order to tighten security</t>
 
-      <t>This section provides guidelines for third parties wishing to specify
-      UMA-related profiles and extensions. It is RECOMMENDED for authorization
-      server deployers to document any profiled or extended features
-      explicitly (see <xref target="as-config" /> for details).</t>
+          <t>A profile/extension restricting options and adding messaging
+          parameters for use with a specific industry API</t>
 
-      <t>In all cases, it is RECOMMENDED for profiles and extensions to
-      document the following information:<list style="symbols">
-          <t>Specify a uniquely identifying URI.</t>
+          <t>A profile that documents a specific URI, format, and
+          interpretation for pushed claim tokens (see <xref
+          target="uma-grant-type" />)</t>
 
-          <t>Identify the responsible author and provide postal or electronic
-          contact information.</t>
+          <t>An extension that defines additional metadata for the
+          authorization server discovery document to define machine-readable
+          usage details</t>
+        </list></t>
 
-          <t>Supply references to any previous version that this version
-          updates or obsoletes.</t>
+      <t>The following actions are RECOMMENDED regarding the creation and use
+      of profiles and extensions:<list style="symbols">
+          <t>The creator of a profile or extension related to UMA SHOULD
+          assign it a uniquely identifying URI</t>
 
-          <t>Define any additional or changed error states, including, for
-          claim token formats, whether <spanx
-          style="verb">error_details</spanx> hints are modified or
-          extended.</t>
-
-          <t>Specify any modified or new interactions between endpoint
-          entities and any extension parameters used in messages.</t>
-
-          <t>For any new access token types, specify the keyword to be used in
-          HTTP Authorization headers.</t>
-
-          <t>Specify any conformance and interoperability considerations.</t>
-
-          <t>Specify any additional security and privacy considerations.</t>
+          <t>The authorization server supporting a profile or extension
+          related to UMA with such a URI SHOULD supply the identifying URI in
+          its <spanx style="verb">uma_profiles_supported</spanx> metadata (see
+          <xref target="as-config" />)</t>
         </list></t>
     </section>
 
