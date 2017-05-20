@@ -656,10 +656,13 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
               received by the client as part of this authorization
               process.</t>
 
-              <t hangText="claims_redirect_uri">OPTIONAL. The URI to which the
-              client wishes the authorization server to direct the requesting
-              party's user agent after completing its interaction. The URI
-              MUST be absolute, MAY contain an <spanx
+              <t hangText="claims_redirect_uri">OPTIONAL only if the client
+              has pre-registered a single claims redirection URI; if the
+              client has pre-registered multiple claims redirection URIs or
+              has pre-registered no claims redirection URI, it is REQUIRED.
+              The URI to which the client wishes the authorization server to
+              direct the requesting party's user agent after completing its
+              interaction. The URI MUST be absolute, MAY contain an <spanx
               style="verb">application/x-www-form-urlencoded</spanx>-formatted
               query parameter component that MUST be retained when adding
               additional parameters, and MUST NOT contain a fragment
