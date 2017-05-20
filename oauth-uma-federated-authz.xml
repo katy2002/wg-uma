@@ -317,11 +317,6 @@
         acquired OAuth client credentials from the authorization server by
         static or dynamic means, and has a valid PAT.</t>
 
-        <t>The authorization server SHOULD respond to each request from the
-        resource server unless it detects a security concern, such as a
-        suspected denial of service attack that can be mitigated by rate
-        limiting.</t>
-
         <t>Note: The resource server generally requires access to the
         protection API when an end-user resource owner is not available
         ("offline" access). Thus, the authorization server needs to manage the

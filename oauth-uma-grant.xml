@@ -377,10 +377,6 @@
     </section>
 
     <section anchor="protocol-flow-details-sec" title="Flow Details">
-      <t>The recipient of each request message SHOULD respond unless it
-      detects a security concern, such as a suspected denial of service attack
-      that can be mitigated by rate limiting.</t>
-
       <section anchor="client-attempts-tokenless-access"
                title="Client Requests Resource With No Token">
         <t>The client requests a protected resource, without having presented
