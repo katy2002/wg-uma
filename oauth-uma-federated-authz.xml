@@ -1157,36 +1157,36 @@ client             server                server
       for the resource server to give to the client that represents the same
       permissions that the resource server requested.</t>
 
-      <t>Note: In order for the resource server to know which authorization
-      server to approach and which PAT (representing a resource owner) and
-      resource identifier to supply in its call to the permission endpoint, it
-      needs to have structured the API where the resource request was made in
-      such a way that it can derive all of the necessary information even when
-      the resource request is tokenless. Commonly, this information can be
-      passed through the URI, headers, or body of the client's request.
-      Alternatively, the entire interface could be dedicated to the use of a
-      single resource owner and protected by a single authorization
-      server.</t>
+      <t>The process of choosing what permissions to request from the
+      authorization server may require interpretation and mapping of the
+      client's resource request. The resource server SHOULD request a set of
+      permissions with scopes that is reasonable for the client&rsquo;s
+      resource request. The resource server MAY request multiple permissions,
+      and any permission MAY have zero scopes associated with it. Requesting
+      multiple permissions may be appropriate, for example, in cases where the
+      resource server expects the requesting party to need access to several
+      related resources if they need access to any one of the resources.
+      Requesting a permission with no scopes may be appropriate, for example,
+      in cases where an access attempt involves an API call that is ambiguous
+      without further context (role-based scopes such as <spanx
+      style="verb">user</spanx> and <spanx style="verb">admin</spanx> may have
+      this ambiguous quality, and an explicit client request for a particular
+      scope at the token endpoint later can clarify the desired access). The
+      resource server SHOULD document its intended pattern of permission
+      requests in order to assist the client in pre-registering for and
+      requesting appropriate scopes at the authorization server. See <xref
+      target="UMA-Impl" /> for a discussion of permission request
+      patterns.</t>
 
-      <t>The process of choosing what permissions to request may require
-      interpretation and mapping of the client's resource request. The
-      resource server SHOULD request a permission that is appropriate for the
-      client&rsquo;s resource request. The resource server MAY request
-      multiple permissions, and any permission MAY have zero scopes associated
-      with it. Requesting multiple permissions may be appropriate, for
-      example, in cases where the resource server expects the requesting party
-      to need access to several related resources if they need access to any
-      one of the resources. Requesting a permission with no scopes may be
-      appropriate, for example, in cases where an access attempt involves an
-      API call that is ambiguous without further context (role-based scopes
-      such as <spanx style="verb">user</spanx> and <spanx
-      style="verb">admin</spanx> may have this ambiguous quality, and an
-      explicit client request for a particular scope at the token endpoint
-      later can clarify the desired access). The resource server SHOULD
-      document its intended pattern of permission requests in order to assist
-      the client in pre-registering for and requesting appropriate scopes at
-      the authorization server. See <xref target="UMA-Impl" /> for a
-      discussion of permission request patterns.</t>
+      <t>Note: In order for the resource server to know which authorization
+      server to approach for the permission ticket and on which resource
+      owner's behalf (enabling a choice of permission endpoint and PAT), it
+      needs to derive the necessary information using cues provided by the
+      structure of the API where the resource request was made, rather than by
+      an access token. Commonly, this information can be passed through the
+      URI, headers, or body of the client's request. Alternatively, the entire
+      interface could be dedicated to the use of a single resource owner and
+      protected by a single authorization server.</t>
 
       <section title="Resource Server Request to Permission Endpoint">
         <t>The resource server uses the POST method at the permission
