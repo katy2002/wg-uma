@@ -560,11 +560,7 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               authorization server the option of upgrading that RPT instead of
               issuing a new one (see <xref
               target="authorization-assessment" /> for more about this
-              option). Note: An RPT is bound to a specific resource owner, but
-              it is outside the scope of this specification for a protected
-              resource's location to reveal the resource owner's identity to
-              the client, so the client may not be aware of which RPT it
-              received is bound to which resource owner.</t>
+              option).</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
               representing requested scopes. For the authorization server to
