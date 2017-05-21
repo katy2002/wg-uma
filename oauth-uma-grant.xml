@@ -514,8 +514,8 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               style="verb">claim_token</spanx> parameter. A string specifying
               the format of the claim token in which the client is directly
               pushing claims to the authorization server. The string MAY be a
-              URI. Examples of claim token formats include <xref
-              target="OIDCCore" /> ID Tokens and SAML assertions.</t>
+              URI. Examples of potential types of claim token formats are
+              <xref target="OIDCCore" /> ID Tokens and SAML assertions.</t>
 
               <t hangText="pct">OPTIONAL. If the authorization server
               previously returned a PCT along with an RPT, the client MAY
@@ -534,9 +534,8 @@ Warning: 199 - "UMA Authorization Server Unreachable"
 
               <t hangText="rpt">OPTIONAL. Supplying an existing RPT gives the
               authorization server the option of upgrading that RPT instead of
-              issuing a new one (see <xref
-              target="authorization-assessment" /> for more about this
-              option).</t>
+              issuing a new one (see <xref target="rpt-upgrading" /> for more
+              about this option).</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
               representing requested scopes. For the authorization server to
@@ -704,10 +703,10 @@ Host: as.example.com
           authorization assessment purposes. This redirection does not involve
           sending any of the information back to the client.</t>
 
-          <t>Prior to its redirecting the end-user requesting party back and
-          preparatory to issuing a PCT, the authorization server MAY use the
-          interactive claims-gathering process to gather authorization for
-          persisting claims across authorization processes.</t>
+          <t>The authorization server MAY use interactive claims-gathering to
+          request authorization from the requesting party for persisting
+          claims across authorization processes. Such persisted claims will be
+          represented by a PCT issued to the client in a subsequent step.</t>
 
           <t>The client MUST ignore unrecognized response parameters. If the
           request fails due to a missing, invalid, or mismatching claims
@@ -762,24 +761,27 @@ Host: client.example.com
               <t>Determine all operative policy conditions, and claims and
               other relevant information serving as input to them, for each
               scope assocated with <spanx>RequestedScopes</spanx> and evaluate
-              its authorization status. Note: Claims and other information
-              gathered during one authorization process may become out of date
-              in terms of their relevance for future authorization processes.
-              The authorization server is responsible for managing such
-              relevance wherever information associated with a PCT, or other
-              persistently stored information, is used as input to
-              authorization, including policy conditions themselves. Note:
-              Since the authorization server's policy expression and
-              evaluation capabilities are outside the scope of this
-              specification, any one implementation might take a simple or
-              arbitrarily complex form, with varying abilities to combine or
-              perform calculations over claims and their values. For example,
-              logical operations such as accepting "either claim value A or
-              claim value B" as correct may be possible.</t>
+              its authorization status. </t>
 
               <t>For each scope that passes the evaluation, add it to a set
               called <spanx>CandidateGrantedScopes</spanx>.</t>
             </list></t>
+
+          <t>Note: Claims and other information gathered during one
+          authorization process may become out of date in terms of their
+          relevance for future authorization processes. The authorization
+          server is responsible for managing such relevance wherever
+          information associated with a PCT, or other persistently stored
+          information, is used as input to authorization, including policy
+          conditions themselves.</t>
+
+          <t>Note: Since the authorization server's policy expression and
+          evaluation capabilities are outside the scope of this specification,
+          any one implementation might take a simple or arbitrarily complex
+          form, with varying abilities to combine or perform calculations over
+          claims and their values. For example, logical operations such as
+          accepting "either claim value A or claim value B" as correct may be
+          possible.</t>
 
           <t>In the authorization results phase, the authorization server
           examines the <spanx>CandidateGrantedScopes</spanx> set to determine
@@ -787,30 +789,16 @@ Host: client.example.com
           with it.<list style="symbols">
               <t>If <spanx>CandidateGrantedScopes = RequestedScopes</spanx>,
               then the authorization server MUST subsequently respond with a
-              success code and issue an RPT (upgrading as appropriate; see
-              below).</t>
+              success code and issue an RPT.</t>
 
               <t>If <spanx>CandidateGrantedScopes &lt;
               RequestedScopes</spanx>, the authorization server MUST
               subsequently issue either an RPT containing
-              <spanx>CandidateGrantedScopes</spanx> (upgrading as appropriate;
-              see below), or one of the error codes. The reason for the two
-              options is that granting only partial scopes may not be useful
-              for the client's and requesting party's purposes in seeking
-              authorization for access.</t>
+              <spanx>CandidateGrantedScopes</spanx>, or one of the error
+              codes. The reason for the two options is that granting only
+              partial scopes may not be useful for the client's and requesting
+              party's purposes in seeking authorization for access.</t>
             </list></t>
-
-          <t>The authorization server MAY implement RPT upgrading. It is
-          RECOMMENDED for the authorization server to document its practices
-          regarding RPT upgrades and to act consistently with respect to RPT
-          upgrades so as to enable clients to manage tokens efficiently. If
-          the authorization server has implemented RPT upgrading, the client
-          has submitted an RPT in its request, and the result is success, the
-          authorization server adds the permissions from the client's previous
-          RPT to the RPT it is about to issue, setting the value of <spanx
-          style="verb">upgraded</spanx> in its response containing the
-          upgraded RPT to <spanx style="verb">true</spanx> (see <xref
-          target="give-rpt" />).</t>
 
           <t>The following example illustrates authorization assessment and
           partial results: <list style="symbols">
@@ -846,9 +834,7 @@ Host: client.example.com
               scopes for <spanx style="verb">photo1</spanx> on the client's
               behalf (so <spanx>PermissionTicket</spanx> contains <spanx
               style="verb">view</spanx> and <spanx
-              style="verb">print</spanx>). For an example of how the resource
-              server can obtain the permission ticket, see <xref
-              target="UMAFedAuthz" />.</t>
+              style="verb">print</spanx>).</t>
 
               <t>The client requests <spanx style="verb">download</spanx>
               scope on the requesting party's behalf while requesting an RPT
@@ -872,13 +858,8 @@ Host: client.example.com
               in this case.</t>
             </list></t>
 
-          <t>Note: While a reasonable approach for most scenarios is to
-          implement the classic security stance of default-deny ("everything
-          that is not expressly allowed is forbidden"), corner cases can
-          inadvertently result in default-permit behavior. For example, it is
-          insufficient simply to assume that all resources have some non-zero
-          set of claims required for access, and then accept an empty set of
-          supplied claims as sufficient for access.</t>
+          <t>See <xref target="default-deny" /> for a discussion of
+          authorization implementation threats.</t>
         </section>
 
         <section anchor="give-rpt"
@@ -913,7 +894,8 @@ Host: client.example.com
               style="verb">true</spanx>. If it sets the value to <spanx
               style="verb">false</spanx> or the value is absent, the client
               MUST act as if the newly issued RPT does not include the
-              permissions associated with the RPT from the request.</t>
+              permissions associated with the RPT from the request. (See <xref
+              target="rpt-upgrading" />.)</t>
             </list></t>
 
           <t>The authorization server MAY include any of the parameters
@@ -921,17 +903,10 @@ Host: client.example.com
           except that it is NOT RECOMMENDED to include the <spanx
           style="verb">scope</spanx> parameter. This is because for an RPT's
           permissions, each scope is associated with a specific resource, even
-          though the client is unaware of this association. Note: The outcome
+          though this association is opaque to the client. Note: The outcome
           of authorization assessment may result in expiration periods for
           RPTs, permissions, and refresh tokens that can affect the client's
           later requests for refreshing the RPT.</t>
-
-          <t>If the authorization server is upgrading an RPT, and the RPT
-          string is new rather than repeating the RPT provided by the client
-          in the request, then the authorization server SHOULD revoke the
-          existing RPT, if possible, and the client MUST discard its previous
-          RPT. If the authorization server does not upgrade the RPT but issues
-          a new RPT, the client MAY retain the existing RPT.</t>
 
           <figure>
             <preamble>Example:</preamble>
@@ -948,8 +923,7 @@ Content-Type: application/json
           </figure>
 
           <figure>
-            <preamble>Example with a PCT and <spanx
-            style="verb">upgraded</spanx> in the response:</preamble>
+            <preamble>Example with a PCT in the response:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
@@ -958,11 +932,49 @@ Content-Type: application/json
 {  
    "access_token":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
    "token_type":"Bearer",
-   "pct":"c2F2ZWRjb25zZW50",
-   "upgraded":true
+   "pct":"c2F2ZWRjb25zZW50"
 }
 ]]></artwork>
           </figure>
+
+          <section anchor="rpt-upgrading"
+                   title="Authorization Server Upgrades RPT">
+            <t>The authorization server MAY implement RPT upgrading. It is
+            RECOMMENDED for the authorization server to document its practices
+            regarding RPT upgrades and to act consistently with respect to RPT
+            upgrades so as to enable clients to manage tokens efficiently.</t>
+
+            <t>If the authorization server has implemented RPT upgrading, the
+            client has submitted an RPT in its request, and the result is
+            success, the authorization server adds the permissions from the
+            client's previous RPT to the RPT it is about to issue, setting the
+            value of <spanx style="verb">upgraded</spanx> in its response
+            containing the upgraded RPT to <spanx
+            style="verb">true</spanx>.</t>
+
+            <t>If the authorization server is upgrading an RPT, and the RPT
+            string is new rather than repeating the RPT provided by the client
+            in the request, then the authorization server SHOULD revoke the
+            existing RPT, if possible, and the client MUST discard its
+            previous RPT. If the authorization server does not upgrade the RPT
+            but issues a new RPT, the client MAY retain the existing RPT.</t>
+
+            <figure>
+              <preamble>Example with <spanx style="verb">upgraded</spanx> in
+              the response:</preamble>
+
+              <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json
+...
+
+{  
+   "access_token":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+   "token_type":"Bearer",
+   "upgraded":true
+}
+]]></artwork>
+            </figure>
+          </section>
         </section>
 
         <section anchor="authorization-failure"
@@ -1358,6 +1370,17 @@ Host: photoz.example.com
         authorization server in each response and return-redirect of the
         requesting party differs from the one it sent to the server in the
         initial request or redirect.</t>
+      </section>
+
+      <section anchor="default-deny"
+               title="Naive Implementations of Default-Deny Authorization">
+        <t>While a reasonable approach for most scenarios is to implement the
+        classic stance of default-deny ("everything that is not expressly
+        allowed is forbidden"), corner cases can inadvertently result in
+        default-permit behavior. For example, it is insufficient to create
+        default "empty" policy conditions stating "no claims are needed", and
+        then accept an empty set of supplied claims as sufficient for
+        access.</t>
       </section>
 
       <section anchor="trust-considerations"
