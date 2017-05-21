@@ -614,7 +614,7 @@
             value repeating the authorization server-defined identifier for
             the web resource corresponding to the resource. Its appearance in
             the body makes it readily available as an identifier for various
-            protected-resource management tasks.</t>
+            protected resource management tasks.</t>
 
             <t hangText="user_access_policy_uri">OPTIONAL. A URI that allows
             the resource server to redirect an end-user resource owner to a
