@@ -522,12 +522,13 @@
           target="scope-desc" />:</preamble>
 
           <artwork><![CDATA[{  
-   "name":"Photo Album",
-   "icon_uri":"http://www.example.com/icons/flower.png",
    "resource_scopes":[  
       "view",
       "http://photoz.example.com/dev/scopes/print"
    ],
+   "description":"Collection of digital photographs",
+   "icon_uri":"http://www.example.com/icons/flower.png",
+   "name":"Photo Album",
    "type":"http://www.example.com/rsrcs/photoalbum"
 }
 ]]></artwork>
@@ -569,8 +570,9 @@
             editing in some fashion):</preamble>
 
             <artwork><![CDATA[{  
-   "name":"View",
-   "icon_uri":"http://www.example.com/icons/reading-glasses"
+   "description":"View, inspect, and zoom in on photos",
+   "icon_uri":"http://www.example.com/icons/reading-glasses",
+   "name":"View"
 }
 ]]></artwork>
           </figure>
@@ -654,21 +656,23 @@
 Authorization: Bearer MHg3OUZEQkZBMjcx
 ...
 {  
-   "name":"Tweedl Social Service",
-   "icon_uri":"http://www.example.com/icons/sharesocial.png",
    "resource_scopes":[  
       "read-public",
       "post-updates",
       "read-private",
       "http://www.example.com/scopes/all"
    ],
+   "icon_uri":"http://www.example.com/icons/sharesocial.png",
+   "name":"Tweedl Social Service",
    "type":"http://www.example.com/rsrcs/socialstream/140-compatible"
 }
 ]]></artwork>
           </figure>
 
           <figure>
-            <preamble>Form of a successful response:</preamble>
+            <preamble>Form of a successful response, containing an optional
+            <spanx style="verb">user_access_policy_uri</spanx>
+            parameter:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 201 Created
 Content-Type: application/json
@@ -700,21 +704,23 @@ Authorization: Bearer MHg3OUZEQkZBMjcx
           </figure>
 
           <figure>
-            <preamble>Form of a successful response:</preamble>
+            <preamble>Form of a successful response, containing all the
+            parameters that were registered as part of the
+            description:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
 ...
 {  
    "_id":"KX3A-39WE",
-   "name":"Tweedl Social Service",
-   "icon_uri":"http://www.example.com/icons/sharesocial.png",
    "resource_scopes":[  
       "read-public",
       "post-updates",
       "read-private",
       "http://www.example.com/scopes/all"
    ],
+   "icon_uri":"http://www.example.com/icons/sharesocial.png",
+   "name":"Tweedl Social Service",
    "type":"http://www.example.com/rsrcs/socialstream/140-compatible"
 }
 ]]></artwork>
@@ -735,7 +741,9 @@ Content-Type: application/json
           style="verb">_id</spanx> parameter.</t>
 
           <figure>
-            <preamble>Form of an update request, with an access token in the
+            <preamble>Form of an update request adding a <spanx
+            style="verb">description</spanx> parameter to a resource
+            description that previously had none, with an access token in the
             header:</preamble>
 
             <artwork><![CDATA[PUT /rs/9UQU-DUWW HTTP/1.1
@@ -743,19 +751,22 @@ Content-Type: application/json
 Authorization: Bearer 204c69636b6c69
 ...
 {  
-   "name":"Photo Album",
-   "icon_uri":"http://www.example.com/icons/sky.png",
    "resource_scopes":[  
       "http://photoz.example.com/dev/scopes/view",
       "public-read"
    ],
+   "description":"Collection of digital photographs",
+   "icon_uri":"http://www.example.com/icons/sky.png",
+   "name":"Photo Album",
    "type":"http://www.example.com/rsrcs/photoalbum"
 }
 ]]></artwork>
           </figure>
 
           <figure>
-            <preamble>Form of a successful response:</preamble>
+            <preamble>Form of a successful response, not containing the
+            optional <spanx style="verb">user_access_policy_uri</spanx>
+            parameter:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 200 OK
 ...
@@ -788,11 +799,6 @@ Authorization: Bearer 204c69636b6c69
 ...
 ]]></artwork>
           </figure>
-
-          <t>If the referenced resource does not exist, the authorization
-          server MUST produce an error response with an error parameter value
-          of <spanx style="verb">not_found</spanx>, as defined in <xref
-          target="reg-api" />.</t>
         </section>
 
         <section anchor="list-rreg" title="List Resource Descriptions">
@@ -1674,7 +1680,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMAGrant"
-                 target="https://docs.kantarainitiative.org/uma/ed/oauth-uma-grant-2.0-03.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-grant-2.0-05.html">
         <front>
           <title>User-Managed Access (UMA) Grant for OAuth 2.0
           Authorization</title>
@@ -1683,7 +1689,7 @@ Cache-Control: no-store
             <organization>ForgeRock</organization>
           </author>
 
-          <date day="19" month="April" year="2017" />
+          <date day="" month="May" year="2017" />
         </front>
       </reference>
 

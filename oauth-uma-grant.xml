@@ -1761,7 +1761,7 @@ Host: photoz.example.com
       </reference>
 
       <reference anchor="UMAFedAuthz"
-                 target="https://docs.kantarainitiative.org/uma/ed/oauth-uma-federated-authz-2.0-03.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-federated-authz-2.0-05.html">
         <front>
           <title>Federated Authorization for User-Managed Access (UMA)
           2.0</title>
@@ -1770,7 +1770,7 @@ Host: photoz.example.com
             <organization>ForgeRock</organization>
           </author>
 
-          <date day="25" month="April" year="2017" />
+          <date day="" month="May" year="2017" />
         </front>
       </reference>
 
