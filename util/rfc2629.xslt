@@ -5866,20 +5866,20 @@ dd, li, p {
             This Internet-Draft is submitted to IETF in full conformance with
             the provisions of BCP 78 and BCP 79.
           </xsl:when>
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'editor')">
+            This document is an editors' draft of a technical specification produced by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref>. See the Kantara Initiative <eref target="http://kantarainitiative.org/confluence/download/attachments/84279306/Kantara%20Operating%20Procedures%20V2.0.pdf">Operating Procedures</eref> for more information.
+          </xsl:when>
           <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'draft')">
-            This document is a draft technical specification produced by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref>. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
+            This technical specification is a Draft Recommendation produced by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref>. See the Kantara Initiative <eref target="http://kantarainitiative.org/confluence/download/attachments/84279306/Kantara%20Operating%20Procedures%20V2.0.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'publicReview')">
-            This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for Public Review. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'publicComment')">
+            This technical specification is a Draft Recommendation produced by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref>. It has been approved by the Work Group for Public Comment and IPR Review. See the Kantara Initiative <eref target="http://kantarainitiative.org/confluence/download/attachments/84279306/Kantara%20Operating%20Procedures%20V2.0.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'approvedByLC')">
-            This candidate Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been approved by the Work Group for LC certification for Draft Recommendation. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'postPublicComment')">
+            This technical specification is a Draft Recommendation produced by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref>. The Work Group has disposed of all comments collected during this specification's Public Comment period. See the Kantara Initiative <eref target="http://kantarainitiative.org/confluence/download/attachments/84279306/Kantara%20Operating%20Procedures%20V2.0.pdf">Operating Procedures</eref> for more information.
           </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'certifiedByLC')">
-            This Draft Recommendation was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and has been certified by the Leadership Council to undergo a Kantara All-Member Ballot. See the Kantara Initiative <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref> for more information.
-          </xsl:when>
-          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'approved')">
-            This specification was developed by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and approved by the Membership of the Kantara Initiative as a Recommendation according to its <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/KI+Operating+Procedures+_V1.1_+2009-10-10.pdf">Operating Procedures</eref>.
+          <xsl:when test="(/rfc/@ipr = 'kantara') and (/rfc/@target = 'recommendation')">
+            This technical specification is a Recommendation produced by the <eref target="https://kantarainitiative.org/confluence/display/uma/Home">User-Managed Access Work Group</eref> and approved by the Membership of the Kantara Initiative according to its <eref target="http://kantarainitiative.org/confluence/download/attachments/84279306/Kantara%20Operating%20Procedures%20V2.0.pdf">Operating Procedures</eref>.
           </xsl:when>
           <xsl:otherwise>
             CONFORMANCE UNDEFINED.
@@ -6160,7 +6160,7 @@ dd, li, p {
           Copyright &#169; <xsl:value-of select="$xml2rfc-ext-pub-year" /> Kantara Initiative and the persons identified as the document authors. All rights reserved.
         </t>
         <t>
-          This document is subject to the <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies%20_V1.1_.pdf?version=1&amp;modificationDate=1244488630000&amp;api=v2">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>).
+          This document is subject to the <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>).
         </t>
       </section>
     </xsl:when>
