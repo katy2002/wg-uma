@@ -809,18 +809,13 @@ Host: client.example.com
           examines the <spanx>CandidateGrantedScopes</spanx> set to determine
           whether to issue an RPT and what permissions should be associated
           with it.<list style="symbols">
-              <t>If the value of <spanx>CandidateGrantedScopes</spanx> is
-              null, the result is authorization failure and the authorization
-              server MUST subsequently issue one of the error codes (<xref
-              target="authorization-failure" />).</t>
+              <t>If <spanx>CandidateGrantedScopes = RequestedScopes</spanx>,
+              then the authorization server MUST subsequently respond with a
+              success code and issue an RPT (upgrading as appropriate; see
+              below).</t>
 
-              <t>If the value is non-null and <spanx>CandidateGrantedScopes =
-              RequestedScopes</spanx>, then the authorization server MUST
-              subsequently respond with a success code and issue an RPT
-              (upgrading as appropriate; see below).</t>
-
-              <t>If the value is non-null and <spanx>CandidateGrantedScopes
-              &lt; RequestedScopes</spanx>, the authorization server MUST
+              <t>If <spanx>CandidateGrantedScopes &lt;
+              RequestedScopes</spanx>, the authorization server MUST
               subsequently issue either an RPT containing
               <spanx>CandidateGrantedScopes</spanx> (upgrading as appropriate;
               see below), or one of the error codes. The reason for the two
