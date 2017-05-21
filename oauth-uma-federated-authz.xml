@@ -469,10 +469,10 @@
         characteristics of a resource sufficiently for an authorization server
         to protect it. A resource description has the following
         parameters:<list style="hanging">
-            <t hangText="scopes">REQUIRED. An array of strings, serving as
-            scope identifiers, indicating the available scopes for this
-            resource. Any of the strings MAY be either a plain string or a
-            URI. While a URI MAY resolve to a scope description document as
+            <t hangText="resource_scopes">REQUIRED. An array of strings,
+            serving as scope identifiers, indicating the available scopes for
+            this resource. Any of the strings MAY be either a plain string or
+            a URI. While a URI MAY resolve to a scope description document as
             defined in <xref target="scope-desc" />, and thus scope
             description documents are possible to standardize and reference
             publicly, the authorization server is not expected to resolve
@@ -524,7 +524,7 @@
           <artwork><![CDATA[{  
    "name":"Photo Album",
    "icon_uri":"http://www.example.com/icons/flower.png",
-   "scopes":[  
+   "resource_scopes":[  
       "view",
       "http://photoz.example.com/dev/scopes/print"
    ],
@@ -656,7 +656,7 @@ Authorization: Bearer MHg3OUZEQkZBMjcx
 {  
    "name":"Tweedl Social Service",
    "icon_uri":"http://www.example.com/icons/sharesocial.png",
-   "scopes":[  
+   "resource_scopes":[  
       "read-public",
       "post-updates",
       "read-private",
@@ -709,7 +709,7 @@ Content-Type: application/json
    "_id":"KX3A-39WE",
    "name":"Tweedl Social Service",
    "icon_uri":"http://www.example.com/icons/sharesocial.png",
-   "scopes":[  
+   "resource_scopes":[  
       "read-public",
       "post-updates",
       "read-private",
@@ -745,7 +745,7 @@ Authorization: Bearer 204c69636b6c69
 {  
    "name":"Photo Album",
    "icon_uri":"http://www.example.com/icons/sky.png",
-   "scopes":[  
+   "resource_scopes":[  
       "http://photoz.example.com/dev/scopes/view",
       "public-read"
    ],
@@ -927,7 +927,7 @@ Authorization: Bearer 204c69636b6c69
           <artwork><![CDATA[{  
    "name":"Steve the puppy!",
    "icon_uri":"http://www.example.com/icons/flower.png",
-   "scopes":[  
+   "resource_scopes":[  
       "http://photoz.example.com/dev/scopes/view",
       "http://photoz.example.com/dev/scopes/print"
    ]
@@ -947,7 +947,7 @@ Content-Type: application/json
 {  
    "name":"Steve the puppy!",
    "icon_uri":"http://www.example.com/icons/flower.png",
-   "scopes":[  
+   "resource_scopes":[  
       "http://photoz.example.com/dev/scopes/view",
       "http://photoz.example.com/dev/scopes/print"
    ]
@@ -1010,7 +1010,7 @@ Content-Type: application/json
    "_id":"112210f47de98100",
    "name":"Steve the puppy!",
    "icon_uri":"http://www.example.com/icons/flower.png",
-   "scopes":[  
+   "resource_scopes":[  
       "http://photoz.example.com/dev/scopes/view",
       "http://photoz.example.com/dev/scopes/print"
    ]
@@ -1057,7 +1057,7 @@ Host: as.example.com
 {  
    "name":"Steve on October 14, 2011",
    "icon_uri":"http://www.example.com/icons/flower.png",
-   "scopes":[  
+   "resource_scopes":[  
       "http://photoz.example.com/dev/scopes/view",
       "http://photoz.example.com/dev/scopes/print"
    ]
