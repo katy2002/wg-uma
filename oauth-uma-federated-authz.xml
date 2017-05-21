@@ -1471,8 +1471,8 @@ Cache-Control: no-store
     <section anchor="errors" title="Error Messages">
       <t>If a request is successfully authenticated, but is invalid for
       another reason, the authorization server produces an error response by
-      adding the following parameters to the entity body of the HTTP
-      response:<list style="hanging">
+      supplying a JSON-encoded object with the following members in the body
+      of the HTTP response:<list style="hanging">
           <t hangText="error">REQUIRED. A single error code. Values for this
           parameter are defined throughout this specification.</t>
 
@@ -1482,6 +1482,20 @@ Cache-Control: no-store
           <t hangText="error_uri">OPTIONAL. A URI identifying a human-readable
           web page with information about the error.</t>
         </list></t>
+
+      <figure>
+        <artwork><![CDATA[HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Cache-Control: no-store
+...
+
+{
+  "error": "invalid_resource_id",
+  "error_description": "Permission request failed with bad resource ID.",
+  "error_uri": "https://as.example.com/uma_errors/invalid_resource_id"
+}
+]]></artwork>
+      </figure>
     </section>
 
     <section anchor="sec-consid" title="Security Considerations">
