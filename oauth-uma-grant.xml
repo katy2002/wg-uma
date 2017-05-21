@@ -215,7 +215,7 @@
             authorization server.</t>
 
             <t hangText="permission">Authorized access to a particular
-            resource with one or more scopes bound to that resource. A
+            resource with some number of scopes bound to that resource. A
             permission ticket represents some number of requested permissions.
             An RPT represents some number of granted permissions. Permissions
             are part of the authorization server's process and are opaque to

@@ -3,6 +3,8 @@
 <!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
 "http://xml2rfc.tools.ietf.org/authoring/rfc2629.dtd" [
 <!ENTITY RFC7662 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7662.xml">
+<!ENTITY RFC6750 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6750.xml">
+<!ENTITY RFC6749 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7159.xml">
 <!ENTITY RFC2616 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml">
@@ -89,8 +91,7 @@
 
       <t>This specification, together with <xref target="UMAGrant" />,
       constitutes UMA 2.0. This specification is OPTIONAL to use with the UMA
-      grant, but if it is used, the authorization server and resource server
-      MUST use it in its entirety.</t>
+      grant.</t>
 
       <section title="Notational Conventions">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -164,12 +165,12 @@
             authorization server to the resource server, defined in this
             specification. This API is OAuth-protected.</t>
 
-            <t hangText="protection API access token (PAT)">An OAuth access
-            token with the scope <spanx style="verb">uma_protection</spanx>,
-            used by the resource server as a client of the authorization
-            server's protection API. The resource owner involved in the UMA
-            grant takes the role of the resource owner authorizing issuance of
-            the PAT.</t>
+            <t hangText="protection API access token (PAT)">An <xref
+            target="RFC6749" /> access token with the scope <spanx
+            style="verb">uma_protection</spanx>, used by the resource server
+            as a client of the authorization server's protection API. The
+            resource owner involved in the UMA grant takes the role of the
+            resource owner authorizing issuance of the PAT.</t>
           </list></t>
       </section>
 
@@ -282,6 +283,11 @@
           using independent implementations seek a consistent high level of
           security, profiling is RECOMMENDED (see Section 4 of <xref
           target="UMAGrant" />).</t>
+
+          <t>Note: The resource server generally requires access to the
+          protection API when an end-user resource owner is not available
+          ("offline" access). Thus, the authorization server needs to manage
+          the PAT in a way that ensures this outcome.</t>
         </section>
       </section>
 
@@ -317,21 +323,19 @@
         acquired OAuth client credentials from the authorization server by
         static or dynamic means, and has a valid PAT.</t>
 
-        <t>Note: The resource server generally requires access to the
-        protection API when an end-user resource owner is not available
-        ("offline" access). Thus, the authorization server needs to manage the
-        PAT in a way that ensures this outcome.</t>
-
         <t>The authorization server MUST declare its endpoints in the
         discovery document (see <xref target="as-config" />).</t>
 
+        <t>Examples in this specification show the use of bearer-style PATs in
+        <xref target="RFC6750" /> format.</t>
+
         <section title="Permissions">
           <t>A permission is (requested or granted) authorized access to a
-          particular resource with one or more scopes bound to that resource.
-          The concept of permissions is used in authorization assessment,
-          results calculation, and RPT issuance in <xref target="UMAGrant" />.
-          This concept takes on greater significance in relation to the
-          protection API.</t>
+          particular resource with some number of scopes bound to that
+          resource. The concept of permissions is used in authorization
+          assessment, results calculation, and RPT issuance in <xref
+          target="UMAGrant" />. This concept takes on greater significance in
+          relation to the protection API.</t>
 
           <t>The resource server's resource registration operations at the
           authorization server result in a set of resource owner-specific
@@ -472,14 +476,7 @@
             <t hangText="resource_scopes">REQUIRED. An array of strings,
             serving as scope identifiers, indicating the available scopes for
             this resource. Any of the strings MAY be either a plain string or
-            a URI. While a URI MAY resolve to a scope description document as
-            defined in <xref target="scope-desc" />, and thus scope
-            description documents are possible to standardize and reference
-            publicly, the authorization server is not expected to resolve
-            scope description details at resource registration time or at any
-            other run-time requirement. The resource server and authorization
-            server are presumed to have negotiated any required interpretation
-            of scope handling out of band.</t>
+            a URI.</t>
 
             <t hangText="description">OPTIONAL. A human-readable string
             describing the resource at length. The authorization server MAY
@@ -537,8 +534,19 @@
         <section anchor="scope-desc" title="Scope Description">
           <t>A scope description is a JSON document that describes the
           characteristics of a scope sufficiently for an authorization server
-          to protect the resource with this scope. A scope description has the
-          following parameters:<list style="hanging">
+          to protect the resource with this scope.</t>
+
+          <t>While a scope URI appearing in a resource description (see <xref
+          target="resource-set-desc" />) MAY resolve to a scope description
+          document, and thus scope description documents are possible to
+          standardize and reference publicly, the authorization server is not
+          expected to resolve scope description details at resource
+          registration time or at any other run-time requirement. The resource
+          server and authorization server are presumed to have negotiated any
+          required interpretation of scope handling out of band.</t>
+
+          <t>A scope description has the following parameters:<list
+              style="hanging">
               <t hangText="description">OPTIONAL. A human-readable string
               describing the resource at length. The authorization server MAY
               use this description in any user interface it presents to a
@@ -583,14 +591,15 @@
       </section>
 
       <section anchor="reg-api" title="Resource Registration API">
-        <t>The authorization server is REQUIRED to support the following five
-        registration options; any other operations are undefined by this
-        specification. Here, <spanx style="emph">rreguri</spanx> stands for
-        the resource registration endpoint and <spanx style="emph">_id</spanx>
-        stands for the authorization server-assigned identifier for the web
-        resource corresponding to the resource at the time it was created,
-        included within the URL returned in the Location header. Each
-        operation is defined in its own section below.<list style="symbols">
+        <t>The authorization server MUST support the following five
+        registration options and MUST require a valid PAT for access to them;
+        any other operations are undefined by this specification. Here, <spanx
+        style="emph">rreguri</spanx> stands for the resource registration
+        endpoint and <spanx style="emph">_id</spanx> stands for the
+        authorization server-assigned identifier for the web resource
+        corresponding to the resource at the time it was created, included
+        within the URL returned in the Location header. Each operation is
+        defined in its own section below.<list style="symbols">
             <t>Create resource description: POST <spanx
             style="emph">rreguri</spanx>/</t>
 
@@ -644,15 +653,16 @@
         <section anchor="create-rreg" title="Create Resource Description">
           <t>Adds a new resource description to the authorization server using
           the POST method. If the request is successful, the resource is
-          thereby registered and the authorization server MUST respond with a
-          status message that includes an <spanx style="verb">_id</spanx>
-          parameter.</t>
+          thereby registered and the authorization server MUST respond with an
+          HTTP 201 status message that includes a <spanx
+          style="verb">Location</spanx> header and an <spanx
+          style="verb">_id</spanx> parameter.</t>
 
           <figure>
-            <preamble>Form of a create request, with an access token in the
+            <preamble>Form of a create request, with a PAT in the
             header:</preamble>
 
-            <artwork><![CDATA[POST /rs/ HTTP/1.1 Content-Type: application/json
+            <artwork><![CDATA[POST /rreg/ HTTP/1.1 Content-Type: application/json
 Authorization: Bearer MHg3OUZEQkZBMjcx
 ...
 {  
@@ -670,8 +680,8 @@ Authorization: Bearer MHg3OUZEQkZBMjcx
           </figure>
 
           <figure>
-            <preamble>Form of a successful response, containing an optional
-            <spanx style="verb">user_access_policy_uri</spanx>
+            <preamble>Form of a successful response, also containing an
+            optional <spanx style="verb">user_access_policy_uri</spanx>
             parameter:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 201 Created
@@ -689,15 +699,15 @@ Location: /rs/KX3A-39WE
         <section anchor="read-rreg" title="Read Resource Description">
           <t>Reads a previously registered resource description using the GET
           method. If the request is successful, the authorization server MUST
-          respond with a status message that includes a body containing the
-          referenced resource description, along with an <spanx
+          respond with an HTTP 200 status message that includes a body
+          containing the referenced resource description, along with an <spanx
           style="verb">_id</spanx> parameter.</t>
 
           <figure>
-            <preamble>Form of a read request, with an access token in the
+            <preamble>Form of a read request, with a PAT in the
             header:</preamble>
 
-            <artwork><![CDATA[GET /rs/KX3A-39WE HTTP/1.1
+            <artwork><![CDATA[GET /rreg/KX3A-39WE HTTP/1.1
 Authorization: Bearer MHg3OUZEQkZBMjcx
 ...
 ]]></artwork>
@@ -737,16 +747,16 @@ Content-Type: application/json
           <t>Updates a previously registered resource description, by means of
           a complete replacement of the previous resource description, using
           the PUT method. If the request is successful, the authorization
-          server MUST respond with a status message that includes an <spanx
-          style="verb">_id</spanx> parameter.</t>
+          server MUST respond with an HTTP 200 status message that includes an
+          <spanx style="verb">_id</spanx> parameter.</t>
 
           <figure>
             <preamble>Form of an update request adding a <spanx
             style="verb">description</spanx> parameter to a resource
-            description that previously had none, with an access token in the
+            description that previously had none, with a PAT in the
             header:</preamble>
 
-            <artwork><![CDATA[PUT /rs/9UQU-DUWW HTTP/1.1
+            <artwork><![CDATA[PUT /rreg/9UQU-DUWW HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer 204c69636b6c69
 ...
@@ -780,13 +790,14 @@ Authorization: Bearer 204c69636b6c69
         <section anchor="delete-rreg" title="Delete Resource Description">
           <t>Deletes a previously registered resource description using the
           DELETE method. If the request is successful, the resource is thereby
-          deregistered.</t>
+          deregistered and the authorization server MUST respond with an HTTP
+          200 or 204 status message.</t>
 
           <figure>
-            <preamble>Form of a delete request, with an access token in the
+            <preamble>Form of a delete request, with a PAT in the
             header:</preamble>
 
-            <artwork><![CDATA[DELETE /rs/9UQU-DUWW
+            <artwork><![CDATA[DELETE /rreg/9UQU-DUWW
 Authorization: Bearer 204c69636b6c69
 ...
 ]]></artwork>
@@ -805,17 +816,17 @@ Authorization: Bearer 204c69636b6c69
           <t>Lists all previously registered resource identifiers for this
           resource owner using the GET method. The authorization server MUST
           return the list in the form of a JSON array of <spanx
-          style="verb">{_id}</spanx> string values.</t>
+          style="verb">_id</spanx> string values.</t>
 
-          <t>The resource server uses this method as a first step in checking
-          whether its understanding of protected resources is in full
+          <t>The resource server can use this method as a first step in
+          checking whether its understanding of protected resources is in full
           synchronization with the authorization server's understanding.</t>
 
           <figure>
-            <preamble>Form of a list request, with an access token in the
+            <preamble>Form of a list request, with a PAT in the
             header:</preamble>
 
-            <artwork><![CDATA[GET /rs/ HTTP/1.1
+            <artwork><![CDATA[GET /rreg/ HTTP/1.1
 Authorization: Bearer 204c69636b6c69
 ...
 ]]></artwork>
@@ -833,281 +844,6 @@ Authorization: Bearer 204c69636b6c69
 ]]></artwork>
           </figure>
         </section>
-      </section>
-
-      <section anchor="resource-reg-example" title="Example">
-        <t>The following is a non-normative example of resource
-        registration.</t>
-
-        <t>This example contains some steps that are exclusively in the realm
-        of user experience to achieve realistic illustration. These steps are
-        labeled "user experience only". Some other steps are exclusively
-        internal to the operation of the entity being discussed. These are
-        labeled "internal only".</t>
-
-        <t>A resource owner, Alice Adams, has just uploaded a photo of her new
-        puppy to a resource server, Photoz.example.com, and wants to ensure
-        that this specific photo is not publicly accessible.</t>
-
-        <t>Alice has already introduced this resource server to her
-        authorization server, ShareHub.example.com. However, Alice has not
-        previously instructed Photoz to use ShareHub to protect any photos of
-        hers.</t>
-
-        <t>ShareHub has a "default-deny" setup, so until such time as Alice
-        maps some other more permissive policies to any resources registered
-        by Photoz, the policy is not to share them. Policies she may
-        eventually map to particular photos or albums might be "Share only
-        with husband@email.example.net" or "Share only with people in my
-        'family' group".</t>
-
-        <t>Photoz has a publicly documented application-specific API that
-        offers two dozen different methods that apply to single photos, such
-        as <spanx style="verb">addTags</spanx> and <spanx
-        style="verb">getSizes</spanx>, but rolls them up into two
-        photo-related scopes of access: "view" (consisting of various
-        read-only operations) and "print" (consisting of various printing
-        operations). It defines two scope descriptions that represent these
-        scopes, which it is able to reuse for all of its users (not just
-        Alice), and ensures that these scope description documents are
-        available through HTTP GET requests that may be made by authorization
-        servers.</t>
-
-        <t>Photoz constructs scope description documents for the scopes in
-        order to provide data that will help them be displayed in user
-        interfaces. (This means that any scope strings it supplies in resource
-        registration descriptions will need to be URIs referring to these
-        documents. The alternative would have been simple scope strings
-        without the additional user interface data.)</t>
-
-        <t>The "name" parameter values in the scope descriptions are intended
-        to be seen by Alice when she maps authorization constraints to
-        specific resources and scopes while visiting ShareHub, such that Alice
-        would see the strings "View Photo and Related Info" and "Print Photo",
-        likely accompanied by the referenced icons, in the ShareHub interface.
-        (Other users of Photoz might similarly see the same labels at ShareHub
-        or whatever other authorization server they use. Photoz could
-        distinguish natural-language labels per user if it wishes, by pointing
-        to scopes with differently translated names.)</t>
-
-        <t>Example of the viewing-related scope description document available
-        at http://photoz.example.com/dev/scopes/view:</t>
-
-        <figure>
-          <artwork><![CDATA[{  
-   "name":"View Photo and Related Info",
-   "icon_uri":"http://www.example.com/icons/reading-glasses.png"
-}
-]]></artwork>
-        </figure>
-
-        <t>Example of the scope description document available at
-        http://photoz.example.com/dev/scopes/print:</t>
-
-        <figure>
-          <artwork><![CDATA[{  
-   "name":"Print Photo",
-   "icon_uri":"http://www.example.com/icons/printer.png"
-}
-]]></artwork>
-        </figure>
-
-        <t>While visiting Photoz, Alice selects a link or button that
-        instructs the site to "Protect" or "Share" this single photo (user
-        experience only; Photoz could have made this a default or preference
-        setting).</t>
-
-        <t>As a result, Photoz defines for itself a resource that represents
-        this photo (internal only; Photoz is the only application that knows
-        how to map a particular photo to a particular resource). Photoz also
-        prepares the following resource description, which is specific to
-        Alice and her photo. The "name" parameter value is intended to be seen
-        by Alice in mapping authorization policies to specific resources and
-        scopes when she visits ShareHub. Alice would see the string "Steve the
-        puppy!", likely accompanied by the referenced icon, in the ShareHub
-        interface. The possible scopes of access on this resource are
-        indicated with URI references to the scope descriptions, as shown just
-        above.</t>
-
-        <figure>
-          <artwork><![CDATA[{  
-   "name":"Steve the puppy!",
-   "icon_uri":"http://www.example.com/icons/flower.png",
-   "resource_scopes":[  
-      "http://photoz.example.com/dev/scopes/view",
-      "http://photoz.example.com/dev/scopes/print"
-   ]
-}
-]]></artwork>
-        </figure>
-
-        <t>Photoz uses the Create method of ShareHub's standard OAuth resource
-        registration API, presenting its Alice-specific access token to use
-        the API to register and assign an identifier to the resource
-        description.</t>
-
-        <figure>
-          <artwork><![CDATA[POST /rs/ HTTP/1.1
-Content-Type: application/json
-...
-{  
-   "name":"Steve the puppy!",
-   "icon_uri":"http://www.example.com/icons/flower.png",
-   "resource_scopes":[  
-      "http://photoz.example.com/dev/scopes/view",
-      "http://photoz.example.com/dev/scopes/print"
-   ]
-}
-]]></artwork>
-        </figure>
-
-        <t>If the registration attempt succeeds, ShareHub responds in the
-        following fashion.</t>
-
-        <figure>
-          <artwork><![CDATA[HTTP/1.1 201 Created
-Content-Type: application/json
-...
-{  
-   "_id":"112210f47de98100",
-   "user_access_policy_uri":"http://as.example.com/rs/222/resource/112210f47de98100/policy"
-}
-]]></artwork>
-        </figure>
-
-        <t>At the time Alice indicates she would like this photo protected,
-        Photoz can choose to redirect Alice to ShareHub for further policy
-        setting, access auditing, and other authorization server-related tasks
-        (user experience only).</t>
-
-        <t>Once it has successfully registered this description, Photoz is
-        responsible for outsourcing protection to ShareHub for resource
-        requests made to this photo.</t>
-
-        <t>Over time, as Alice uploads other photos and creates and organizes
-        photo albums, Photoz can use additional methods of the resource
-        registration API to ensure that ShareHub's understanding of Alice's
-        protected resources matches its own.</t>
-
-        <t>For example, if Photoz suspects that somehow its understanding of
-        the resource has gotten out of sync with ShareHub's, it can ask to
-        read the resource description as follows.</t>
-
-        <figure>
-          <artwork><![CDATA[GET /rs/112210f47de98100 HTTP/1.1
-Host: as.example.com
-...
-]]></artwork>
-        </figure>
-
-        <t>ShareHub responds with the full content of the resource
-        description, including its <spanx style="verb">_id</spanx>, as
-        follows:</t>
-
-        <figure>
-          <preamble>Example of an HTTP response to a "read resource
-          description" request, containing a resource description from the
-          authorization server:</preamble>
-
-          <artwork><![CDATA[HTTP/1.1 200 OK
-Content-Type: application/json
-...
-{  
-   "_id":"112210f47de98100",
-   "name":"Steve the puppy!",
-   "icon_uri":"http://www.example.com/icons/flower.png",
-   "resource_scopes":[  
-      "http://photoz.example.com/dev/scopes/view",
-      "http://photoz.example.com/dev/scopes/print"
-   ]
-}
-]]></artwork>
-        </figure>
-
-        <t>If for some reason Photoz and ShareHub have gotten dramatically out
-        of sync, Photoz can ask for the list of resource identifiers ShareHub
-        currently knows about:</t>
-
-        <figure>
-          <artwork><![CDATA[GET /rs/ HTTP/1.1
-Host: as.example.com
-...
-]]></artwork>
-        </figure>
-
-        <t>ShareHub's response might look as follows:</t>
-
-        <figure>
-          <artwork><![CDATA[HTTP/1.1 200 OK
-...
-[  
-   "112210f47de98100",
-   "34234df47eL95300"
-]
-]]></artwork>
-        </figure>
-
-        <t>If Alice later changes the photo's title (user experience only) on
-        Photoz from "Steve the puppy!" to "Steve on October 14, 2011", Photoz
-        would use the Update method to ensure that Alice's experience of
-        policy-setting at ShareHub remains consistent with what she sees at
-        Photoz. Following is an example of this request. Note that the entire
-        updated resource description has to be included in the PUT
-        request.</t>
-
-        <figure>
-          <artwork><![CDATA[PUT /rs/112210f47de98100 HTTP/1.1
-Content-Type: application/json
-Host: as.example.com
-...
-{  
-   "name":"Steve on October 14, 2011",
-   "icon_uri":"http://www.example.com/icons/flower.png",
-   "resource_scopes":[  
-      "http://photoz.example.com/dev/scopes/view",
-      "http://photoz.example.com/dev/scopes/print"
-   ]
-}
-]]></artwork>
-        </figure>
-
-        <t>ShareHub would respond as follows.</t>
-
-        <figure>
-          <artwork><![CDATA[HTTP/1.1 201 Created
-Content-Type: application/json
-...
-{  
-   "_id":"112210f47de98100"
-}
-]]></artwork>
-        </figure>
-
-        <t>There are other reasons Photoz might want to update resource
-        descriptions, having nothing to do with Alice's actions or wishes. For
-        example, it might extend its API to include new features such as photo
-        resizing, and want to add new scopes to all of Alice's and other
-        users' resource descriptions.</t>
-
-        <t>if Alice later decides to entirely remove sharing protection (user
-        experience only) on this photo while visiting Photoz, ensuring that
-        the public can get access without any protection, Photoz is
-        responsible for deleting the relevant resource registration, as
-        follows:</t>
-
-        <figure>
-          <artwork><![CDATA[DELETE /rs/112210f47de98100 HTTP/1.1
-Host: as.example.com
-...]]></artwork>
-        </figure>
-
-        <t>ShareHub would respond as follows.</t>
-
-        <figure>
-          <artwork><![CDATA[HTTP/1.1 204 No content
-...
-]]></artwork>
-        </figure>
       </section>
     </section>
 
@@ -1208,7 +944,7 @@ client             server                server
             the client. The identifier MUST correspond to a resource that was
             previously registered.</t>
 
-            <t hangText="resource_scopes">REQUIRED. An array referencing one
+            <t hangText="resource_scopes">REQUIRED. An array referencing zero
             or more identifiers of scopes to which the resource server is
             requesting access for this resource on behalf of the client. Each
             scope identifier MUST correspond to a scope that was previously
@@ -1221,7 +957,7 @@ client             server                server
           authorization server's permission endpoint, with a PAT in the
           header:</preamble>
 
-          <artwork><![CDATA[POST /host/rsrc HTTP/1.1
+          <artwork><![CDATA[POST /perm HTTP/1.1
 Content-Type: application/json
 Host: as.example.com
 Authorization: Bearer 204c69636b6c69
@@ -1242,7 +978,7 @@ Authorization: Bearer 204c69636b6c69
           authorization server's permission endpoint, with a PAT in the
           header:</preamble>
 
-          <artwork><![CDATA[POST /host/rsrc HTTP/1.1
+          <artwork><![CDATA[POST /perm HTTP/1.1
 Content-Type: application/json
 Host: as.example.com
 Authorization: Bearer 204c69636b6c69
@@ -1280,7 +1016,9 @@ Authorization: Bearer 204c69636b6c69
         <t>If the authorization server is successful in creating a permission
         ticket in response to the resource server's request, it responds with
         an HTTP 201 (Created) status code and includes the <spanx
-        style="verb">ticket</spanx> parameter in the JSON-formatted body.</t>
+        style="verb">ticket</spanx> parameter in the JSON-formatted body.
+        Regardless of whether the request contained one or multiple
+        permissions, only a single permission ticket is returned.</t>
 
         <figure>
           <preamble>For example:</preamble>
@@ -1316,11 +1054,11 @@ Content-Type: application/json
 
     <section anchor="introspection-endpoint"
              title="Token Introspection Endpoint">
-      <t>When the client makes a resource request with an RPT, the resource
-      server needs to determine whether the RPT is active and, if so, its
-      associated permissions. Depending on the nature of the RPT and operative
-      caching parameters, the resource server MAY take any of the following
-      actions as appropriate to determine the RPT's status:<list
+      <t>When the client makes a resource request accompanied by RPT, the
+      resource server needs to determine whether the RPT is active and, if so,
+      its associated permissions. Depending on the nature of the RPT and
+      operative caching parameters, the resource server MAY take any of the
+      following actions as appropriate to determine the RPT's status:<list
           style="symbols">
           <t>Validate the RPT locally if it is self-contained.</t>
 
@@ -1365,6 +1103,9 @@ client             server                server
 ]]></artwork>
       </figure>
 
+      <t>The authorization server MAY support both UMA-extended and non-UMA
+      introspection requests and responses.</t>
+
       <section anchor="token-introspection"
                title="Resource Server Request to Token Introspection Endpoint">
         <t>Note: In order for the resource server to know which authorization
@@ -1377,7 +1118,7 @@ client             server                server
           authorization server for introspection of an RPT, with a PAT in the
           header:</preamble>
 
-          <artwork><![CDATA[POST /rs/status HTTP/1.1
+          <artwork><![CDATA[POST /introspect HTTP/1.1
 Host: as.example.com
 Authorization: Bearer 204c69636b6c69
 ...
@@ -1406,33 +1147,33 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
               identifier MUST correspond to a resource that was previously
               registered as protected.</t>
 
-              <t hangText="resource_scopes">REQUIRED. An array referencing one
-              or more strings representing scopes to which access was granted
-              for this resource. Each string MUST correspond to a scope that
-              was registered by this resource server for the referenced
-              resource.</t>
+              <t hangText="resource_scopes">REQUIRED. An array referencing
+              zero or more strings representing scopes to which access was
+              granted for this resource. Each string MUST correspond to a
+              scope that was registered by this resource server for the
+              referenced resource.</t>
 
               <t hangText="exp">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
               permission will expire. If the parameter is absent, the
               permission does not expire. If the token-level <spanx
               style="verb">exp</spanx> value pre-dates a permission-level
-              <spanx style="verb">exp</spanx> value, the former overrides the
-              latter.</t>
+              <spanx style="verb">exp</spanx> value, the token-level value
+              takes precedence.</t>
 
               <t hangText="iat">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
               permission was originally issued. If the token-level <spanx
               style="verb">iat</spanx> value post-dates a permission-level
-              <spanx style="verb">iat</spanx> value, the former overrides the
-              latter.</t>
+              <spanx style="verb">iat</spanx> value, the token-level value
+              takes precedence.</t>
 
               <t hangText="nbf">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating the time
               before which this permission is not valid. If the token-level
               <spanx style="verb">nbf</spanx> value post-dates a
               permission-level <spanx style="verb">nbf</spanx> value, the
-              former overrides the latter.</t>
+              token-level value takes precedence.</t>
             </list></t>
 
           <figure>
@@ -1524,13 +1265,17 @@ Cache-Control: no-store
       of <xref target="UMAGrant" />.</t>
 
       <t>The authorization server comes to be in possession of resource
-      information that may reveal information about the resource owner, which
-      the authorization server's trust relationship with the resource server
-      is assumed to accommodate. However, the client is a less-trusted party
-      -- in fact, entirely untrustworthy until permissions are associated with
+      details that may reveal information about the resource owner, which the
+      authorization server's trust relationship with the resource server is
+      assumed to accommodate. However, the client is a less-trusted party --
+      in fact, entirely untrustworthy until permissions are associated with
       its RPT. The more information about a resource that is registered, the
       more risk of privacy compromise there is through a less-trusted
-      authorization server.</t>
+      authorization server. For example, if resource owner Alice introduces
+      her electronic health record resource server to a authorization server
+      in the cloud, the authorization server may come to learn a great deal of
+      detail about Alice's health information just so that she can control
+      access by others to that information.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1707,6 +1452,10 @@ Cache-Control: no-store
       </reference>
 
       &RFC2119;
+
+      &RFC6750;
+
+      &RFC6749;
 
       <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6415"?>
 
