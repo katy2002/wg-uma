@@ -1390,7 +1390,7 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
           <t>If the introspection object's <spanx style="verb">active</spanx>
           parameter has a Boolean value of <spanx style="verb">true</spanx>,
           then the object MUST NOT contain a <spanx style="verb">scope</spanx>
-          parameter, and SHOULD contain an extension parameter named <spanx
+          parameter, and MUST contain an extension parameter named <spanx
           style="verb">permissions</spanx> that contains an array of objects,
           each one (representing a single permission) containing these
           parameters:<list style="hanging">
@@ -1428,14 +1428,6 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
               permission-level <spanx style="verb">nbf</spanx> value, the
               former overrides the latter.</t>
             </list></t>
-
-          <t>For interoperability, if the introspection object does not
-          contain the <spanx style="verb">permissions</spanx> parameter, then
-          an UMA extension SHOULD be defined as appropriate, with supporting
-          authorization servers using <spanx
-          style="verb">uma_profiles_supported</spanx> metadata to advertise
-          their support of any alternative structure (see Section 4 of <xref
-          target="UMAGrant" />).</t>
 
           <figure>
             <preamble>Example of a response containing the introspection
