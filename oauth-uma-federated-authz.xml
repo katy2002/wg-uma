@@ -202,7 +202,7 @@
         for the resource server to use the authorization server for protecting
         those resources.</t>
 
-        <t>Different grant types for PAT issuance may be appropriate for
+        <t>Different grant types for PAT issuance might be appropriate for
         different types of resource owners; for example, the client
         credentials grant is useful in the case of an organization acting as a
         resource owner, whereas an interactive grant type is typically more
@@ -239,7 +239,7 @@
         <t>The separation of authorization decision making and authorization
         enforcement is similar to the architectural separation often used in
         enterprises between policy decision points and policy enforcement
-        points. However, note that the resource server MAY apply additional
+        points. However, the resource server MAY apply additional
         authorization controls beyond those imposed by the authorization
         server. For example, even if an RPT provides sufficient permissions
         for a particular case, the resource server can choose to bar access to
@@ -277,7 +277,7 @@
           per-authorization server basis, as the entities see fit. Validity
           periods of PATs, RPTs, refresh tokens, permissions, caching periods
           for various responses, and even OAuth client credentials are all
-          subject to management. Different time-to-live strategies may be
+          subject to management. Different time-to-live strategies might be
           suitable for different resources and scopes. These options are all
           outside the scope of this specification; where deployment ecosystems
           using independent implementations seek a consistent high level of
@@ -905,18 +905,18 @@ client             server                server
       permissions with scopes that is reasonable for the client&rsquo;s
       resource request. The resource server MAY request multiple permissions,
       and any permission MAY have zero scopes associated with it. Requesting
-      multiple permissions may be appropriate, for example, in cases where the
-      resource server expects the requesting party to need access to several
-      related resources if they need access to any one of the resources.
-      Requesting a permission with no scopes may be appropriate, for example,
-      in cases where an access attempt involves an API call that is ambiguous
-      without further context (role-based scopes such as <spanx
-      style="verb">user</spanx> and <spanx style="verb">admin</spanx> may have
-      this ambiguous quality, and an explicit client request for a particular
-      scope at the token endpoint later can clarify the desired access). The
-      resource server SHOULD document its intended pattern of permission
-      requests in order to assist the client in pre-registering for and
-      requesting appropriate scopes at the authorization server. See <xref
+      multiple permissions might be appropriate, for example, in cases where
+      the resource server expects the requesting party to need access to
+      several related resources if they need access to any one of the
+      resources. Requesting a permission with no scopes might be appropriate,
+      for example, in cases where an access attempt involves an API call that
+      is ambiguous without further context (role-based scopes such as <spanx
+      style="verb">user</spanx> and <spanx style="verb">admin</spanx> could
+      have this ambiguous quality, and an explicit client request for a
+      particular scope at the token endpoint later can clarify the desired
+      access). The resource server SHOULD document its intended pattern of
+      permission requests in order to assist the client in pre-registering for
+      and requesting appropriate scopes at the authorization server. See <xref
       target="UMA-Impl" /> for a discussion of permission request
       patterns.</t>
 
@@ -1242,11 +1242,11 @@ Cache-Control: no-store
       target="UMAGrant" /> and has the following additional security
       considerations.</t>
 
-      <t>In the context of federated authorization, a greater variety of
-      parties may be operating and using UMA software entities, and thus have
-      opportunities to establish agreements about the parties' rights and
-      responsibilities on a legal or contractual level, as discussed in
-      Section 5.4 of <xref target="UMAGrant" />.</t>
+      <t>In the context of federated authorization, more parties may be
+      operating and using UMA software entities, and thus may need to
+      establish agreements about the parties' rights and responsibilities on a
+      legal or contractual level, as discussed in Section 5.4 of <xref
+      target="UMAGrant" />.</t>
 
       <t>The protection API is secured by means of OAuth (through the use of
       the PAT). Therefore, it is susceptible to OAuth threats.</t>
@@ -1257,12 +1257,11 @@ Cache-Control: no-store
       target="UMAGrant" /> and has the following additional privacy
       considerations.</t>
 
-      <t>In the context of federated authorization, a greater variety of
-      parties may be operating and using UMA software entities, and thus have
-      opportunities to establish agreements about mutual rights,
-      responsibilities, and common interpretations of UMA constructs for
-      consistent and expected software behavior, as discussed in Section 6.3
-      of <xref target="UMAGrant" />.</t>
+      <t>In the context of federated authorization, more parties may be
+      operating and using UMA software entities, and thus may need to
+      establish agreements about mutual rights, responsibilities, and common
+      interpretations of UMA constructs for consistent and expected software
+      behavior, as discussed in Section 6.3 of <xref target="UMAGrant" />.</t>
 
       <t>The authorization server comes to be in possession of resource
       details that may reveal information about the resource owner, which the
