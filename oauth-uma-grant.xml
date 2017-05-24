@@ -1548,7 +1548,7 @@ Host: photoz.example.com
         <section title="Registry Contents">
           <t>
             <list style="symbols">
-              <t>Parameter name: <spanx style="verb">claim_tokens</spanx></t>
+              <t>Parameter name: <spanx style="verb">claim_token</spanx></t>
 
               <t>Parameter usage location: client request, token endpoint</t>
 
