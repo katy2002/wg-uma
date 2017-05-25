@@ -56,7 +56,7 @@
       </address>
     </author>
 
-    <date day="17" month="May" year="2017" />
+    <date day="25" month="May" year="2017" />
 
     <abstract>
       <t>This specification defines a means for a client, representing a
@@ -748,7 +748,7 @@ Host: client.example.com
               <t>Determine all operative policy conditions, and claims and
               other relevant information serving as input to them, for each
               scope assocated with <spanx>RequestedScopes</spanx> and evaluate
-              its authorization status. </t>
+              its authorization status.</t>
 
               <t>For each scope that passes the evaluation, add it to a set
               called <spanx>CandidateGrantedScopes</spanx>.</t>
@@ -1330,9 +1330,9 @@ Host: photoz.example.com
         <t>A PCT is similar to a refresh token in that it allows
         non-interactive issuance of access tokens. The authorization server
         and client MUST keep PCTs confidential in transit and storage, and
-        MUST NOT share any PCT with any other entity other than the issuer or
-        issued client, respectively. The authorization server MUST maintain
-        the binding between a PCT and the client to which it was issued.</t>
+        MUST NOT share any PCT with any entity other than the issuer or issued
+        client, respectively. The authorization server MUST maintain the
+        binding between a PCT and the client to which it was issued.</t>
 
         <t>Given that a PCT represents a set of requesting party claims, a
         client supplying a PCT in its RPT request MUST make a best effort to
