@@ -1248,25 +1248,25 @@ Host: photoz.example.com
         does not avail itself of the <spanx style="verb">state</spanx>
         parameter.</t>
 
-        <t>The client MUST implement CSRF protection for its claims
-        redirection URI, if it has one. This is typically accomplished by
-        requiring any request sent to the claims redirection URI endpoint to
-        include a value that binds the request to the user-agent's
-        authenticated state (for example, a hash of the session cookie used to
-        authenticate the user-agent). The binding value MUST be
-        non-guessable.</t>
-
-        <t>The client SHOULD use the <spanx style="verb">state</spanx>
-        parameter when redirecting the requesting party to the claims
-        interaction endpoint. Once the authorization server redirects the
-        requesting party back, with the required binding value contained in
-        the <spanx style="verb">state</spanx> parameter, the binding value
-        enables the client to verify the validity of the request by matching
-        the binding value to the user-agent's authenticated state. The client
-        MUST keep the user-agent's authenticated state (for example, session
-        cookie or HTML5 local storage) in a location accessible only to the
-        client and the user-agent (that is, protected by same-origin
-        policy).</t>
+        <t>If the client uses the redirection-based interactive claims
+        gathering feature, the client MUST implement CSRF protection for its
+        claims redirection URI. The client SHOULD use the <spanx
+        style="verb">state</spanx> parameter when redirecting the requesting
+        party to the claims interaction endpoint. The value of the <spanx
+        style="verb">state</spanx> parameter MUST be unguessable by an
+        attacker. Once the authorization server redirects the requesting party
+        back, with the required binding value contained in the <spanx
+        style="verb">state</spanx> parameter, the client MUST check that the
+        value of the <spanx style="verb">state</spanx> parameter received is
+        equal to the value sent in the initial redirection request. Depending
+        on the type of application, a client has several methods for storing
+        and later verifying the value of the <spanx style="verb">state</spanx>
+        parameter in between the initial redirect and the eventual resulting
+        request to the claims redirection URI, including storage in a
+        server-side session-bound variable, cryptographic derivation from a
+        browser cookie, or secure application-level storage. The client MUST
+        treat requests containing an invalid or unknown <spanx
+        style="verb">state</spanx> parameter value as an error.</t>
 
         <t>A CSRF attack against the authorization server's claims interaction
         endpoint can result in an attacker obtaining authorization for access
@@ -1278,7 +1278,8 @@ Host: photoz.example.com
 
         <t>The <spanx style="verb">state</spanx> parameter SHOULD NOT include
         sensitive client or requesting party information in plain text, as it
-        can be transmitted over insecure channels or stored insecurely.</t>
+        is transmitted through third party components (the requesting party's
+        user agent) and could be stored insecurely.</t>
       </section>
 
       <section title="Requesting Party Switching and RPT Exposure to a Requesting Party">
