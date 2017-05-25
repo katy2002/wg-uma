@@ -1144,7 +1144,7 @@ Host: photoz.example.com
       </section>
 
       <section anchor="rs-rpt-response"
-               title="Resource Server Responds to Client&rsquo;s RPT-Accompanied Resource Request">
+               title="Resource Server Responds to Client's RPT-Accompanied Resource Request">
         <t>The resource server responds to the client's RPT-accompanied
         resource request.</t>
 
