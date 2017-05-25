@@ -389,8 +389,8 @@ Host: photoz.example.com
         <t>The process of choosing what permissions to request from the
         authorization server may require interpretation and mapping of the
         client's resource request. The resource server SHOULD request a set of
-        permissions with scopes that is reasonable for the client&rsquo;s
-        resource request.</t>
+        permissions with scopes that is reasonable for the client's resource
+        request.</t>
 
         <t>Note: In order for the resource server to know which authorization
         server to approach for the permission ticket and on which resource
@@ -527,9 +527,9 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               representing requested scopes. For the authorization server to
               consider any requested scope in its assessment, the client MUST
               have pre-registered the same scope with the authorization
-              server. The client should consult the resource server&rsquo;s
-              API documentation for details about which scopes it can expect
-              the resource server's initial returned permission ticket to
+              server. The client should consult the resource server's API
+              documentation for details about which scopes it can expect the
+              resource server's initial returned permission ticket to
               represent as part of the authorization assessment (see <xref
               target="authorization-assessment" />).</t>
             </list></t>
@@ -1238,9 +1238,9 @@ Host: photoz.example.com
       considerations.</t>
 
       <section anchor="csrf" title="Cross-Site Request Forgery">
-        <t>Similar to the redirection used at OAuth&rsquo;s authorization
-        endpoint, UMA redirection for the purpose of gathering claims
-        interactively from an end-user requesting party (described in <xref
+        <t>Similar to the redirection used at OAuth's authorization endpoint,
+        UMA redirection for the purpose of gathering claims interactively from
+        an end-user requesting party (described in <xref
         target="claim-redirect" />) creates the potential for cross-site
         request forgery (CSRF) through an open redirect if the authorization
         server does not force the client to pre-register its claims
