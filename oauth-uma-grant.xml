@@ -788,6 +788,14 @@ Host: client.example.com
               access.</t>
             </list></t>
 
+          <t>Note: It is not an error for the client to have requested a scope
+          for which it did not pre-register because
+          <spanx>RequestedScopes</spanx> might include that same scope,
+          requested on the client's behalf by the resource server when
+          obtaining the permission ticket. However, if such a scope were
+          requested only by the client at the token endpoint, that scope would
+          not be included in <spanx>RequestedScopes</spanx>.</t>
+
           <t>The following example illustrates authorization assessment and
           partial results: <list style="symbols">
               <t>Assume two resources at a resource server, <spanx
