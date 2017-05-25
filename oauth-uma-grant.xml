@@ -775,12 +775,12 @@ Host: client.example.com
           whether to issue an RPT and what permissions should be associated
           with it.<list style="symbols">
               <t>If <spanx>CandidateGrantedScopes = RequestedScopes</spanx>,
-              then the authorization server MUST subsequently respond with a
-              success code and issue an RPT.</t>
+              then the authorization server subsequently responds with a
+              success code and issues an RPT.</t>
 
               <t>If <spanx>CandidateGrantedScopes &lt;
-              RequestedScopes</spanx>, the authorization server MUST
-              subsequently issue either an RPT containing
+              RequestedScopes</spanx>, the authorization server subsequently
+              issues either an RPT containing
               <spanx>CandidateGrantedScopes</spanx>, or one of the error
               codes. The reason for the two options is that granting only
               partial scopes might not be useful for the client's and
