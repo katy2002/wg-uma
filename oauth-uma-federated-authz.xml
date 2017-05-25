@@ -465,8 +465,7 @@
       scopes added at a new API version or resource owner actions at a service
       provider that result in new resource description text. See <xref
       target="UMA-Impl" /> for a discussion of initial resource registration
-      timing options. See <xref target="resource-reg-example" /> for a worked
-      example illustrating all of the operations.</t>
+      timing options.</t>
 
       <section anchor="resource-set-desc" title="Resource Description">
         <t>A resource description is a JSON document that describes the
@@ -578,9 +577,6 @@
 }
 ]]></artwork>
           </figure>
-
-          <t>See <xref target="resource-reg-example" /> for a long-form
-          example of scope descriptions used in resource registration.</t>
         </section>
       </section>
 
