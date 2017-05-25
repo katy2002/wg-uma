@@ -482,7 +482,9 @@
             describing the resource at length. The authorization server MAY
             use this description in any user interface it presents to a
             resource owner, for example, for resource protection monitoring or
-            policy setting.</t>
+            policy setting. The value of this parameter MAY be
+            internationalized, as described in Section 2.2 of <xref
+            target="RFC7591" />.</t>
 
             <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
             representing the resource. The authorization server MAY use the
@@ -493,7 +495,9 @@
             <t hangText="name">OPTIONAL. A human-readable string naming the
             resource. The authorization server MAY use this name in any user
             interface it presents to a resource owner, for example, for
-            resource protection monitoring or policy setting.</t>
+            resource protection monitoring or policy setting. The value of
+            this parameter MAY be internationalized, as described in Section
+            2.2 of <xref target="RFC7591" />.</t>
 
             <t hangText="type">OPTIONAL. A string identifying the semantics of
             the resource. For example, if the resource is an identity claim
@@ -504,13 +508,6 @@
             information about it in any user interface it presents to a
             resource owner.</t>
           </list></t>
-
-        <t>The resource server MAY encode human-readable strings using the
-        pattern described in Section 2.2 of <xref target="RFC7591" /> for
-        representing multiple languages and scripts, where language tags are
-        added delimited by a "#" character. It is OPTIONAL for the
-        authorization server to make use of this pattern, if present in
-        registered resources, for run-time dynamic string display effects.</t>
 
         <figure>
           <preamble>For example, this description characterizes a resource (a
@@ -551,7 +548,9 @@
               describing the resource at length. The authorization server MAY
               use this description in any user interface it presents to a
               resource owner, for example, for resource protection monitoring
-              or policy setting.</t>
+              or policy setting. The value of this parameter MAY be
+              internationalized, as described in Section 2.2 of <xref
+              target="RFC7591" />.</t>
 
               <t hangText="icon_uri">OPTIONAL. A URI for a graphic icon
               representing the scope. The authorization server MAY use the
@@ -562,15 +561,10 @@
               <t hangText="name">OPTIONAL. A human-readable string naming the
               scope. The authorization server MAY use this name in any user
               interface it presents to a resource owner, for example, for
-              resource protection monitoring or policy setting.</t>
+              resource protection monitoring or policy setting. The value of
+              this parameter MAY be internationalized, as described in Section
+              2.2 of <xref target="RFC7591" />.</t>
             </list></t>
-
-          <t>The resource server MAY encode human-readable strings using the
-          pattern described in Section 2.2 of <xref target="RFC7591" /> for
-          representing multiple languages and scripts, where language tags are
-          added delimited by a "#" character. It is OPTIONAL for the
-          authorization server to make use of this pattern, if present in
-          registered scopes, for run-time dynamic string display effects.</t>
 
           <figure>
             <preamble>For example, this scope description characterizes a
@@ -638,16 +632,18 @@
           </list></t>
 
         <t>If the request to the resource registration endpoint is incorrect,
-        then the authorization server instead responds with an error message
-        by including one of the following error codes with the response (see
-        <xref target="errors" />):<list style="hanging">
-            <t hangText="not_found">The resource requested from the
-            authorization server cannot be found. The authorization server
-            MUST respond with HTTP 404 (Not Found) status code.</t>
+        then the authorization server instead responds as follows (see <xref
+        target="errors" /> for information about error messages):<list
+            style="symbols">
+            <t>If the resource requested from the authorization server cannot
+            be found, the authorization server MUST respond with an HTTP 404
+            (Not Found) status code and MAY respond with a <spanx
+            style="verb">not_found</spanx> error message.</t>
 
-            <t hangText="unsupported_method_type">The resource server request
-            used an unsupported HTTP method. The authorization server MUST
-            respond with the HTTP 405 (Method Not Allowed) status code.</t>
+            <t>If the resource server request used an unsupported HTTP method,
+            the authorization server MUST respond with the HTTP 405 (Method
+            Not Allowed) status code and MAY respond with an <spanx
+            style="verb">unsupported_method_type</spanx> error message.</t>
           </list></t>
 
         <section anchor="create-rreg" title="Create Resource Description">
