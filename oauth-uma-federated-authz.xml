@@ -898,15 +898,15 @@ client             server                server
       <t>The process of choosing what permissions to request from the
       authorization server may require interpretation and mapping of the
       client's resource request. The resource server SHOULD request a set of
-      permissions with scopes that is reasonable for the client&rsquo;s
-      resource request. The resource server MAY request multiple permissions,
-      and any permission MAY have zero scopes associated with it. Requesting
-      multiple permissions might be appropriate, for example, in cases where
-      the resource server expects the requesting party to need access to
-      several related resources if they need access to any one of the
-      resources. Requesting a permission with no scopes might be appropriate,
-      for example, in cases where an access attempt involves an API call that
-      is ambiguous without further context (role-based scopes such as <spanx
+      permissions with scopes that is reasonable for the client's resource
+      request. The resource server MAY request multiple permissions, and any
+      permission MAY have zero scopes associated with it. Requesting multiple
+      permissions might be appropriate, for example, in cases where the
+      resource server expects the requesting party to need access to several
+      related resources if they need access to any one of the resources.
+      Requesting a permission with no scopes might be appropriate, for
+      example, in cases where an access attempt involves an API call that is
+      ambiguous without further context (role-based scopes such as <spanx
       style="verb">user</spanx> and <spanx style="verb">admin</spanx> could
       have this ambiguous quality, and an explicit client request for a
       particular scope at the token endpoint later can clarify the desired
