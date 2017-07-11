@@ -209,17 +209,18 @@
             party, client, authorization server, resource server, and resource
             owner.</t>
 
-            <t hangText="permission ticket">A correlation handle, initially
-            passed to the client by the resource server and subsequently
-            exchanged during the authorization process between the client and
-            authorization server.</t>
-
             <t hangText="permission">Authorized access to a particular
             resource with some number of scopes bound to that resource. A
             permission ticket represents some number of requested permissions.
             An RPT represents some number of granted permissions. Permissions
             are part of the authorization server's process and are opaque to
             the client.</t>
+
+            <t hangText="permission ticket">A correlation handle representing
+            requested permissions that is created and maintained by the
+            authorization server, initially passed to the client by the
+            resource server, and presented by the client at the token endpoint
+            and during requesting party redirects.</t>
 
             <t hangText="persisted claims token (PCT)">A correlation handle
             issued by an authorization server that represents a set of claims
