@@ -13,7 +13,7 @@
 <!ENTITY RFC7009 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7009.xml">
 ]>
 <rfc category="std" docName="oauth-uma-grant" id="kantara" ipr="kantara"
-     target="draft" version="2.0">
+     target="publicComment" version="2.0">
   <?xml-stylesheet texttype='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -56,7 +56,7 @@
       </address>
     </author>
 
-    <date day="17" month="May" year="2017" />
+    <date day="25" month="May" year="2017" />
 
     <abstract>
       <t>This specification defines a means for a client, representing a
@@ -71,7 +71,7 @@
       <t>This specification defines an extension OAuth 2.0 <xref
       target="RFC6749" /> grant. The grant enhances OAuth capabilities in the
       following ways:<list style="symbols">
-          <t>The resource owner authorizes protected-resource access to
+          <t>The resource owner authorizes protected resource access to
           clients used by entities that are in a <spanx>requesting
           party</spanx> role. This enables party-to-party authorization,
           rather than authorization of application access alone.</t>
@@ -148,55 +148,57 @@
 
         <t><xref target="protocol-flow" /> shows an example flow. The steps
         and artifacts chosen in this figure show a high degree of variety for
-        illustration purposes.</t>
+        illustration purposes; for example, while both claims pushing and
+        interactive claims gathering are shown, both might not be used in a
+        single scenario.</t>
 
         <figure anchor="protocol-flow" title="Example Flow">
           <artwork><![CDATA[requesting                             authorization resource resource
-  party        client                      server     server   owner
-    |            |                           |          |        |
-    |            |                           |(May set policy    |
-    |            |                           |conditions anytime)|
-    |            |                           |< - - - - - - - - -|
-    |            |Resource request (no access token)    |        |
-    |            |------------------------------------->|        |
-    |            |401 response with new permission      |        |
-    |            |ticket, AS location        |          |        |
-    |            |<-------------------------------------|        |
-    |            |Authz request with ticket, |          |        |
-    |            |claim token (push claims)  |          |        |
-    |            |-------------------------->|          |        |
-    |            |                      +----|Authz     |        |
-    |            |                      +--->|assessment|        |
-    |            |403 response with rotated  |          |        |
-    |            |ticket, need_info error,   |          |        |
-    |            |redirect_user hint         |          |        |
-    |            |<--------------------------|          |        |
-    |Redirect    |                           |          |        |
-    |user with   |                           |          |        |
-    |ticket      |                           |          |        |
-    |<-----------|                           |          |        |
-    |Follow redirect to AS                   |          |        |
-    |--------------------------------------->|          |        |
-    |(Interactive claims gathering)          |          |        |
-    |<- - - - - - - - - - - - - - - - - - - >|          |        |
-    |Redirect back with rotated ticket       |          |        |
-    |<---------------------------------------|          |        |
-    |Follow      |                           |          |        |
-    |redirect to |                           |          |        |
-    |client      |                           |          |        |
-    |----------->|                           |          |        |
-    |            |Authz request with ticket  |          |        |
-    |            |-------------------------->|          |        |
-    |            |                      +----|Authz     |        |
-    |            |                      +--->|assessment|        |
-    |            |Authz response with access |          |        |
-    |            |token (RPT) and PCT        |          |        |
-    |            |<--------------------------|          |        |
-    |            |Resource request with access token    |        |
-    |            |(RPT)                      |          |        |
-    |            |------------------------------------->|        |
-    |            |Protected resource         |          |        |
-    |            |<-------------------------------------|        |
+  party        client                      server     server    owner
+    |            |                           |          |         |
+    |            |                           |Set policy|         |
+    |            |                           |conditions (anytime)|
+    |            |                           |<- - - - - - - - - -|
+    |            |Resource request (no access token)    |         |
+    |            |------------------------------------->|         |
+    |            |401 response with new permission      |         |
+    |            |ticket, AS location        |          |         |
+    |            |<-------------------------------------|         |
+    |            |Authz request with ticket, |          |         |
+    |            |claim token (push claims)  |          |         |
+    |            |-------------------------->|          |         |
+    |            |                      +----|Authz     |         |
+    |            |                      +--->|assessment|         |
+    |            |403 response with rotated  |          |         |
+    |            |ticket, need_info error,   |          |         |
+    |            |redirect_user hint         |          |         |
+    |            |<--------------------------|          |         |
+    |Redirect    |                           |          |         |
+    |user with   |                           |          |         |
+    |ticket      |                           |          |         |
+    |<-----------|                           |          |         |
+    |Follow redirect to AS                   |          |         |
+    |--------------------------------------->|          |         |
+    |(Interactive claims gathering)          |          |         |
+    |<- - - - - - - - - - - - - - - - - - - >|          |         |
+    |Redirect back with rotated ticket       |          |         |
+    |<---------------------------------------|          |         |
+    |Follow      |                           |          |         |
+    |redirect to |                           |          |         |
+    |client      |                           |          |         |
+    |----------->|                           |          |         |
+    |            |Authz request with ticket  |          |         |
+    |            |-------------------------->|          |         |
+    |            |                      +----|Authz     |         |
+    |            |                      +--->|assessment|         |
+    |            |Authz response with access |          |         |
+    |            |token (RPT) and PCT        |          |         |
+    |            |<--------------------------|          |         |
+    |            |Resource request with access token    |         |
+    |            |(RPT)                      |          |         |
+    |            |------------------------------------->|         |
+    |            |Protected resource         |          |         |
+    |            |<-------------------------------------|         |
 ]]></artwork>
         </figure>
 
@@ -213,10 +215,11 @@
             authorization server.</t>
 
             <t hangText="permission">Authorized access to a particular
-            resource with one or more scopes bound to that resource. A
+            resource with some number of scopes bound to that resource. A
             permission ticket represents some number of requested permissions.
-            An RPT represents some number of granted permissions. The client
-            is not aware of the permission concept.</t>
+            An RPT represents some number of granted permissions. Permissions
+            are part of the authorization server's process and are opaque to
+            the client.</t>
 
             <t hangText="persisted claims token (PCT)">A correlation handle
             issued by an authorization server that represents a set of claims
@@ -229,7 +232,7 @@
             needs to collect and assess one or more claims of the requesting
             party or client against policy conditions as part of protecting a
             resource. The two methods available for UMA claims collection are
-            claim pushing and interactive claims gathering. Note: Claims
+            claims pushing and interactive claims gathering. Note: Claims
             collection might involve authentication for unique user
             identification, but depending on policy conditions might
             additionally or instead involve the collection of non-uniquely
@@ -238,90 +241,66 @@
             of agreement.</t>
 
             <t hangText="claim token">A package of claims provided directly by
-            the client to the authorization server through claim pushing.</t>
+            the client to the authorization server through claims pushing.</t>
 
             <t hangText="authorization process">The process through which the
-            client requests an RPT from the authorization server.</t>
+            authorization server determines whether it should issue an RPT to
+            the client on the requesting party's behalf, potentially based on
+            a variety of inputs (see <xref
+            target="authorization-process" />).</t>
           </list></t>
 
-        <t>Note: The following aspects of the resource server-client
-        relationship are outside the scope of this specification:<list
-            style="symbols">
-            <t>How the client acquired knowledge of the resource server's
-            interface and the specific endpoint of the desired protected
-            resource. For example, the resource server might have a
-            programmatic API or it might serve up simple web pages, and the
-            resource owner might have advertised the endpoint publicly on a
-            blog or other website, listed it in a discovery service, or
-            emailed a link to a particular intended requesting party.</t>
-
-            <t>The impetus for the client's resource request. For example, an
-            end-user requesting party might have clicked on a publicly
-            available thumbnail representation of a graphics-based resource to
-            retrieve a protected higher-resolution version.</t>
-          </list></t>
+        <t>Note: How the client acquired knowledge of the resource server's
+        interface and the specific endpoint of the desired protected resource
+        is outside the scope of this specification. For example, the resource
+        server might have a programmatic API or it might serve up simple web
+        pages, and the resource owner might have advertised the endpoint
+        publicly on a blog or other website, listed it in a discovery service,
+        or emailed a link to a particular intended requesting party.</t>
 
         <section anchor="authorization-process" title="Authorization Process">
-          <t>The authorization server conducts the authorization process in
-          three phases, with some potential variation in order and looping as
-          follows:<list style="symbols">
-              <t>An UMA-based claims collection phase. Claims pushing by a
-              client is defined in <xref target="uma-grant-type" />, and
-              interactive claims gathering with an end-user requesting party
-              is defined in <xref target="claim-redirect" />. This phase
-              occurs first in the authorization process in the following
-              circumstances:<list style="symbols">
-                  <t>When the client redirects an end-user requesting party to
-                  the authorization server for interactive claims gathering as
-                  its first step after receiving a permission ticket. For this
-                  to happen, the client needs the authorization server to have
-                  statically declared a claims interaction endpoint in its
-                  discovery document.</t>
+          <t>The authorization process involves the following activities:<list
+              style="symbols">
+              <t>Claims collection. Claims pushing by a client is defined in
+              <xref target="uma-grant-type" />, and interactive claims
+              gathering with an end-user requesting party is defined in <xref
+              target="claim-redirect" />.</t>
 
-                  <t>When the client requests an RPT at the token endpoint
-                  with pushed claims as its first step after receiving a
-                  permission ticket.</t>
-                </list></t>
-
-              <t>An authorization assessment phase (as defined in <xref
+              <t>Authorization assessment (as defined in <xref
               target="authorization-assessment" />). Authorization assessment
               involves the authorization server assembling and evaluating
               policy conditions, scopes, claims, and any other relevant
               information sourced outside of UMA claims collection flows, in
-              order to perform policy evaluation to mitigate access
-              authorization risk. This phase occurs first in the authorization
-              process when the client requests an RPT at the token endpoint as
-              its first step after receiving a permission ticket without
-              pushing any claims.</t>
+              order to mitigate access authorization risk.</t>
 
-              <t>An authorization results phase (as defined in <xref
-              target="authorization-assessment" />). In this phase, the
-              authorization server either returns a success code (as defined
-              in <xref target="give-rpt" />), an RPT, and an optional PCT, or
-              an error code (as defined in <xref
-              target="authorization-failure" />). If the error code is <spanx
-              style="verb">need_info</spanx> or <spanx
-              style="verb">request_submitted</spanx>, the authorization server
-              provides a permission ticket, giving the client an opportunity
-              to continue within the same authorization process. In the case
+              <t>Authorization results determination (as defined in <xref
+              target="authorization-assessment" />). The authorization server
+              either returns a success code (as defined in <xref
+              target="give-rpt" />), an RPT, and an optional PCT, or an error
+              code (as defined in <xref target="authorization-failure" />). If
+              the error code is <spanx style="verb">need_info</spanx> or
+              <spanx style="verb">request_submitted</spanx>, the authorization
+              server provides a permission ticket, giving the client an
+              opportunity to continue within the same authorization process
+              (including engaging in further claims collection). In the case
               of a <spanx style="verb">need_info</spanx> error, the
               authorization server can provide hints about what the client
               should do next.</t>
             </list></t>
 
-          <t>Different choices of phase order, claim collection style, and use
-          of hints inside <spanx style="verb">need_info</spanx> might be best
-          suited for different deployment ecosystems. For example, where no
-          pre-established relationship is expected between the resource
-          owner's authorization server and the requesting party, initial
-          requesting party redirection (initiated with a redirection hint) may
-          be a useful pattern, at which point the authorization server might
-          either authenticate the requesting party locally or serve as a
-          relying party for a remote identity provider. Where a common
-          authorization server also functions as an identity provider for all
-          resource owners and requesting parties, having the client push claim
-          tokens sourced from that central server itself with a pre-negotiated
-          format and contents may be a useful pattern.</t>
+          <t>Different choices of claims collection methods, other inputs to
+          authorization assessment, and <spanx style="verb">need_info</spanx>
+          error hints might be best suited for different deployment
+          ecosystems. For example, where no pre-established relationship is
+          expected between the resource owner's authorization server and the
+          requesting party, initial requesting party redirection might be a
+          useful pattern, at which point the authorization server might either
+          authenticate the requesting party locally or serve as a relying
+          party for a remote identity provider. Where a common authorization
+          server functions as an identity provider for all resource owners and
+          requesting parties, having the client push claim tokens sourced from
+          that central server itself with a pre-negotiated format and contents
+          might be a useful pattern.</t>
         </section>
       </section>
     </section>
@@ -361,26 +340,18 @@
           profiles and extensions supported by this authorization server. The
           value is an array of string values, where each string value is a URI
           identifying an UMA profile or extension. As discussed in <xref
-          target="profiles" />, it is RECOMMENDED for an authorization server
-          supporting a profile or extension related to UMA to supply the
-          specification's identifying URI (if any) here.</t>
+          target="profiles" />, an authorization server supporting a profile
+          or extension related to UMA SHOULD supply the specification's
+          identifying URI (if any) here.</t>
         </list></t>
 
-      <t>Following are additional requirements related to metadata:<list
-          style="hanging">
-          <t hangText="registration_endpoint"><vspace />If the authorization
-          server supports dynamic client registration, it MUST allow client
-          applications to register <spanx
-          style="verb">claims_redirect_uri</spanx> metadata, as defined in
-          <xref target="claim-redirect" />.</t>
-        </list></t>
+      <t>If the authorization server supports dynamic client registration, it
+      MUST allow client applications to register <spanx
+      style="verb">claims_redirect_uri</spanx> metadata, as defined in <xref
+      target="claim-redirect" />.</t>
     </section>
 
     <section anchor="protocol-flow-details-sec" title="Flow Details">
-      <t>The recipient of each request message SHOULD respond unless it
-      detects a security concern, such as a suspected denial of service attack
-      that can be mitigated by rate limiting.</t>
-
       <section anchor="client-attempts-tokenless-access"
                title="Client Requests Resource With No Token">
         <t>The client requests a protected resource, without having presented
@@ -389,8 +360,8 @@
         <t>Note: This process does not assume that any relevant policy
         conditions have already been defined at the authorization server.</t>
 
-        <t>Note: For an example of how the resource server can put resources
-        under the protection of an authorization server, see <xref
+        <t>For an example of how the resource server can put resources under
+        the protection of an authorization server, see <xref
         target="UMAFedAuthz" />.</t>
 
         <figure>
@@ -409,6 +380,31 @@ Host: photoz.example.com
         <t>The resource server responds to the client's tokenless resource
         request.</t>
 
+        <t>The resource server MUST obtain a permission ticket from the
+        authorization server to provide in its response, but the means of
+        doing so is outside the scope of this specification. For an example of
+        how the resource server can obtain the permission ticket, see <xref
+        target="UMAFedAuthz" />.</t>
+
+        <t>The process of choosing what permissions to request from the
+        authorization server may require interpretation and mapping of the
+        client's resource request. The resource server SHOULD request a set of
+        permissions with scopes that is reasonable for the client's resource
+        request.</t>
+
+        <t>Note: In order for the resource server to know which authorization
+        server to approach for the permission ticket and on which resource
+        owner's behalf, it needs to derive the necessary information using
+        cues provided by the structure of the API where the resource request
+        was made, rather than by an access token. Commonly, this information
+        can be passed through the URI, headers, or body of the client's
+        request. Alternatively, the entire interface could be dedicated to the
+        use of a single resource owner and protected by a single authorization
+        server.</t>
+
+        <t>See <xref target="ticket-management" /> for permission ticket
+        security considerations.</t>
+
         <section anchor="permission-success-to-client"
                  title="Resource Server Response to Client on Permission Request Success">
           <t>If the resource server is able to provide a permission ticket
@@ -420,9 +416,6 @@ Host: photoz.example.com
           parameter and the permission ticket in a <spanx
           style="verb">ticket</spanx> parameter.</t>
 
-          <t>Note: For an example of how the resource server can obtain the
-          permission ticket, see <xref target="UMAFedAuthz" />.</t>
-
           <figure>
             <preamble>For example:</preamble>
 
@@ -433,24 +426,6 @@ WWW-Authenticate: UMA realm="example",
 ...
 ]]></artwork>
           </figure>
-
-          <section anchor="ticket-management"
-                   title="Permission Ticket Management">
-            <t>The authorization server MUST make permission ticket values
-            unguessable by resource servers and clients. Within these
-            constraints, however, the authorization server MAY format the
-            ticket however it chooses, for example either as a random string
-            that references data held on the server or by including data
-            within the ticket itself.</t>
-
-            <t>Permission tickets MUST be single-use. This prevents
-            susceptibility to a session fixation attack.</t>
-
-            <t>The authorization server MUST invalidate a permission ticket
-            when the client presents the permission ticket to either the token
-            endpoint or the claims interaction endpoint, or when the
-            permission ticket expires, whichever occurs first.</t>
-          </section>
         </section>
 
         <section anchor="permission-failure-to-client"
@@ -512,19 +487,20 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               it MUST appear together with the <spanx
               style="verb">claim_token_format</spanx> parameter. A string
               containing directly pushed claim information in the indicated
-              format, base64url encoded if it is not already so encoded. The
-              client MAY provide this information on a first or subsequent
-              request to this endpoint. The client and authorization server
-              together may need to determine proper audience restrictions for
-              the claim token prior to claim pushing.</t>
+              format. It MUST be base64url encoded unless specified otherwise
+              by the claim token format. The client MAY provide this
+              information on both first and subsequent requests to this
+              endpoint. The client and authorization server together might
+              need to establish proper audience restrictions for the claim
+              token prior to claims pushing.</t>
 
               <t hangText="claim_token_format">OPTIONAL. If this parameter is
               used, it MUST appear together with the <spanx
               style="verb">claim_token</spanx> parameter. A string specifying
               the format of the claim token in which the client is directly
               pushing claims to the authorization server. The string MAY be a
-              URI. Examples of claim token formats include <xref
-              target="OIDCCore" /> ID Tokens and SAML assertions.</t>
+              URI. Examples of potential types of claim token formats are
+              <xref target="OIDCCore" /> ID Tokens and SAML assertions.</t>
 
               <t hangText="pct">OPTIONAL. If the authorization server
               previously returned a PCT along with an RPT, the client MAY
@@ -535,29 +511,25 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               effort to ensure that the requesting party using the client now
               is the same as the requesting party that was associated with the
               PCT when it was issued. The client MAY use the PCT for the same
-              requesting party when seeking an RPT for a different resource or
-              at a different resource server entirely. See <xref
+              requesting party when seeking an RPT for a resource different
+              from the one sought when the PCT was issued, or a protected
+              resource at a different resource server entirely. See <xref
               target="sec-consid-pct" /> for additional PCT security
               considerations. See <xref target="give-rpt" /> for the form of
               the authorization server's response with a PCT.</t>
 
               <t hangText="rpt">OPTIONAL. Supplying an existing RPT gives the
               authorization server the option of upgrading that RPT instead of
-              issuing a new one (see <xref
-              target="authorization-assessment" /> for more about this
-              option). Note: An RPT is bound to a specific resource owner, but
-              it is outside the scope of this specification for a protected
-              resource's location to reveal the resource owner's identity to
-              the client, so the client may not be aware of which RPT it
-              received is bound to which resource owner.</t>
+              issuing a new one (see <xref target="rpt-upgrading" /> for more
+              about this option).</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
               representing requested scopes. For the authorization server to
               consider any requested scope in its assessment, the client MUST
               have pre-registered the same scope with the authorization
-              server. The client should consult the resource server&rsquo;s
-              API documentation for details about which scopes it can expect
-              the resource server's initial returned permission ticket to
+              server. The client should consult the resource server's API
+              documentation for details about which scopes it can expect the
+              resource server's initial returned permission ticket to
               represent as part of the authorization assessment (see <xref
               target="authorization-assessment" />).</t>
             </list></t>
@@ -620,10 +592,11 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
           <t>Redirecting the requesting party to the authorization server is
           one option for the client in beginning to engage with the
           authorization server as part of an authorization process. The client
-          may have initiated redirection on receiving an authorization failure
-          response containing a <spanx style="verb">redirect_user</spanx> hint
-          (see <xref target="authorization-failure" />). The other option is
-          to seek issuance of an RPT at the token endpoint (see <xref
+          might, for example, have initiated redirection on receiving an
+          authorization failure response containing a <spanx
+          style="verb">redirect_user</spanx> hint (see <xref
+          target="authorization-failure" />). The other option is to seek
+          issuance of an RPT at the token endpoint (see <xref
           target="seek-authorization" />).</t>
 
           <t>If the client intends to redirect an end-user requesting party to
@@ -645,10 +618,13 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
               received by the client as part of this authorization
               process.</t>
 
-              <t hangText="claims_redirect_uri">OPTIONAL. The URI to which the
-              client wishes the authorization server to direct the requesting
-              party's user agent after completing its interaction. The URI
-              MUST be absolute, MAY contain an <spanx
+              <t hangText="claims_redirect_uri">REQUIRED if the client has
+              pre-registered multiple claims redirection URIs or has
+              pre-registered no claims redirection URI; OPTIONAL only if the
+              client has pre-registered a single claims redirection URI. The
+              URI to which the client wishes the authorization server to
+              direct the requesting party's user agent after completing its
+              interaction. The URI MUST be absolute, MAY contain an <spanx
               style="verb">application/x-www-form-urlencoded</spanx>-formatted
               query parameter component that MUST be retained when adding
               additional parameters, and MUST NOT contain a fragment
@@ -672,7 +648,8 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
               client to maintain state between the request and callback. The
               authorization server includes this value when redirecting the
               user agent back to the client. The use of this parameter is for
-              preventing cross-site request forgery.</t>
+              preventing cross-site request forgery (see <xref
+              target="csrf" /> for further security information).</t>
             </list></t>
 
           <figure>
@@ -703,7 +680,8 @@ Host: as.example.com
 
               <t hangText="state">OPTIONAL. The same state value that the
               client provided in the request. It MUST be present if and only
-              if the client provided it.</t>
+              if the client provided it (see <xref target="csrf" /> for
+              further security information).</t>
             </list></t>
 
           <t>Note: Interactive claims-gathering processes are outside the
@@ -712,10 +690,10 @@ Host: as.example.com
           authorization assessment purposes. This redirection does not involve
           sending any of the information back to the client.</t>
 
-          <t>Prior to its redirecting the end-user requesting party back and
-          preparatory to issuing a PCT, the authorization server MAY use the
-          interactive claims-gathering process to gather authorization for
-          persisting claims across authorization processes.</t>
+          <t>The authorization server MAY use interactive claims-gathering to
+          request authorization from the requesting party for persisting
+          claims across authorization processes. Such persisted claims will be
+          represented by a PCT issued to the client in a subsequent step.</t>
 
           <t>The client MUST ignore unrecognized response parameters. If the
           request fails due to a missing, invalid, or mismatching claims
@@ -770,60 +748,53 @@ Host: client.example.com
               <t>Determine all operative policy conditions, and claims and
               other relevant information serving as input to them, for each
               scope assocated with <spanx>RequestedScopes</spanx> and evaluate
-              its authorization status. Note: Claims and other information
-              gathered during one authorization process may become out of date
-              in terms of their relevance for future authorization processes.
-              The authorization server is responsible for managing such
-              relevance wherever information associated with a PCT, or other
-              persistently stored information, is used as input to
-              authorization, including policy conditions themselves. Note:
-              Since the authorization server's policy expression and
-              evaluation capabilities are outside the scope of this
-              specification, any one implementation might take a simple or
-              arbitrarily complex form, with varying abilities to combine or
-              perform calculations over claims and their values. For example,
-              logical operations such as accepting "either claim value A or
-              claim value B" as correct may be possible.</t>
+              its authorization status.</t>
 
               <t>For each scope that passes the evaluation, add it to a set
               called <spanx>CandidateGrantedScopes</spanx>.</t>
             </list></t>
 
+          <t>Note: Claims and other information gathered during one
+          authorization process may become out of date in terms of their
+          relevance for future authorization processes. The authorization
+          server is responsible for managing such relevance wherever
+          information associated with a PCT, or other persistently stored
+          information, is used as input to authorization, including policy
+          conditions themselves.</t>
+
+          <t>Note: Since the authorization server's policy expression and
+          evaluation capabilities are outside the scope of this specification,
+          any one implementation might take a simple or arbitrarily complex
+          form, with varying abilities to combine or perform calculations over
+          claims and their values. For example, logical operations such as
+          accepting "either claim value A or claim value B" as correct might
+          be possible.</t>
+
           <t>In the authorization results phase, the authorization server
           examines the <spanx>CandidateGrantedScopes</spanx> set to determine
           whether to issue an RPT and what permissions should be associated
           with it.<list style="symbols">
-              <t>If the value of <spanx>CandidateGrantedScopes</spanx> is
-              null, the result is authorization failure and the authorization
-              server MUST subsequently issue one of the error codes (<xref
-              target="authorization-failure" />).</t>
+              <t>If <spanx>CandidateGrantedScopes = RequestedScopes</spanx>,
+              then the authorization server subsequently responds with a
+              success code and issues an RPT.</t>
 
-              <t>If the value is non-null and <spanx>CandidateGrantedScopes =
-              RequestedScopes</spanx>, then the authorization server MUST
-              subsequently respond with a success code and issue an RPT
-              (upgrading as appropriate; see below).</t>
-
-              <t>If the value is non-null and <spanx>CandidateGrantedScopes
-              &lt; RequestedScopes</spanx>, the authorization server MUST
-              subsequently issue either an RPT containing
-              <spanx>CandidateGrantedScopes</spanx> (upgrading as appropriate;
-              see below), or one of the error codes. The reason for the two
-              options is that granting only partial scopes may not be useful
-              for the client's and requesting party's purposes in seeking
-              authorization for access.</t>
+              <t>If <spanx>CandidateGrantedScopes &lt;
+              RequestedScopes</spanx>, the authorization server subsequently
+              issues either an RPT containing
+              <spanx>CandidateGrantedScopes</spanx>, or one of the error
+              codes. The reason for the two options is that granting only
+              partial scopes might not be useful for the client's and
+              requesting party's purposes in seeking authorization for
+              access.</t>
             </list></t>
 
-          <t>The authorization server MAY implement RPT upgrading. It is
-          RECOMMENDED for the authorization server to document its practices
-          regarding RPT upgrades and to act consistently with respect to RPT
-          upgrades so as to enable clients to manage tokens efficiently. If
-          the authorization server has implemented RPT upgrading, the client
-          has submitted an RPT in its request, and the result is success, the
-          authorization server adds the permissions from the client's previous
-          RPT to the RPT it is about to issue, setting the value of <spanx
-          style="verb">upgraded</spanx> in its response containing the
-          upgraded RPT to <spanx style="verb">true</spanx> (see <xref
-          target="give-rpt" />).</t>
+          <t>Note: It is not an error for the client to have requested a scope
+          for which it did not pre-register because
+          <spanx>RequestedScopes</spanx> might include that same scope,
+          requested on the client's behalf by the resource server when
+          obtaining the permission ticket. However, if such a scope were
+          requested only by the client at the token endpoint, that scope would
+          not be included in <spanx>RequestedScopes</spanx>.</t>
 
           <t>The following example illustrates authorization assessment and
           partial results: <list style="symbols">
@@ -859,9 +830,7 @@ Host: client.example.com
               scopes for <spanx style="verb">photo1</spanx> on the client's
               behalf (so <spanx>PermissionTicket</spanx> contains <spanx
               style="verb">view</spanx> and <spanx
-              style="verb">print</spanx>). For an example of how the resource
-              server can obtain the permission ticket, see <xref
-              target="UMAFedAuthz" />.</t>
+              style="verb">print</spanx>).</t>
 
               <t>The client requests <spanx style="verb">download</spanx>
               scope on the requesting party's behalf while requesting an RPT
@@ -885,23 +854,20 @@ Host: client.example.com
               in this case.</t>
             </list></t>
 
-          <t>Note: While a reasonable approach for most scenarios is to
-          implement the classic security stance of default-deny ("everything
-          that is not expressly allowed is forbidden"), corner cases can
-          inadvertently result in default-permit behavior. For example, it is
-          insufficient simply to assume that all resources have some non-zero
-          set of claims required for access, and then accept an empty set of
-          supplied claims as sufficient for access.</t>
+          <t>See <xref target="default-deny" /> for a discussion of
+          authorization implementation threats.</t>
         </section>
 
         <section anchor="give-rpt"
                  title="Authorization Server Response to Client on Authorization Success">
           <t>If the authorization server's assessment process results in
-          issuance of permissions, it returns an HTTP 200 (OK) status code
-          with a response body containing the RPT with which it has associated
-          the requested permissions. The authorization server MAY return a
-          refresh token. See <xref target="refresh" /> for more information
-          about refreshing an RPT.</t>
+          issuance of permissions, it issues the RPT with which it has
+          associated the permissions by using the successful response form
+          defined in Section 5.1 of <xref target="RFC6749" />.</t>
+
+          <t>The authorization server MAY return a refresh token. See <xref
+          target="refresh" /> for more information about refreshing an
+          RPT.</t>
 
           <t>The authorization server MAY add the following parameters to its
           response:<list style="hanging">
@@ -926,25 +892,19 @@ Host: client.example.com
               style="verb">true</spanx>. If it sets the value to <spanx
               style="verb">false</spanx> or the value is absent, the client
               MUST act as if the newly issued RPT does not include the
-              permissions associated with the RPT from the request.</t>
+              permissions associated with the RPT from the request. (See <xref
+              target="rpt-upgrading" />.)</t>
             </list></t>
 
           <t>The authorization server MAY include any of the parameters
           defined in Section 5.1 of <xref target="RFC6749" /> on its response,
-          except that it is NOT RECOMMENDED to include the <spanx
+          except that it SHOULD NOT include the <spanx
           style="verb">scope</spanx> parameter. This is because for an RPT's
           permissions, each scope is associated with a specific resource, even
-          though the client is unaware of this association. Note: The outcome
+          though this association is opaque to the client. Note: The outcome
           of authorization assessment may result in expiration periods for
           RPTs, permissions, and refresh tokens that can affect the client's
           later requests for refreshing the RPT.</t>
-
-          <t>If the authorization server is upgrading an RPT, and the RPT
-          string is new rather than repeating the RPT provided by the client
-          in the request, then the authorization server SHOULD revoke the
-          existing RPT, if possible, and the client MUST discard its previous
-          RPT. If the authorization server does not upgrade the RPT but issues
-          a new RPT, the client MAY retain the existing RPT.</t>
 
           <figure>
             <preamble>Example:</preamble>
@@ -961,8 +921,7 @@ Content-Type: application/json
           </figure>
 
           <figure>
-            <preamble>Example with a PCT and <spanx
-            style="verb">upgraded</spanx> in the response:</preamble>
+            <preamble>Example with a PCT in the response:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
@@ -971,11 +930,49 @@ Content-Type: application/json
 {  
    "access_token":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
    "token_type":"Bearer",
-   "pct":"c2F2ZWRjb25zZW50",
-   "upgraded":true
+   "pct":"c2F2ZWRjb25zZW50"
 }
 ]]></artwork>
           </figure>
+
+          <section anchor="rpt-upgrading"
+                   title="Authorization Server Upgrades RPT">
+            <t>The authorization server MAY implement RPT upgrading. The
+            authorization server SHOULD document its practices regarding RPT
+            upgrades and to act consistently with respect to RPT upgrades so
+            as to enable clients to manage tokens efficiently.</t>
+
+            <t>If the authorization server has implemented RPT upgrading, the
+            client has submitted an RPT in its request, and the result is
+            success, the authorization server adds the permissions from the
+            client's previous RPT to the RPT it is about to issue, setting the
+            value of <spanx style="verb">upgraded</spanx> in its response
+            containing the upgraded RPT to <spanx
+            style="verb">true</spanx>.</t>
+
+            <t>If the authorization server is upgrading an RPT, and the RPT
+            string is new rather than repeating the RPT provided by the client
+            in the request, then the authorization server SHOULD revoke the
+            existing RPT, if possible, and the client MUST discard its
+            previous RPT. If the authorization server does not upgrade the RPT
+            but issues a new RPT, the client MAY retain the existing RPT.</t>
+
+            <figure>
+              <preamble>Example with <spanx style="verb">upgraded</spanx> in
+              the response:</preamble>
+
+              <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json
+...
+
+{  
+   "access_token":"sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv",
+   "token_type":"Bearer",
+   "upgraded":true
+}
+]]></artwork>
+            </figure>
+          </section>
         </section>
 
         <section anchor="authorization-failure"
@@ -1019,10 +1016,10 @@ Content-Type: application/json
               it MUST also include either the <spanx
               style="verb">required_claims</spanx> parameter or the <spanx
               style="verb">redirect_user</spanx> parameter, or both, as hints
-              about information the authorization server needs to perform
+              about information the authorization server needs for performing
               authorization assessment. On receiving such hints, the client
-              has the opportunity to engage, or engage the requesting party,
-              in claims collection flows.<list style="hanging">
+              has the opportunity to participate in follow-on claims
+              collection.<list style="hanging">
                   <t hangText="ticket">REQUIRED. A permission ticket that
                   allows the client to make a further request to the
                   authorization server's token endpoint as part of this same
@@ -1035,9 +1032,9 @@ Content-Type: application/json
                   subparameters:<list style="hanging">
                       <t hangText="claim_token_format">OPTIONAL. An array of
                       strings specifying a set of acceptable formats for a
-                      token pushed by the client containing this claim (see
-                      <xref target="uma-grant-type" />). Any one of the
-                      referenced formats would satisfy the authorization
+                      token pushed by the client containing this claim, as
+                      defined in <xref target="uma-grant-type" />. Any one of
+                      the referenced formats would satisfy the authorization
                       server's requirements. Each string MAY be a URI.</t>
 
                       <t hangText="claim_type">OPTIONAL. A string, indicating
@@ -1045,8 +1042,8 @@ Content-Type: application/json
                       The string MAY be a URI.</t>
 
                       <t hangText="friendly_name">OPTIONAL. A string that
-                      provides a human-readable form of the claim's name,
-                      which may be useful as a "display name" for use in user
+                      provides a human-readable form of the claim's name. This
+                      can be useful as a "display name" for use in user
                       interfaces in cases where the actual name is complex or
                       opaque, such as an OID or a UUID.</t>
 
@@ -1064,16 +1061,18 @@ Content-Type: application/json
                   <t hangText="redirect_user">The claims interaction endpoint
                   URI to which to redirect the end-user requesting party at
                   the authorization server to continue the process of
-                  interactive claims gathering. For example, the authorization
-                  server may require the requesting party to fill out a
-                  CAPTCHA to help prove humanness. If the requesting party is
-                  not an end-user, then no client action would be possible on
-                  receiving the hint. If a static claims interaction endpoint
-                  was also provided in the authorization server's discovery
-                  document, then this value overrides the static value.
-                  Providing a value in this response might be appropriate, for
-                  example, if the URI needs to be customized per requesting
-                  party.</t>
+                  interactive claims gathering, as defined in <xref
+                  target="claim-redirect" />. For example, the authorization
+                  server could require the requesting party to log in to an
+                  account, or fill out a CAPTCHA to help prove humanness, or
+                  perform any number of other interactive tasks. If the
+                  requesting party is not an end-user, then no client action
+                  is possible on receiving the hint. If a static claims
+                  interaction endpoint was also provided in the authorization
+                  server's discovery document, then this value overrides the
+                  static value. Providing a value in this response might be
+                  appropriate, for example, if the URI needs to be customized
+                  per requesting party.</t>
                 </list></t>
             </list></t>
 
@@ -1126,8 +1125,11 @@ Cache-Control: no-store
       </section>
 
       <section anchor="client-rpt-attempt"
-               title="Client Requests Resource With RPT">
-        <t>The client requests the resource, now in possession of an RPT.</t>
+               title="Client Requests Resource Accompanied by RPT">
+        <t>The client requests the resource, now in possession of an RPT. The
+        client uses <xref target="RFC6750" /> for a bearer token, and any
+        other suitable presentation mechanism for an RPT of another access
+        token type.</t>
 
         <figure>
           <preamble>Example of a client request for the resource carrying an
@@ -1142,7 +1144,7 @@ Host: photoz.example.com
       </section>
 
       <section anchor="rs-rpt-response"
-               title="Resource Server Responds to Client&rsquo;s Resource Request With RPT">
+               title="Resource Server Responds to Client's RPT-Accompanied Resource Request">
         <t>The resource server responds to the client's RPT-accompanied
         resource request.</t>
 
@@ -1156,8 +1158,6 @@ Host: photoz.example.com
         <t>For an example of how the resource server can introspect the token
         and its permissions at the authorization server prior to responding to
         the client's request, see <xref target="UMAFedAuthz" />.</t>
-
-        <t>This process concludes the UMA grant flow.</t>
       </section>
 
       <section anchor="refresh" title="Authorization Server Refreshes RPT">
@@ -1165,11 +1165,12 @@ Host: photoz.example.com
         authorization server MAY also issue a refresh token.</t>
 
         <t>Having previously received a refresh token from the authorization
-        server, the client MAY use the refresh token grant to attempt to
-        refresh an expired RPT. If the client includes the <spanx
-        style="verb">scope</spanx> parameter in its request, the authorization
-        server MAY limit the scopes in the permissions associated with any
-        resulting refreshed RPT to the scopes requested by the client.</t>
+        server, the client MAY use the refresh token grant as defined in <xref
+        target="RFC6749" /> to attempt to refresh an expired RPT. If the
+        client includes the <spanx style="verb">scope</spanx> parameter in its
+        request, the authorization server MAY limit the scopes in the
+        permissions associated with any resulting refreshed RPT to the scopes
+        requested by the client.</t>
 
         <t>The authorization server MUST NOT treat the client's request to
         refresh an RPT as if it were a request for a new RPT requiring an
@@ -1236,92 +1237,113 @@ Host: photoz.example.com
       <t>The following sections describe additional security
       considerations.</t>
 
-      <section anchor="rqp-threats" title="Requesting Party Threats">
-        <t>This section discusses threats related to UMA's nature as a
-        protocol enabling party-to-party sharing of protected resource access;
-        that is, enabling requesting parties who are not the resource owner to
-        gain authorized access to protected resources.</t>
+      <section anchor="csrf" title="Cross-Site Request Forgery">
+        <t>Similar to the redirection used at OAuth's authorization endpoint,
+        UMA redirection for the purpose of gathering claims interactively from
+        an end-user requesting party (described in <xref
+        target="claim-redirect" />) creates the potential for cross-site
+        request forgery (CSRF) through an open redirect if the authorization
+        server does not force the client to pre-register its claims
+        redirection endpoint, and server-side artifact tampering if the client
+        does not avail itself of the <spanx style="verb">state</spanx>
+        parameter.</t>
 
-        <t>For privacy considerations related to requesting parties, see <xref
-        target="rqp-privacy" />.</t>
+        <t>If the client uses the redirection-based interactive claims
+        gathering feature, the client MUST implement CSRF protection for its
+        claims redirection URI. The client SHOULD use the <spanx
+        style="verb">state</spanx> parameter when redirecting the requesting
+        party to the claims interaction endpoint. The value of the <spanx
+        style="verb">state</spanx> parameter MUST be unguessable by an
+        attacker. Once the authorization server redirects the requesting party
+        back, with the required binding value contained in the <spanx
+        style="verb">state</spanx> parameter, the client MUST check that the
+        value of the <spanx style="verb">state</spanx> parameter received is
+        equal to the value sent in the initial redirection request. Depending
+        on the type of application, a client has several methods for storing
+        and later verifying the value of the <spanx style="verb">state</spanx>
+        parameter in between the initial redirect and the eventual resulting
+        request to the claims redirection URI, including storage in a
+        server-side session-bound variable, cryptographic derivation from a
+        browser cookie, or secure application-level storage. The client MUST
+        treat requests containing an invalid or unknown <spanx
+        style="verb">state</spanx> parameter value as an error.</t>
 
-        <section anchor="redirect-threats"
-                 title="Requesting Party Redirection and Impersonation">
-          <t>Similar to the redirection used at OAuth&rsquo;s authorization
-          endpoint, UMA redirection for the purpose of gathering claims from
-          an end-user requesting party (described in <xref
-          target="claim-redirect" />) creates the potential for cross-site
-          request forgery (CSRF) through an open redirect if the authorization
-          server does not force the client to pre-register its claims
-          redirection endpoint, and server-side artifact tampering if the
-          client does not avail itself of the state parameter. The client MUST
-          check that the value of the state parameter it receives is the same
-          as the value it sent to the server in the initial redirect, and the
-          client SHOULD check that the value of the ticket parameter differs
-          from the one sent to the server in the initial redirect.</t>
+        <t>A CSRF attack against the authorization server's claims interaction
+        endpoint can result in an attacker obtaining authorization for access
+        through a malicious client without involving or alerting the end-user
+        requesting party. The authorization server MUST implement CSRF
+        protection for its claims interaction endpoint and ensure that a
+        malicious client cannot obtain authorization without the awareness and
+        involvement of the requesting party.</t>
 
-          <t>When a client redirects an end-user requesting party to the
-          claims interaction endpoint, the client provides no a priori context
-          to the authorization server about which user is appearing at the
-          endpoint, other than implicitly through the permission ticket. Since
-          the authorization server is free to gather any claims it wishes, the
-          effect is to "late-bind" them to the permission ticket and the state
-          string provided by the client, with the effect of enabling the
-          authorization server not to trust client-asserted claims. This is a
-          desirable result and reflects one reason why the authorization
-          server might choose to demand use of the redirect flow over the push
-          flow. However, the client has the opportunity to switch end-users --
-          say, enabling malicious end-user Carlos to impersonate the original
-          end-user Bob, who might be represented by a PCT already in that
-          client's possession and might even have authorized the issuance of
-          that PCT -- after the redirect completes and before it returns to
-          the token endpoint to seek permissions.</t>
+        <t>The <spanx style="verb">state</spanx> parameter SHOULD NOT include
+        sensitive client or requesting party information in plain text, as it
+        is transmitted through third party components (the requesting party's
+        user agent) and could be stored insecurely.</t>
+      </section>
 
-          <t>Another issue concerns the exposure of an RPT to a requesting
-          party, which could maliciously pass the token to an unauthorized
-          party.</t>
+      <section title="Requesting Party Switching and RPT Exposure to a Requesting Party">
+        <t>When a client redirects an end-user requesting party to the claims
+        interaction endpoint, the client provides no a priori context to the
+        authorization server about which user is appearing at the endpoint,
+        other than implicitly through the permission ticket. Since the
+        authorization server is free to gather any claims it wishes, the
+        effect is to "late-bind" them to the permission ticket and the <spanx
+        style="verb">state</spanx> parameter string provided by the client,
+        with the effect of enabling the authorization server not to trust
+        client-asserted claims. This is a desirable result and reflects one
+        reason why the authorization server might choose to demand use of the
+        redirect flow over the push flow. However, the client has the
+        opportunity to switch end-users -- say, enabling malicious end-user
+        Carlos to impersonate the original end-user Bob, who might be
+        represented by a PCT already in that client's possession and might
+        even have authorized the issuance of that PCT -- after the redirect
+        completes and before it returns to the token endpoint to seek
+        permissions.</t>
 
-          <t>To mitigate requesting-party switching and RPT exposure threats,
-          consider the following strategies.<list style="symbols">
-              <t>Require that the requesting party legitimately represent the
-              wielder of the bearer token on a legal or contractual level.
-              This solution does not reduce the risk from a technical
-              perspective.</t>
+        <t>Another issue concerns the exposure of an RPT to a requesting
+        party, which could maliciously pass the token to an unauthorized
+        party.</t>
 
-              <t>The authorization server, possibly with input from the
-              resource owner, can implement tighter time-to-live strategies
-              around the permissions in RPTs. This is a classic approach with
-              bearer tokens that helps to limit a malicious party's ability to
-              intercept and use the bearer token. In the same vein, the
-              authorization server could require claims to have a reasonable
-              degree of freshness (which would require a custom claims
-              profile).</t>
+        <t>To mitigate requesting-party switching and RPT exposure threats,
+        consider the following strategies.<list style="symbols">
+            <t>Require that the requesting party legitimately represent the
+            wielder of the bearer token on a legal or contractual level. This
+            solution does not reduce the risk from a technical
+            perspective.</t>
 
-              <t>A stronger strategy is to gather claims interactively from an
-              end-user requesting party that demonstrate that some
-              sufficiently strong level of authentication was performed.</t>
-            </list></t>
-        </section>
+            <t>The authorization server, possibly with input from the resource
+            owner, can implement tighter time-to-live strategies around the
+            permissions in RPTs. This is a classic approach with bearer tokens
+            that helps to limit a malicious party's ability to intercept and
+            use the bearer token. In the same vein, the authorization server
+            could require claims to have a reasonable degree of freshness
+            (which would require a custom claims profile).</t>
 
-        <section anchor="sec-consid-pct"
-                 title="Requesting Party Claims and Persisted Claims Tokens">
-          <t>A PCT is similar to a refresh token in that it carries extra
-          power over the usage of an RPT. The authorization server and client
-          MUST keep PCTs confidential in transit and storage, and MUST NOT
-          share any PCT with any other entity other than the issuer or issued
-          client, respectively. The authorization server MUST maintain the
-          binding between a PCT and the client to which it was issued.</t>
+            <t>A stronger strategy is to gather claims interactively from an
+            end-user requesting party that demonstrate that some sufficiently
+            strong level of authentication was performed.</t>
+          </list></t>
+      </section>
 
-          <t>Given that a PCT represents a set of requesting party claims, a
-          client supplying a PCT in its RPT request MUST make a best effort to
-          ensure that the requesting party using the client now is the same as
-          the requesting party that was associated with the PCT when it was
-          issued. Different clients will have different capabilities in this
-          respect; for example, some applications are single-user and perform
-          no local authentication, associating all PCTs with the "current
-          user", while others might have more sophisticated authentication and
-          user mapping capabilities.</t>
-        </section>
+      <section anchor="sec-consid-pct"
+               title="Requesting Party Claims and Persisted Claims Tokens">
+        <t>A PCT is similar to a refresh token in that it allows
+        non-interactive issuance of access tokens. The authorization server
+        and client MUST keep PCTs confidential in transit and storage, and
+        MUST NOT share any PCT with any entity other than the issuer or issued
+        client, respectively. The authorization server MUST maintain the
+        binding between a PCT and the client to which it was issued.</t>
+
+        <t>Given that a PCT represents a set of requesting party claims, a
+        client supplying a PCT in its RPT request MUST make a best effort to
+        ensure that the requesting party using the client now is the same as
+        the requesting party that was associated with the PCT when it was
+        issued. Different clients will have different capabilities in this
+        respect; for example, some applications are single-user and perform no
+        local authentication, associating all PCTs with the "current user",
+        while others might have more sophisticated authentication and user
+        mapping capabilities.</t>
       </section>
 
       <section title="Strengthening RPT Protection Using Proof of Possession">
@@ -1345,22 +1367,55 @@ Host: photoz.example.com
         permission tickets and PCTs.</t>
       </section>
 
+      <section anchor="ticket-management" title="Permission Ticket Management">
+        <t>The authorization server MUST make permission ticket values
+        unguessable by resource servers and clients. Within these constraints,
+        however, the authorization server MAY format the ticket however it
+        chooses, for example either as a random string that references data
+        held on the server or by including data within the ticket itself.</t>
+
+        <t>Permission tickets MUST be single-use. This prevents susceptibility
+        to a session fixation attack.</t>
+
+        <t>The authorization server MUST invalidate a permission ticket when
+        the client presents the permission ticket to either the token endpoint
+        or the claims interaction endpoint, or when the permission ticket
+        expires, whichever occurs first.</t>
+
+        <t>The client SHOULD check that the value of the <spanx
+        style="verb">ticket</spanx> parameter it receives back from the
+        authorization server in each response and each redirect of the
+        requesting party back to it differs from the one it sent to the server
+        in the initial request or redirect.</t>
+      </section>
+
+      <section anchor="default-deny"
+               title="Naive Implementations of Default-Deny Authorization">
+        <t>While a reasonable approach for most scenarios is to implement the
+        classic stance of default-deny ("everything that is not expressly
+        allowed is forbidden"), corner cases can inadvertently result in
+        default-permit behavior. For example, it is insufficient to create
+        default "empty" policy conditions stating "no claims are needed", and
+        then accept an empty set of supplied claims as sufficient for
+        access.</t>
+      </section>
+
       <section anchor="trust-considerations"
                title="Profiles and Trust Establishment">
-        <t>Parties that are operating and using UMA software entities have
-        opportunities to establish agreements about the parties' rights and
-        responsibilities on a legal or contractual level, along with common
-        interpretations of UMA constructs for consistent and expected software
-        behavior. These agreements can be used to improve the parties'
-        respective security postures, and written profiles are a key mechanism
-        for conveying and enforcing these agreements. <xref
-        target="profiles" /> discusses profiling. See <xref
-        target="UMA-legal" /> to learn about tools to assist in the legal and
-        contractual elements of deploying UMA-enabled services.</t>
+        <t>Parties that are operating and using UMA software entities may need
+        to establish agreements about the parties' rights and responsibilities
+        on a legal or contractual level, along with common interpretations of
+        UMA constructs for consistent and expected software behavior. These
+        agreements can be used to improve the parties' respective security
+        postures, and written profiles are a key mechanism for conveying and
+        enforcing these agreements. <xref target="profiles" /> discusses
+        profiling. See <xref target="UMA-legal" /> to learn about tools to
+        assist in the legal and contractual elements of deploying UMA-enabled
+        services.</t>
 
         <section anchor="trust-push"
                  title="Requirements for Trust When Clients Push Claim Tokens">
-          <t>This section discusses the threats surrounding client claim
+          <t>This section discusses the threats surrounding client claims
           pushing (see <xref target="uma-grant-type" />).</t>
 
           <t>Because claim tokens of any format typically contain audience
@@ -1374,15 +1429,12 @@ Host: photoz.example.com
           accept claim tokens pushed by untrusted clients and not to ignore
           audience restrictions found in claim tokens pushed by clients.</t>
 
-          <t>In the special circumstance when an authorization server is
-          colocated with an OpenID Provider for the requesting parties within
-          a deployment ecosystem, then it is able to act as an OpenID Relying
-          Party for itself. This circumstance presents an opportunity for a
-          technical optimization of the requirement for trust because the
-          authorization server itself issued the OAuth client credentials for
-          the client in question, and could reasonably be the singular <spanx
-          style="verb">aud</spanx> value target in an OpenID Connect ID Token
-          pushed by the client to the token endpoint.</t>
+          <t>Some deployments could have exceptional circumstances allowing
+          the authorization server to validate claim tokens. For example, if
+          the authorization server is also the identity provider for the
+          requesting party, then it would be able to validate any ID tokens it
+          issued to the client and also ensure they were issued to the client
+          presenting the claim token.</t>
         </section>
       </section>
     </section>
@@ -1392,11 +1444,9 @@ Host: photoz.example.com
 
       <section anchor="rqp-privacy"
                title="Requesting Party Information at the Authorization Server">
-        <t>The primary privacy duty of UMA's design is to the resource owner.
-        However, privacy considerations affect the requesting party as well,
-        having to do with the nature of claims. Claims are likely to contain
-        personal, personally identifiable, and sensitive information,
-        particularly in the case of requesting parties who are end-users.</t>
+        <t>Claims are likely to contain personal, personally identifiable, and
+        sensitive information, particularly in the case of requesting parties
+        who are end-users.</t>
 
         <t>If the authorization server supports persisting claims for any
         length of time (for example, to support issuance of PCTs), then it
@@ -1406,7 +1456,7 @@ Host: photoz.example.com
         for authorization to persist their claims before issuing a PCT. A
         requesting party who provides claims to an authorization server once
         having been redirected there is less susceptible to privacy-destroying
-        behavior. Otherwise, certain flows such as claim pushing and
+        behavior. Otherwise, certain flows such as claims pushing and
         interactive federated sign-in with automatic login will tend to be
         invisible to the user if they have not consciously authorized the
         possibility.</t>
@@ -1428,11 +1478,11 @@ Host: photoz.example.com
       </section>
 
       <section title="Profiles and Trust Establishment">
-        <t>Parties that are operating and using UMA software entities have
-        opportunities to establish agreements about mutual rights,
-        responsibilities, and common interpretations of UMA constructs for
-        consistent and expected software behavior. These agreements can be
-        used to improve the parties' respective privacy postures. See <xref
+        <t>Parties that are operating and using UMA software entities may need
+        to establish agreements about mutual rights, responsibilities, and
+        common interpretations of UMA constructs for consistent and expected
+        software behavior. These agreements can be used to improve the
+        parties' respective privacy postures. See <xref
         target="trust-considerations" /> for more information. Additional
         considerations related to Privacy by Design concepts are discussed in
         <xref target="UMA-PbD" />.</t>
@@ -1507,7 +1557,7 @@ Host: photoz.example.com
         <section title="Registry Contents">
           <t>
             <list style="symbols">
-              <t>Parameter name: <spanx style="verb">claim_tokens</spanx></t>
+              <t>Parameter name: <spanx style="verb">claim_token</spanx></t>
 
               <t>Parameter usage location: client request, token endpoint</t>
 
@@ -1722,7 +1772,7 @@ Host: photoz.example.com
       </reference>
 
       <reference anchor="UMAFedAuthz"
-                 target="https://docs.kantarainitiative.org/uma/ed/oauth-uma-federated-authz-2.0-03.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-federated-authz-2.0-05.html">
         <front>
           <title>Federated Authorization for User-Managed Access (UMA)
           2.0</title>
@@ -1731,7 +1781,7 @@ Host: photoz.example.com
             <organization>ForgeRock</organization>
           </author>
 
-          <date day="25" month="April" year="2017" />
+          <date day="" month="May" year="2017" />
         </front>
       </reference>
 
