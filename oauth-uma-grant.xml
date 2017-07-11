@@ -740,11 +740,14 @@ Host: client.example.com
           <spanx>ClientRequested</spanx> stand for the scopes the client most
           recently requested at the token endpoint. Let a set called
           <spanx>PermissionTicket</spanx> stand for the scopes associated with
-          the permission ticket presented by the client at the token
-          endpoint.<list style="numbers">
+          the permission ticket presented by the client at the token endpoint.
+          <list style="numbers">
               <t>Determine the set of requested scopes as follows:
               <spanx>RequestedScopes = PermissionTicket &#8746;
-              (ClientRequested &#8745; ClientRegistered)</spanx>.</t>
+              (ClientRequested &#8745; ClientRegistered)</spanx>. Treat each
+              scope in <spanx>(ClientRequested &#8745;
+              ClientRegistered)</spanx> as applying to all matching
+              resource-bound scopes in <spanx>PermissionTicket</spanx>.</t>
 
               <t>Determine all operative policy conditions, and claims and
               other relevant information serving as input to them, for each
