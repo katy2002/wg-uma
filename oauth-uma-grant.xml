@@ -1028,8 +1028,8 @@ Content-Type: application/json
                   MUST NOT be the same as the one the client used to make its
                   request.</t>
 
-                  <t hangText="required_claims">An array containing parameters
-                  that describe the required claims, with the following
+                  <t hangText="required_claims">An array of objects that
+                  describe the required claims, with the following
                   subparameters:<list style="hanging">
                       <t hangText="claim_token_format">OPTIONAL. An array of
                       strings specifying a set of acceptable formats for a
