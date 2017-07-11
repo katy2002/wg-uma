@@ -1655,8 +1655,8 @@ Host: photoz.example.com
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - staff@kantarainitiative.org</t>
 
-              <t>Specification document: <xref target="uma-grant-type" /> in
-              this document</t>
+              <t>Specification document: <xref
+              target="authorization-failure" /> in this document</t>
 
               <t>Error usage location: authorization server response, token
               endpoint</t>
@@ -1670,8 +1670,8 @@ Host: photoz.example.com
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - staff@kantarainitiative.org</t>
 
-              <t>Specification document: <xref target="uma-grant-type" /> in
-              this document</t>
+              <t>Specification document: <xref
+              target="authorization-failure" /> in this document</t>
 
               <t>Error usage location: authorization server response, token
               endpoint</t>
