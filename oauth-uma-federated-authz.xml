@@ -72,9 +72,8 @@
       acts on behalf of a resource owner. A service ecosystem can thus
       automate resource protection, and the resource owner can monitor and
       control authorization grant rules at a central service location over
-      time. Further, with the use of token introspection, authorization grants
-      can increase and decrease at the level of individual resources and
-      scopes.</t>
+      time. Further, authorization grants can increase and decrease at the
+      level of individual resources and scopes.</t>
 
       <t>Building on the example provided in the introduction in <xref
       target="UMAGrant" />, bank customer (resource owner) Alice has a bank
@@ -1046,14 +1045,12 @@ Content-Type: application/json
 
     <section anchor="introspection-endpoint"
              title="Token Introspection Endpoint">
-      <t>When the client makes a resource request accompanied by RPT, the
+      <t>When the client makes a resource request accompanied by an RPT, the
       resource server needs to determine whether the RPT is active and, if so,
       its associated permissions. Depending on the nature of the RPT and
       operative caching parameters, the resource server MAY take any of the
       following actions as appropriate to determine the RPT's status:<list
           style="symbols">
-          <t>Validate the RPT locally if it is self-contained.</t>
-
           <t>Introspect the RPT at the authorization server using the OAuth
           token introspection endpoint (defined <xref target="RFC7662" /> and
           this section) that is part of the protection API. The authorization
@@ -1065,6 +1062,8 @@ Content-Type: application/json
 
           <t>Use a cached copy of the token introspection response if allowed
           (see Section 4 of <xref target="RFC7662" />).</t>
+
+          <t>Validate the RPT locally if it is self-contained.</t>
         </list></t>
 
       <t>The use of the token introspection endpoint is illustrated in <xref
@@ -1303,29 +1302,6 @@ Cache-Control: no-store
 
               <t>Specification document: <xref target="as-config" /> in this
               document</t>
-            </list>
-          </t>
-        </section>
-      </section>
-
-      <section title="JSON Web Token Claims Registration">
-        <t>This specification registers the claim defined in <xref
-        target="uma-bearer-token-profile" />, as required by <xref
-        target="OIDCCore" />.</t>
-
-        <section title="Registry Contents">
-          <t>
-            <list style="symbols">
-              <t>Claim name: <spanx style="verb">permissions</spanx></t>
-
-              <t>Claim description: Array of objects, each describing a
-              scoped, time-limitable permission for a resource</t>
-
-              <t>Change controller: Kantara Initiative User-Managed Access
-              Work Group - wg-uma@kantarainitiative.org</t>
-
-              <t>Specification document: <xref
-              target="uma-bearer-token-profile" /> in this document</t>
             </list>
           </t>
         </section>
