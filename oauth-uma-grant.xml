@@ -1076,7 +1076,7 @@ Content-Type: application/json
                   server's discovery document, then this value overrides the
                   static value. Providing a value in this response might be
                   appropriate, for example, if the URI needs to be customized
-                  per requesting party.</t>
+                  per requesting party with a query parameter.</t>
                 </list></t>
             </list></t>
 
