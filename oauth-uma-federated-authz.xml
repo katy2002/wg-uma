@@ -1308,17 +1308,17 @@ Cache-Control: no-store
       </section>
 
       <section title="OAuth Token Introspection Response Registration">
-        <t>This specification registers the claim defined in <xref
+        <t>This specification registers the name defined in <xref
         target="uma-bearer-token-profile" />, as required by Section 3.1 of
         <xref target="RFC7662" />.</t>
 
         <section title="Registry Contents">
           <t>
             <list style="symbols">
-              <t>Claim name: <spanx style="verb">permissions</spanx></t>
+              <t>Name: <spanx style="verb">permissions</spanx></t>
 
-              <t>Claim description: array of objects, each describing a
-              scoped, time-limitable permission for a resource</t>
+              <t>Description: array of objects, each describing a scoped,
+              time-limitable permission for a resource</t>
 
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - staff@kantarainitiative.org</t>
