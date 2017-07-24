@@ -1118,6 +1118,11 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
 ]]></artwork>
         </figure>
 
+        <t>Because an RPT is an access token, if the resource server chooses
+        to supply a token type hint, it would use a <spanx
+        style="verb">token_type_hint</spanx> of <spanx
+        style="verb">access_token</spanx>.</t>
+
         <section anchor="uma-bearer-token-profile"
                  title="Authorization Server Response to Resource Server on Token Introspection Success">
           <t>The authorization server's response to the resource server MUST
