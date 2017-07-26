@@ -713,9 +713,9 @@ Host: as.example.com
             <preamble>Example of a response issued by an authorization server
             (line breaks are shown only for display convenience):</preamble>
 
-            <artwork><![CDATA[GET /redirect_claims?&ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s
-&state=abc HTTP/1.1
-Host: client.example.com
+            <artwork><![CDATA[HTTP/1.1 302 Found
+Location: https://client.example.com/redirect_claims?
+ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
 ]]></artwork>
           </figure>
         </section>
