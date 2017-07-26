@@ -687,7 +687,7 @@ Authorization: Bearer MHg3OUZEQkZBMjcx
 
             <artwork><![CDATA[HTTP/1.1 201 Created
 Content-Type: application/json
-Location: /rs/KX3A-39WE
+Location: /rreg/KX3A-39WE
 ...
 {  
    "_id":"KX3A-39WE",
