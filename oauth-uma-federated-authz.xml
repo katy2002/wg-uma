@@ -306,8 +306,8 @@
             target="permission-endpoint" />. This endpoint provides a means
             for the resource server to request a set of one or more
             permissions on behalf of the client based on the client's resource
-            request when that request is unaccompanied by a token or is
-            accompanied by an RPT that is insufficient for access to that
+            request when that request is unaccompanied by an access token or
+            is accompanied by an RPT that is insufficient for access to that
             resource. The resource server uses this endpoint during the
             request-to-grant phase.</t>
 
@@ -338,17 +338,18 @@
 
           <t>The resource server's resource registration operations at the
           authorization server result in a set of resource owner-specific
-          resource identifiers. When the client makes a tokenless (or
-          failed-token) resource request, the resource server is responsible
-          for interpreting that request and mapping it to a choice of
-          authorization server, resource owner, resource identifier(s), and
-          set of scopes for each identifier, in order to request one or more
-          permissions -- resource identifiers and a set of scopes -- and
-          obtain a permission ticket on the client's behalf. Finally, when the
-          client has made a resource request accompanied by an RPT and token
-          introspection is in use, it reveals the structure of permissions in
-          the returned token introspection object, potentially including
-          expiration of individual permissions.</t>
+          resource identifiers. When the client makes a resource request that
+          is unaccompanied by an access token or its resource request fails,
+          the resource server is responsible for interpreting that request and
+          mapping it to a choice of authorization server, resource owner,
+          resource identifier(s), and set of scopes for each identifier, in
+          order to request one or more permissions -- resource identifiers and
+          a set of scopes -- and obtain a permission ticket on the client's
+          behalf. Finally, when the client has made a resource request
+          accompanied by an RPT and token introspection is in use, the
+          returned token introspection object reveals the structure of
+          permissions, potentially including expiration of individual
+          permissions.</t>
         </section>
       </section>
     </section>
@@ -408,37 +409,46 @@
 
       <figure anchor="resource-registration-endpoint-fig"
               title="Resource Registration Endpoint and API">
-        <artwork><![CDATA[authorization            resource                   resource
-    server                server                     owner
-      |                     |                          |
-      |        (ex. in request-to-grant phase)         |
-      |                     |                          |
-      |                *PROTECTION API:                |
-      |         *Resource registration endpoint        |
-      |                     |                          |
-      |  *Create resource   |                          |
-      |<--------------------|                          |
-      |    *Resource ID     |                          |
-      |-------------------->|                          |
-      |                     | (Set policy conditions)  |
-      |<- - - - - - - - - - - - - - - - - - - - - - - -|
-      |         ...         |                          |
-      | *Read/update with   |                          |
-      |     resource ID     |                          |
-      |<--------------------|                          |
-      |      *Response      |                          |
-      |-------------------->|                          |
-      |         ...         |                          |
-      | *List all resources |                          |
-      |<--------------------|                          |
-      |      *Response      |                          |
-      |-------------------->|                          |
-      |         ...         |                          |
-      |  *Delete resource   |                          |
-      |  with resource ID   |                          |
-      |<--------------------|                          |
-      |      *Response      |                          |
-      |-------------------->|                          |
+        <artwork><![CDATA[authorization              resource         resource
+    server                  server           owner
+      |                       |                |
+      |*PROTECTION API:       |                |
+      |*Resource registration |                |
+      |endpoint/API           |                |
+      |                       |                |
+      |*Create resource (POST)|                |
+      |<----------------------|                |
+      |*201 Created with      |                |
+      |resource ID            |                |
+      |---------------------->|                |
+      |                       |                |
+      |Set policy conditions (anytime          |
+      |before deletion/deregistration)         |
+      |<- - - - - - - - - - - - - - - - - - - -|
+      |                       |                |
+      |*Read (GET) with       |                |
+      |resource ID            |                |
+      |<----------------------|                |
+      |*200 OK with resource  |                |
+      |representation         |                |
+      |---------------------->|                |
+      |*Update (PUT) with     |                |
+      |resource ID            |                |
+      |<----------------------|                |
+      |*200 OK with resource  |                |
+      |ID                     |                |
+      |---------------------->|                |
+      |*List (GET)            |                |
+      |<----------------------|                |
+      |*200 OK with list of   |                |
+      |resource IDs           |                |
+      |---------------------->|                |
+      |*Delete (DELETE) with  |                |
+      |resource ID            |                |
+      |<----------------------|                |
+      |*200 OK or 204 No      |                |
+      |Content                |                |
+      |---------------------->|                |
 ]]></artwork>
       </figure>
 
@@ -845,7 +855,8 @@ Authorization: Bearer 204c69636b6c69
       receive a permission ticket in return, in order to respond as indicated
       in Section 3.2 of <xref target="UMAGrant" />. The resource server uses
       this endpoint on the following occasions:<list style="symbols">
-          <t>After the client's initial resource request without a token</t>
+          <t>After the client's initial resource request without an access
+          token</t>
 
           <t>After the client's resource request that was accompanied by an
           invalid RPT or a valid RPT that had insufficient permissions
@@ -858,25 +869,24 @@ Authorization: Bearer 204c69636b6c69
       <figure anchor="permission-endpoint-fig" title="Permission Endpoint">
         <artwork><![CDATA[               authorization            resource
 client             server                server
-  |       (in request-to-grant phase)      |
   |                  |                     |
-  |Request resource (no token or           |
-  |insufficient token)                     |
+  |Request resource (no or insufficient    |
+  |access token)     |                     |
   |--------------------------------------->|
   |                  |                     |
-  |            *PROTECTION API:            |
-  |         *Permission endpoint           |
+  |                  |*PROTECTION API:     |
+  |                  |*Permission endpoint |
   |                  |                     |
   |                  |*Request permissions |
+  |                  |(POST)               |
   |                  |<--------------------|
-  |                  | *Permission ticket  |
+  |                  |*201 Created with    |
+  |                  |permission ticket    |
   |                  |-------------------->|
   |                  |                     |
-  |AS location, permission ticket          |
+  |401 response with permission ticket,    |
+  |authz server location                   |
   |<---------------------------------------|
-  |        .         |          .          |
-  |        .         |          .          |
-  |        .         |          .          |
 ]]></artwork>
       </figure>
 
@@ -1071,26 +1081,24 @@ Content-Type: application/json
 
       <figure anchor="token-introspection-endpoint-fig"
               title="Token Introspection Endpoint">
-        <artwork><![CDATA[               authorization            resource
-client             server                server
-  |        .         |            .        |
-  |        .         |            .        |
-  |        .         |            .        |
-  |      (In token-to-resource phase)      |
-  |                  |                     |
-  |Request resource with RPT               |
-  |--------------------------------------->|
-  |                  |                     |
-  |            *PROTECTION API:            |
-  |   *Introspection endpoint (optional)   |
-  |                  |                     |
-  |                  |   *Introspect RPT   |
-  |                  |<--------------------|
-  |                  |   *Return object    |
-  |                  |-------------------->|
-  |                  |                     |
-  |Protected resource                      |
-  |<---------------------------------------|
+        <artwork><![CDATA[               authorization              resource
+client             server                  server
+  |                  |                       |
+  |Resource request with RPT                 |
+  |----------------------------------------->|
+  |                  |                       |
+  |                  |*PROTECTION API:       |
+  |                  |*Introspection endpoint|
+  |                  |                       |
+  |                  |*Request to introspect |
+  |                  |token (POST)           |
+  |                  |<----------------------|
+  |                  |*Response with token   |
+  |                  |introspection object   |
+  |                  |---------------------->|
+  |                  |                       |
+  |Protected resource                        |
+  |<-----------------------------------------|
 ]]></artwork>
       </figure>
 

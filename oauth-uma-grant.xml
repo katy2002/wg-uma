@@ -153,7 +153,7 @@
         single scenario.</t>
 
         <figure anchor="protocol-flow" title="Example Flow">
-          <artwork><![CDATA[requesting                             authorization resource resource
+          <artwork><![CDATA[rrequesting                             authorization resource resource
   party        client                      server     server    owner
     |            |                           |          |         |
     |            |                           |Set policy|         |
@@ -162,40 +162,43 @@
     |            |Resource request (no access token)    |         |
     |            |------------------------------------->|         |
     |            |401 response with new permission      |         |
-    |            |ticket, AS location        |          |         |
+    |            |ticket, authz server location         |         |
     |            |<-------------------------------------|         |
-    |            |Authz request with ticket, |          |         |
+    |            |Access token (RPT) request |          |         |
+    |            |with permission ticket,    |          |         |
     |            |claim token (push claims)  |          |         |
     |            |-------------------------->|          |         |
     |            |                      +----|Authz     |         |
     |            |                      +--->|assessment|         |
     |            |403 response with rotated  |          |         |
-    |            |ticket, need_info error,   |          |         |
+    |            |permission ticket,         |          |         |
+    |            |need_info error,           |          |         |
     |            |redirect_user hint         |          |         |
     |            |<--------------------------|          |         |
     |Redirect    |                           |          |         |
     |user with   |                           |          |         |
+    |permission  |                           |          |         |
     |ticket      |                           |          |         |
     |<-----------|                           |          |         |
-    |Follow redirect to AS                   |          |         |
+    |Follow redirect to authz server         |          |         |
     |--------------------------------------->|          |         |
-    |(Interactive claims gathering)          |          |         |
+    |Interactive claims gathering            |          |         |
     |<- - - - - - - - - - - - - - - - - - - >|          |         |
-    |Redirect back with rotated ticket       |          |         |
+    |Redirect back with rotated permission   |          |         |
+    |ticket                                  |          |         |
     |<---------------------------------------|          |         |
     |Follow      |                           |          |         |
-    |redirect to |                           |          |         |
-    |client      |                           |          |         |
+    |redirect    |                           |          |         |
+    |to client   |                           |          |         |
     |----------->|                           |          |         |
-    |            |Authz request with ticket  |          |         |
+    |            |RPT request with permission|          |         |
+    |            |ticket                     |          |         |
     |            |-------------------------->|          |         |
     |            |                      +----|Authz     |         |
     |            |                      +--->|assessment|         |
-    |            |Authz response with access |          |         |
-    |            |token (RPT) and PCT        |          |         |
+    |            |Response with RPT and PCT  |          |         |
     |            |<--------------------------|          |         |
-    |            |Resource request with access token    |         |
-    |            |(RPT)                      |          |         |
+    |            |Resource request with RPT  |          |         |
     |            |------------------------------------->|         |
     |            |Protected resource         |          |         |
     |            |<-------------------------------------|         |
@@ -354,9 +357,9 @@
 
     <section anchor="protocol-flow-details-sec" title="Flow Details">
       <section anchor="client-attempts-tokenless-access"
-               title="Client Requests Resource With No Token">
-        <t>The client requests a protected resource, without having presented
-        a token for authorized access.</t>
+               title="Client Requests Resource Without Providing an Access Token">
+        <t>The client requests a protected resource without providing any
+        access token.</t>
 
         <t>Note: This process does not assume that any relevant policy
         conditions have already been defined at the authorization server.</t>
@@ -944,7 +947,7 @@ Content-Type: application/json
             <t>The authorization server MAY implement RPT upgrading. The
             authorization server SHOULD document its practices regarding RPT
             upgrades and to act consistently with respect to RPT upgrades so
-            as to enable clients to manage tokens efficiently.</t>
+            as to enable clients to manage received RPTs efficiently.</t>
 
             <t>If the authorization server has implemented RPT upgrading, the
             client has submitted an RPT in its request, and the result is
@@ -984,12 +987,13 @@ Content-Type: application/json
           <t>If the client's request to the token endpoint is insufficient for
           granting an RPT, the authorization server responds using an error
           code and corresponding HTTP status code.<list style="hanging">
-              <t hangText="invalid_grant">If the provided ticket was not found
-              at the authorization server, or the provided ticket has expired,
-              or the client is not authorized to have these permissions added,
-              or any other original reasons to use this error response are
-              found as defined in <xref target="RFC6749" />, the authorization
-              server responds with the HTTP 400 (Bad Request) status code.</t>
+              <t hangText="invalid_grant">If the provided permission ticket
+              was not found at the authorization server, or the provided
+              permission ticket has expired, or the client is not authorized
+              to have these permissions added, or any other original reasons
+              to use this error response are found as defined in <xref
+              target="RFC6749" />, the authorization server responds with the
+              HTTP 400 (Bad Request) status code.</t>
 
               <t hangText="invalid_scope">At least one of the scopes included
               in the request does not match an available scope for any of the
@@ -1036,10 +1040,11 @@ Content-Type: application/json
                   subparameters:<list style="hanging">
                       <t hangText="claim_token_format">OPTIONAL. An array of
                       strings specifying a set of acceptable formats for a
-                      token pushed by the client containing this claim, as
-                      defined in <xref target="uma-grant-type" />. Any one of
-                      the referenced formats would satisfy the authorization
-                      server's requirements. Each string MAY be a URI.</t>
+                      claim token pushed by the client containing this claim,
+                      as defined in <xref target="uma-grant-type" />. Any one
+                      of the referenced formats would satisfy the
+                      authorization server's requirements. Each string MAY be
+                      a URI.</t>
 
                       <t hangText="claim_type">OPTIONAL. A string, indicating
                       the expected interpretation of the provided claim value.
@@ -1081,9 +1086,8 @@ Content-Type: application/json
             </list></t>
 
           <figure>
-            <preamble>Example when the ticket was not found, or the ticket has
-            expired, or the client's request for authorization has failed
-            outright:</preamble>
+            <preamble>Example when the permission ticket was not found or has
+            expired, or the client's request has failed outright:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 400 Bad Request
 Content-Type: application/json
@@ -1129,7 +1133,7 @@ Cache-Control: no-store
       </section>
 
       <section anchor="client-rpt-attempt"
-               title="Client Requests Resource Accompanied by RPT">
+               title="Client Requests Resource and Provides an RPT">
         <t>The client requests the resource, now in possession of an RPT. The
         client uses <xref target="RFC6750" /> for a bearer token, and any
         other suitable presentation mechanism for an RPT of another access
@@ -1153,13 +1157,13 @@ Host: photoz.example.com
         resource request.</t>
 
         <t>If the resource access request fails, the resource server responds
-        as if the request were unaccompanied by a token, as defined in <xref
-        target="rs-tokenless-response" />.</t>
+        as if the request were unaccompanied by an access token, as defined in
+        <xref target="rs-tokenless-response" />.</t>
 
         <t>The resource server MUST NOT give access in the case of an invalid
         RPT or an RPT associated with insufficient authorization.</t>
 
-        <t>For an example of how the resource server can introspect the token
+        <t>For an example of how the resource server can introspect the RPT
         and its permissions at the authorization server prior to responding to
         the client's request, see <xref target="UMAFedAuthz" />.</t>
       </section>
@@ -1306,7 +1310,7 @@ Host: photoz.example.com
         permissions.</t>
 
         <t>Another issue concerns the exposure of an RPT to a requesting
-        party, which could maliciously pass the token to an unauthorized
+        party, which could maliciously pass the RPT to an unauthorized
         party.</t>
 
         <t>To mitigate requesting-party switching and RPT exposure threats,
