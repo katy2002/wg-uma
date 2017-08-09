@@ -934,16 +934,16 @@ client             server                server
       <section title="Resource Server Request to Permission Endpoint">
         <t>The resource server uses the POST method at the permission
         endpoint. The body of the HTTP request message contains a JSON object
-        (for a request containing a single resource identifier) or array of
-        objects (for a request containing more than one resource identifier)
-        providing the request, using a format derived from the resource
-        description format specified in <xref target="resource-set-desc" />,
-        as follows. The object used in both forms has the following
+        for requesting a permission for single resource identifier, or an
+        array of one or more objects for requesting permissions for a
+        corresponding number of resource identifiers. The object format in
+        both cases is derived from the resource description format specified
+        in <xref target="resource-set-desc" />; it has the following
         parameters:<list style="hanging">
             <t hangText="resource_id">REQUIRED. The identifier for a resource
-            to which the resource server is requesting permission on behalf of
-            the client. The identifier MUST correspond to a resource that was
-            previously registered.</t>
+            to which the resource server is requesting a permission on behalf
+            of the client. The identifier MUST correspond to a resource that
+            was previously registered.</t>
 
             <t hangText="resource_scopes">REQUIRED. An array referencing zero
             or more identifiers of scopes to which the resource server is
