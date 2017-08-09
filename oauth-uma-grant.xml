@@ -1352,6 +1352,12 @@ Host: photoz.example.com
         local authentication, associating all PCTs with the "current user",
         while others might have more sophisticated authentication and user
         mapping capabilities.</t>
+
+        <t>If the authorization server has reason to believe that a PCT is
+        compromised, for example, if the PCT has been supplied by a client
+        with "impossible geography" parameters, the authorization server
+        should consider not using the claims based on that PCT in an
+        authorization assessment.</t>
       </section>
 
       <section title="Strengthening RPT Protection Using Proof of Possession">
@@ -1395,6 +1401,13 @@ Host: photoz.example.com
         authorization server in each response and each redirect of the
         requesting party back to it differs from the one it sent to the server
         in the initial request or redirect.</t>
+
+        <t>If the authorization server has reason to believe that a permission
+        ticket is compromised, for example, because it has seen the permission
+        ticket before and it believes the first appearance was from a
+        legitimate client and the second appearance is from an attacker, it
+        should consider invalidating any access tokens based on this
+        evidence.</t>
       </section>
 
       <section anchor="default-deny"
