@@ -469,11 +469,11 @@ Warning: 199 - "UMA Authorization Server Unreachable"
             <t>The client has retrieved the authorization server's discovery
             document as needed.</t>
 
-            <t>The client has obtained OAuth client credentials from the
-            authorization server, either dynamically through <xref
-            target="RFC7591" /> or <xref target="OIDCDynClientReg" />, or
-            alternatively through a static process, and is prepared to
-            authenticate itself to the token endpoint if appropriate.</t>
+            <t>The client has obtained a client identifier or a full set of
+            client credentials as appropriate, either statically or
+            dynamically (for example, through <xref target="RFC7591" /> or
+            <xref target="OIDCDynClientReg" />). This grant works with clients
+            of both confidential and public types.</t>
           </list></t>
 
         <section anchor="uma-grant-type"
