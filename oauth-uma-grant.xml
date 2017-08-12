@@ -352,7 +352,11 @@
       <t>If the authorization server supports dynamic client registration, it
       MUST allow client applications to register <spanx
       style="verb">claims_redirect_uri</spanx> metadata, as defined in <xref
-      target="claim-redirect" />.</t>
+      target="claim-redirect" />, using the following metadata field:<list
+          hangIndent="6" style="hanging">
+          <t hangText="claims_redirect_uris"><vspace />OPTIONAL. Array of one
+          or more claims redirection URIs.</t>
+        </list></t>
     </section>
 
     <section anchor="protocol-flow-details-sec" title="Flow Details">
@@ -634,8 +638,9 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
               additional parameters, and MUST NOT contain a fragment
               component. The client SHOULD pre-register its <spanx
               style="verb">claims_redirect_uri</spanx> with the authorization
-              server, and the authorization server SHOULD require all clients
-              to pre-register their claims redirection endpoints. Claims
+              server, and the authorization server SHOULD require all clients,
+              and MUST require public clients, to pre-register their claims
+              redirection endpoints (see <xref target="as-config" />). Claims
               redirection URIs are different from the redirection URIs defined
               in <xref target="RFC6749" /> in that they are intended for the
               exclusive use of requesting parties and not resource owners.
@@ -1559,6 +1564,29 @@ Host: photoz.example.com
               style="verb">uma_profiles_supported</spanx></t>
 
               <t>Metadata description: profile/extension feature metadata</t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - staff@kantarainitiative.org</t>
+
+              <t>Specification document: <xref target="as-config" /> in this
+              document</t>
+            </list>
+          </t>
+        </section>
+      </section>
+
+      <section title="OAuth 2.0 Dynamic Client Registration Metadata Registry">
+        <t>This specification registers OAuth 2.0 dynamic client registration
+        metadata defined in <xref target="as-config" />, as required by
+        Section 4.1 of <xref target="ODynClientReg" />.</t>
+
+        <section title="Registry Contents">
+          <t>
+            <list style="symbols">
+              <t>Metadata name: <spanx
+              style="verb">claims_redirect_uris</spanx></t>
+
+              <t>Metadata description: claims redirection endpoints</t>
 
               <t>Change controller: Kantara Initiative User-Managed Access
               Work Group - staff@kantarainitiative.org</t>
