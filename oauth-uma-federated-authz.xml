@@ -1159,8 +1159,7 @@ token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
 
               <t hangText="exp">OPTIONAL. Integer timestamp, measured in the
               number of seconds since January 1 1970 UTC, indicating when this
-              permission will expire. If the parameter is absent, the
-              permission does not expire. If the token-level <spanx
+              permission will expire. If the token-level <spanx
               style="verb">exp</spanx> value pre-dates a permission-level
               <spanx style="verb">exp</spanx> value, the token-level value
               takes precedence.</t>
