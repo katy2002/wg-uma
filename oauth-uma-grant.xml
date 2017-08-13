@@ -794,10 +794,15 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               RequestedScopes</spanx>, the authorization server subsequently
               issues either an RPT containing
               <spanx>CandidateGrantedScopes</spanx>, or one of the error
-              codes. The reason for the two options is that granting only
-              partial scopes might not be useful for the client's and
-              requesting party's purposes in seeking authorization for
-              access.</t>
+              codes, as appropriate. The reason for the two options is that
+              granting only partial scopes might not be useful for the
+              client's and requesting party's purposes in seeking
+              authorization for access. The choice of error depends on the
+              authorization server's implementation choices. The conditions
+              for the <spanx style="verb">request_submitted</spanx> and <spanx
+              style="verb">need_info</spanx> error codes are dependent on
+              authorization assessment and thus these codes might be more
+              likely than the others to be issued.</t>
             </list></t>
 
           <t>Note: It is not an error for the client to have requested a scope
