@@ -1018,12 +1018,18 @@ Content-Type: application/json
               status code. It MUST include a <spanx
               style="verb">ticket</spanx> parameter.<list style="hanging">
                   <t hangText="ticket">REQUIRED. A permission ticket that
-                  allows the client to make a further request to the
-                  authorization server's token endpoint as part of this same
-                  authorization process, likely some time later in "polling"
-                  fashion, when the resource owner might have completed some
+                  allows the client to make one or more later polling requests
+                  to the token endpoint as part of this same authorization
+                  process, when the resource owner might have completed some
                   approval (or denial) action. The value MUST NOT be the same
                   as the one the client used to make its request.</t>
+
+                  <t hangText="interval">OPTIONAL. The minimum amount of time
+                  in seconds that the client SHOULD wait between polling
+                  requests to the token endpoint. See <xref
+                  target="ticket-management" /> for security considerations in
+                  scenarios involving polling, and longer-lived permission
+                  tickets.</t>
                 </list></t>
 
               <t hangText="need_info">According to the just-performed
@@ -1418,6 +1424,13 @@ Host: photoz.example.com
         legitimate client and the second appearance is from an attacker, it
         should consider invalidating any access tokens based on this
         evidence.</t>
+
+        <t>Given that scenarios involving the <spanx
+        style="verb">request_submitted</spanx> error code are likely to
+        involve polling intervals, the permission ticket needs to last long
+        enough to give the client a chance to attempt a polling request, which
+        then needs to figure into other permission ticket security
+        considerations.</t>
       </section>
 
       <section anchor="default-deny"
