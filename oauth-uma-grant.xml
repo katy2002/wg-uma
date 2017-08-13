@@ -1021,18 +1021,18 @@ Content-Type: application/json
                   as the one the client used to make its request.</t>
                 </list></t>
 
-              <t hangText="need_info">The authorization server needs
-              additional information in order to determine whether the client
-              is authorized to have these permissions. The authorization
-              server responds with the HTTP 403 (Forbidden) status code. It
-              MUST include a <spanx style="verb">ticket</spanx> parameter, and
-              it MUST also include either the <spanx
-              style="verb">required_claims</spanx> parameter or the <spanx
-              style="verb">redirect_user</spanx> parameter, or both, as hints
-              about information the authorization server needs for performing
-              authorization assessment. On receiving such hints, the client
-              has the opportunity to participate in follow-on claims
-              collection.<list style="hanging">
+              <t hangText="need_info">According to the just-performed
+              authorization assessment, the client is not authorized to have
+              the requested permissions; the authorization server needs
+              additional or different information in order for a request to
+              succeed. The authorization server responds with the HTTP 403
+              (Forbidden) status code. It MUST include a <spanx
+              style="verb">ticket</spanx> parameter, and it MUST also include
+              either the <spanx style="verb">required_claims</spanx> parameter
+              or the <spanx style="verb">redirect_user</spanx> parameter, or
+              both, as hints about the information it needs. The client has
+              the opportunity to use the hints as guidance to succeeding in a
+              future attempt.<list style="hanging">
                   <t hangText="ticket">REQUIRED. A permission ticket that
                   allows the client to make a further request to the
                   authorization server's token endpoint as part of this same
