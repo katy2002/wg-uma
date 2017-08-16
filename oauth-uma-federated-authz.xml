@@ -408,10 +408,11 @@
       section.)</t>
 
       <t><xref target="resource-registration-endpoint-fig" /> illustrates the
-      resource registration API operations.</t>
+      resource registration API operations, with requests and success
+      responses shown.</t>
 
       <figure anchor="resource-registration-endpoint-fig"
-              title="Resource Registration Endpoint and API">
+              title="Resource Registration Endpoint and API: Requests and Success Responses">
         <artwork><![CDATA[authorization              resource         resource
     server                  server           owner
       |                       |                |
@@ -636,8 +637,9 @@
             authorization server is free to choose the targeted user
             interface, for example, in the case of a deletion action, enabling
             the resource server to direct the end-user to a policy-setting
-            interface for an overall "folder" of resources where the deleted
-            resource once resided.</t>
+            interface for an overall "folder" resource formerly "containing"
+            the deleted resource (a relationship the authorization server is
+            not aware of), to enable adjustment of related policies.</t>
           </list></t>
 
         <t>If the request to the resource registration endpoint is incorrect,
@@ -868,9 +870,11 @@ Authorization: Bearer 204c69636b6c69
         </list></t>
 
       <t>The use of the permission endpoint is illustrated in <xref
-      target="permission-endpoint-fig" />.</t>
+      target="permission-endpoint-fig" />, with a request and a success
+      response shown.</t>
 
-      <figure anchor="permission-endpoint-fig" title="Permission Endpoint">
+      <figure anchor="permission-endpoint-fig"
+              title="Permission Endpoint: Request and Success Response">
         <artwork><![CDATA[               authorization            resource
 client             server                server
   |                  |                     |
@@ -1082,10 +1086,11 @@ Content-Type: application/json
         </list></t>
 
       <t>The use of the token introspection endpoint is illustrated in <xref
-      target="token-introspection-endpoint-fig" />.</t>
+      target="token-introspection-endpoint-fig" />, with a request and a
+      success response shown.</t>
 
       <figure anchor="token-introspection-endpoint-fig"
-              title="Token Introspection Endpoint">
+              title="Token Introspection Endpoint: Request and Success Response">
         <artwork><![CDATA[               authorization              resource
 client             server                  server
   |                  |                       |

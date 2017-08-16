@@ -999,9 +999,8 @@ Content-Type: application/json
           code and corresponding HTTP status code.<list style="hanging">
               <t hangText="invalid_grant">If the provided permission ticket
               was not found at the authorization server, or the provided
-              permission ticket has expired, or the client is not authorized
-              to have these permissions added, or any other original reasons
-              to use this error response are found as defined in <xref
+              permission ticket has expired, or any other original reasons to
+              use this error response are found as defined in <xref
               target="RFC6749" />, the authorization server responds with the
               HTTP 400 (Bad Request) status code.</t>
 
