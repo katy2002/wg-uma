@@ -1596,7 +1596,7 @@ Host: photoz.example.com
       <section title="OAuth 2.0 Dynamic Client Registration Metadata Registry">
         <t>This specification registers OAuth 2.0 dynamic client registration
         metadata defined in <xref target="as-config" />, as required by
-        Section 4.1 of <xref target="ODynClientReg" />.</t>
+        Section 4.1 of <xref target="RFC7591" />.</t>
 
         <section title="Registry Contents">
           <t>

@@ -71,7 +71,7 @@
       with a single authorization server operating in yet another domain that
       acts on behalf of a resource owner. A service ecosystem can thus
       automate resource protection, and the resource owner can monitor and
-      control authorization grant rules at a central service location over
+      control authorization grant rules through the authorization server over
       time. Further, authorization grants can increase and decrease at the
       level of individual resources and scopes.</t>
 
@@ -168,8 +168,9 @@
             target="RFC6749" /> access token with the scope <spanx
             style="verb">uma_protection</spanx>, used by the resource server
             as a client of the authorization server's protection API. The
-            resource owner involved in the UMA grant takes the role of the
-            resource owner authorizing issuance of the PAT.</t>
+            resource owner involved in the UMA grant is the same entity taking
+            on the role of the resource owner authorizing issuance of the
+            PAT.</t>
           </list></t>
       </section>
 
@@ -241,8 +242,8 @@
         points. However, the resource server MAY apply additional
         authorization controls beyond those imposed by the authorization
         server. For example, even if an RPT provides sufficient permissions
-        for a particular case, the resource server can choose to bar access to
-        certain additional requesting parties.</t>
+        for a particular case, the resource server can choose to bar access
+        based on its own criteria.</t>
 
         <t>Practical control of access among loosely coupled parties typically
         requires more than just messaging protocols. It is outside the scope
@@ -268,8 +269,10 @@
           policy condition setting involving user agents for both of these
           servers are possible, each with different privacy consequences for
           end-user resource owners. Some elements of the protection API enable
-          the building of user interfaces for policy condition setting (see
-          <xref target="resource-registration-endpoint" />).</t>
+          the building of user interfaces for policy condition setting (for
+          example, see <xref target="reg-api" />, which can be used in concert
+          with user interaction for resource protection and sharing and offers
+          an end-user redirection mechanism for policy interactions).</t>
 
           <t>A variety of authorization, security, and time-to-live policies
           could be managed on a per-resource owner basis or a
@@ -471,8 +474,8 @@
       timing of registering resources, maintaining the registration of
       resources, and deregistering resources at the authorization server.
       Motivations for updating a resource might include, for example, new
-      scopes added at a new API version or resource owner actions at a service
-      provider that result in new resource description text. See <xref
+      scopes added to a new API version or resource owner actions at a
+      resource server that result in new resource description text. See <xref
       target="UMA-Impl" /> for a discussion of initial resource registration
       timing options.</t>
 
@@ -576,13 +579,13 @@
 
           <figure>
             <preamble>For example, this scope description characterizes a
-            scope that involves viewing (as opposed to, say, creating or
+            scope that involves printing (as opposed to, say, creating or
             editing in some fashion):</preamble>
 
             <artwork><![CDATA[{  
-   "description":"View, inspect, and zoom in on photos",
-   "icon_uri":"http://www.example.com/icons/reading-glasses",
-   "name":"View"
+   "description":"Print out and produce PDF files of photos",
+   "icon_uri":"http://www.example.com/icons/printer",
+   "name":"Print"
 }
 ]]></artwork>
           </figure>
@@ -618,11 +621,12 @@
         <t>Within the JSON body of a successful response, the authorization
         server includes common parameters, possibly in addition to
         method-specific parameters, as follows:<list style="hanging">
-            <t hangText="_id">REQUIRED (except for the List method). A string
-            value repeating the authorization server-defined identifier for
-            the web resource corresponding to the resource. Its appearance in
-            the body makes it readily available as an identifier for various
-            protected resource management tasks.</t>
+            <t hangText="_id">REQUIRED (except for the Delete and List
+            methods). A string value repeating the authorization
+            server-defined identifier for the web resource corresponding to
+            the resource. Its appearance in the body makes it readily
+            available as an identifier for various protected resource
+            management tasks.</t>
 
             <t hangText="user_access_policy_uri">OPTIONAL. A URI that allows
             the resource server to redirect an end-user resource owner to a
@@ -892,9 +896,9 @@ client             server                server
 
       <t>The PAT provided in the API request enables the authorization server
       to map the resource server's request to the appropriate resource owner.
-      It is possible to request permissions for access to the resources of
-      only one resource owner, protected by only one authorization server, at
-      a time.</t>
+      It is only possible to request permissions for access to the resources
+      of a single resource owner, protected by a single authorization server,
+      at a time.</t>
 
       <t>In its response, the authorization server returns a permission ticket
       for the resource server to give to the client that represents the same
@@ -1062,13 +1066,14 @@ Content-Type: application/json
       following actions as appropriate to determine the RPT's status:<list
           style="symbols">
           <t>Introspect the RPT at the authorization server using the OAuth
-          token introspection endpoint (defined <xref target="RFC7662" /> and
-          this section) that is part of the protection API. The authorization
-          server's response contains an extended version of the introspection
-          response. If the authorization server supports this specification's
-          version of the token introspection endpoint, it MUST declare the
-          endpoint in its discovery document (see <xref target="as-config" />)
-          and support this extended version of the response.</t>
+          token introspection endpoint (defined in <xref target="RFC7662" />
+          and this section) that is part of the protection API. The
+          authorization server's response contains an extended version of the
+          introspection response. If the authorization server supports this
+          specification's version of the token introspection endpoint, it MUST
+          declare the endpoint in its discovery document (see <xref
+          target="as-config" />) and support this extended version of the
+          response.</t>
 
           <t>Use a cached copy of the token introspection response if allowed
           (see Section 4 of <xref target="RFC7662" />).</t>
@@ -1122,7 +1127,7 @@ Host: as.example.com
 Authorization: Bearer 204c69636b6c69
 ...
 token=sbjsbhs(/SSJHBSUSSJHVhjsgvhsgvshgsv
-}
+
 ]]></artwork>
         </figure>
 
@@ -1269,15 +1274,13 @@ Cache-Control: no-store
       <t>The authorization server comes to be in possession of resource
       details that may reveal information about the resource owner, which the
       authorization server's trust relationship with the resource server is
-      assumed to accommodate. However, the client is a less-trusted party --
-      in fact, entirely untrustworthy until permissions are associated with
-      its RPT. The more information about a resource that is registered, the
-      more risk of privacy compromise there is through a less-trusted
-      authorization server. For example, if resource owner Alice introduces
-      her electronic health record resource server to a authorization server
-      in the cloud, the authorization server may come to learn a great deal of
-      detail about Alice's health information just so that she can control
-      access by others to that information.</t>
+      assumed to accommodate. The more information about a resource that is
+      registered, the more risk of privacy compromise there is through a
+      less-trusted authorization server. For example, if resource owner Alice
+      introduces her electronic health record resource server to a
+      authorization server in the cloud, the authorization server may come to
+      learn a great deal of detail about Alice's health information just so
+      that she can control access by others to that information.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
