@@ -174,7 +174,8 @@
           </list></t>
       </section>
 
-      <section title="HTTP Usage, API Security, and Identity Context">
+      <section anchor="api-sec"
+               title="HTTP Usage, API Security, and Identity Context">
         <t>This specification is designed for use with HTTP <xref
         target="RFC2616" />, and for interoperability and security in the
         context of loosely coupled services and applications operated by
@@ -286,10 +287,12 @@
           security, profiling is RECOMMENDED (see Section 4 of <xref
           target="UMAGrant" />).</t>
 
-          <t>Note: The resource server generally requires access to the
-          protection API when an end-user resource owner is not available
-          ("offline" access). Thus, the authorization server needs to manage
-          the PAT in a way that ensures this outcome.</t>
+          <t>Note: The resource server typically requires access to at least
+          the permission and token introspection endpoints when an end-user
+          resource owner is not available ("offline" access). Thus, the
+          authorization server needs to manage the PAT in a way that ensures
+          this outcome. <xref target="UMA-Impl" /> discusses ways the resource
+          server can enhance its error handling when the PAT is invalid.</t>
         </section>
       </section>
 
@@ -323,7 +326,12 @@
 
         <t>Use of these endpoints assumes that the resource server has
         acquired OAuth client credentials from the authorization server by
-        static or dynamic means, and has a valid PAT.</t>
+        static or dynamic means, and has a valid PAT. Note: Although the
+        resource identifiers that appear in permission and token introspection
+        request messages could sufficiently identify the resource owner, the
+        PAT is still required because it represents the resource owner's
+        authorization to use the protection API, as noted in <xref
+        target="api-sec" />.</t>
 
         <t>The authorization server MUST declare its endpoints in the
         discovery document (see <xref target="as-config" />).</t>
