@@ -995,8 +995,9 @@ Content-Type: application/json
         <section anchor="authorization-failure"
                  title="Authorization Server Response to Client on Authorization Failure">
           <t>If the client's request to the token endpoint is insufficient for
-          granting an RPT, the authorization server responds using an error
-          code and corresponding HTTP status code.<list style="hanging">
+          granting an RPT, the authorization server responds with an error, as
+          defined in Section 5.2 of <xref target="RFC6749" /> and as
+          follows.<list style="hanging">
               <t hangText="invalid_grant">If the provided permission ticket
               was not found at the authorization server, or the provided
               permission ticket has expired, or any other original reasons to
