@@ -146,14 +146,15 @@
       <section anchor="high-level-flow" title="Abstract Flow">
         <t>The UMA grant enhances the abstract protocol flow of OAuth.</t>
 
-        <t><xref target="protocol-flow" /> shows an example flow. The steps
-        and artifacts chosen in this figure show a high degree of variety for
-        illustration purposes; for example, while both claims pushing and
-        interactive claims gathering are shown, both might not be used in a
-        single scenario.</t>
+        <t><xref target="protocol-flow" /> shows an example flow. The resource
+        owner entity is included for completeness, although communications
+        among the other four entities are asynchronous with respect to
+        resource owner actions. Further, although both claims pushing and
+        interactive claims gathering are shown, both might not typically be
+        used in a single scenario.</t>
 
         <figure anchor="protocol-flow" title="Example Flow">
-          <artwork><![CDATA[rrequesting                             authorization resource resource
+          <artwork><![CDATA[requesting                             authorization resource resource
   party        client                      server     server    owner
     |            |                           |          |         |
     |            |                           |Set policy|         |
