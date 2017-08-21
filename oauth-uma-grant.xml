@@ -1032,18 +1032,17 @@ Content-Type: application/json
                   tickets.</t>
                 </list></t>
 
-              <t hangText="need_info">According to the just-performed
-              authorization assessment, the client is not authorized to have
-              the requested permissions; the authorization server needs
-              additional or different information in order for a request to
-              succeed. The authorization server responds with the HTTP 403
-              (Forbidden) status code. It MUST include a <spanx
-              style="verb">ticket</spanx> parameter, and it MUST also include
-              either the <spanx style="verb">required_claims</spanx> parameter
-              or the <spanx style="verb">redirect_user</spanx> parameter, or
-              both, as hints about the information it needs. The client has
-              the opportunity to use the hints as guidance to succeeding in a
-              future attempt.<list style="hanging">
+              <t hangText="need_info">The authorization server needs
+              additional information in order for a request to succeed, for
+              example, a provided claim token was invalid or expired, or had
+              an incorrect format, or additional claims are needed to complete
+              the authorization assessment. The authorization server responds
+              with the HTTP 403 (Forbidden) status code. It MUST include a
+              <spanx style="verb">ticket</spanx> parameter, and it MUST also
+              include either the <spanx style="verb">required_claims</spanx>
+              parameter or the <spanx style="verb">redirect_user</spanx>
+              parameter, or both, as hints about the information it
+              needs.<list style="hanging">
                   <t hangText="ticket">REQUIRED. A permission ticket that
                   allows the client to make a further request to the
                   authorization server's token endpoint as part of this same
