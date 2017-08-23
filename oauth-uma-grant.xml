@@ -462,8 +462,8 @@ Warning: 199 - "UMA Authorization Server Unreachable"
       <section anchor="seek-authorization"
                title="Client Seeks RPT on Requesting Party's Behalf">
         <t>The client seeks issuance of an RPT from the token endpoint. Using
-        this endpoint is one option for the client in beginning to engage with
-        the authorization server as part of an authorization process. The
+        this endpoint is one option for the client in beginning to communicate
+        with the authorization server as part of an authorization process. The
         other option is to redirect the requesting party for interactive
         claims gathering (see <xref target="claim-redirect" />).</t>
 
@@ -590,13 +590,13 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
           requires. These can include direct interactions, such as account
           registration and authentication local to the authorization server as
           an identity provider, filling out a questionnaire, or asking the
-          user to authorize persistent storage of any collected claims on a
-          persistent basis to optimize future authorization processes; this
-          last example could potentially be associated with the authorization
-          server's subsequent issuance of a PCT. Interactions could also
-          involve further redirection, for example, for federated (such as
-          social) authentication at a remote identity provider, and other
-          federated claims gathering.</t>
+          user to authorize persistent storage of any collected claims to
+          optimize future authorization processes; this last example could
+          potentially be associated with the authorization server's subsequent
+          issuance of a PCT. Interactions could also involve further
+          redirection, for example, for federated (such as social)
+          authentication at a remote identity provider, and other federated
+          claims gathering.</t>
 
           <t>Redirecting the requesting party to the authorization server is
           one option for the client in beginning to engage with the
@@ -800,10 +800,12 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               client's and requesting party's purposes in seeking
               authorization for access. The choice of error depends on the
               authorization server's implementation choices. The conditions
-              for the <spanx style="verb">request_submitted</spanx> and <spanx
-              style="verb">need_info</spanx> error codes are dependent on
-              authorization assessment and thus these codes might be more
-              likely than the others to be issued.</t>
+              for the <spanx style="verb">need_info</spanx>, <spanx
+              style="verb">request_denied</spanx>, and <spanx
+              style="verb">request_submitted</spanx> error codes are dependent
+              on authorization assessment and thus these codes might be more
+              likely than the others to be issued subsequent to such a
+              calculation.</t>
             </list></t>
 
           <t>Note: It is not an error for the client to have requested a scope
@@ -1012,27 +1014,6 @@ Content-Type: application/json
               permission ticket provided by the client. The authorization
               server responds with the HTTP 400 (Bad Request) status code.</t>
 
-              <t hangText="request_submitted">The authorization server
-              requires intervention by the resource owner to determine whether
-              the client is authorized to have these permissions. The
-              authorization server responds with the HTTP 403 (Forbidden)
-              status code. It MUST include a <spanx
-              style="verb">ticket</spanx> parameter.<list style="hanging">
-                  <t hangText="ticket">REQUIRED. A permission ticket that
-                  allows the client to make one or more later polling requests
-                  to the token endpoint as part of this same authorization
-                  process, when the resource owner might have completed some
-                  approval (or denial) action. The value MUST NOT be the same
-                  as the one the client used to make its request.</t>
-
-                  <t hangText="interval">OPTIONAL. The minimum amount of time
-                  in seconds that the client SHOULD wait between polling
-                  requests to the token endpoint. See <xref
-                  target="ticket-management" /> for security considerations in
-                  scenarios involving polling, and longer-lived permission
-                  tickets.</t>
-                </list></t>
-
               <t hangText="need_info">The authorization server needs
               additional information in order for a request to succeed, for
               example, a provided claim token was invalid or expired, or had
@@ -1099,11 +1080,36 @@ Content-Type: application/json
                   appropriate, for example, if the URI needs to be customized
                   per requesting party with a query parameter.</t>
                 </list></t>
+
+              <t hangText="request_denied">The client is not authorized to
+              have these permissions. The authorization server responds with
+              the HTTP 403 (Forbidden) status code.</t>
+
+              <t hangText="request_submitted">The authorization server
+              requires intervention by the resource owner to determine whether
+              the client is authorized to have these permissions. The
+              authorization server responds with the HTTP 403 (Forbidden)
+              status code. It MUST include a <spanx
+              style="verb">ticket</spanx> parameter.<list style="hanging">
+                  <t hangText="ticket">REQUIRED. A permission ticket that
+                  allows the client to make one or more later polling requests
+                  to the token endpoint as part of this same authorization
+                  process, when the resource owner might have completed some
+                  approval (or denial) action. The value MUST NOT be the same
+                  as the one the client used to make its request.</t>
+
+                  <t hangText="interval">OPTIONAL. The minimum amount of time
+                  in seconds that the client SHOULD wait between polling
+                  requests to the token endpoint. See <xref
+                  target="ticket-management" /> for security considerations in
+                  scenarios involving polling, and longer-lived permission
+                  tickets.</t>
+                </list></t>
             </list></t>
 
           <figure>
             <preamble>Example when the permission ticket was not found or has
-            expired, or the client's request has failed outright:</preamble>
+            expired:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 400 Bad Request
 Content-Type: application/json
@@ -1117,8 +1123,23 @@ Cache-Control: no-store
           </figure>
 
           <figure>
+            <preamble>Example when the client was not authorized to have the
+            permissions:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Cache-Control: no-store
+...
+
+{  
+   "error":"request_denied"
+}
+]]></artwork>
+          </figure>
+
+          <figure>
             <preamble>Example of a <spanx style="verb">need_info</spanx>
-            response with both types of hints:</preamble>
+            response with hints about required claims:</preamble>
 
             <artwork><![CDATA[HTTP/1.1 403 Forbidden
 Content-Type: application/json
@@ -1140,7 +1161,24 @@ Cache-Control: no-store
          ],
          "name":"email23423453ou453"
       }
-   ],
+   ]
+}
+]]></artwork>
+          </figure>
+
+          <figure>
+            <preamble>Example of a <spanx style="verb">need_info</spanx>
+            response with a hint to redirect the requesting party to a claims
+            interaction endpoint:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Cache-Control: no-store
+...
+
+{  
+   "error":"need_info",
+   "ticket":"ZXJyb3JfZGV0YWlscw==",
    "redirect_user":"https://as.example.com/rqp_claims?id=2346576421"
 }
 ]]></artwork>
