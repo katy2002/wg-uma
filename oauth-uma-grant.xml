@@ -537,11 +537,11 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               <t hangText="scope">OPTIONAL. A string of space-separated values
               representing requested scopes. For the authorization server to
               consider any requested scope in its assessment, the client MUST
-              have pre-registered the same scope with the authorization
-              server. The client should consult the resource server's API
-              documentation for details about which scopes it can expect the
-              resource server's initial returned permission ticket to
-              represent as part of the authorization assessment (see <xref
+              have been pre-registered for the same scope with the
+              authorization server. The client should consult the resource
+              server's API documentation for details about which scopes it can
+              expect the resource server's initial returned permission ticket
+              to represent as part of the authorization assessment (see <xref
               target="authorization-assessment" />).</t>
             </list></t>
 
@@ -746,7 +746,7 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
 
           <t>In this assessment calculation, let a set called
           <spanx>ClientRegistered</spanx> stand for the scopes for which the
-          client pre-registered at the authorization server, either
+          client is pre-registered at the authorization server, either
           dynamically or through some static process. Let a set called
           <spanx>ClientRequested</spanx> stand for the scopes the client most
           recently requested at the token endpoint. Let a set called
@@ -810,14 +810,6 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               calculation.</t>
             </list></t>
 
-          <t>Note: It is not an error for the client to have requested a scope
-          for which it did not pre-register because
-          <spanx>RequestedScopes</spanx> might include that same scope,
-          requested on the client's behalf by the resource server when
-          obtaining the permission ticket. However, if such a scope were
-          requested only by the client at the token endpoint, that scope would
-          not be included in <spanx>RequestedScopes</spanx>.</t>
-
           <t>The following example illustrates authorization assessment and
           partial results: <list style="symbols">
               <t>Assume two resources at a resource server, <spanx
@@ -836,7 +828,7 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               by requesting parties that can provide claims saying they agree
               not to download, sell, or market any photo.</t>
 
-              <t>The client has pre-registered with the authorization server
+              <t>The client is pre-registered with the authorization server
               for <spanx style="verb">download</spanx> scope (so
               <spanx>ClientRegistered</spanx> contains <spanx
               style="verb">download</spanx>).</t>
@@ -1014,7 +1006,11 @@ Content-Type: application/json
               in the request does not match an available scope for any of the
               resources associated with requested permissions for the
               permission ticket provided by the client. The authorization
-              server responds with the HTTP 400 (Bad Request) status code.</t>
+              server MAY also return this error when at least one of the
+              scopes included in the request does not match a scope for which
+              the client is pre-registered with the authorization server. The
+              authorization server responds with the HTTP 400 (Bad Request)
+              status code.</t>
 
               <t hangText="need_info">The authorization server needs
               additional information in order for a request to succeed, for
