@@ -259,41 +259,23 @@
         obligations between and among them. See Section 4 of <xref
         target="UMAGrant" /> for more information.</t>
 
-        <section anchor="ttl"
-                 title="Policy Setting and Time-to-Live Management">
-          <t>The setting of policy conditions is outside the scope of this
-          specification.</t>
+        <t>Except for PAT issuance, the resource owner-resource server and
+        resource owner-authorization server interfaces -- including the
+        setting of policy conditions -- are outside the scope of this
+        specification (see <xref target="priv-consid" /> and Section 6.1 of
+        <xref target="UMAGrant" /> for privacy considerations). Some elements
+        of the protection API enable the building of user interfaces for
+        policy condition setting (for example, see <xref target="reg-api" />,
+        which can be used in concert with user interaction for resource
+        protection and sharing and offers an end-user redirection mechanism
+        for policy interactions).</t>
 
-          <t>Except for PAT issuance, the resource owner-authorization server
-          and resource owner-resource server interfaces are outside the scope
-          of this specification. A variety of flows and user interfaces for
-          policy condition setting involving user agents for both of these
-          servers are possible, each with different privacy consequences for
-          end-user resource owners. Some elements of the protection API enable
-          the building of user interfaces for policy condition setting (for
-          example, see <xref target="reg-api" />, which can be used in concert
-          with user interaction for resource protection and sharing and offers
-          an end-user redirection mechanism for policy interactions).</t>
-
-          <t>A variety of authorization, security, and time-to-live policies
-          could be managed on a per-resource owner basis or a
-          per-authorization server basis, as the entities see fit. Validity
-          periods of PATs, RPTs, refresh tokens, permissions, caching periods
-          for various responses, and even OAuth client credentials are all
-          subject to management. Different time-to-live strategies might be
-          suitable for different resources and scopes. These options are all
-          outside the scope of this specification; where deployment ecosystems
-          using independent implementations seek a consistent high level of
-          security, profiling is RECOMMENDED (see Section 4 of <xref
-          target="UMAGrant" />).</t>
-
-          <t>Note: The resource server typically requires access to at least
-          the permission and token introspection endpoints when an end-user
-          resource owner is not available ("offline" access). Thus, the
-          authorization server needs to manage the PAT in a way that ensures
-          this outcome. <xref target="UMA-Impl" /> discusses ways the resource
-          server can enhance its error handling when the PAT is invalid.</t>
-        </section>
+        <t>Note: The resource server typically requires access to at least the
+        permission and token introspection endpoints when an end-user resource
+        owner is not available ("offline" access). Thus, the authorization
+        server needs to manage the PAT in a way that ensures this outcome.
+        <xref target="UMA-Impl" /> discusses ways the resource server can
+        enhance its error handling when the PAT is invalid.</t>
       </section>
 
       <section title="Protection API Summary">
@@ -1266,7 +1248,7 @@ Cache-Control: no-store
       <t>In the context of federated authorization, more parties may be
       operating and using UMA software entities, and thus may need to
       establish agreements about the parties' rights and responsibilities on a
-      legal or contractual level, as discussed in Section 5.4 of <xref
+      legal or contractual level, as discussed in Section 5.8 of <xref
       target="UMAGrant" />.</t>
 
       <t>The protection API is secured by means of OAuth (through the use of
@@ -1278,11 +1260,18 @@ Cache-Control: no-store
       target="UMAGrant" /> and has the following additional privacy
       considerations.</t>
 
+      <t>As noted in Section 6.1 of <xref target="UMAGrant" />, the
+      authorization server should apply authorization, security, and
+      time-to-live strategies in a way that favors resource owner needs and
+      action so that removal of authorization grants is achieved in a timely
+      fashion. PATs are another construct to which it can apply these
+      strategies.</t>
+
       <t>In the context of federated authorization, more parties may be
       operating and using UMA software entities, and thus may need to
       establish agreements about mutual rights, responsibilities, and common
       interpretations of UMA constructs for consistent and expected software
-      behavior, as discussed in Section 6.3 of <xref target="UMAGrant" />.</t>
+      behavior, as discussed in Section 6.4 of <xref target="UMAGrant" />.</t>
 
       <t>The authorization server comes to be in possession of resource
       details that may reveal information about the resource owner, which the
@@ -1290,7 +1279,7 @@ Cache-Control: no-store
       assumed to accommodate. The more information about a resource that is
       registered, the more risk of privacy compromise there is through a
       less-trusted authorization server. For example, if resource owner Alice
-      introduces her electronic health record resource server to a
+      introduces her electronic health record resource server to an
       authorization server in the cloud, the authorization server may come to
       learn a great deal of detail about Alice's health information just so
       that she can control access by others to that information.</t>

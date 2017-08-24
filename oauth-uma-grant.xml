@@ -147,11 +147,13 @@
         <t>The UMA grant enhances the abstract protocol flow of OAuth.</t>
 
         <t><xref target="protocol-flow" /> shows an example flow. The resource
-        owner entity is included for completeness, although communications
-        among the other four entities are asynchronous with respect to
-        resource owner actions. Further, although both claims pushing and
-        interactive claims gathering are shown, both might not typically be
-        used in a single scenario.</t>
+        owner entity and its communications with the authorization server are
+        included for completeness, although policy condition setting is
+        outside the scope of this specification and communications among the
+        other four entities are asynchronous with respect to resource owner
+        actions. Further, although both claims pushing and interactive claims
+        gathering are shown, both might not typically be used in a single
+        scenario.</t>
 
         <figure anchor="protocol-flow" title="Example Flow">
           <artwork><![CDATA[requesting                             authorization resource resource
@@ -527,10 +529,10 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               considerations. See <xref target="give-rpt" /> for the form of
               the authorization server's response with a PCT.</t>
 
-              <t hangText="rpt">OPTIONAL. Supplying an existing RPT gives the
-              authorization server the option of upgrading that RPT instead of
-              issuing a new one (see <xref target="rpt-upgrading" /> for more
-              about this option).</t>
+              <t hangText="rpt">OPTIONAL. Supplying an existing RPT (which MAY
+              be expired) gives the authorization server the option of
+              upgrading that RPT instead of issuing a new one (see <xref
+              target="rpt-upgrading" /> for more about this option).</t>
 
               <t hangText="scope">OPTIONAL. A string of space-separated values
               representing requested scopes. For the authorization server to
@@ -1234,9 +1236,9 @@ Host: photoz.example.com
         permissions associated with any resulting refreshed RPT to the scopes
         requested by the client.</t>
 
-        <t>The authorization server MUST NOT treat the client's request to
-        refresh an RPT as if it were a request for a new RPT requiring an
-        authorization assessment calculation.</t>
+        <t>The authorization server MUST NOT perform an authorization
+        assessment calculation on receiving the client's request to refresh an
+        RPT.</t>
       </section>
 
       <section anchor="token-revocation"
@@ -1523,6 +1525,35 @@ Host: photoz.example.com
 
     <section anchor="priv-consid" title="Privacy Considerations">
       <t>UMA has the following privacy considerations.</t>
+
+      <section anchor="ttl"
+               title="Policy Condition Setting, Time-to-Live Management, and Removal of Authorization Grants">
+        <t>The setting of policy conditions, the resource owner-authorization
+        server interface, and the resource owner-resource server interface are
+        outside the scope of this specification.</t>
+
+        <t>A variety of flows and user interfaces for policy condition setting
+        involving user agents for both of these servers are possible, each
+        with different privacy consequences for end-user resource owners. As
+        well, various authorization, security, and time-to-live strategies
+        could be applied on a per-resource owner basis or a per-authorization
+        server basis, as the entities see fit. Validity periods of RPTs,
+        refresh tokens, permissions, caching periods for responses, and even
+        OAuth client credentials are all subject to management. Different
+        time-to-live strategies might be suitable for different resources and
+        scopes.</t>
+
+        <t>In order to account for modifications of policy conditions that
+        result in the withdrawal of authorization grants (for example, fewer
+        scopes, fewer resources, or resources available for a shorter time) in
+        as timely a fashion as possible, the authorization server should align
+        its strategies for management of these factors with resource owner
+        needs and actions rather than those of clients and requesting parties.
+        For example, the authorization server may want to invalidate a
+        client's RPT and refresh token as soon as a resource owner changes
+        policy conditions in such a way as deny that client and requesting
+        party future access to a full set of previously held permissions.</t>
+      </section>
 
       <section anchor="rqp-privacy"
                title="Requesting Party Information at the Authorization Server">
