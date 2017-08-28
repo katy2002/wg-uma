@@ -1802,6 +1802,19 @@ Host: photoz.example.com
             </list>
 
             <list style="symbols">
+              <t>Error name: <spanx style="verb">request_denied</spanx></t>
+
+              <t>Change controller: Kantara Initiative User-Managed Access
+              Work Group - staff@kantarainitiative.org</t>
+
+              <t>Specification document: <xref
+              target="authorization-failure" /> in this document</t>
+
+              <t>Error usage location: authorization server response, token
+              endpoint</t>
+            </list>
+
+            <list style="symbols">
               <t>Error name: <spanx style="verb">request_submitted</spanx>
               (and its subsidiary <spanx style="verb">ticket</spanx>
               parameter)</t>
