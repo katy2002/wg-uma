@@ -525,7 +525,7 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               requesting party when seeking an RPT for a resource different
               from the one sought when the PCT was issued, or a protected
               resource at a different resource server entirely. See <xref
-              target="sec-consid-pct" /> for additional PCT security
+              target="sec-consid-exposure" /> for additional PCT security
               considerations. See <xref target="give-rpt" /> for the form of
               the authorization server's response with a PCT.</t>
 
@@ -913,8 +913,8 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               encrypted format that can be decrypted only by the authorization
               server that issued the PCT. See <xref target="claim-redirect" />
               for more information about the end-user requesting party
-              interaction option. See <xref target="sec-consid-pct" /> for
-              additional PCT security considerations.</t>
+              interaction option. See <xref target="sec-consid-exposure" />
+              for additional PCT security considerations.</t>
 
               <t hangText="upgraded">OPTIONAL. Boolean value. If the client
               submits an RPT in the request and the authorization server
@@ -1301,7 +1301,7 @@ Host: photoz.example.com
 
     <section anchor="sec-consid" title="Security Considerations">
       <t>This specification relies mainly on OAuth 2.0 security mechanisms as
-      well as transport-level encryption. Thus, implementers are strongly
+      well as transport-level security. Thus, implementers are strongly
       advised to read <xref target="BCP195" /> and the security considerations
       in <xref target="RFC6749" /> (Section 10) and <xref target="RFC6750" />
       (Section 5) along with the security considerations of any other OAuth
@@ -1315,35 +1315,14 @@ Host: photoz.example.com
       considerations.</t>
 
       <section anchor="csrf" title="Cross-Site Request Forgery">
-        <t>Similar to the redirection used at OAuth's authorization endpoint,
-        UMA redirection for the purpose of gathering claims interactively from
-        an end-user requesting party (described in <xref
+        <t>Redirection used for gathering claims interactively from an
+        end-user requesting party (described in <xref
         target="claim-redirect" />) creates the potential for cross-site
-        request forgery (CSRF) through an open redirect if the authorization
-        server does not force the client to pre-register its claims
-        redirection endpoint, and server-side artifact tampering if the client
-        does not avail itself of the <spanx style="verb">state</spanx>
+        request forgery (CSRF). This may be the result of an open redirect if
+        the authorization server does not force the client to pre-register its
+        claims redirection endpoint, and server-side artifact tampering if the
+        client does not avail itself of the <spanx style="verb">state</spanx>
         parameter.</t>
-
-        <t>If the client uses the redirection-based interactive claims
-        gathering feature, the client MUST implement CSRF protection for its
-        claims redirection URI. The client SHOULD use the <spanx
-        style="verb">state</spanx> parameter when redirecting the requesting
-        party to the claims interaction endpoint. The value of the <spanx
-        style="verb">state</spanx> parameter MUST be unguessable by an
-        attacker. Once the authorization server redirects the requesting party
-        back, with the required binding value contained in the <spanx
-        style="verb">state</spanx> parameter, the client MUST check that the
-        value of the <spanx style="verb">state</spanx> parameter received is
-        equal to the value sent in the initial redirection request. Depending
-        on the type of application, a client has several methods for storing
-        and later verifying the value of the <spanx style="verb">state</spanx>
-        parameter in between the initial redirect and the eventual resulting
-        request to the claims redirection URI, including storage in a
-        server-side session-bound variable, cryptographic derivation from a
-        browser cookie, or secure application-level storage. The client MUST
-        treat requests containing an invalid or unknown <spanx
-        style="verb">state</spanx> parameter value as an error.</t>
 
         <t>A CSRF attack against the authorization server's claims interaction
         endpoint can result in an attacker obtaining authorization for access
@@ -1353,66 +1332,78 @@ Host: photoz.example.com
         malicious client cannot obtain authorization without the awareness and
         involvement of the requesting party.</t>
 
+        <t>If the client uses the interactive claims gathering feature, it
+        MUST implement CSRF protection for its claims redirection URI. It
+        SHOULD use the <spanx style="verb">state</spanx> parameter when
+        redirecting the requesting party to the claims interaction endpoint.
+        The value of the <spanx style="verb">state</spanx> parameter MUST be
+        unguessable by an attacker. Once the authorization server redirects
+        the requesting party back, with the required binding value contained
+        in the <spanx style="verb">state</spanx> parameter, the client MUST
+        check that the value of the <spanx style="verb">state</spanx>
+        parameter received is equal to the value sent in the initial
+        redirection request. Depending on the type of application, a client
+        has several methods for storing and later verifying the value of the
+        <spanx style="verb">state</spanx> parameter in between the initial
+        redirect and the eventual resulting request to the claims redirection
+        URI, including storage in a server-side session-bound variable,
+        cryptographic derivation from a browser cookie, or secure
+        application-level storage. The client MUST treat requests containing
+        an invalid or unknown <spanx style="verb">state</spanx> parameter
+        value as an error.</t>
+
         <t>The <spanx style="verb">state</spanx> parameter SHOULD NOT include
         sensitive client or requesting party information in plain text, as it
-        is transmitted through third party components (the requesting party's
+        is transmitted through third-party components (the requesting party's
         user agent) and could be stored insecurely.</t>
       </section>
 
-      <section title="Requesting Party Switching and RPT Exposure to a Requesting Party">
+      <section anchor="sec-consid-exposure" title="RPT and PCT Exposure">
         <t>When a client redirects an end-user requesting party to the claims
         interaction endpoint, the client provides no a priori context to the
         authorization server about which user is appearing at the endpoint,
-        other than implicitly through the permission ticket. Since the
-        authorization server is free to gather any claims it wishes, the
-        effect is to "late-bind" them to the permission ticket and the <spanx
-        style="verb">state</spanx> parameter string provided by the client,
-        with the effect of enabling the authorization server not to trust
-        client-asserted claims. This is a desirable result and reflects one
-        reason why the authorization server might choose to demand use of the
-        redirect flow over the push flow. However, the client has the
-        opportunity to switch end-users -- say, enabling malicious end-user
-        Carlos to impersonate the original end-user Bob, who might be
-        represented by a PCT already in that client's possession and might
-        even have authorized the issuance of that PCT -- after the redirect
-        completes and before it returns to the token endpoint to seek
+        other than implicitly through the permission ticket. Thus, a malicious
+        client has the opportunity to switch end-users -- say, enabling
+        malicious end-user Carlos to impersonate legitimate end-user Bob, who
+        might be represented by a PCT already in that client's possession and
+        might even have authorized the issuance of that PCT -- after the
+        redirect completes and before it returns to the token endpoint to seek
         permissions.</t>
 
-        <t>Another issue concerns the exposure of an RPT to a requesting
-        party, which could maliciously pass the RPT to an unauthorized
-        party.</t>
-
-        <t>To mitigate requesting-party switching and RPT exposure threats,
-        consider the following strategies.<list style="symbols">
+        <t>To mitigate this threat, the authorization server, with the support
+        of the resource owner, should consider the following strategies in
+        combination.<list style="symbols">
             <t>Require that the requesting party legitimately represent the
-            wielder of the bearer token on a legal or contractual level. This
-            solution does not reduce the risk from a technical
-            perspective.</t>
+            wielder of the RPT on a legal or contractual level. This solution
+            alone does not reduce the risk from a technical perspective.</t>
 
-            <t>The authorization server, possibly with input from the resource
-            owner, can implement tighter time-to-live strategies around the
-            permissions in RPTs. This is a classic approach with bearer tokens
-            that helps to limit a malicious party's ability to intercept and
-            use the bearer token. In the same vein, the authorization server
-            could require claims to have a reasonable degree of freshness
-            (which would require a custom claims profile).</t>
+            <t>Gather claims interactively from an end-user requesting party
+            that demonstrate that some sufficiently strong level of
+            authentication was performed.</t>
 
-            <t>A stronger strategy is to gather claims interactively from an
-            end-user requesting party that demonstrate that some sufficiently
-            strong level of authentication was performed.</t>
+            <t>Require claims to have a high degree of freshness in order for
+            them to satify policy conditions.</t>
+
+            <t>Tighten time-to-live strategies around RPTs and their
+            associated permissions (see <xref target="ttl" />).</t>
           </list></t>
-      </section>
 
-      <section anchor="sec-consid-pct"
-               title="Requesting Party Claims and Persisted Claims Tokens">
-        <t>A PCT is similar to a refresh token in that it allows
+        <t>The client MUST only share the RPT (access token) with the resource
+        server and authorization server, as explained in Section 10.3 of <xref
+        target="RFC6749" />, and thus MUST keep it confidential from the
+        requesting party. Because a malicious requesting party (the user of
+        the client in the UMA grant) may have incentives to steal an RPT that
+        the resource owner (the user of the client in other OAuth grants) does
+        not, this security consideration takes on especial importance.</t>
+
+        <t>The PCT is similar to a refresh token in that it allows
         non-interactive issuance of access tokens. The authorization server
-        and client MUST keep PCTs confidential in transit and storage, and
-        MUST NOT share any PCT with any entity other than the issuer or issued
-        client, respectively. The authorization server MUST maintain the
-        binding between a PCT and the client to which it was issued.</t>
+        and client MUST keep the PCT confidential in transit and storage, and
+        MUST NOT share the PCT with any entity other than each other. The
+        authorization server MUST maintain the binding between the PCT and the
+        client to which it was issued.</t>
 
-        <t>Given that a PCT represents a set of requesting party claims, a
+        <t>Given that the PCT represents a set of requesting party claims, a
         client supplying a PCT in its RPT request MUST make a best effort to
         ensure that the requesting party using the client now is the same as
         the requesting party that was associated with the PCT when it was
@@ -1424,12 +1415,13 @@ Host: photoz.example.com
 
         <t>If the authorization server has reason to believe that a PCT is
         compromised, for example, if the PCT has been supplied by a client
-        with "impossible geography" parameters, the authorization server
-        should consider not using the claims based on that PCT in an
+        that has "impossible geography" parameters, the authorization server
+        should consider not using the claims based on that PCT in its
         authorization assessment.</t>
       </section>
 
-      <section title="Strengthening RPT Protection Using Proof of Possession">
+      <section anchor="pop"
+               title="Strengthening RPT Protection Using Proof of Possession">
         <t>After the client's resource request with an RPT, assuming the
         client sent an RPT of the bearer style such as defined in <xref
         target="RFC6750" />, the resource server will have received from the
@@ -1446,16 +1438,17 @@ Host: photoz.example.com
       </section>
 
       <section anchor="cred-guessing" title="Credentials-Guessing">
-        <t>The authorization server MUST prevent attackers from guessing
-        permission tickets and PCTs.</t>
+        <t>Permission tickets and PCTs are additional credentials that the
+        authorization server MUST prevent attackers from guessing, as defined
+        in Section 10.10 of <xref target="RFC6749" />.</t>
       </section>
 
       <section anchor="ticket-management" title="Permission Ticket Management">
-        <t>The authorization server MUST make permission ticket values
-        unguessable by resource servers and clients. Within these constraints,
-        however, the authorization server MAY format the ticket however it
-        chooses, for example either as a random string that references data
-        held on the server or by including data within the ticket itself.</t>
+        <t>Within the constraints of making permission ticket values
+        unguessable, the authorization server MAY format the permission ticket
+        however it chooses, for example, either as a random string that
+        references data held on the server or by including data within the
+        ticket itself.</t>
 
         <t>Permission tickets MUST be single-use. This prevents susceptibility
         to a session fixation attack.</t>
@@ -1497,6 +1490,31 @@ Host: photoz.example.com
         access.</t>
       </section>
 
+      <section anchor="trust-push"
+               title="Requirements for Pre-Established Trust Regarding Claim Tokens">
+        <t>When a client makes an RPT request, it has the opportunity to push
+        a claim token to attempt to satisfy policy conditions (see <xref
+        target="uma-grant-type" />).</t>
+
+        <t>Claim tokens of any format typically contain audience restrictions,
+        and an authorization server would not typically be in the primary
+        audience for a claim token held or generated by a client. It is
+        RECOMMENDED to document how the client, authorization server, and any
+        additional ecosystem entities and parties will establish a trust
+        relationship and communicate any required keying material in a claim
+        token profile, as described in <xref target="profiles" />.
+        Authorization servers are RECOMMENDED not to accept claim tokens
+        pushed by untrusted clients and not to ignore audience restrictions
+        found in claim tokens pushed by clients.</t>
+
+        <t>Some deployments could have exceptional circumstances allowing the
+        authorization server to validate claim tokens. For example, if the
+        authorization server itself is also the identity provider for the
+        requesting party, then it would be able to validate any ID token that
+        the client pushes as a claim token and also validate the client to
+        which it was issued.</t>
+      </section>
+
       <section anchor="trust-considerations"
                title="Profiles and Trust Establishment">
         <t>Parties that are operating and using UMA software entities may need
@@ -1504,35 +1522,11 @@ Host: photoz.example.com
         on a legal or contractual level, along with common interpretations of
         UMA constructs for consistent and expected software behavior. These
         agreements can be used to improve the parties' respective security
-        postures, and written profiles are a key mechanism for conveying and
+        postures. Written profiles are a key mechanism for conveying and
         enforcing these agreements. <xref target="profiles" /> discusses
-        profiling. See <xref target="UMA-legal" /> to learn about tools to
-        assist in the legal and contractual elements of deploying UMA-enabled
-        services.</t>
-
-        <section anchor="trust-push"
-                 title="Requirements for Trust When Clients Push Claim Tokens">
-          <t>This section discusses the threats surrounding client claims
-          pushing (see <xref target="uma-grant-type" />).</t>
-
-          <t>Because claim tokens of any format typically contain audience
-          restrictions and an authorization server would typically not be in
-          the primary audience for a claim token held or generated by a
-          client, it is RECOMMENDED to document how the client, authorization
-          server, and any additional ecosystem entities and parties will
-          establish a trust relationship and communicate any required keying
-          material in a claim token profile, as described in <xref
-          target="profiles" />. Authorization servers are RECOMMENDED not to
-          accept claim tokens pushed by untrusted clients and not to ignore
-          audience restrictions found in claim tokens pushed by clients.</t>
-
-          <t>Some deployments could have exceptional circumstances allowing
-          the authorization server to validate claim tokens. For example, if
-          the authorization server is also the identity provider for the
-          requesting party, then it would be able to validate any ID tokens it
-          issued to the client and also ensure they were issued to the client
-          presenting the claim token.</t>
-        </section>
+        profiling. See <xref target="UMA-legal" /> to learn about frameworks
+        and tools to assist in the legal and contractual elements of deploying
+        UMA-enabled services.</t>
       </section>
     </section>
 
