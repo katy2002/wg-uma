@@ -811,61 +811,78 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
             </list></t>
 
           <t>The following example illustrates authorization assessment and
-          partial results: <list style="symbols">
-              <t>Assume two resources at a resource server, <spanx
-              style="verb">photo1</spanx> with scopes <spanx
-              style="verb">view</spanx>, <spanx style="verb">print</spanx>,
-              and <spanx style="verb">download</spanx> and <spanx
+          partial results. <list style="symbols">
+              <t>The resource server has three of the resource owner's
+              resources of interest to the client and requesting party, <spanx
+              style="verb">photo1</spanx> and <spanx
               style="verb">photo2</spanx> with scopes <spanx
-              style="verb">view</spanx>, <spanx style="verb">print</spanx>,
-              <spanx style="verb">download</spanx>, and <spanx
-              style="verb">link</spanx>.</t>
+              style="verb">view</spanx>, <spanx style="verb">resize</spanx>,
+              <spanx style="verb">print</spanx>, and <spanx
+              style="verb">download</spanx>, and <spanx
+              style="verb">album</spanx> with scopes <spanx
+              style="verb">view</spanx>, <spanx style="verb">edit</spanx>, and
+              <spanx style="verb">download</spanx>. It has registered these
+              resources and scopes at the authorization server. It considers
+              <spanx style="verb">photo1</spanx> and <spanx
+              style="verb">photo2</spanx> to be logically "inside" <spanx
+              style="verb">album</spanx>.</t>
+
+              <t>Though the client is unaware of the exact contents of RPTs,
+              permissions, and permission requests, the resource server has
+              documented its API, available scopes, and permission requesting
+              practices. For example, if the client requests an album
+              resource, it expects that the resource server will request a
+              permission for the album with a scope that approximates the
+              attempted client operation, but will also request permissions
+              for all the photos "inside" the album, with <spanx
+              style="verb">view</spanx> scope only.</t>
+
+              <t>The client has a pre-registered scope with the authorization
+              server of <spanx style="verb">download</spanx>. Thus, the set
+              <spanx>ClientRegistered</spanx> contains <spanx
+              style="verb">download</spanx>. This prepares the client to be
+              able to request this scope dynamically on behalf of its
+              requesting party from the token endpoint later.</t>
+
+              <t>The client requests the album resource in an attempt to edit
+              it, so the resource server makes a permission request with three
+              permissions in it: for <spanx style="verb">album</spanx> with a
+              scope of <spanx style="verb">edit</spanx>, and for <spanx
+              style="verb">photo1</spanx> and <spanx
+              style="verb">photo2</spanx>, each with a scope of <spanx
+              style="verb">view</spanx>. Thus, the set
+              <spanx>PermissionTicket</spanx> contains <spanx
+              style="verb">edit</spanx> and <spanx style="verb">view</spanx>.
+              (Note that <spanx style="verb">edit</spanx> putatively applies
+              only to the album resource and <spanx style="verb">view</spanx>
+              to both the album and the photo resources, but from the client's
+              perspective, and thus for purposes of this entire calculation
+              sequence, scope-to-resource mapping is not performed.)</t>
+
+              <t>While asking for an RPT at the token endpoint, the client
+              requests <spanx style="verb">download</spanx> scope on the
+              requesting party's behalf. Thus, the set
+              <spanx>ClientRequested</spanx> contains <spanx
+              style="verb">download</spanx>.</t>
+
+              <t>The authorization server determines that the set
+              <spanx>RequestedScopes</spanx> contains <spanx
+              style="verb">edit</spanx>, <spanx style="verb">view</spanx>, and
+              <spanx style="verb">download</spanx>.</t>
 
               <t>The resource owner has set policy conditions that allow
-              access to <spanx style="verb">photo1</spanx> only by requesting
-              parties that can provide claims proving they are family members,
-              and that allow access to <spanx style="verb">photo2</spanx> only
-              by requesting parties that can provide claims saying they agree
-              not to download, sell, or market any photo.</t>
+              access by this particular requesting party only to <spanx
+              style="verb">photo1</spanx> and only for <spanx
+              style="verb">view</spanx> scope.</t>
 
-              <t>The client is pre-registered with the authorization server
-              for <spanx style="verb">download</spanx> scope (so
-              <spanx>ClientRegistered</spanx> contains <spanx
-              style="verb">download</spanx>).</t>
-
-              <t>The client requests a resource, in what the resource server
-              interprets as an attempt for <spanx style="verb">view</spanx>
-              access to <spanx style="verb">photo1</spanx>.</t>
-
-              <t>The nature of the resource server's API results in the
-              resource server's permission ticket from the authorization
-              server representing a request for <spanx
-              style="verb">view</spanx> and <spanx style="verb">print</spanx>
-              scopes for <spanx style="verb">photo1</spanx> on the client's
-              behalf (so <spanx>PermissionTicket</spanx> contains <spanx
-              style="verb">view</spanx> and <spanx
-              style="verb">print</spanx>).</t>
-
-              <t>The client requests <spanx style="verb">download</spanx>
-              scope on the requesting party's behalf while requesting an RPT
-              from the authorization server (so <spanx>ClientRequested</spanx>
-              contains <spanx style="verb">download</spanx>).</t>
-
-              <t>The authorization server determines that
-              <spanx>RequestedScopes</spanx> contains <spanx
-              style="verb">view</spanx>, <spanx style="verb">print</spanx>,
-              and <spanx style="verb">download</spanx>.</t>
-
-              <t>Based on the authorization server's evaluation of policy
-              conditions associated with these scopes,
-              <spanx>CandidateGrantedScopes</spanx> contains only <spanx
-              style="verb">view</spanx> and <spanx style="verb">print</spanx>
-              and not <spanx style="verb">download</spanx> (the dynamically
-              requested scope), which is less than in
-              <spanx>RequestedScopes</spanx>.</t>
-
-              <t>The authorization server has a choice whether to issue an RPT
-              in this case.</t>
+              <t>Based on the authorization server's authorization assessment
+              calculation, <spanx>CandidateGrantedScopes</spanx> contains only
+              <spanx style="verb">view</spanx>, which is less than in
+              <spanx>RequestedScopes</spanx>. The authorization server has a
+              choice whether to issue an RPT (in this case, containing a
+              permission for <spanx style="verb">photo1</spanx> with <spanx
+              style="verb">view</spanx> scope) or an error (say, <spanx
+              style="verb">request_denied</spanx>).</t>
             </list></t>
 
           <t>See <xref target="default-deny" /> for a discussion of
