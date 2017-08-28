@@ -13,7 +13,7 @@
 <!ENTITY RFC7009 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7009.xml">
 ]>
 <rfc category="std" docName="oauth-uma-grant" id="kantara" ipr="kantara"
-     target="draft" version="2.0">
+     target="postPublicComment" version="2.0">
   <?xml-stylesheet texttype='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -56,7 +56,7 @@
       </address>
     </author>
 
-    <date day="26" month="July" year="2017" />
+    <date day="28" month="August" year="2017" />
 
     <abstract>
       <t>This specification defines a means for a client, representing a
