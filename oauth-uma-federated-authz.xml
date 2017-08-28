@@ -233,8 +233,7 @@
             authorization server executes in the process of issuing access
             tokens. The authorization process makes use of claims gathered
             from the requesting party and client in order to satisfy all
-            operative operative policy conditions. (See <xref
-            target="ttl" />.)</t>
+            operative operative policy conditions.</t>
           </list></t>
 
         <t>The separation of authorization decision making and authorization
