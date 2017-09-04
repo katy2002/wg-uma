@@ -59,14 +59,14 @@
     <abstract>
       <t>This specification defines a means for an UMA-enabled authorization
       server and resource server to be loosely coupled, or federated, in a
-      resource owner context.</t>
+      secure and authorized resource owner context.</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="introduction" title="Introduction">
       <t>This specification extends and complements <xref target="UMAGrant" />
-      to loosely couple, or federate, the authorization process. This enables
+      to loosely couple, or federate, its authorization process. This enables
       multiple resource servers operating in different domains to communicate
       with a single authorization server operating in yet another domain that
       acts on behalf of a resource owner. A service ecosystem can thus
@@ -81,12 +81,13 @@
       resource server hosted elsewhere), and a dedicated sharing management
       service (authorization server) hosted by the bank. She can manage access
       to her various protected resources by spouse Bob, accounting
-      professional Charline, bank account aggregation company DecideAccount,
-      and neighbor Erik (requesting parties), all using different client
-      applications, each of them variously to view account data, get access to
-      payment or withdrawal functions, and see or edit files for a community
-      project. Alice can use the same sharing management service to monitor
-      and control these different levels of access.</t>
+      professional Charline, financial information aggregation company
+      DecideAccount, and neighbor Erik (requesting parties), all using
+      different client applications. Her bank accounts and her various files
+      and folders are protected resources, and she can use the same sharing
+      management service to monitor and control different scopes of access to
+      them by these different parties, such as viewing, editing, or printing
+      files and viewing account data or accessing payment functions.</t>
 
       <t>This specification, together with <xref target="UMAGrant" />,
       constitutes UMA 2.0. This specification is OPTIONAL to use with the UMA
@@ -193,7 +194,8 @@
         <t>The authorization server MUST use OAuth and require a valid PAT to
         secure its protection API endpoints. The authorization server and the
         resource server (as an OAuth client) MUST support bearer usage of the
-        PAT, as defined in <xref target="RFC6750" />.</t>
+        PAT, as defined in <xref target="RFC6750" />. All examples in this
+        specification show the use of bearer-style PATs in this format.</t>
 
         <t>As defined in <xref target="UMAGrant" />, the resource owner -- the
         entity here authorizing PAT issuance -- MAY be an end-user (natural
@@ -286,10 +288,7 @@
             target="resource-registration-endpoint" />. The API available at
             this endpoint provides a means for the resource server to put
             resources under the protection of an authorization server on
-            behalf of the resource owner and manage them over time. The
-            resource server uses this endpoint in an ongoing fashion, but
-            generally registers a resource initially during the
-            request-to-grant phase.</t>
+            behalf of the resource owner and manage them over time.</t>
 
             <t>Permission endpoint as defined in <xref
             target="permission-endpoint" />. This endpoint provides a means
@@ -297,14 +296,12 @@
             permissions on behalf of the client based on the client's resource
             request when that request is unaccompanied by an access token or
             is accompanied by an RPT that is insufficient for access to that
-            resource. The resource server uses this endpoint during the
-            request-to-grant phase.</t>
+            resource.</t>
 
             <t>OPTIONAL token introspection endpoint as defined in <xref
-            target="RFC7662" /> as extended in <xref
+            target="RFC7662" /> and as extended in <xref
             target="introspection-endpoint" />. This endpoint provides a means
-            for the resource server to introspect the RPT. The resource server
-            uses this endpoint during the grant-to-resource phase.</t>
+            for the resource server to introspect the RPT.</t>
           </list></t>
 
         <t>Use of these endpoints assumes that the resource server has
@@ -316,11 +313,8 @@
         authorization to use the protection API, as noted in <xref
         target="api-sec" />.</t>
 
-        <t>The authorization server MUST declare its endpoints in the
-        discovery document (see <xref target="as-config" />).</t>
-
-        <t>Examples in this specification show the use of bearer-style PATs in
-        <xref target="RFC6750" /> format.</t>
+        <t>The authorization server MUST declare its protection API endpoints
+        in the discovery document (see <xref target="as-config" />).</t>
 
         <section title="Permissions">
           <t>A permission is (requested or granted) authorized access to a
@@ -534,7 +528,7 @@
         <section anchor="scope-desc" title="Scope Description">
           <t>A scope description is a JSON document that describes the
           characteristics of a scope sufficiently for an authorization server
-          to protect the resource with this scope.</t>
+          to protect the resource with this available scope.</t>
 
           <t>While a scope URI appearing in a resource description (see <xref
           target="resource-set-desc" />) MAY resolve to a scope description
@@ -637,10 +631,10 @@
         then the authorization server instead responds as follows (see <xref
         target="errors" /> for information about error messages):<list
             style="symbols">
-            <t>If the resource requested from the authorization server cannot
-            be found, the authorization server MUST respond with an HTTP 404
-            (Not Found) status code and MAY respond with a <spanx
-            style="verb">not_found</spanx> error code.</t>
+            <t>If the referenced resource cannot be found, the authorization
+            server MUST respond with an HTTP 404 (Not Found) status code and
+            MAY respond with a <spanx style="verb">not_found</spanx> error
+            code.</t>
 
             <t>If the resource server request used an unsupported HTTP method,
             the authorization server MUST respond with the HTTP 405 (Method
@@ -739,11 +733,6 @@ Content-Type: application/json
 }
 ]]></artwork>
           </figure>
-
-          <t>If the referenced resource does not exist, the authorization
-          server MUST produce an error response with an error parameter value
-          of <spanx style="verb">not_found</spanx>, as defined in <xref
-          target="reg-api" />.</t>
         </section>
 
         <section anchor="update-resource-set"
@@ -913,10 +902,11 @@ client             server                server
       permission MAY have zero scopes associated with it. Requesting multiple
       permissions might be appropriate, for example, in cases where the
       resource server expects the requesting party to need access to several
-      related resources if they need access to any one of the resources.
-      Requesting a permission with no scopes might be appropriate, for
-      example, in cases where an access attempt involves an API call that is
-      ambiguous without further context (role-based scopes such as <spanx
+      related resources if they need access to any one of the resources (see
+      Section 3.3.4 of <xref target="UMAGrant" /> for an example). Requesting
+      a permission with no scopes might be appropriate, for example, in cases
+      where an access attempt involves an API call that is ambiguous without
+      further context (role-based scopes such as <spanx
       style="verb">user</spanx> and <spanx style="verb">admin</spanx> could
       have this ambiguous quality, and an explicit client request for a
       particular scope at the token endpoint later can clarify the desired
@@ -1417,7 +1407,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMAGrant"
-                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-grant-2.0-05.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-grant-2.0-08.html">
         <front>
           <title>User-Managed Access (UMA) Grant for OAuth 2.0
           Authorization</title>
@@ -1426,7 +1416,7 @@ Cache-Control: no-store
             <organization>ForgeRock</organization>
           </author>
 
-          <date day="" month="May" year="2017" />
+          <date day="" month="September" year="2017" />
         </front>
       </reference>
 
