@@ -190,8 +190,10 @@
         which discusses deployment and adoption characteristics of different
         TLS versions.</t>
 
-        <t>The authorization server MUST use OAuth and require a PAT to secure
-        its protection API endpoints.</t>
+        <t>The authorization server MUST use OAuth and require a valid PAT to
+        secure its protection API endpoints. The authorization server and the
+        resource server (as an OAuth client) MUST support bearer usage of the
+        PAT, as defined in <xref target="RFC6750" />.</t>
 
         <t>As defined in <xref target="UMAGrant" />, the resource owner -- the
         entity here authorizing PAT issuance -- MAY be an end-user (natural
