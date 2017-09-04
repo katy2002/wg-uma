@@ -640,12 +640,18 @@
             <t>If the resource requested from the authorization server cannot
             be found, the authorization server MUST respond with an HTTP 404
             (Not Found) status code and MAY respond with a <spanx
-            style="verb">not_found</spanx> error message.</t>
+            style="verb">not_found</spanx> error code.</t>
 
             <t>If the resource server request used an unsupported HTTP method,
             the authorization server MUST respond with the HTTP 405 (Method
             Not Allowed) status code and MAY respond with an <spanx
-            style="verb">unsupported_method_type</spanx> error message.</t>
+            style="verb">unsupported_method_type</spanx> error code.</t>
+
+            <t>If the request is missing a required parameter, includes an
+            invalid parameter value, includes a parameter more than once, or
+            is otherwise malformed, the authorization server MUST respond with
+            the HTTP 400 (Bad Request) status code and MAY respond with an
+            <spanx style="verb">invalid_request</spanx> error code.</t>
           </list></t>
 
         <section anchor="create-rreg" title="Create Resource Description">
@@ -1216,8 +1222,9 @@ Cache-Control: no-store
       another reason, the authorization server produces an error response by
       supplying a JSON-encoded object with the following members in the body
       of the HTTP response:<list style="hanging">
-          <t hangText="error">REQUIRED. A single error code. Values for this
-          parameter are defined throughout this specification.</t>
+          <t hangText="error">REQUIRED except as noted. A single error code.
+          Values for this parameter are defined throughout this
+          specification.</t>
 
           <t hangText="error_description">OPTIONAL. Human-readable text
           providing additional information.</t>
