@@ -54,7 +54,7 @@
       </address>
     </author>
 
-    <date day="28" month="August" year="2017" />
+    <date day="4" month="September" year="2017" />
 
     <abstract>
       <t>This specification defines a means for an UMA-enabled authorization
@@ -1362,6 +1362,8 @@ Cache-Control: no-store
           <t>Andrew Hindle, Hindle Consulting Limited</t>
 
           <t>Lukasz Moren, Cloud Identity Ltd</t>
+
+          <t>James Phillpotts, ForgeRock</t>
 
           <t>Christian Scholz, COMlounge GmbH (former editor)</t>
 
