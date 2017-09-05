@@ -734,39 +734,43 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
         <section anchor="authorization-assessment"
                  title="Authorization Assessment and Results Determination">
           <t>When the authorization server has received a request for an RPT
-          from a client (see <xref target="uma-grant-type" />), it assesses
-          whether the client is authorized to receive the requested RPT and
-          determines the results.</t>
+          from a client as defined in <xref target="uma-grant-type" />, it
+          assesses whether the client is authorized to receive the requested
+          RPT and determines the results.</t>
 
           <t>The authorization server MUST apply the following conceptual
           authorization assessment calculation in determining authorization
           results. Note: As this calculation is internal to authorization
           server operations, its particulars are outside the scope of this
-          specification.</t>
+          specification. <list style="numbers">
+              <t>Assemble a set called <spanx>RegisteredScopes</spanx>
+              containing the scopes for which the client is pre-registered
+              (either dynamically or through some static process) at the
+              authorization server. Assemble a set called
+              <spanx>RequestedScopes</spanx> containing the scopes the client
+              most recently requested at the token endpoint. The permission
+              ticket that was presented by the client at the token endpoint
+              represents some number of resources, each with some number of
+              scopes; for each of those resources, assemble a set called
+              <spanx>TicketScopes(resource)</spanx> containing the scopes
+              associated with that resource.</t>
 
-          <t>In this assessment calculation, let a set called
-          <spanx>ClientRegistered</spanx> stand for the scopes for which the
-          client is pre-registered at the authorization server, either
-          dynamically or through some static process. Let a set called
-          <spanx>ClientRequested</spanx> stand for the scopes the client most
-          recently requested at the token endpoint. Let a set called
-          <spanx>PermissionTicket</spanx> stand for the scopes associated with
-          the permission ticket presented by the client at the token endpoint.
-          <list style="numbers">
-              <t>Determine the set of requested scopes as follows:
-              <spanx>RequestedScopes = PermissionTicket &#8746;
-              (ClientRequested &#8745; ClientRegistered)</spanx>. Treat each
-              scope in <spanx>(ClientRequested &#8745;
-              ClientRegistered)</spanx> as applying to all matching
-              resource-bound scopes in <spanx>PermissionTicket</spanx>.</t>
+              <t>For each resource in the permission ticket, determine a final
+              set of requested scopes as follows:
+              <spanx>RequestedScopes(resource)={TicketScopes(resource) &#8746;
+              {RegisteredScopes &#8745; RequestedScopes}}</spanx>. Treat each
+              scope in <spanx>{RegisteredScopes &#8745;
+              RequestedScopes}</spanx> as matching any available scope
+              associated with a resource found in the permission ticket.</t>
 
-              <t>Determine all operative policy conditions, and claims and
-              other relevant information serving as input to them, for each
-              scope assocated with <spanx>RequestedScopes</spanx> and evaluate
-              its authorization status.</t>
+              <t>For each <spanx>RequestedScopes(resource)</spanx> set,
+              determine all operative policy conditions, and claims and other
+              relevant information serving as input to them, and evaluate its
+              authorization status.</t>
 
-              <t>For each scope that passes the evaluation, add it to a set
-              called <spanx>CandidateGrantedScopes</spanx>.</t>
+              <t>For each scope in <spanx>RequestedScopes(resource)</spanx>
+              that passes the evaluation, add it to a set called
+              <spanx>CandidateGrantedScopes(resource)</spanx>.</t>
             </list></t>
 
           <t>Note: Claims and other information gathered during one
@@ -786,30 +790,27 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
           possible to implement.</t>
 
           <t>In the authorization results phase, the authorization server
-          examines the <spanx>CandidateGrantedScopes</spanx> set to determine
-          whether to issue an RPT and what permissions should be associated
-          with it.<list style="symbols">
-              <t>If <spanx>CandidateGrantedScopes = RequestedScopes</spanx>,
-              then the authorization server subsequently responds with a
-              success code and issues an RPT.</t>
+          examines each <spanx>CandidateGrantedScopes(resource)</spanx> set to
+          determine whether to issue an RPT and what permissions should be
+          associated with it. If all <spanx>RequestedScopes(resource)</spanx>
+          sets can be granted (that is, <spanx>{&#8746; resource
+          {RequestedScopes</spanx>\<spanx>CandidateGrantedScopes</spanx>}={}),
+          then the authorization server subsequently responds with a success
+          code and issues an RPT containing
+          <spanx>CandidateGrantedScopes</spanx> for each resource.</t>
 
-              <t>If <spanx>CandidateGrantedScopes &lt;
-              RequestedScopes</spanx>, the authorization server subsequently
-              issues either an RPT containing
-              <spanx>CandidateGrantedScopes</spanx>, or one of the error
-              codes, as appropriate. The reason for the two options is that
-              granting only partial scopes might not be useful for the
-              client's and requesting party's purposes in seeking
-              authorization for access. The choice of error depends on policy
-              conditions and the authorization server's implementation
-              choices. The conditions for the <spanx
-              style="verb">need_info</spanx>, <spanx
-              style="verb">request_denied</spanx>, and <spanx
-              style="verb">request_submitted</spanx> error codes are dependent
-              on authorization assessment and thus these codes might be more
-              likely than the others to be issued subsequent to such a
-              calculation.</t>
-            </list></t>
+          <t>Otherwise, the authorization server subsequently issues either an
+          RPT containing <spanx>CandidateGrantedScopes</spanx> for each
+          resource, or one of the error codes, as appropriate. The reason for
+          the two options is that granting only partial scopes might not be
+          useful for the client's and requesting party's purposes in seeking
+          authorization for access. The choice of error depends on policy
+          conditions and the authorization server's implementation choices.
+          The conditions for the <spanx style="verb">need_info</spanx>, <spanx
+          style="verb">request_denied</spanx>, and <spanx
+          style="verb">request_submitted</spanx> error codes are dependent on
+          authorization assessment and thus these codes might be more likely
+          than the others to be issued subsequent to such a calculation.</t>
 
           <t>The following example illustrates authorization assessment and
           partial results. <list style="symbols">
@@ -822,9 +823,8 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               style="verb">download</spanx>, and <spanx
               style="verb">album</spanx> with scopes <spanx
               style="verb">view</spanx>, <spanx style="verb">edit</spanx>, and
-              <spanx style="verb">download</spanx>. It has registered these
-              resources and scopes at the authorization server. It considers
-              <spanx style="verb">photo1</spanx> and <spanx
+              <spanx style="verb">download</spanx>. It considers <spanx
+              style="verb">photo1</spanx> and <spanx
               style="verb">photo2</spanx> to be logically "inside" <spanx
               style="verb">album</spanx>.</t>
 
@@ -838,12 +838,13 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               for all the photos "inside" the album, with <spanx
               style="verb">view</spanx> scope only.</t>
 
-              <t>The client has a pre-registered scope with the authorization
-              server of <spanx style="verb">download</spanx>. Thus, the set
-              <spanx>ClientRegistered</spanx> contains <spanx
-              style="verb">download</spanx>. This prepares the client to be
-              able to request this scope dynamically on behalf of its
-              requesting party from the token endpoint later.</t>
+              <t>The client has a pre-registered scope of <spanx
+              style="verb">download</spanx> with the authorization server.
+              This enables the client later to request this scope dynamically
+              on behalf of its requesting party from the token endpoint. The
+              authorization server assembles the set
+              <spanx>RegisteredScopes</spanx> with contents of scope <spanx
+              style="verb">download</spanx>.</t>
 
               <t>The client requests the album resource in an attempt to edit
               it, so the resource server obtains a permission ticket with
@@ -851,25 +852,31 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               with a scope of <spanx style="verb">edit</spanx>, and for <spanx
               style="verb">photo1</spanx> and <spanx
               style="verb">photo2</spanx>, each with a scope of <spanx
-              style="verb">view</spanx>. Thus, the set
-              <spanx>PermissionTicket</spanx> contains <spanx
-              style="verb">edit</spanx> and <spanx style="verb">view</spanx>.
-              (Note that <spanx style="verb">edit</spanx> putatively applies
-              only to the album resource and <spanx style="verb">view</spanx>
-              to both the album and the photo resources, but from the client's
-              perspective, and thus for purposes of this entire calculation
-              sequence, scope-to-resource mapping is not performed.)</t>
+              style="verb">view</spanx>. The authorization server assembles
+              the following sets: <spanx>TicketScopes</spanx>(<spanx
+              style="verb">album</spanx>) containing <spanx
+              style="verb">edit</spanx>, <spanx>TicketScopes</spanx>(<spanx
+              style="verb">photo1</spanx>) containing <spanx
+              style="verb">view</spanx>, and
+              <spanx>TicketScopes</spanx>(<spanx style="verb">photo2</spanx>)
+              containing <spanx style="verb">view</spanx>.</t>
 
               <t>While asking for an RPT at the token endpoint, the client
               requests <spanx style="verb">download</spanx> scope on the
-              requesting party's behalf. Thus, the set
-              <spanx>ClientRequested</spanx> contains <spanx
+              requesting party's behalf. The authorization server determines
+              the contents of the following sets:
+              <spanx>RequestedScopes</spanx>(<spanx
+              style="verb">album</spanx>) containing <spanx
+              style="verb">edit</spanx> and <spanx
+              style="verb">download</spanx>,
+              <spanx>RequestedScopes</spanx>(<spanx
+              style="verb">photo1</spanx>) containing <spanx
+              style="verb">view</spanx> and <spanx
+              style="verb">download</spanx>, and
+              <spanx>RequestedScopes</spanx>(<spanx
+              style="verb">photo2</spanx>) containing <spanx
+              style="verb">view</spanx> and <spanx
               style="verb">download</spanx>.</t>
-
-              <t>The authorization server determines that the set
-              <spanx>RequestedScopes</spanx> contains <spanx
-              style="verb">edit</spanx>, <spanx style="verb">view</spanx>, and
-              <spanx style="verb">download</spanx>.</t>
 
               <t>The resource owner has set policy conditions that allow
               access by this particular requesting party only to <spanx
@@ -877,13 +884,23 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
               style="verb">view</spanx> scope.</t>
 
               <t>Based on the authorization server's authorization assessment
-              calculation, <spanx>CandidateGrantedScopes</spanx> contains only
-              <spanx style="verb">view</spanx>, which is less than in
-              <spanx>RequestedScopes</spanx>. The authorization server has a
-              choice whether to issue an RPT (in this case, containing a
-              permission for <spanx style="verb">photo1</spanx> with <spanx
+              calculation, it determines the contents of the following sets:
+              <spanx>CandidateGrantedScopes</spanx>(<spanx
+              style="verb">album</spanx>) containing no scopes,
+              <spanx>CandidateGrantedScopes</spanx>(<spanx
+              style="verb">photo1</spanx>) containing <spanx
+              style="verb">view</spanx>, and
+              <spanx>CandidateGrantedScopes</spanx>(<spanx
+              style="verb">photo2</spanx>) containing no scopes. This adds up
+              to less than in the corresponding <spanx>RequestedScopes</spanx>
+              sets. The authorization server therefore has a choice whether to
+              issue an RPT (in this case, containing a permission for <spanx
+              style="verb">photo1</spanx> with <spanx
               style="verb">view</spanx> scope) or an error (say, <spanx
-              style="verb">request_denied</spanx>).</t>
+              style="verb">request_denied</spanx>, or <spanx
+              style="verb">request_submitted</spanx> if has a way to notify
+              the resource owner about the album editing resource request and
+              seek an added policy covering it).</t>
             </list></t>
 
           <t>See <xref target="default-deny" /> for a discussion of
