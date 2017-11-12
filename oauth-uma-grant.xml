@@ -793,10 +793,8 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
           examines each <spanx>CandidateGrantedScopes(resource)</spanx> set to
           determine whether to issue an RPT and what permissions should be
           associated with it. If all <spanx>RequestedScopes(resource)</spanx>
-          sets can be granted (that is, <spanx>{&#8746; resource
-          {RequestedScopes</spanx>\<spanx>CandidateGrantedScopes</spanx>}={}),
-          then the authorization server subsequently responds with a success
-          code and issues an RPT containing
+          sets can be granted, then the authorization server subsequently
+          responds with a success code and issues an RPT containing
           <spanx>CandidateGrantedScopes</spanx> for each resource.</t>
 
           <t>Otherwise, the authorization server subsequently issues either an
