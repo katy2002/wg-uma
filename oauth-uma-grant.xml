@@ -1155,21 +1155,6 @@ Cache-Control: no-store
           </figure>
 
           <figure>
-            <preamble>Example when the client was not authorized to have the
-            permissions:</preamble>
-
-            <artwork><![CDATA[HTTP/1.1 403 Forbidden
-Content-Type: application/json
-Cache-Control: no-store
-...
-
-{  
-   "error":"request_denied"
-}
-]]></artwork>
-          </figure>
-
-          <figure>
             <preamble>Example of a <spanx style="verb">need_info</spanx>
             response with hints about required claims:</preamble>
 
@@ -1212,6 +1197,39 @@ Cache-Control: no-store
    "error":"need_info",
    "ticket":"ZXJyb3JfZGV0YWlscw==",
    "redirect_user":"https://as.example.com/rqp_claims?id=2346576421"
+}
+]]></artwork>
+          </figure>
+
+          <figure>
+            <preamble>Example when the client was not authorized to have the
+            permissions:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Cache-Control: no-store
+...
+
+{  
+   "error":"request_denied"
+}
+]]></artwork>
+          </figure>
+
+          <figure>
+            <preamble>Example when the authorization server requires resource
+            owner intervention, including the optional <spanx
+            style="verb">interval</spanx> parameter:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Cache-Control: no-store
+...
+
+{  
+   "error":"request_submitted",
+   "ticket?:?ZXJyb3JfZGV0YWlscw==",
+   "interval": 5
 }
 ]]></artwork>
           </figure>
