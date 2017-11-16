@@ -509,8 +509,7 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               need to establish proper audience restrictions for the claim
               token prior to claims pushing. See <xref target="trust-push" />
               and <xref target="rqp-privacy" /> for security and privacy
-              considerations regarding pushing of claims containing personal
-              data.</t>
+              considerations regarding pushing of claims.</t>
 
               <t hangText="claim_token_format">OPTIONAL. If this parameter is
               used, it MUST appear together with the <spanx
@@ -530,14 +529,14 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               is the same as the requesting party that was associated with the
               PCT when it was issued. See <xref target="trust-push" /> and
               <xref target="rqp-privacy" /> for additional security and
-              privacy considerations regarding persistence of claims
-              containing personal data. The client MAY use the PCT for the
-              same requesting party when seeking an RPT for a resource
-              different from the one sought when the PCT was issued, or a
-              protected resource at a different resource server entirely. See
-              <xref target="sec-consid-exposure" /> for additional PCT
-              security considerations. See <xref target="give-rpt" /> for the
-              form of the authorization server's response with a PCT.</t>
+              privacy considerations regarding persistence of claims. The
+              client MAY use the PCT for the same requesting party when
+              seeking an RPT for a resource different from the one sought when
+              the PCT was issued, or a protected resource at a different
+              resource server entirely. See <xref
+              target="sec-consid-exposure" /> for additional PCT security
+              considerations. See <xref target="give-rpt" /> for the form of
+              the authorization server's response with a PCT.</t>
 
               <t hangText="rpt">OPTIONAL. Supplying an existing RPT (which MAY
               be expired) gives the authorization server the option of
@@ -609,8 +608,7 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
           authentication at a remote identity provider, and other federated
           claims gathering. See <xref target="trust-push" /> and <xref
           target="rqp-privacy" /> for security and privacy considerations
-          regarding pushing and persistence of claims containing personal
-          data.</t>
+          regarding pushing and persistence of claims.</t>
 
           <t>The client might have initiated redirection immediately on
           receiving an initial permission ticket from the resource server, or,
@@ -1551,15 +1549,14 @@ Host: photoz.example.com
         audience restrictions found in claim tokens pushed by clients.</t>
 
         <t>A malicious client could push a claim token to the authorization
-        server to seek access to a protected resource on its own behalf
-        without, or prior to, the authorization server using interactive
-        claims gathering to seek an end-user requesting party's authorization.
-        In so doing, it could reveal the requesting party's personal data (see
-        <xref target="rqp-privacy" />). It is RECOMMENDED for trust
-        relationships established by the ecosystem parties either to include
-        prior requesting party authorization as required, or for end-user
-        requesting party authorization to be gathered interactively prior to
-        claims pushing, as described in <xref target="claim-redirect" />.</t>
+        server (revealing the claims therein; see <xref
+        target="rqp-privacy" />) to seek resource access on its own behalf
+        prior to any opportunity for an end-user requesting party to authorize
+        claims collection. It is RECOMMENDED either for trust relationships
+        established by the ecosystem parties to include prior requesting party
+        authorization as required, or for end-user requesting party
+        authorization to be gathered interactively prior to claims pushing, as
+        described in <xref target="claim-redirect" />.</t>
 
         <t>Some deployments could have exceptional circumstances allowing the
         authorization server to validate claim tokens. For example, if the
