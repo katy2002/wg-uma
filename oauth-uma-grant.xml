@@ -1968,7 +1968,7 @@ Host: photoz.example.com
       </reference>
 
       <reference anchor="UMAFedAuthz"
-                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-federated-authz-2.0-08.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-federated-authz-2.0-09.html">
         <front>
           <title>Federated Authorization for User-Managed Access (UMA)
           2.0</title>
@@ -1982,7 +1982,7 @@ Host: photoz.example.com
       </reference>
 
       <reference anchor="OAuthMeta"
-                 target="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06">
+                 target="https://tools.ietf.org/html/draft-ietf-oauth-discovery-07">
         <front>
           <title>OAuth 2.0 Authorization Server Metadata</title>
 
