@@ -56,7 +56,7 @@
       </address>
     </author>
 
-    <date day="4" month="September" year="2017" />
+    <date day="16" month="November" year="2017" />
 
     <abstract>
       <t>This specification defines a means for a client, representing a
@@ -507,7 +507,9 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               information on both first and subsequent requests to this
               endpoint. The client and authorization server together might
               need to establish proper audience restrictions for the claim
-              token prior to claims pushing.</t>
+              token prior to claims pushing. See <xref target="trust-push" />
+              and <xref target="rqp-privacy" /> for security and privacy
+              considerations regarding pushing of claims.</t>
 
               <t hangText="claim_token_format">OPTIONAL. If this parameter is
               used, it MUST appear together with the <spanx
@@ -525,10 +527,13 @@ Warning: 199 - "UMA Authorization Server Unreachable"
               client supplying a PCT in its RPT request MUST make a best
               effort to ensure that the requesting party using the client now
               is the same as the requesting party that was associated with the
-              PCT when it was issued. The client MAY use the PCT for the same
-              requesting party when seeking an RPT for a resource different
-              from the one sought when the PCT was issued, or a protected
-              resource at a different resource server entirely. See <xref
+              PCT when it was issued. See <xref target="trust-push" /> and
+              <xref target="rqp-privacy" /> for additional security and
+              privacy considerations regarding persistence of claims. The
+              client MAY use the PCT for the same requesting party when
+              seeking an RPT for a resource different from the one sought when
+              the PCT was issued, or a protected resource at a different
+              resource server entirely. See <xref
               target="sec-consid-exposure" /> for additional PCT security
               considerations. See <xref target="give-rpt" /> for the form of
               the authorization server's response with a PCT.</t>
@@ -596,13 +601,14 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Auma-ticket
           requires. These can include direct interactions, such as account
           registration and authentication local to the authorization server as
           an identity provider, filling out a questionnaire, or asking the
-          user to authorize persistent storage of any collected claims to
-          optimize future authorization processes; this last example could
-          potentially be associated with the authorization server's subsequent
-          issuance of a PCT. Interactions could also involve further
+          user to authorize subsequent collection of claims by interaction or
+          pushing, and persistent storage of such claims (for example, as
+          associated with a PCT). Interactions could also involve further
           redirection, for example, for federated (such as social)
           authentication at a remote identity provider, and other federated
-          claims gathering.</t>
+          claims gathering. See <xref target="trust-push" /> and <xref
+          target="rqp-privacy" /> for security and privacy considerations
+          regarding pushing and persistence of claims.</t>
 
           <t>The client might have initiated redirection immediately on
           receiving an initial permission ticket from the resource server, or,
@@ -793,10 +799,8 @@ ticket=cHJpdmFjeSBpcyBjb250ZXh0LCBjb250cm9s&state=abc
           examines each <spanx>CandidateGrantedScopes(resource)</spanx> set to
           determine whether to issue an RPT and what permissions should be
           associated with it. If all <spanx>RequestedScopes(resource)</spanx>
-          sets can be granted (that is, <spanx>{&#8746; resource
-          {RequestedScopes</spanx>\<spanx>CandidateGrantedScopes</spanx>}={}),
-          then the authorization server subsequently responds with a success
-          code and issues an RPT containing
+          sets can be granted, then the authorization server subsequently
+          responds with a success code and issues an RPT containing
           <spanx>CandidateGrantedScopes</spanx> for each resource.</t>
 
           <t>Otherwise, the authorization server subsequently issues either an
@@ -1157,21 +1161,6 @@ Cache-Control: no-store
           </figure>
 
           <figure>
-            <preamble>Example when the client was not authorized to have the
-            permissions:</preamble>
-
-            <artwork><![CDATA[HTTP/1.1 403 Forbidden
-Content-Type: application/json
-Cache-Control: no-store
-...
-
-{  
-   "error":"request_denied"
-}
-]]></artwork>
-          </figure>
-
-          <figure>
             <preamble>Example of a <spanx style="verb">need_info</spanx>
             response with hints about required claims:</preamble>
 
@@ -1214,6 +1203,39 @@ Cache-Control: no-store
    "error":"need_info",
    "ticket":"ZXJyb3JfZGV0YWlscw==",
    "redirect_user":"https://as.example.com/rqp_claims?id=2346576421"
+}
+]]></artwork>
+          </figure>
+
+          <figure>
+            <preamble>Example when the client was not authorized to have the
+            permissions:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Cache-Control: no-store
+...
+
+{  
+   "error":"request_denied"
+}
+]]></artwork>
+          </figure>
+
+          <figure>
+            <preamble>Example when the authorization server requires resource
+            owner intervention, including the optional <spanx
+            style="verb">interval</spanx> parameter:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Cache-Control: no-store
+...
+
+{  
+   "error":"request_submitted",
+   "ticket?:?ZXJyb3JfZGV0YWlscw==",
+   "interval": 5
 }
 ]]></artwork>
           </figure>
@@ -1518,13 +1540,23 @@ Host: photoz.example.com
         <t>Claim tokens of any format typically contain audience restrictions,
         and an authorization server would not typically be in the primary
         audience for a claim token held or generated by a client. It is
-        RECOMMENDED to document how the client, authorization server, and any
-        additional ecosystem entities and parties will establish a trust
-        relationship and communicate any required keying material in a claim
-        token profile, as described in <xref target="profiles" />.
-        Authorization servers are RECOMMENDED not to accept claim tokens
-        pushed by untrusted clients and not to ignore audience restrictions
-        found in claim tokens pushed by clients.</t>
+        RECOMMENDED to document how the client, authorization server,
+        requesting party, and any additional ecosystem entities and parties
+        will establish a trust relationship and communicate any required
+        keying material in a claim token profile, as described in <xref
+        target="profiles" />. Authorization servers are RECOMMENDED not to
+        accept claim tokens pushed by untrusted clients and not to ignore
+        audience restrictions found in claim tokens pushed by clients.</t>
+
+        <t>A malicious client could push a claim token to the authorization
+        server (revealing the claims therein; see <xref
+        target="rqp-privacy" />) to seek resource access on its own behalf
+        prior to any opportunity for an end-user requesting party to authorize
+        claims collection. It is RECOMMENDED either for trust relationships
+        established by the ecosystem parties to include prior requesting party
+        authorization as required, or for end-user requesting party
+        authorization to be gathered interactively prior to claims pushing, as
+        described in <xref target="claim-redirect" />.</t>
 
         <t>Some deployments could have exceptional circumstances allowing the
         authorization server to validate claim tokens. For example, if the
@@ -1596,13 +1628,10 @@ Host: photoz.example.com
         SHOULD provide a secure and privacy-protected means of storing claim
         data. It is also RECOMMENDED for the authorization server to use an
         interactive claims-gathering flow to ask an end-user requesting party
-        for authorization to persist their claims before issuing a PCT. A
-        requesting party who provides claims to an authorization server once
-        having been redirected there is less susceptible to privacy-destroying
-        behavior. Otherwise, certain flows such as claims pushing and
-        interactive federated sign-in with automatic login will tend to be
-        invisible to the user if they have not consciously authorized the
-        possibility.</t>
+        for authorization to collect any claims subsequently and to persist
+        their claims (for example, before issuing a PCT), if no prior
+        requesting party authorization has been established among the
+        ecosystem parties (see <xref target="trust-push" />).</t>
       </section>
 
       <section title="Resource Owner Information at the Resource Server">
@@ -1952,7 +1981,7 @@ Host: photoz.example.com
       </reference>
 
       <reference anchor="UMAFedAuthz"
-                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-federated-authz-2.0-08.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-federated-authz-2.0-09.html">
         <front>
           <title>Federated Authorization for User-Managed Access (UMA)
           2.0</title>
@@ -1966,7 +1995,7 @@ Host: photoz.example.com
       </reference>
 
       <reference anchor="OAuthMeta"
-                 target="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06">
+                 target="https://tools.ietf.org/html/draft-ietf-oauth-discovery-07">
         <front>
           <title>OAuth 2.0 Authorization Server Metadata</title>
 
