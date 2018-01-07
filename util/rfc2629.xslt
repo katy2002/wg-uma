@@ -6160,7 +6160,7 @@ dd, li, p {
           Copyright &#169; <xsl:value-of select="$xml2rfc-ext-pub-year" /> Kantara Initiative and the persons identified as the document authors. All rights reserved.
         </t>
         <t>
-          This document is subject to the <eref target="https://kantarainitiative.org/confluence/download/attachments/2293776/Kantara%20Initiative%20IPR%20Policies">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>).
+          This document is subject to the <eref target="https://kantarainitiative.org/wp-content/uploads/2014/08/KantaraInitiativeIPRPolicies_V2.0.pdf">Kantara IPR Policy - Option Patent &amp; Copyright: Reciprocal Royalty Free with Opt-Out to Reasonable And Non discriminatory (RAND)</eref> (<eref target="https://kantarainitiative.org/confluence/pages/viewpage.action?pageId=41025689">HTML version</eref>).
         </t>
       </section>
     </xsl:when>
