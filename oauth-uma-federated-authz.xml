@@ -11,7 +11,7 @@
 <!ENTITY RFC7591 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7591.xml">
 ]>
 <rfc category="std" docName="oauth-uma-federated-authz" id="kantara"
-     ipr="kantara" target="postPublicComment" version="2.0">
+     ipr="kantara" target="recommendation" version="2.0">
   <?xml-stylesheet texttype='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc='yes' ?>
@@ -54,7 +54,7 @@
       </address>
     </author>
 
-    <date day="16" month="November" year="2017" />
+    <date day="7" month="January" year="2018" />
 
     <abstract>
       <t>This specification defines a means for an UMA-enabled authorization
@@ -1409,7 +1409,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMAGrant"
-                 target="https://docs.kantarainitiative.org/uma/wg/oauth-uma-grant-2.0-09.html">
+                 target="https://docs.kantarainitiative.org/uma/rec-oauth-uma-grant-2.0.html">
         <front>
           <title>User-Managed Access (UMA) Grant for OAuth 2.0
           Authorization</title>
@@ -1418,12 +1418,12 @@ Cache-Control: no-store
             <organization>ForgeRock</organization>
           </author>
 
-          <date day="" month="September" year="2017" />
+          <date day="7" month="January" year="2018" />
         </front>
       </reference>
 
       <reference anchor="OAuthMeta"
-                 target="https://tools.ietf.org/html/draft-ietf-oauth-discovery-07">
+                 target="https://tools.ietf.org/html/draft-ietf-oauth-discovery-08">
         <front>
           <title>OAuth 2.0 Authorization Server Metadata</title>
 
@@ -1431,7 +1431,7 @@ Cache-Control: no-store
             <organization>ForgeRock</organization>
           </author>
 
-          <date day="10" month="March" year="2017" />
+          <date day="16" month="November" year="2017" />
         </front>
       </reference>
 
