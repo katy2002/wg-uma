@@ -1981,7 +1981,7 @@ Host: photoz.example.com
       </reference>
 
       <reference anchor="UMAFedAuthz"
-                 target="https://docs.kantarainitiative.org/uma/rec-oauth-uma-federated-authz-2.0.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-federated-authz-2.0.html">
         <front>
           <title>Federated Authorization for User-Managed Access (UMA)
           2.0</title>

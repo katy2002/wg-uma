@@ -1409,7 +1409,7 @@ Cache-Control: no-store
       </reference>
 
       <reference anchor="UMAGrant"
-                 target="https://docs.kantarainitiative.org/uma/rec-oauth-uma-grant-2.0.html">
+                 target="https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-grant-2.0.html">
         <front>
           <title>User-Managed Access (UMA) Grant for OAuth 2.0
           Authorization</title>
